@@ -1,5 +1,5 @@
 import Table from "react-bootstrap/Table";
-import { Pencil, Eye } from "react-bootstrap-icons";
+import { Pencil, Eye, Trash3 } from "react-bootstrap-icons";
 import { Button } from "react-bootstrap";
 const ProductList = () => {
     return (
@@ -26,12 +26,17 @@ const ProductList = () => {
 							<td>100</td>
 							<td>Sale</td>
 							<td>
-								<Button variant='outline-primary'>
-									<Pencil size={20} />
-								</Button>
-								<Button variant='outline-primary'>
-									<Eye size={20} />
-								</Button>
+                                <div className="d-flex gap-2">
+                                    <Button variant='outline-primary'>
+                                        <Pencil size={18} />
+                                    </Button>
+                                    <Button variant='outline-primary'>
+                                        <Eye size={18} />
+                                    </Button>
+                                    <Button variant='outline-primary'>
+                                        <Trash3 size={18} />
+                                    </Button>
+                                </div>
 							</td>
 						</tr>
 					</tbody>

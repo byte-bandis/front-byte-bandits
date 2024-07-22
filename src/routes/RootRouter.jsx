@@ -7,6 +7,7 @@ import ProductView from "../pages/product/ProductView";
 import Account from "../pages/customer/Account";
 import DeleteAccount from "../pages/customer/DeleteAccount";
 import LayoutAccount from "../pages/customer/LayoutAccount";
+import Wishlist from "../pages/customer/Wishlist";
 const RootRouter = () => {
 	return (
 		<>
@@ -20,8 +21,8 @@ const RootRouter = () => {
 						element={<div>admin advert detail</div>}
 					/>
 					<Route path='new' element={<div>admin new</div>} />
+					<Route path='whishlist' element={<Wishlist />} />
 					<Route path='delete-account' element={<DeleteAccount />} />
-					
 				</Route>
 				<Route path='/' element={<h1>Home</h1>} />
 				<Route path='/product' element={<Outlet />}>

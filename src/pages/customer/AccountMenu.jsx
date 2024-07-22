@@ -30,27 +30,19 @@ const AccountMenu = () => {
 									<Navbar.Brand href='/'>Brand link</Navbar.Brand>
 								</Container>
 							</Navbar>
-							
+
 							<Navbar className='bg-body-tertiary'>
 								<Container>
 									<Navbar.Brand>Brand text</Navbar.Brand>
 								</Container>
 							</Navbar>
-							
+
 							<Navbar className='bg-body-tertiary'>
 								<Container>
-									<Navbar.Brand href='#home'>
-										<img
-											src='/img/logo.svg'
-											width='30'
-											height='30'
-											className='d-inline-block align-top'
-											alt='React Bootstrap logo'
-										/>
-									</Navbar.Brand>
+									<Link to={`/${userName}/whishlist`}>Wishlist</Link>
 								</Container>
 							</Navbar>
-							
+
 							<Navbar className='bg-body-tertiary'>
 								<Container>
 									<Link to={`/${userName}/delete-account`}>Delete account</Link>

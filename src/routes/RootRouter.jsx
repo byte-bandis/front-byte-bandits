@@ -8,32 +8,33 @@ import Account from "../pages/customer/Account";
 import DeleteAccount from "../pages/customer/DeleteAccount";
 import LayoutAccount from "../pages/customer/LayoutAccount";
 import Wishlist from "../pages/customer/Wishlist";
+import NewProductPage from "../pages/product/NewProductPage";
 const RootRouter = () => {
-	return (
-		<>
-			<Routes>
-				<Route path='/login' element={<LoginPage />}></Route>
-				<Route path='/register' element={<RegisterPage />}></Route>
-				<Route path=':userName' element={<LayoutAccount />}>
-					<Route index element={<Account />} />
-					<Route
-						path='edit/:productId'
-						element={<div>admin advert detail</div>}
-					/>
-					<Route path='new' element={<div>admin new</div>} />
-					<Route path='whishlist' element={<Wishlist />} />
-					<Route path='delete-account' element={<DeleteAccount />} />
-				</Route>
-				<Route path='/' element={<h1>Home</h1>} />
-				<Route path='/product' element={<Outlet />}>
-					<Route index element={<ProductList />} />
-					<Route path=':productId' element={<ProductView />} />
-				</Route>
-				<Route path='/404' element={<NotFound />} />
-				<Route path='*' element={<Navigate to='/404' />} />
-			</Routes>
-		</>
-	);
+  return (
+    <>
+      <Routes>
+        <Route path="/login" element={<LoginPage />}></Route>
+        <Route path="/register" element={<RegisterPage />}></Route>
+        <Route path=":userName" element={<LayoutAccount />}>
+          <Route index element={<Account />} />
+          <Route
+            path="edit/:productId"
+            element={<div>admin advert detail</div>}
+          />
+          <Route path="new" element={<NewProductPage />} />
+          <Route path="whishlist" element={<Wishlist />} />
+          <Route path="delete-account" element={<DeleteAccount />} />
+        </Route>
+        <Route path="/" element={<h1>Home</h1>} />
+        <Route path="/product" element={<Outlet />}>
+          <Route index element={<ProductList />} />
+          <Route path=":productId" element={<ProductView />} />
+        </Route>
+        <Route path="/404" element={<NotFound />} />
+        <Route path="*" element={<Navigate to="/404" />} />
+      </Routes>
+    </>
+  );
 };
 
 export default RootRouter;

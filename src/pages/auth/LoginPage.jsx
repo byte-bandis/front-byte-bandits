@@ -28,19 +28,9 @@ const LoginPage = () => {
     } finally {
       setLoading(false);
     }
-
-    /*     await delay(500);
-    console.log(`Username :${inputEmail}, Password :${inputPassword}`);
-    if (inputEmail !== "admin" || inputPassword !== "admin") {
-      setShow(true);
-    } */
   };
 
   const handlePassword = () => {};
-
-  /*   function delay(ms) {
-    return new Promise((resolve) => setTimeout(resolve, ms));
-  } */
 
   return (
     <div className="sign-in__wrapper">
@@ -73,7 +63,7 @@ const LoginPage = () => {
         )}
         <Form.Group
           className="mb-2"
-          controlId="username"
+          controlId="email"
         >
           <Form.Label>Email</Form.Label>
           <Form.Control

@@ -19,5 +19,5 @@ export const login = async (email, password) => {
 
 export const logout = () => {
   removeAuthorizationHeader();
-  storage.remove("auth");
+  storage.remove("authToken");
 };

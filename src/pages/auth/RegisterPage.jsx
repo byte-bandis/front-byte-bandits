@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Form, Button, Alert } from "react-bootstrap";
 import "./login.css";
 import { register } from "./register";
@@ -14,19 +14,25 @@ const RegisterPage = () => {
     birthdate: "",
     address: "",
     creditCard: "",
+    acceptTerms: false,
   });
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const [success, setSuccess] = useState(null);
   const [show, setShow] = useState(false);
   const [validationErrors, setValidationErrors] = useState({});
+  const [allFieldsFilled, setAllFieldsFilled] = useState(false);
 
   const handleChange = (event) => {
-    const { name, value } = event.target;
-    setFormValues((currentFormValues) => ({
-      ...currentFormValues,
-      [name]: value,
-    }));
+    const { name, value, type, checked } = event.target;
+    setFormValues((currentFormValues) => {
+      const newFormValues = {
+        ...currentFormValues,
+        [name]: type === "checkbox" ? checked : value,
+      };
+      checkAllFieldsFilled(newFormValues);
+      return newFormValues;
+    });
   };
 
   const validate = () => {
@@ -61,6 +67,13 @@ const RegisterPage = () => {
     return newErrors;
   };
 
+  const checkAllFieldsFilled = (values) => {
+    const areAllFieldsField = Object.values(values).every(
+      (value) => value !== "" && value !== false,
+    );
+    setAllFieldsFilled(areAllFieldsField);
+  };
+
   const handleSubmit = async (event) => {
     event.preventDefault();
     setLoading(true);
@@ -82,6 +95,9 @@ const RegisterPage = () => {
     }
   };
 
+  useEffect(() => {
+    checkAllFieldsFilled(formValues);
+  });
   const handlePassword = () => {};
 
   const {
@@ -93,6 +109,7 @@ const RegisterPage = () => {
     birthdate,
     address,
     creditCard,
+    acceptTerms,
   } = formValues;
 
   return (
@@ -230,17 +247,36 @@ const RegisterPage = () => {
           />
         </Form.Group>
         <Form.Group className="mb-2" controlId="checkbox">
-          <Form.Check type="checkbox" label="Remember me" />
+          <Form.Check
+            type="checkbox"
+            name="acceptTerms"
+            checked={acceptTerms}
+            onChange={handleChange}
+            label={
+              <>
+                By creating an account you are agreeing to our {""}
+                <a href="" target="_blank">
+                  terms and conditions (opens in new window)
+                </a>
+                . Read our{""}
+                <a href="" target="_blank">
+                  {" "}
+                  privacy and cookies policy (opens in new window){" "}
+                </a>
+                to find out how we collect and use your personal data.
+              </>
+            }
+          />
         </Form.Group>
-        {!loading ? (
-          <Button className="w-100" variant="primary" type="submit">
-            Register
-          </Button>
-        ) : (
-          <Button className="w-100" variant="primary" type="submit" disabled>
-            Registering...
-          </Button>
-        )}
+
+        <Button
+          className="w-100"
+          variant="primary"
+          type="submit"
+          disabled={!allFieldsFilled || loading}
+        >
+          {loading ? "Registering... " : "Register"}
+        </Button>
         <div className="d-grid justify-content-end">
           <Button
             className="text-muted px-0"

@@ -1,5 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { login } from "../pages/auth/service";
+import { setError } from "./errorSlice";
 
 export const defaultAuthState = {
   authState: false,
@@ -20,7 +21,11 @@ export const loginThunk = (email, password) => async (dispatch) => {
     await login(email, password);
     dispatch(setAuth(true));
   } catch (error) {
+    console.log(error.message);
     dispatch(setAuth(false));
+    dispatch(
+      setError({ message: error.message, status: error.response?.status })
+    );
     throw error;
   }
 };

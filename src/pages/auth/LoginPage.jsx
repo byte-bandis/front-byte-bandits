@@ -1,13 +1,11 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Form, Button, Alert } from "react-bootstrap";
-//import { login } from "./service";
-//import { setAuth } from "../../store/authSlice";
 import { loginThunk } from "../../store/authSlice";
-
+import { resetError } from "../../store/errorSlice";
 import "./login.css";
 
 import Logo from "../../assets/images/logo.svg";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useLocation, useNavigate } from "react-router-dom";
 
 const LoginPage = () => {
@@ -15,12 +13,21 @@ const LoginPage = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const to = location.state?.from || "/";
+  const { errorState, errorMessage, errorStatus } = useSelector(
+    (state) => state.errorState
+  );
 
   const [inputEmail, setInputEmail] = useState("");
   const [inputPassword, setInputPassword] = useState("");
 
   const [show, setShow] = useState(false);
   const [loading, setLoading] = useState(false);
+
+  useEffect(() => {
+    if (errorState) {
+      setShow(true);
+    }
+  }, [errorState]);
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -30,12 +37,17 @@ const LoginPage = () => {
       await dispatch(loginThunk(inputEmail, inputPassword));
       navigate(to, { replace: true });
     } catch (error) {
-      setShow(true);
+      console.log(error.message);
+      //throw error
     } finally {
       setLoading(false);
     }
   };
 
+  const handleCloseErrorAlert = () => {
+    dispatch(resetError());
+    setShow(false);
+  };
   const handlePassword = () => {};
 
   return (
@@ -59,10 +71,12 @@ const LoginPage = () => {
           <Alert
             className="mb-2"
             variant="danger"
-            onClose={() => setShow(false)}
+            onClose={handleCloseErrorAlert}
             dismissible
           >
-            Incorrect username or password.
+            {errorStatus === 500
+              ? "Incorrect username or password."
+              : errorMessage}
           </Alert>
         ) : (
           <div />

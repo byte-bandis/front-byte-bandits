@@ -1,7 +1,9 @@
 import { useState } from "react";
 import { Form, Button, Alert } from "react-bootstrap";
-import { login } from "./service";
-import { setAuth } from "../../store/authSlice";
+//import { login } from "./service";
+//import { setAuth } from "../../store/authSlice";
+import { loginThunk } from "../../store/authSlice";
+
 import "./login.css";
 
 import Logo from "../../assets/images/logo.svg";
@@ -25,11 +27,9 @@ const LoginPage = () => {
 
     try {
       setLoading(true);
-      await login(inputEmail, inputPassword);
-      dispatch(setAuth(true));
+      await dispatch(loginThunk(inputEmail, inputPassword));
       navigate(to, { replace: true });
     } catch (error) {
-      console.log(error.message);
       setShow(true);
     } finally {
       setLoading(false);

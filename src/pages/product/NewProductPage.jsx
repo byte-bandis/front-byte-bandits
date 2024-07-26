@@ -7,14 +7,12 @@ import "./NewProduct.css";
 const TAG_OPTIONS = ["lifestyle", "mobile", "motor", "work", "others"];
 
 const NewProductPage = () => {
-  // Estados para los campos del formulario
   const [inputName, setInputName] = useState("");
-  const [inputImage, setInputImage] = useState("");
+  const [inputImage, setInputImage] = useState(null); // Cambiado a null para manejar archivos
   const [inputDescription, setInputDescription] = useState("");
   const [inputPrice, setInputPrice] = useState("");
   const [inputTransactionType, setInputTransactionType] = useState("sell");
   const [selectedTags, setSelectedTags] = useState([]);
-
   const [show, setShow] = useState(false);
   const [loading, setLoading] = useState(false);
   const dispatch = useDispatch();
@@ -29,49 +27,36 @@ const NewProductPage = () => {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-    // Validar que al menos un tag sea seleccionado
     if (selectedTags.length === 0) {
       setShow(true);
       return;
     }
 
     setLoading(true);
-    const product = {
-      adTitle: inputName,
-      photo: inputImage,
-      adBody: inputDescription,
-      price: inputPrice,
-      sell: inputTransactionType === "sell",
-      tags: selectedTags.join(","),
-    };
-    try {
-      await dispatch(createProduct(product)).unwrap(); // Despacha la acción y maneja los resultados
+    // Usar FormData para manejar archivos si se envían a un backend
+    const formData = new FormData();
+    formData.append("adTitle", inputName);
+    formData.append("adBody", inputDescription);
+    formData.append("price", inputPrice);
+    formData.append("sell", inputTransactionType === "sell");
+    formData.append("tags", selectedTags.join(","));
+    if (inputImage) formData.append("photo", inputImage);
 
-      // Aquí puedes manejar el éxito, como redirigir al usuario o mostrar un mensaje
+    try {
+      await dispatch(createProduct(formData)).unwrap(); // Despacha la acción y maneja los resultados
     } catch (error) {
       console.error("Failed to create product: ", error);
-      // Aquí puedes manejar el error, como mostrar un mensaje de error al usuario
     } finally {
       setLoading(false);
     }
-
-    setLoading(false);
   };
-
-  function delay(ms) {
-    return new Promise((resolve) => setTimeout(resolve, ms));
-  }
 
   return (
     <div className="new-product__wrapper">
-      {/* Overlay */}
       <div className="new-product__backdrop"></div>
-      {/* Form */}
       <Form className="shadow p-4 bg-white rounded" onSubmit={handleSubmit}>
-        {/* Header */}
         <div className="h4 mb-2 text-center">Introduce tu producto</div>
-        {/* Alert */}
-        {show ? (
+        {show && (
           <Alert
             className="mb-2"
             variant="danger"
@@ -80,8 +65,6 @@ const NewProductPage = () => {
           >
             Debes seleccionar al menos un tag.
           </Alert>
-        ) : (
-          <div />
         )}
         <Form.Group className="mb-2" controlId="name">
           <Form.Label>Nombre</Form.Label>
@@ -153,12 +136,10 @@ const NewProductPage = () => {
           </div>
         </Form.Group>
         <Form.Group className="mb-2" controlId="image">
-          <Form.Label>Imagen (URL)</Form.Label>
+          <Form.Label>Imagen</Form.Label>
           <Form.Control
-            type="text"
-            value={inputImage}
-            placeholder="URL de la imagen"
-            onChange={(e) => setInputImage(e.target.value)}
+            type="file"
+            onChange={(e) => setInputImage(e.target.files[0])} // Actualiza el estado con el archivo
             required
           />
         </Form.Group>

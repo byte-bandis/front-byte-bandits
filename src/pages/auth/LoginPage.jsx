@@ -6,9 +6,14 @@ import "./login.css";
 
 import Logo from "../../assets/images/logo.svg";
 import { useDispatch } from "react-redux";
+import { useLocation, useNavigate } from "react-router-dom";
 
 const LoginPage = () => {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const location = useLocation();
+  const to = location.state?.from || "/";
+
   const [inputEmail, setInputEmail] = useState("");
   const [inputPassword, setInputPassword] = useState("");
 
@@ -22,6 +27,7 @@ const LoginPage = () => {
       setLoading(true);
       await login(inputEmail, inputPassword);
       dispatch(setAuth(true));
+      navigate(to, { replace: true });
     } catch (error) {
       console.log(error.message);
       setShow(true);

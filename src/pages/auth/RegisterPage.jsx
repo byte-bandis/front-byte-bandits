@@ -7,13 +7,10 @@ import Logo from "../../assets/images/logo.svg";
 const RegisterPage = () => {
   const [formValues, setFormValues] = useState({
     username: "",
-    name: "",
-    lastname: "",
     email: "",
     password: "",
+    passwordConfirmation: "",
     birthdate: "",
-    address: "",
-    creditCard: "",
     acceptTerms: false,
   });
   const [loading, setLoading] = useState(false);
@@ -54,16 +51,12 @@ const RegisterPage = () => {
     if (formValues.password.length < 6) {
       newErrors.password = "Password length requires at least 6 characters ";
     }
-    if (userAge() < 10) {
-      newErrors.birthdate = "User need to be al least 10 years old";
+    if (formValues.password !== formValues.passwordConfirmation) {
+      newErrors.password = "Passwords are differents";
     }
-
-    const creditCardRegex = /^\d{4} \d{4} \d{4} \d{4}$/;
-    if (!creditCardRegex.test(formValues.creditCard)) {
-      newErrors.creditCard =
-        "Credit card format required is 1234 1234 1234 1234";
+    if (userAge() < 18) {
+      newErrors.birthdate = "User need to be al least 18 years old";
     }
-
     return newErrors;
   };
 
@@ -102,13 +95,10 @@ const RegisterPage = () => {
 
   const {
     username,
-    name,
-    lastname,
     email,
     password,
+    passwordConfirmation,
     birthdate,
-    address,
-    creditCard,
     acceptTerms,
   } = formValues;
 
@@ -158,28 +148,6 @@ const RegisterPage = () => {
             required
           />
         </Form.Group>
-        <Form.Group className="mb-2" controlId="name">
-          <Form.Label>Name</Form.Label>
-          <Form.Control
-            type="text"
-            name="name"
-            value={name}
-            placeholder="Name"
-            onChange={handleChange}
-            required
-          />
-        </Form.Group>
-        <Form.Group className="mb-2" controlId="lastname">
-          <Form.Label>LastName</Form.Label>
-          <Form.Control
-            type="text"
-            name="lastname"
-            value={lastname}
-            placeholder="Last name"
-            onChange={handleChange}
-            required
-          />
-        </Form.Group>
         <Form.Group className="mb-2" controlId="email">
           <Form.Label>Email</Form.Label>
           <Form.Control
@@ -202,17 +170,19 @@ const RegisterPage = () => {
             required
           />
         </Form.Group>
-        {/* <Form.Group className="mb-2" controlId="repeatpassword">
-          <Form.Label>Repeat Password</Form.Label>
-          <Form.Control
-            type="password"
-            name="RepeatPassword"
-            value={RepeatPassword}
-            placeholder="Repeat Password"
-            onChange={handleChange}
-            required
-          />
-        </Form.Group> */}
+        {
+          <Form.Group className="mb-2" controlId="repeatpassword">
+            <Form.Label>Repeat Password</Form.Label>
+            <Form.Control
+              type="password"
+              name="passwordConfirmation"
+              value={passwordConfirmation}
+              placeholder="Repeat Password"
+              onChange={handleChange}
+              required
+            />
+          </Form.Group>
+        }
         <Form.Group className="mb-2" controlId="birthdate">
           <Form.Label>Birthdate</Form.Label>
           <Form.Control
@@ -220,28 +190,6 @@ const RegisterPage = () => {
             name="birthdate"
             value={birthdate}
             placeholder="Birthdate"
-            onChange={handleChange}
-            required
-          />
-        </Form.Group>
-        <Form.Group className="mb-2" controlId="address">
-          <Form.Label>Address</Form.Label>
-          <Form.Control
-            type="text"
-            name="address"
-            value={address}
-            placeholder="Address"
-            onChange={handleChange}
-            required
-          />
-        </Form.Group>
-        <Form.Group className="mb-2" controlId="creditCard">
-          <Form.Label>Credit card</Form.Label>
-          <Form.Control
-            type="text"
-            name="creditCard"
-            value={creditCard}
-            placeholder="Credit card 1234 1234 1234 1234"
             onChange={handleChange}
             required
           />

@@ -6,13 +6,13 @@ import styles from "./header.module.css";
 import Search from "../search/Search";
 import { logout } from "../../pages/auth/service";
 import { setAuth } from "../../store/authSlice";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 
 const Header = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const authState = useSelector((state) => state.authState.authState);
+  const isAuthenticated = useSelector((state) => state.authState.authState);
 
   const handleLogout = () => {
     logout();
@@ -24,26 +24,36 @@ const Header = () => {
     <>
       <Container className="top-header d-flex flex-row justify-content-end">
         <Nav>
-          {authState ? (
-            <Nav.Item>
-              <Nav.Link
-                href="#"
-                onClick={handleLogout}
-              >
-                LogOut
-              </Nav.Link>
-            </Nav.Item>
+          {isAuthenticated ? (
+            <>
+              <Nav.Item>
+                <Nav.Link
+                  as={Link}
+                  href="#"
+                  onClick={handleLogout}
+                >
+                  LogOut
+                </Nav.Link>
+              </Nav.Item>
+              <Nav.Item>
+                <Nav.Link
+                  as={Link}
+                  href="/userdemo"
+                >
+                  My account
+                </Nav.Link>
+              </Nav.Item>
+            </>
           ) : (
-            <Nav.Item>
-              <Nav.Link href="/login">Login</Nav.Link>
-            </Nav.Item>
+            <>
+              <Nav.Item>
+                <Nav.Link href="/login">Login</Nav.Link>
+              </Nav.Item>
+              <Nav.Item>
+                <Nav.Link href="/register">Register</Nav.Link>
+              </Nav.Item>
+            </>
           )}
-          <Nav.Item>
-            <Nav.Link href="/userdemo">My account</Nav.Link>
-          </Nav.Item>
-          <Nav.Item>
-            <Nav.Link href="/register">Register</Nav.Link>
-          </Nav.Item>
         </Nav>
       </Container>
       <Navbar

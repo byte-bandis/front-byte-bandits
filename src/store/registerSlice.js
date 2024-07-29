@@ -27,13 +27,10 @@ export const registerSlice = createSlice({
       state.error = action.payload;
     },
     setSuccess: (state, action) => {
-      state.error = action.payload;
+      state.success = action.payload;
     },
     setValidations: (state, action) => {
       state.validationErrors = action.payload;
-    },
-    resetForm: (state) => {
-      Object.assign(state, initialStateRegister);
     },
   },
 });

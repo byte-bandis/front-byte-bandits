@@ -7,14 +7,15 @@ import {
   setError,
   setSuccess,
   setValidations,
-  resetForm,
 } from "../store/registerSlice";
 import { register } from "../pages/auth/register";
 import Logo from "../assets/images/logo.svg";
 import "../pages/auth/login.css";
+import { useNavigate } from "react-router-dom";
 
 const RegisterPage = () => {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const {
     username,
     email,
@@ -31,6 +32,15 @@ const RegisterPage = () => {
   useEffect(() => {
     checkAllFieldsFilled();
   }, [username, email, password, passwordConfirmation, birthdate, acceptTerms]);
+
+  useEffect(() => {
+    if (success) {
+      const timer = setTimeout(() => {
+        navigate("/");
+      }, 3000);
+      return () => clearTimeout(timer);
+    }
+  }, [success, navigate]);
 
   const handleChange = (event) => {
     const { name, value, type, checked } = event.target;
@@ -64,7 +74,7 @@ const RegisterPage = () => {
     if (password !== passwordConfirmation) {
       newErrors.password = "Passwords are different";
     }
-    if (userAge() < 18) {
+    if (userAge() < 18 || userAge() > 120) {
       newErrors.birthdate = "User need to be at least 18 years old";
     }
     return newErrors;
@@ -101,11 +111,11 @@ const RegisterPage = () => {
         username,
         email,
         password,
+        passwordConfirmation,
         birthdate,
         acceptTerms,
       });
-      dispatch(setSuccess(response.message));
-      dispatch(resetForm());
+      dispatch(setSuccess("User created correctly"));
     } catch (error) {
       dispatch(setError(error.message));
     } finally {

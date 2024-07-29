@@ -1,7 +1,7 @@
 import { Routes, Route, Outlet, Navigate } from "react-router-dom";
 import NotFound from "../pages/NotFound";
 import LoginPage from "../pages/auth/LoginPage";
-import RegisterPage from "../pages/auth/RegisterPage";
+import RegisterPage from "../components/RegisterPage";
 import ProductList from "../pages/product/ProductList";
 import ProductView from "../pages/product/ProductView";
 import Account from "../pages/customer/Account";

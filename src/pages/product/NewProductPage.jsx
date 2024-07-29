@@ -8,7 +8,7 @@ const TAG_OPTIONS = ["lifestyle", "mobile", "motor", "work", "others"];
 
 const NewProductPage = () => {
   const [inputName, setInputName] = useState("");
-  const [inputImage, setInputImage] = useState(null); // Cambiado a null para manejar archivos
+  const [inputImage, setInputImage] = useState(null);
   const [inputDescription, setInputDescription] = useState("");
   const [inputPrice, setInputPrice] = useState("");
   const [inputTransactionType, setInputTransactionType] = useState("sell");
@@ -33,7 +33,7 @@ const NewProductPage = () => {
     }
 
     setLoading(true);
-    // Usar FormData para manejar archivos si se envían a un backend
+    setTimeout(() => {}, 1000);
     const formData = new FormData();
     formData.append("adTitle", inputName);
     formData.append("adBody", inputDescription);
@@ -43,7 +43,8 @@ const NewProductPage = () => {
     if (inputImage) formData.append("photo", inputImage);
 
     try {
-      await dispatch(createProduct(formData)).unwrap(); // Despacha la acción y maneja los resultados
+      const response = await dispatch(createProduct(formData)).unwrap(); // unwrap() is used to get the actual value of the fulfilled action
+      // navigate to the product detail page
     } catch (error) {
       console.error("Failed to create product: ", error);
     } finally {
@@ -139,7 +140,7 @@ const NewProductPage = () => {
           <Form.Label>Imagen</Form.Label>
           <Form.Control
             type="file"
-            onChange={(e) => setInputImage(e.target.files[0])} // Actualiza el estado con el archivo
+            onChange={(e) => setInputImage(e.target.files[0])}
             required
           />
         </Form.Group>

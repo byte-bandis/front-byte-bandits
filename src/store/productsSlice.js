@@ -16,7 +16,6 @@ const productsSlice = createSlice({
   name: 'products',
   initialState: productDefaultState, // Importa el estado inicial
   reducers: {
-    // Aquí puedes definir otros reducers síncronos si los necesitas
   },
   extraReducers: (builder) => {
     builder

@@ -1,98 +1,20 @@
-import { useState, useEffect } from "react";
+import { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { Form, Button, Alert } from "react-bootstrap";
-import "./login.css";
-import { register } from "./register";
-import Logo from "../../assets/images/logo.svg";
+import {
+  registerUser,
+  setLoading,
+  setError,
+  setSuccess,
+  setValidations,
+  resetForm,
+} from "../store/registerSlice";
+import { register } from "../pages/auth/register";
+import Logo from "../assets/images/logo.svg";
+import "../pages/auth/login.css";
 
 const RegisterPage = () => {
-  const [formValues, setFormValues] = useState({
-    username: "",
-    email: "",
-    password: "",
-    passwordConfirmation: "",
-    birthdate: "",
-    acceptTerms: false,
-  });
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState(null);
-  const [success, setSuccess] = useState(null);
-  const [show, setShow] = useState(false);
-  const [validationErrors, setValidationErrors] = useState({});
-  const [allFieldsFilled, setAllFieldsFilled] = useState(false);
-
-  const handleChange = (event) => {
-    const { name, value, type, checked } = event.target;
-    setFormValues((currentFormValues) => {
-      const newFormValues = {
-        ...currentFormValues,
-        [name]: type === "checkbox" ? checked : value,
-      };
-      checkAllFieldsFilled(newFormValues);
-      return newFormValues;
-    });
-  };
-
-  const validate = () => {
-    const newErrors = {};
-    const userAge = () => {
-      const userBirthDate = new Date(formValues.birthdate);
-      const today = new Date();
-      let age = today.getFullYear() - userBirthDate.getFullYear();
-      const monthDifference = today.getMonth() - userBirthDate.getMonth();
-      if (
-        monthDifference < 0 ||
-        (monthDifference === 0 && today.getDate() < userBirthDate.getDate)
-      ) {
-        age--;
-      }
-      return age;
-    };
-
-    if (formValues.password.length < 6) {
-      newErrors.password = "Password length requires at least 6 characters ";
-    }
-    if (formValues.password !== formValues.passwordConfirmation) {
-      newErrors.password = "Passwords are differents";
-    }
-    if (userAge() < 18) {
-      newErrors.birthdate = "User need to be al least 18 years old";
-    }
-    return newErrors;
-  };
-
-  const checkAllFieldsFilled = (values) => {
-    const areAllFieldsField = Object.values(values).every(
-      (value) => value !== "" && value !== false,
-    );
-    setAllFieldsFilled(areAllFieldsField);
-  };
-
-  const handleSubmit = async (event) => {
-    event.preventDefault();
-    setLoading(true);
-    setError(null);
-    setSuccess(null);
-    const errors = validate();
-    setValidationErrors(errors);
-    if (Object.keys(errors).length > 0) {
-      setLoading(false);
-      return;
-    }
-    try {
-      const response = await register(formValues);
-      setSuccess(response.message);
-    } catch (error) {
-      setError(error.message);
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  useEffect(() => {
-    checkAllFieldsFilled(formValues);
-  });
-  const handlePassword = () => {};
-
+  const dispatch = useDispatch();
   const {
     username,
     email,
@@ -100,7 +22,98 @@ const RegisterPage = () => {
     passwordConfirmation,
     birthdate,
     acceptTerms,
-  } = formValues;
+    loading,
+    error,
+    success,
+    validationErrors,
+  } = useSelector((state) => state.register);
+
+  useEffect(() => {
+    checkAllFieldsFilled();
+  }, [username, email, password, passwordConfirmation, birthdate, acceptTerms]);
+
+  const handleChange = (event) => {
+    const { name, value, type, checked } = event.target;
+    dispatch(
+      registerUser({
+        name,
+        value: type === "checkbox" ? checked : value,
+      }),
+    );
+  };
+
+  const validate = () => {
+    const newErrors = {};
+    const userAge = () => {
+      const userBirthDate = new Date(birthdate);
+      const today = new Date();
+      let age = today.getFullYear() - userBirthDate.getFullYear();
+      const monthDifference = today.getMonth() - userBirthDate.getMonth();
+      if (
+        monthDifference < 0 ||
+        (monthDifference === 0 && today.getDate() < userBirthDate.getDate())
+      ) {
+        age--;
+      }
+      return age;
+    };
+
+    if (password.length < 6) {
+      newErrors.password = "Password length requires at least 6 characters";
+    }
+    if (password !== passwordConfirmation) {
+      newErrors.password = "Passwords are different";
+    }
+    if (userAge() < 18) {
+      newErrors.birthdate = "User need to be at least 18 years old";
+    }
+    return newErrors;
+  };
+
+  const checkAllFieldsFilled = () => {
+    const formValues = {
+      username,
+      email,
+      password,
+      passwordConfirmation,
+      birthdate,
+      acceptTerms,
+    };
+    const areAllFieldsFilled = Object.values(formValues).every(
+      (value) => value !== "" && value !== false,
+    );
+    return areAllFieldsFilled;
+  };
+
+  const handleSubmit = async (event) => {
+    event.preventDefault();
+    dispatch(setLoading(true));
+    dispatch(setError(null));
+    dispatch(setSuccess(null));
+    const errors = validate();
+    dispatch(setValidations(errors));
+    if (Object.keys(errors).length > 0) {
+      dispatch(setLoading(false));
+      return;
+    }
+    try {
+      const response = await register({
+        username,
+        email,
+        password,
+        birthdate,
+        acceptTerms,
+      });
+      dispatch(setSuccess(response.message));
+      dispatch(resetForm());
+    } catch (error) {
+      dispatch(setError(error.message));
+    } finally {
+      dispatch(setLoading(false));
+    }
+  };
+
+  const handlePassword = () => {};
 
   return (
     <div className="sign-in__wrapper">
@@ -116,7 +129,7 @@ const RegisterPage = () => {
           <Alert
             className="mb-2"
             variant="danger"
-            onClose={() => setError(null)}
+            onClose={() => dispatch(setError(null))}
             dismissible
           >
             {error}
@@ -126,7 +139,7 @@ const RegisterPage = () => {
           <Alert
             className="mb-2"
             variant="success"
-            onClose={() => setSuccess(null)}
+            onClose={() => dispatch(setSuccess(null))}
             dismissible
           >
             {success}
@@ -170,19 +183,17 @@ const RegisterPage = () => {
             required
           />
         </Form.Group>
-        {
-          <Form.Group className="mb-2" controlId="repeatpassword">
-            <Form.Label>Repeat Password</Form.Label>
-            <Form.Control
-              type="password"
-              name="passwordConfirmation"
-              value={passwordConfirmation}
-              placeholder="Repeat Password"
-              onChange={handleChange}
-              required
-            />
-          </Form.Group>
-        }
+        <Form.Group className="mb-2" controlId="repeatpassword">
+          <Form.Label>Repeat Password</Form.Label>
+          <Form.Control
+            type="password"
+            name="passwordConfirmation"
+            value={passwordConfirmation}
+            placeholder="Repeat Password"
+            onChange={handleChange}
+            required
+          />
+        </Form.Group>
         <Form.Group className="mb-2" controlId="birthdate">
           <Form.Label>Birthdate</Form.Label>
           <Form.Control
@@ -202,26 +213,27 @@ const RegisterPage = () => {
             onChange={handleChange}
             label={
               <>
-                By creating an account you are agreeing to our {""}
-                <a href="" target="_blank">
+                By creating an account you are agreeing to our{" "}
+                <a
+                  href="../../components/userConditions/TermsAndConditions.jsx"
+                  target="_blank"
+                >
                   terms and conditions (opens in new window)
                 </a>
-                . Read our{""}
+                . Read our{" "}
                 <a href="" target="_blank">
-                  {" "}
-                  privacy and cookies policy (opens in new window){" "}
-                </a>
+                  privacy and cookies policy (opens in new window)
+                </a>{" "}
                 to find out how we collect and use your personal data.
               </>
             }
           />
         </Form.Group>
-
         <Button
           className="w-100"
           variant="primary"
           type="submit"
-          disabled={!allFieldsFilled || loading}
+          disabled={!checkAllFieldsFilled() || loading}
         >
           {loading ? "Registering... " : "Register"}
         </Button>

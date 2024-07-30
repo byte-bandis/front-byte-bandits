@@ -19,6 +19,7 @@ const LoginPage = () => {
 
   const [inputEmail, setInputEmail] = useState("");
   const [inputPassword, setInputPassword] = useState("");
+  const [checkboxStatus, setCheckboxStatus] = useState(false);
 
   const [show, setShow] = useState(false);
   const [loading, setLoading] = useState(false);
@@ -29,12 +30,16 @@ const LoginPage = () => {
     }
   }, [errorState]);
 
+  const handleCheckboxChange = (event) => {
+    setCheckboxStatus(event.target.checked);
+  };
+
   const handleSubmit = async (event) => {
     event.preventDefault();
 
     try {
       setLoading(true);
-      await dispatch(loginThunk(inputEmail, inputPassword));
+      await dispatch(loginThunk(inputEmail, inputPassword, checkboxStatus));
       navigate(to, { replace: true });
     } catch (error) {
       console.log(error.message);
@@ -114,6 +119,8 @@ const LoginPage = () => {
           <Form.Check
             type="checkbox"
             label="Remember me"
+            checked={checkboxStatus}
+            onChange={handleCheckboxChange}
           />
         </Form.Group>
         {!loading ? (

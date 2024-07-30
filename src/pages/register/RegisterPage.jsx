@@ -7,11 +7,11 @@ import {
   setError,
   setSuccess,
   setValidations,
-} from "../store/registerSlice";
-import { register } from "../pages/auth/register";
-import Logo from "../assets/images/logo.svg";
-import "../pages/auth/login.css";
-import { useNavigate } from "react-router-dom";
+} from "../../store/registerSlice";
+import { register } from "./register";
+import Logo from "../../assets/images/logo.svg";
+import "../auth/login.css";
+import { NavLink, useNavigate } from "react-router-dom";
 
 const RegisterPage = () => {
   const dispatch = useDispatch();
@@ -224,16 +224,13 @@ const RegisterPage = () => {
             label={
               <>
                 By creating an account you are agreeing to our{" "}
-                <a
-                  href="../../components/userConditions/TermsAndConditions.jsx"
-                  target="_blank"
-                >
+                <NavLink to="/terms-and-conditions" target="_blank">
                   terms and conditions (opens in new window)
-                </a>
+                </NavLink>
                 . Read our{" "}
-                <a href="" target="_blank">
+                <NavLink to="/privacy-policy" target="_blank">
                   privacy and cookies policy (opens in new window)
-                </a>{" "}
+                </NavLink>{" "}
                 to find out how we collect and use your personal data.
               </>
             }

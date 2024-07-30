@@ -3,12 +3,9 @@ import { useDispatch, useSelector } from "react-redux";
 import { Form, Button, Alert } from "react-bootstrap";
 import {
   registerUser,
-  setLoading,
-  setError,
-  setSuccess,
   setValidations,
+  registerAsync,
 } from "../../store/registerSlice";
-import { register } from "./register";
 import Logo from "../../assets/images/logo.svg";
 import "../auth/login.css";
 import { NavLink, useNavigate } from "react-router-dom";
@@ -60,32 +57,24 @@ const RegisterPage = () => {
     );
   };
 
-  const handleSubmit = async (event) => {
+  const handleSubmit = (event) => {
     event.preventDefault();
-    dispatch(setLoading(true));
-    dispatch(setError(null));
-    dispatch(setSuccess(null));
     const errors = validate({ password, passwordConfirmation, birthdate });
     dispatch(setValidations(errors));
     if (Object.keys(errors).length > 0) {
-      dispatch(setLoading(false));
       return;
     }
-    try {
-      const response = await register({
-        username,
-        email,
-        password,
-        passwordConfirmation,
-        birthdate,
-        acceptTerms,
-      });
-      dispatch(setSuccess("User created correctly"));
-    } catch (error) {
-      dispatch(setError(error.message));
-    } finally {
-      dispatch(setLoading(false));
-    }
+    const userData = {
+      username,
+      email,
+      password,
+      passwordConfirmation,
+      birthdate,
+      acceptTerms,
+    };
+
+    console.log("User data enviando:", userData);
+    dispatch(registerAsync(userData));
   };
 
   const handlePassword = () => {};

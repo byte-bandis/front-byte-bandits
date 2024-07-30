@@ -22,7 +22,6 @@ export const loginThunk =
       await login(email, password, requestStorage);
       dispatch(setAuth(true));
     } catch (error) {
-      console.log(error.message);
       dispatch(setAuth(false));
       dispatch(
         setError({ message: error.message, status: error.response?.status })

@@ -9,9 +9,9 @@ import DeleteAccount from "../pages/customer/DeleteAccount";
 import LayoutAccount from "../pages/customer/LayoutAccount";
 import Wishlist from "../pages/customer/Wishlist";
 import { useSelector } from "react-redux";
+import NewProductPage from "../pages/product/NewProductPage";
 import TermsAndConditions from "../pages/register/TermsAndConditions";
 import PrivacyPolicy from "../pages/register/PrivacyPolicy";
-
 const RootRouter = () => {
   const isAuthenticated = useSelector((state) => state.authState.authState);
 
@@ -41,7 +41,7 @@ const RootRouter = () => {
             path="edit/:productId"
             element={<div>admin advert detail</div>}
           />
-          <Route path="new" element={<div>admin new</div>} />
+          <Route path="new" element={<NewProductPage />} />
           <Route path="whishlist" element={<Wishlist />} />
           <Route path="delete-account" element={<DeleteAccount />} />
         </Route>

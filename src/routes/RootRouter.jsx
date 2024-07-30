@@ -12,8 +12,6 @@ import { useSelector } from "react-redux";
 const RootRouter = () => {
   const isAuthenticated = useSelector((state) => state.authState.authState);
 
-  console.log("Esto es isAuthenticated: ", isAuthenticated);
-
   if (!isAuthenticated) {
     return (
       <Routes>
@@ -29,10 +27,6 @@ const RootRouter = () => {
           path="/register"
           element={<RegisterPage />}
         ></Route>
-        <Route
-          path="*"
-          element={<Navigate to="/" />}
-        />
       </Routes>
     );
   } else {

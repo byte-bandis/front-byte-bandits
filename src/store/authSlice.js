@@ -16,19 +16,19 @@ export const authSlice = createSlice({
   },
 });
 
-export const loginThunk = (email, password) => async (dispatch) => {
-  try {
-    await login(email, password);
-    dispatch(setAuth(true));
-  } catch (error) {
-    console.log(error.message);
-    dispatch(setAuth(false));
-    dispatch(
-      setError({ message: error.message, status: error.response?.status })
-    );
-    throw error;
-  }
-};
+export const loginThunk =
+  (email, password, requestStorage) => async (dispatch) => {
+    try {
+      await login(email, password, requestStorage);
+      dispatch(setAuth(true));
+    } catch (error) {
+      dispatch(setAuth(false));
+      dispatch(
+        setError({ message: error.message, status: error.response?.status })
+      );
+      throw error;
+    }
+  };
 
 export const { setAuth } = authSlice.actions;
 export default authSlice.reducer;

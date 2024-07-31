@@ -33,10 +33,6 @@ const RootRouter = () => {
     return (
       <Routes>
         <Route
-          path="/login"
-          element={<Navigate to="/" />}
-        />
-        <Route
           path=":userName"
           element={<LayoutAccount />}
         >

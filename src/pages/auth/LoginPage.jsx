@@ -1,51 +1,46 @@
 import { useEffect, useState } from "react";
 import { Form, Button, Alert } from "react-bootstrap";
-import { loginThunk } from "../../store/authSlice";
+import { loginWithThunk } from "../../store/loginThunk";
+
 import { resetError } from "../../store/errorSlice";
 import "./login.css";
 
 import Logo from "../../assets/images/logo.svg";
 import { useDispatch, useSelector } from "react-redux";
-import { useLocation, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 const LoginPage = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const location = useLocation();
-  const to = location.state?.from || "/";
-  const { errorState, errorMessage, errorStatus } = useSelector(
-    (state) => state.errorState
-  );
-
+  const to = import.meta.env.VITE_LOGIN_REDIRECT_URI;
+  const { error, loading, authState } = useSelector((state) => state.authState);
   const [inputEmail, setInputEmail] = useState("");
   const [inputPassword, setInputPassword] = useState("");
   const [checkboxStatus, setCheckboxStatus] = useState(false);
 
   const [show, setShow] = useState(false);
-  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
-    if (errorState) {
+    if (error) {
       setShow(true);
     }
-  }, [errorState]);
+  }, [error, dispatch]);
 
   const handleCheckboxChange = (event) => {
     setCheckboxStatus(event.target.checked);
   };
 
-  const handleSubmit = async (event) => {
+  const handleSubmit = (event) => {
     event.preventDefault();
-
-    try {
-      setLoading(true);
-      await dispatch(loginThunk(inputEmail, inputPassword, checkboxStatus));
+    dispatch(
+      loginWithThunk({
+        email: inputEmail,
+        password: inputPassword,
+        requestStorage: checkboxStatus,
+      })
+    );
+    if (authState) {
       navigate(to, { replace: true });
-    } catch (error) {
-      console.log(error.message);
-      //throw error
-    } finally {
-      setLoading(false);
     }
   };
 
@@ -79,9 +74,7 @@ const LoginPage = () => {
             onClose={handleCloseErrorAlert}
             dismissible
           >
-            {errorStatus === 500
-              ? "Incorrect username or password."
-              : errorMessage}
+            {error}
           </Alert>
         ) : (
           <div />
@@ -153,7 +146,7 @@ const LoginPage = () => {
       </Form>
       {/* Footer */}
       <div className="w-100 mb-2 position-absolute bottom-0 start-50 translate-middle-x text-white text-center">
-        Made by Hendrik C | &copy;2022
+        Made by Byte-Bandits | &copy;2024
       </div>
     </div>
   );

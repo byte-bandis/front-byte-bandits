@@ -3,15 +3,13 @@ import { useDispatch, useSelector } from "react-redux";
 import { Form, Button, Alert } from "react-bootstrap";
 import {
   registerUser,
-  setLoading,
-  setError,
-  setSuccess,
   setValidations,
+  registerAsync,
 } from "../../store/registerSlice";
-import { register } from "./register";
 import Logo from "../../assets/images/logo.svg";
 import "../auth/login.css";
 import { NavLink, useNavigate } from "react-router-dom";
+import { checkAllFieldsFilled, validate } from "./validations";
 
 const RegisterPage = () => {
   const dispatch = useDispatch();
@@ -30,7 +28,14 @@ const RegisterPage = () => {
   } = useSelector((state) => state.register);
 
   useEffect(() => {
-    checkAllFieldsFilled();
+    checkAllFieldsFilled({
+      username,
+      email,
+      password,
+      passwordConfirmation,
+      birthdate,
+      acceptTerms,
+    });
   }, [username, email, password, passwordConfirmation, birthdate, acceptTerms]);
 
   useEffect(() => {
@@ -52,36 +57,14 @@ const RegisterPage = () => {
     );
   };
 
-  const validate = () => {
-    const newErrors = {};
-    const userAge = () => {
-      const userBirthDate = new Date(birthdate);
-      const today = new Date();
-      let age = today.getFullYear() - userBirthDate.getFullYear();
-      const monthDifference = today.getMonth() - userBirthDate.getMonth();
-      if (
-        monthDifference < 0 ||
-        (monthDifference === 0 && today.getDate() < userBirthDate.getDate())
-      ) {
-        age--;
-      }
-      return age;
-    };
-
-    if (password.length < 6) {
-      newErrors.password = "Password length requires at least 6 characters";
+  const handleSubmit = (event) => {
+    event.preventDefault();
+    const errors = validate({ password, passwordConfirmation, birthdate });
+    dispatch(setValidations(errors));
+    if (Object.keys(errors).length > 0) {
+      return;
     }
-    if (password !== passwordConfirmation) {
-      newErrors.password = "Passwords are different";
-    }
-    if (userAge() < 18 || userAge() > 120) {
-      newErrors.birthdate = "User need to be at least 18 years old";
-    }
-    return newErrors;
-  };
-
-  const checkAllFieldsFilled = () => {
-    const formValues = {
+    const userData = {
       username,
       email,
       password,
@@ -89,38 +72,9 @@ const RegisterPage = () => {
       birthdate,
       acceptTerms,
     };
-    const areAllFieldsFilled = Object.values(formValues).every(
-      (value) => value !== "" && value !== false,
-    );
-    return areAllFieldsFilled;
-  };
 
-  const handleSubmit = async (event) => {
-    event.preventDefault();
-    dispatch(setLoading(true));
-    dispatch(setError(null));
-    dispatch(setSuccess(null));
-    const errors = validate();
-    dispatch(setValidations(errors));
-    if (Object.keys(errors).length > 0) {
-      dispatch(setLoading(false));
-      return;
-    }
-    try {
-      const response = await register({
-        username,
-        email,
-        password,
-        passwordConfirmation,
-        birthdate,
-        acceptTerms,
-      });
-      dispatch(setSuccess("User created correctly"));
-    } catch (error) {
-      dispatch(setError(error.message));
-    } finally {
-      dispatch(setLoading(false));
-    }
+    console.log("User data enviando:", userData);
+    dispatch(registerAsync(userData));
   };
 
   const handlePassword = () => {};
@@ -240,7 +194,16 @@ const RegisterPage = () => {
           className="w-100"
           variant="primary"
           type="submit"
-          disabled={!checkAllFieldsFilled() || loading}
+          disabled={
+            !checkAllFieldsFilled({
+              username,
+              email,
+              password,
+              passwordConfirmation,
+              birthdate,
+              acceptTerms,
+            }) || loading
+          }
         >
           {loading ? "Registering... " : "Register"}
         </Button>

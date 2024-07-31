@@ -7,13 +7,15 @@ import BreadCrumb from "./components/breadcrumb/BreadCrumb";
 import { useDispatch } from "react-redux";
 import { useEffect } from "react";
 import { setAuth } from "./store/authSlice";
+import { setAuthorizationHeader } from "./api/client";
 
 function App() {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    const token = localStorage.getItem("authToken");
+    const token = JSON.parse(localStorage.getItem("authToken"));
     if (token) {
+      setAuthorizationHeader(token);
       dispatch(setAuth(true));
     }
   });

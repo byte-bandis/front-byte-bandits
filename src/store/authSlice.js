@@ -1,9 +1,10 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { login } from "../pages/auth/service";
-import { setError } from "./errorSlice";
+import { loginWithThunk } from "./loginThunk";
 
 export const defaultAuthState = {
   authState: false,
+  loading: false,
+  error: null,
 };
 
 export const authSlice = createSlice({
@@ -14,21 +15,22 @@ export const authSlice = createSlice({
       state.authState = action.payload;
     },
   },
+  extraReducers: (builder) => {
+    builder
+      .addCase(loginWithThunk.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(loginWithThunk.fulfilled, (state) => {
+        state.loading = false;
+        state.authState = true;
+      })
+      .addCase(loginWithThunk.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload.message;
+      });
+  },
 });
-
-export const loginThunk =
-  (email, password, requestStorage) => async (dispatch) => {
-    try {
-      await login(email, password, requestStorage);
-      dispatch(setAuth(true));
-    } catch (error) {
-      dispatch(setAuth(false));
-      dispatch(
-        setError({ message: error.message, status: error.response?.status })
-      );
-      throw error;
-    }
-  };
 
 export const { setAuth } = authSlice.actions;
 export default authSlice.reducer;

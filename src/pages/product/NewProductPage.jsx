@@ -1,8 +1,10 @@
 import { useState } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
 import { Form, Button, Alert } from "react-bootstrap";
-import { createProduct } from "../../store/productsAsyncThunk";
+import { createProduct } from "../../store/productsThunk";
 import "./NewProduct.css";
+import { clearError } from "../../store/productsSlice";
 
 const TAG_OPTIONS = ["lifestyle", "mobile", "motor", "work", "others"];
 
@@ -15,7 +17,9 @@ const NewProductPage = () => {
   const [selectedTags, setSelectedTags] = useState([]);
   const [show, setShow] = useState(false);
   const [loading, setLoading] = useState(false);
+  const error = useSelector((state) => state.products.error);
   const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   const handleTagChange = (tag) => {
     setSelectedTags((prevTags) =>
@@ -33,7 +37,11 @@ const NewProductPage = () => {
     }
 
     setLoading(true);
-    setTimeout(() => {}, 1000);
+
+    await (async () => {
+      return new Promise((resolve) => setTimeout(resolve, 1000));
+    })();
+
     const formData = new FormData();
     formData.append("adTitle", inputName);
     formData.append("adBody", inputDescription);
@@ -44,12 +52,16 @@ const NewProductPage = () => {
 
     try {
       const response = await dispatch(createProduct(formData)).unwrap(); // unwrap() is used to get the actual value of the fulfilled action
-      // navigate to the product detail page
-    } catch (error) {
-      console.error("Failed to create product: ", error);
+      navigate(`/product/${response._id}`);
+    } catch (errorMsg) {
+      console.error("Failed to create product: ", errorMsg);
     } finally {
       setLoading(false);
     }
+  };
+
+  const resetError = () => {
+    dispatch(clearError());
   };
 
   return (
@@ -152,6 +164,16 @@ const NewProductPage = () => {
           <Button className="w-100" variant="primary" type="submit" disabled>
             Creando...
           </Button>
+        )}
+        {error && (
+          <Alert
+            className="mt-2"
+            variant="danger"
+            onClose={() => resetError()}
+            dismissible
+          >
+            {error}
+          </Alert>
         )}
       </Form>
     </div>

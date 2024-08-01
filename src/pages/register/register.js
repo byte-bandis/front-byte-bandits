@@ -1,7 +1,17 @@
-import { client, setAuthorizationHeader } from "../../api/client";
-import storage from "../../utils/storage";
+import { client } from "../../api/client";
 
 export const register = (userData) => {
+  return client.post("user/register", userData).then(({ token, user }) => {
+    if (token) {
+      console.log("Esto es user: ", user);
+      return {
+        message: "User created correctly",
+      };
+    }
+  });
+};
+
+/* export const register = (userData) => {
   return client.post("user/register", userData).then(({ token, user }) => {
     if (token) {
       setAuthorizationHeader(token);
@@ -12,4 +22,4 @@ export const register = (userData) => {
       };
     }
   });
-};
+}; */

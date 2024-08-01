@@ -8,6 +8,7 @@ import "./login.css";
 import Logo from "../../assets/images/logo.svg";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
+import { setAuth } from "../../store/authSlice";
 
 const LoginPage = () => {
   const dispatch = useDispatch();
@@ -20,11 +21,29 @@ const LoginPage = () => {
 
   const [show, setShow] = useState(false);
 
+  const resetForm = () => {
+    setInputEmail("");
+    setInputPassword("");
+    setCheckboxStatus(false);
+  };
+
+  console.log("Esto es authState: ", authState);
   useEffect(() => {
     if (error) {
       setShow(true);
     }
   }, [error, dispatch]);
+
+  useEffect(() => {
+    if (authState) {
+      resetForm();
+      const timer = setTimeout(() => {
+        console.log("esto es el nuevo authState: ", authState);
+        navigate(to, { replace: true });
+      }, 2000);
+      return () => clearTimeout(timer);
+    }
+  }, [authState, navigate, to]);
 
   const handleCheckboxChange = (event) => {
     setCheckboxStatus(event.target.checked);
@@ -39,9 +58,7 @@ const LoginPage = () => {
         requestStorage: checkboxStatus,
       })
     );
-    if (authState) {
-      navigate(to, { replace: true });
-    }
+    dispatch(setAuth(true));
   };
 
   const handleCloseErrorAlert = () => {

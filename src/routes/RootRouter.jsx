@@ -12,8 +12,10 @@ import { useSelector } from "react-redux";
 import NewProductPage from "../pages/product/NewProductPage";
 import TermsAndConditions from "../pages/register/TermsAndConditions";
 import PrivacyPolicy from "../pages/register/PrivacyPolicy";
+import { login } from "../pages/auth/service";
 const RootRouter = () => {
   const isAuthenticated = useSelector((state) => state.authState.authState);
+  const loginRedirectUri = import.meta.env.VITE_LOGIN_REDIRECT_URI;
 
   if (!isAuthenticated) {
     return (
@@ -43,6 +45,16 @@ const RootRouter = () => {
   } else {
     return (
       <Routes>
+        <Route
+          path="/login"
+          element={
+            <Navigate
+              to={loginRedirectUri}
+              replace
+            />
+          }
+        />
+
         <Route
           path=":userName"
           element={<LayoutAccount />}

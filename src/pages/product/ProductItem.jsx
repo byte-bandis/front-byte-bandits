@@ -6,7 +6,7 @@ import { Heart } from "react-bootstrap-icons";
 import PropTypes from 'prop-types';
 
 const ProductItem = ({ 
-  _id, 
+  key, 
   adTitle, 
   adBody, 
   sell, 
@@ -20,25 +20,25 @@ const ProductItem = ({
   return (
     <Col>
       <Card>
-        <Link to={`/product/${_id}`} className="position-relative">
+        <Link to={`/product/${key}`} className="position-relative">
           <Card.Img variant='top' src={image} />
           <Stack
             direction='horizontal'
             gap={2}
             className='position-absolute top-0 p-2'>
-            <Badge pill bg='danger'>
+            {/* <Badge pill bg='danger'>
               Sold
             </Badge>
             <Badge pill bg='warning' text='dark'>
               Reserved
-            </Badge>
+            </Badge> */}
           </Stack>
           <Stack direction="horizontal" gap={2} className='position-absolute bottom-0 p-2'>
             <Heart size={24} className="text-danger"/>
           </Stack>
         </Link>
         <Card.Body>
-          <Link to={`/product/${_id}`}>
+          <Link to={`/product/${key}`}>
             <Card.Title>{adTitle}</Card.Title>
           </Link>
           <Card.Text>
@@ -52,7 +52,7 @@ const ProductItem = ({
         <Card.Footer>
           <Stack direction='horizontal' gap={2}>
             {tags.map((tag, index) => (
-              <Badge key={`${_id}-${index}`} pill bg='primary'>
+              <Badge key={`${key}-${index}`} pill bg='primary'>
                 {tag}
               </Badge>
             ))}
@@ -64,7 +64,7 @@ const ProductItem = ({
 };
 
 ProductItem.propTypes = {
-  _id: PropTypes.string.isRequired,
+  key: PropTypes.string.isRequired,
   adTitle: PropTypes.string.isRequired,
   adBody: PropTypes.string.isRequired,
   sell: PropTypes.bool.isRequired,

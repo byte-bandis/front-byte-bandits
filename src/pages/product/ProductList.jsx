@@ -32,7 +32,6 @@ const ProductList = () => {
                 {adsData && adsData.map(ad => (
                     <ProductItem
                         key={ad._id}
-                        _id={ad._id}
                         adTitle={ad.adTitle}
                         adBody={ad.adBody}
                         sell={ad.sell}

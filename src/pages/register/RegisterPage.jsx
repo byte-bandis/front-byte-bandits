@@ -1,17 +1,17 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Form, Button, Alert } from "react-bootstrap";
 import {
   registerUser,
-  setLoading,
-  setError,
-  setSuccess,
   setValidations,
+  registerAsync,
 } from "../../store/registerSlice";
-import { register } from "./register";
 import Logo from "../../assets/images/logo.svg";
 import "../auth/login.css";
 import { NavLink, useNavigate } from "react-router-dom";
+import { checkAllFieldsFilled, validate } from "./validations";
+import { loginWithThunk } from "../../store/loginThunk";
+import { resetError } from "../../store/errorSlice";
 
 const RegisterPage = () => {
   const dispatch = useDispatch();
@@ -29,18 +29,36 @@ const RegisterPage = () => {
     validationErrors,
   } = useSelector((state) => state.register);
 
+  const [rememberMe, setRememberMeStatus] = useState(false);
+  const handleRememberMeStatus = (event) => {
+    setRememberMeStatus(event.target.checked);
+  };
+
   useEffect(() => {
-    checkAllFieldsFilled();
+    checkAllFieldsFilled({
+      username,
+      email,
+      password,
+      passwordConfirmation,
+      birthdate,
+      acceptTerms,
+    });
   }, [username, email, password, passwordConfirmation, birthdate, acceptTerms]);
 
   useEffect(() => {
     if (success) {
       const timer = setTimeout(() => {
-        navigate("/");
-      }, 3000);
+        dispatch(
+          loginWithThunk({
+            email,
+            password,
+            requestStorage: rememberMe,
+          })
+        );
+      }, 2000);
       return () => clearTimeout(timer);
     }
-  }, [success, navigate]);
+  }, [success, dispatch, email, password, rememberMe, navigate]);
 
   const handleChange = (event) => {
     const { name, value, type, checked } = event.target;
@@ -48,40 +66,18 @@ const RegisterPage = () => {
       registerUser({
         name,
         value: type === "checkbox" ? checked : value,
-      }),
+      })
     );
   };
 
-  const validate = () => {
-    const newErrors = {};
-    const userAge = () => {
-      const userBirthDate = new Date(birthdate);
-      const today = new Date();
-      let age = today.getFullYear() - userBirthDate.getFullYear();
-      const monthDifference = today.getMonth() - userBirthDate.getMonth();
-      if (
-        monthDifference < 0 ||
-        (monthDifference === 0 && today.getDate() < userBirthDate.getDate())
-      ) {
-        age--;
-      }
-      return age;
-    };
-
-    if (password.length < 6) {
-      newErrors.password = "Password length requires at least 6 characters";
+  const handleSubmit = (event) => {
+    event.preventDefault();
+    const errors = validate({ password, passwordConfirmation, birthdate });
+    dispatch(setValidations(errors));
+    if (Object.keys(errors).length > 0) {
+      return;
     }
-    if (password !== passwordConfirmation) {
-      newErrors.password = "Passwords are different";
-    }
-    if (userAge() < 18 || userAge() > 120) {
-      newErrors.birthdate = "User need to be at least 18 years old";
-    }
-    return newErrors;
-  };
-
-  const checkAllFieldsFilled = () => {
-    const formValues = {
+    const userData = {
       username,
       email,
       password,
@@ -89,46 +85,18 @@ const RegisterPage = () => {
       birthdate,
       acceptTerms,
     };
-    const areAllFieldsFilled = Object.values(formValues).every(
-      (value) => value !== "" && value !== false,
-    );
-    return areAllFieldsFilled;
-  };
 
-  const handleSubmit = async (event) => {
-    event.preventDefault();
-    dispatch(setLoading(true));
-    dispatch(setError(null));
-    dispatch(setSuccess(null));
-    const errors = validate();
-    dispatch(setValidations(errors));
-    if (Object.keys(errors).length > 0) {
-      dispatch(setLoading(false));
-      return;
-    }
-    try {
-      const response = await register({
-        username,
-        email,
-        password,
-        passwordConfirmation,
-        birthdate,
-        acceptTerms,
-      });
-      dispatch(setSuccess("User created correctly"));
-    } catch (error) {
-      dispatch(setError(error.message));
-    } finally {
-      dispatch(setLoading(false));
-    }
+    console.log("User data enviando:", userData);
+    dispatch(registerAsync(userData));
   };
-
-  const handlePassword = () => {};
 
   return (
     <div className="sign-in__wrapper">
       <div className="sign-in__backdrop"></div>
-      <Form className="shadow p-4 bg-white rounded" onSubmit={handleSubmit}>
+      <Form
+        className="shadow p-4 bg-white rounded"
+        onSubmit={handleSubmit}
+      >
         <img
           className="img-thumbnail mx-auto d-block mb-2"
           src={Logo}
@@ -139,7 +107,7 @@ const RegisterPage = () => {
           <Alert
             className="mb-2"
             variant="danger"
-            onClose={() => dispatch(setError(null))}
+            onClose={() => dispatch(resetError())}
             dismissible
           >
             {error}
@@ -156,11 +124,18 @@ const RegisterPage = () => {
           </Alert>
         )}
         {Object.keys(validationErrors).map((key) => (
-          <Alert key={key} className="mb-2" variant="warning">
+          <Alert
+            key={key}
+            className="mb-2"
+            variant="warning"
+          >
             {validationErrors[key]}
           </Alert>
         ))}
-        <Form.Group className="mb-2" controlId="username">
+        <Form.Group
+          className="mb-2"
+          controlId="username"
+        >
           <Form.Label>Username</Form.Label>
           <Form.Control
             type="text"
@@ -171,7 +146,10 @@ const RegisterPage = () => {
             required
           />
         </Form.Group>
-        <Form.Group className="mb-2" controlId="email">
+        <Form.Group
+          className="mb-2"
+          controlId="email"
+        >
           <Form.Label>Email</Form.Label>
           <Form.Control
             type="email"
@@ -182,7 +160,10 @@ const RegisterPage = () => {
             required
           />
         </Form.Group>
-        <Form.Group className="mb-2" controlId="password">
+        <Form.Group
+          className="mb-2"
+          controlId="password"
+        >
           <Form.Label>Password</Form.Label>
           <Form.Control
             type="password"
@@ -193,7 +174,10 @@ const RegisterPage = () => {
             required
           />
         </Form.Group>
-        <Form.Group className="mb-2" controlId="repeatpassword">
+        <Form.Group
+          className="mb-2"
+          controlId="repeatpassword"
+        >
           <Form.Label>Repeat Password</Form.Label>
           <Form.Control
             type="password"
@@ -204,7 +188,10 @@ const RegisterPage = () => {
             required
           />
         </Form.Group>
-        <Form.Group className="mb-2" controlId="birthdate">
+        <Form.Group
+          className="mb-2"
+          controlId="birthdate"
+        >
           <Form.Label>Birthdate</Form.Label>
           <Form.Control
             type="date"
@@ -215,7 +202,10 @@ const RegisterPage = () => {
             required
           />
         </Form.Group>
-        <Form.Group className="mb-2" controlId="checkbox">
+        <Form.Group
+          className="mb-2"
+          controlId="checkbox"
+        >
           <Form.Check
             type="checkbox"
             name="acceptTerms"
@@ -224,11 +214,17 @@ const RegisterPage = () => {
             label={
               <>
                 By creating an account you are agreeing to our{" "}
-                <NavLink to="/terms-and-conditions" target="_blank">
+                <NavLink
+                  to="/terms-and-conditions"
+                  target="_blank"
+                >
                   terms and conditions (opens in new window)
                 </NavLink>
                 . Read our{" "}
-                <NavLink to="/privacy-policy" target="_blank">
+                <NavLink
+                  to="/privacy-policy"
+                  target="_blank"
+                >
                   privacy and cookies policy (opens in new window)
                 </NavLink>{" "}
                 to find out how we collect and use your personal data.
@@ -236,26 +232,37 @@ const RegisterPage = () => {
             }
           />
         </Form.Group>
+        <Form.Group
+          className="mb-2"
+          controlId="rememberMe"
+        >
+          <Form.Check
+            type="checkbox"
+            label="Remember me"
+            checked={rememberMe}
+            onChange={handleRememberMeStatus}
+          />
+        </Form.Group>
         <Button
           className="w-100"
           variant="primary"
           type="submit"
-          disabled={!checkAllFieldsFilled() || loading}
+          disabled={
+            !checkAllFieldsFilled({
+              username,
+              email,
+              password,
+              passwordConfirmation,
+              birthdate,
+              acceptTerms,
+            }) || loading
+          }
         >
           {loading ? "Registering... " : "Register"}
         </Button>
-        <div className="d-grid justify-content-end">
-          <Button
-            className="text-muted px-0"
-            variant="link"
-            onClick={handlePassword}
-          >
-            Forgot password?
-          </Button>
-        </div>
       </Form>
       <div className="w-100 mb-2 position-absolute bottom-0 start-50 translate-middle-x text-white text-center">
-        Made by Hendrik C | &copy;2022
+        Made by Byte Bandits | &copy;2024
       </div>
     </div>
   );

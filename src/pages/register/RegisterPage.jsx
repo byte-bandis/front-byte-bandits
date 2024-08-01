@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Form, Button, Alert } from "react-bootstrap";
 import {
@@ -11,6 +11,7 @@ import "../auth/login.css";
 import { NavLink, useNavigate } from "react-router-dom";
 import { checkAllFieldsFilled, validate } from "./validations";
 import { loginWithThunk } from "../../store/loginThunk";
+import { resetError } from "../../store/errorSlice";
 
 const RegisterPage = () => {
   const dispatch = useDispatch();
@@ -28,6 +29,11 @@ const RegisterPage = () => {
     validationErrors,
   } = useSelector((state) => state.register);
 
+  const [rememberMe, setRememberMeStatus] = useState(false);
+  const handleRememberMeStatus = (event) => {
+    setRememberMeStatus(event.target.checked);
+  };
+
   useEffect(() => {
     checkAllFieldsFilled({
       username,
@@ -44,15 +50,15 @@ const RegisterPage = () => {
       const timer = setTimeout(() => {
         dispatch(
           loginWithThunk({
-            email: email,
-            password: password,
-            requestStorage: true,
+            email,
+            password,
+            requestStorage: rememberMe,
           })
         );
       }, 2000);
       return () => clearTimeout(timer);
     }
-  }, [success, dispatch, email, password, navigate]);
+  }, [success, dispatch, email, password, rememberMe, navigate]);
 
   const handleChange = (event) => {
     const { name, value, type, checked } = event.target;
@@ -84,8 +90,6 @@ const RegisterPage = () => {
     dispatch(registerAsync(userData));
   };
 
-  const handlePassword = () => {};
-
   return (
     <div className="sign-in__wrapper">
       <div className="sign-in__backdrop"></div>
@@ -103,7 +107,7 @@ const RegisterPage = () => {
           <Alert
             className="mb-2"
             variant="danger"
-            onClose={() => dispatch(setError(null))}
+            onClose={() => dispatch(resetError())}
             dismissible
           >
             {error}
@@ -228,6 +232,17 @@ const RegisterPage = () => {
             }
           />
         </Form.Group>
+        <Form.Group
+          className="mb-2"
+          controlId="rememberMe"
+        >
+          <Form.Check
+            type="checkbox"
+            label="Remember me"
+            checked={rememberMe}
+            onChange={handleRememberMeStatus}
+          />
+        </Form.Group>
         <Button
           className="w-100"
           variant="primary"
@@ -245,15 +260,6 @@ const RegisterPage = () => {
         >
           {loading ? "Registering... " : "Register"}
         </Button>
-        <div className="d-grid justify-content-end">
-          <Button
-            className="text-muted px-0"
-            variant="link"
-            onClick={handlePassword}
-          >
-            Forgot password?
-          </Button>
-        </div>
       </Form>
       <div className="w-100 mb-2 position-absolute bottom-0 start-50 translate-middle-x text-white text-center">
         Made by Byte Bandits | &copy;2024

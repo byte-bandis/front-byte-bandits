@@ -8,12 +8,13 @@ import { useDispatch } from "react-redux";
 import { useEffect } from "react";
 import { setAuth } from "./store/authSlice";
 import { setAuthorizationHeader } from "./api/client";
+import storage from "./utils/storage";
 
 function App() {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    const token = JSON.parse(localStorage.getItem("authToken"));
+    const token = storage.get("authToken");
     if (token) {
       setAuthorizationHeader(token);
       dispatch(setAuth(true));

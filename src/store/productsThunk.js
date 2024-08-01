@@ -1,20 +1,18 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
+import { setError } from './errorSlice';
 import * as products from '../pages/product/service';
 
 export const createProduct = createAsyncThunk(
   'products/create',
-  async (product, { rejectWithValue }) => {
+  async (product, { dispatch, rejectWithValue }) => {
     try {
       const response = await products.createProduct(product);
 
       if (response.success) {
-        const { _id } = response.data;
-        if (!_id) throw new Error('Product ID is missing');
-
-      const createdProduct = await products.getProduct(_id);
-      return createdProduct.ad; 
+        return response.data;       
     } else throw new Error('Failed to create product');
       } catch (error) {
+        dispatch(setError(error.message || error));
         return rejectWithValue(error.message || error);
       }
   }

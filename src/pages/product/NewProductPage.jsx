@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 import { Form, Button, Alert } from "react-bootstrap";
 import { createProduct } from "../../store/productsThunk";
 import "./NewProduct.css";
-import { clearError } from "../../store/productsSlice";
+import { resetError, setError } from "../../store/errorSlice";
 
 const TAG_OPTIONS = ["lifestyle", "mobile", "motor", "work", "others"];
 
@@ -15,9 +15,8 @@ const NewProductPage = () => {
   const [inputPrice, setInputPrice] = useState("");
   const [inputTransactionType, setInputTransactionType] = useState("sell");
   const [selectedTags, setSelectedTags] = useState([]);
-  const [show, setShow] = useState(false);
-  const [loading, setLoading] = useState(false);
-  const error = useSelector((state) => state.products.error);
+  const error = useSelector((state) => state.errorState.errorMessage);
+  const loading = useSelector((state) => state.products.pending);
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
@@ -32,11 +31,9 @@ const NewProductPage = () => {
   const handleSubmit = async (event) => {
     event.preventDefault();
     if (selectedTags.length === 0) {
-      setShow(true);
+      dispatch(setError("Debes seleccionar al menos un tag."));
       return;
     }
-
-    setLoading(true);
 
     await (async () => {
       return new Promise((resolve) => setTimeout(resolve, 1000));
@@ -55,13 +52,11 @@ const NewProductPage = () => {
       navigate(`/product/${response._id}`);
     } catch (errorMsg) {
       console.error("Failed to create product: ", errorMsg);
-    } finally {
-      setLoading(false);
     }
   };
 
-  const resetError = () => {
-    dispatch(clearError());
+  const clearError = () => {
+    dispatch(resetError());
   };
 
   return (
@@ -69,16 +64,6 @@ const NewProductPage = () => {
       <div className="new-product__backdrop"></div>
       <Form className="shadow p-4 bg-white rounded" onSubmit={handleSubmit}>
         <div className="h4 mb-2 text-center">Introduce tu producto</div>
-        {show && (
-          <Alert
-            className="mb-2"
-            variant="danger"
-            onClose={() => setShow(false)}
-            dismissible
-          >
-            Debes seleccionar al menos un tag.
-          </Alert>
-        )}
         <Form.Group className="mb-2" controlId="name">
           <Form.Label>Nombre</Form.Label>
           <Form.Control
@@ -169,7 +154,7 @@ const NewProductPage = () => {
           <Alert
             className="mt-2"
             variant="danger"
-            onClose={() => resetError()}
+            onClose={() => clearError()}
             dismissible
           >
             {error}

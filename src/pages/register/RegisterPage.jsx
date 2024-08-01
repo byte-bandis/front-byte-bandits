@@ -10,6 +10,7 @@ import Logo from "../../assets/images/logo.svg";
 import "../auth/login.css";
 import { NavLink, useNavigate } from "react-router-dom";
 import { checkAllFieldsFilled, validate } from "./validations";
+import { setError } from "../../store/errorSlice";
 
 const RegisterPage = () => {
   const dispatch = useDispatch();
@@ -73,7 +74,6 @@ const RegisterPage = () => {
       acceptTerms,
     };
 
-    console.log("User data enviando:", userData);
     dispatch(registerAsync(userData));
   };
 
@@ -218,7 +218,7 @@ const RegisterPage = () => {
         </div>
       </Form>
       <div className="w-100 mb-2 position-absolute bottom-0 start-50 translate-middle-x text-white text-center">
-        Made by Hendrik C | &copy;2022
+        Made by ByteBandits | &copy;2024
       </div>
     </div>
   );

@@ -69,7 +69,7 @@ const RootRouter = () => {
         </Route>
         <Route
           path="/"
-          element={<h1>Home</h1>}
+          element={<ProductList />}
         />
         <Route
           path="/product"

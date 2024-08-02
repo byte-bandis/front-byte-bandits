@@ -8,13 +8,14 @@ import "./login.css";
 import Logo from "../../assets/images/logo.svg";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
+import { getIsLogged } from "../../store/selectors";
 
 const LoginPage = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const to = import.meta.env.VITE_LOGIN_REDIRECT_URI;
-  const { loading, authState } = useSelector((state) => state.authState);
   const { errorMessage } = useSelector((state) => state.errorState);
+  const isLogged = useSelector(getIsLogged);
   const [inputEmail, setInputEmail] = useState("");
   const [inputPassword, setInputPassword] = useState("");
   const [checkboxStatus, setCheckboxStatus] = useState(false);
@@ -34,14 +35,14 @@ const LoginPage = () => {
   }, [errorMessage]);
 
   useEffect(() => {
-    if (authState) {
+    if (isLogged.authState) {
       resetForm();
       const timer = setTimeout(() => {
         navigate(to, { replace: true });
       }, 2000);
       return () => clearTimeout(timer);
     }
-  }, [authState, dispatch, navigate, to]);
+  }, [isLogged.authState, dispatch, navigate, to]);
 
   const handleCheckboxChange = (event) => {
     setCheckboxStatus(event.target.checked);
@@ -65,7 +66,7 @@ const LoginPage = () => {
   const handlePassword = () => {};
 
   return (
-    <div className="sign-in__wrapper">
+    <div className={`sign-in__wrapper ${isLogged.authState ? "hidden" : ""}`}>
       {/* Overlay */}
       <div className="sign-in__backdrop"></div>
       {/* Form */}
@@ -130,7 +131,7 @@ const LoginPage = () => {
             onChange={handleCheckboxChange}
           />
         </Form.Group>
-        {!loading ? (
+        {!isLogged.loading ? (
           <Button
             className="w-100"
             variant="primary"

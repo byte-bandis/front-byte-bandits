@@ -7,9 +7,9 @@ import productsReducer from "./productsSlice";
 
 export const store = configureStore({
   reducer: {
+    errorState: errorReducer,
     authState: authReducer,
     register: registerReducer,
-    errorState: errorReducer,
     adsState: adsReducer,
     products: productsReducer,
   },

@@ -9,7 +9,7 @@ import {
 import Logo from "../../assets/images/logo.svg";
 import "../auth/login.css";
 import { NavLink, useNavigate } from "react-router-dom";
-import { checkAllFieldsFilled, validate } from "./validations";
+import { checkAllFieldsFilled, validate } from "../../utils/formValidations";
 import { resetError } from "../../store/errorSlice";
 import { resetSuccess } from "../../store/successSlice";
 

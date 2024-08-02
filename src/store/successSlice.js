@@ -1,4 +1,10 @@
-import { createSlice } from "@reduxjs/toolkit";
+import {
+  createSlice,
+  isAnyOf,
+  isRejected,
+  isFulfilled,
+  isPending,
+} from "@reduxjs/toolkit";
 
 export const defaultSuccessState = {
   successState: false,
@@ -17,6 +23,20 @@ export const successSlice = createSlice({
       state.successState = false;
       state.successMessage = null;
     },
+  },
+  extraReducers: (builder) => {
+    builder
+      .addMatcher(isAnyOf(isRejected), (state) => {
+        state.loading = false;
+      })
+      .addMatcher(isAnyOf(isPending), (state) => {
+        state.loading = true;
+      })
+      .addMatcher(isAnyOf(isFulfilled), (state, action) => {
+        state.loading = true;
+        state.successState = true;
+        state.successMessage = action.payload;
+      });
   },
 });
 

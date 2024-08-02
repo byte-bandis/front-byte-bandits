@@ -38,10 +38,10 @@ export const registerSlice = createSlice({
       .addCase(registerAsync.pending, (state) => {
         state.loading = true;
       })
-      .addCase(registerAsync.fulfilled, (state, action) => {
+      .addCase(registerAsync.fulfilled, (state) => {
         state.loading = false;
       })
-      .addCase(registerAsync.rejected, (state, action) => {
+      .addCase(registerAsync.rejected, (state) => {
         state.loading = false;
       });
   },

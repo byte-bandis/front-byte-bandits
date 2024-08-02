@@ -6,7 +6,7 @@ export const defaultSuccessState = {
 };
 
 export const successSlice = createSlice({
-  name: "successSlice",
+  name: "success",
   initialState: defaultSuccessState,
   reducers: {
     setSuccess: (state, action) => {

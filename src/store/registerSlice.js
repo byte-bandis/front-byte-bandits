@@ -1,5 +1,7 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import { register } from "../pages/register/register";
+import { register } from "../pages/register/service";
+import { setSuccess } from "./successSlice";
+import { setError } from "./errorSlice";
 
 const initialStateRegister = {
   username: "",
@@ -9,18 +11,18 @@ const initialStateRegister = {
   birthdate: "",
   acceptTerms: false,
   loading: false,
-  error: null,
-  success: null,
   validationErrors: {},
 };
 
 export const registerAsync = createAsyncThunk(
   "register/registerAsync",
-  async (userData, { rejectWithValue }) => {
+  async (userData, { rejectWithValue, dispatch }) => {
     try {
       const response = await register(userData);
+      dispatch(setSuccess("User created correctly"));
       return response;
     } catch (error) {
+      dispatch(setError(error.message));
       return rejectWithValue(error.message);
     }
   },
@@ -48,11 +50,9 @@ export const registerSlice = createSlice({
       })
       .addCase(registerAsync.fulfilled, (state, action) => {
         state.loading = false;
-        state.success = "User created correctly";
       })
       .addCase(registerAsync.rejected, (state, action) => {
         state.loading = false;
-        state.error = action.payload;
       });
   },
 });

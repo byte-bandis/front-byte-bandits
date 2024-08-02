@@ -10,7 +10,8 @@ import Logo from "../../assets/images/logo.svg";
 import "../auth/login.css";
 import { NavLink, useNavigate } from "react-router-dom";
 import { checkAllFieldsFilled, validate } from "./validations";
-import { setError } from "../../store/errorSlice";
+import { setError, resetError } from "../../store/errorSlice";
+import { setSuccess, resetSuccess } from "../../store/successSlice";
 
 const RegisterPage = () => {
   const dispatch = useDispatch();
@@ -23,10 +24,13 @@ const RegisterPage = () => {
     birthdate,
     acceptTerms,
     loading,
-    error,
-    success,
     validationErrors,
   } = useSelector((state) => state.register);
+
+  const { errorState, errorMessage } = useSelector((state) => state.error);
+  const { successState, successMessage } = useSelector(
+    (state) => state.success,
+  );
 
   useEffect(() => {
     checkAllFieldsFilled({
@@ -40,13 +44,14 @@ const RegisterPage = () => {
   }, [username, email, password, passwordConfirmation, birthdate, acceptTerms]);
 
   useEffect(() => {
-    if (success) {
+    if (successState) {
       const timer = setTimeout(() => {
         navigate("/");
+        dispatch(resetSuccess());
       }, 3000);
       return () => clearTimeout(timer);
     }
-  }, [success, navigate]);
+  }, [successState, dispatch, navigate]);
 
   const handleChange = (event) => {
     const { name, value, type, checked } = event.target;
@@ -89,24 +94,24 @@ const RegisterPage = () => {
           alt="logo"
         />
         <div className="h4 mb-2 text-center">Register</div>
-        {error && (
+        {errorState && (
           <Alert
             className="mb-2"
             variant="danger"
-            onClose={() => dispatch(setError(null))}
+            onClose={() => dispatch(resetError())}
             dismissible
           >
-            {error}
+            {errorMessage}
           </Alert>
         )}
-        {success && (
+        {successState && (
           <Alert
             className="mb-2"
             variant="success"
-            onClose={() => dispatch(setSuccess(null))}
+            onClose={() => dispatch(resetSuccess(null))}
             dismissible
           >
-            {success}
+            {successMessage}
           </Alert>
         )}
         {Object.keys(validationErrors).map((key) => (
@@ -218,7 +223,7 @@ const RegisterPage = () => {
         </div>
       </Form>
       <div className="w-100 mb-2 position-absolute bottom-0 start-50 translate-middle-x text-white text-center">
-        Made by ByteBandits | &copy;2024
+        Made by Byte-Bandits | &copy;2024
       </div>
     </div>
   );

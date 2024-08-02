@@ -8,13 +8,14 @@ import "./login.css";
 import Logo from "../../assets/images/logo.svg";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { getIsLogged } from "../../store/selectors";
+import { getError, getIsLogged } from "../../store/selectors";
 
 const LoginPage = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const to = import.meta.env.VITE_LOGIN_REDIRECT_URI;
-  const { errorMessage } = useSelector((state) => state.errorState);
+  const toRegister = "/register";
+  const isError = useSelector(getError);
   const isLogged = useSelector(getIsLogged);
   const [inputEmail, setInputEmail] = useState("");
   const [inputPassword, setInputPassword] = useState("");
@@ -29,10 +30,10 @@ const LoginPage = () => {
   };
 
   useEffect(() => {
-    if (errorMessage) {
+    if (isError) {
       setShow(true);
     }
-  }, [errorMessage]);
+  }, [isError]);
 
   useEffect(() => {
     if (isLogged.authState) {
@@ -43,6 +44,10 @@ const LoginPage = () => {
       return () => clearTimeout(timer);
     }
   }, [isLogged.authState, dispatch, navigate, to]);
+
+  const handleToRegister = () => {
+    navigate(toRegister, { replace: true });
+  };
 
   const handleCheckboxChange = (event) => {
     setCheckboxStatus(event.target.checked);
@@ -89,7 +94,7 @@ const LoginPage = () => {
             onClose={handleCloseErrorAlert}
             dismissible
           >
-            {errorMessage.message}
+            {isError.message}
           </Alert>
         ) : (
           <div />
@@ -149,7 +154,14 @@ const LoginPage = () => {
             Logging In...
           </Button>
         )}
-        <div className="d-grid justify-content-end">
+        <div className="d-flex justify-content-between">
+          <Button
+            className="text-muted px-0"
+            variant="link"
+            onClick={handleToRegister}
+          >
+            Register new user
+          </Button>
           <Button
             className="text-muted px-0"
             variant="link"

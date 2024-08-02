@@ -1,21 +1,31 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Form, Button, Alert } from "react-bootstrap";
 import {
-  registerUser,
   setValidations,
   registerAsync,
+  resetForm,
 } from "../../store/registerSlice";
 import Logo from "../../assets/images/logo.svg";
 import "../auth/login.css";
 import { NavLink, useNavigate } from "react-router-dom";
 import { checkAllFieldsFilled, validate } from "./validations";
-import { setError, resetError } from "../../store/errorSlice";
-import { setSuccess, resetSuccess } from "../../store/successSlice";
+import { resetError } from "../../store/errorSlice";
+import { resetSuccess } from "../../store/successSlice";
 
 const RegisterPage = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
+
+  const [formData, setFormData] = useState({
+    username: "",
+    email: "",
+    password: "",
+    passwordConfirmation: "",
+    birthdate: "",
+    acceptTerms: false,
+  });
+
   const {
     username,
     email,
@@ -23,25 +33,13 @@ const RegisterPage = () => {
     passwordConfirmation,
     birthdate,
     acceptTerms,
-    loading,
-    validationErrors,
-  } = useSelector((state) => state.register);
+  } = formData;
 
-  const { errorState, errorMessage } = useSelector((state) => state.error);
-  const { successState, successMessage } = useSelector(
-    (state) => state.success,
-  );
-
-  useEffect(() => {
-    checkAllFieldsFilled({
-      username,
-      email,
-      password,
-      passwordConfirmation,
-      birthdate,
-      acceptTerms,
-    });
-  }, [username, email, password, passwordConfirmation, birthdate, acceptTerms]);
+  const { loading, validationErrors } = useSelector((state) => state.register);
+  const errorState = useSelector((state) => state.error.errorState);
+  const errorMessage = useSelector((state) => state.error.errorMessage);
+  const successState = useSelector((state) => state.success.successState);
+  const successMessage = useSelector((state) => state.success.successMessage);
 
   useEffect(() => {
     if (successState) {
@@ -53,14 +51,22 @@ const RegisterPage = () => {
     }
   }, [successState, dispatch, navigate]);
 
+  useEffect(() => {
+    return () => {
+      dispatch(resetForm());
+      dispatch(resetError());
+      dispatch(resetSuccess());
+    };
+  }, [dispatch]);
+
   const handleChange = (event) => {
     const { name, value, type, checked } = event.target;
-    dispatch(
-      registerUser({
-        name,
-        value: type === "checkbox" ? checked : value,
-      }),
-    );
+    setFormData((prevFormData) => ({
+      ...prevFormData,
+      [name]: type === "checkbox" ? checked : value,
+    }));
+    dispatch(resetError());
+    dispatch(resetSuccess());
   };
 
   const handleSubmit = (event) => {
@@ -70,16 +76,8 @@ const RegisterPage = () => {
     if (Object.keys(errors).length > 0) {
       return;
     }
-    const userData = {
-      username,
-      email,
-      password,
-      passwordConfirmation,
-      birthdate,
-      acceptTerms,
-    };
 
-    dispatch(registerAsync(userData));
+    dispatch(registerAsync(formData));
   };
 
   const handlePassword = () => {};
@@ -108,7 +106,7 @@ const RegisterPage = () => {
           <Alert
             className="mb-2"
             variant="success"
-            onClose={() => dispatch(resetSuccess(null))}
+            onClose={() => dispatch(resetSuccess())}
             dismissible
           >
             {successMessage}

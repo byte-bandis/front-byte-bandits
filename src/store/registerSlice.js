@@ -4,12 +4,6 @@ import { setSuccess } from "./successSlice";
 import { setError } from "./errorSlice";
 
 const initialStateRegister = {
-  username: "",
-  email: "",
-  password: "",
-  passwordConfirmation: "",
-  birthdate: "",
-  acceptTerms: false,
   loading: false,
   validationErrors: {},
 };
@@ -19,7 +13,7 @@ export const registerAsync = createAsyncThunk(
   async (userData, { rejectWithValue, dispatch }) => {
     try {
       const response = await register(userData);
-      dispatch(setSuccess("User created correctly"));
+      dispatch(setSuccess("User registered correctly."));
       return response;
     } catch (error) {
       dispatch(setError(error.message));
@@ -31,22 +25,18 @@ export const registerSlice = createSlice({
   name: "register",
   initialState: initialStateRegister,
   reducers: {
-    registerUser: (state, action) => {
-      state[action.payload.name] = action.payload.value;
-    },
     setValidations: (state, action) => {
       state.validationErrors = action.payload;
     },
     resetForm: (state) => {
-      return initialStateRegister;
+      state.loading = false;
+      state.validationErrors = {};
     },
   },
   extraReducers: (builder) => {
     builder
       .addCase(registerAsync.pending, (state) => {
         state.loading = true;
-        state.error = null;
-        state.success = null;
       })
       .addCase(registerAsync.fulfilled, (state, action) => {
         state.loading = false;
@@ -57,6 +47,5 @@ export const registerSlice = createSlice({
   },
 });
 
-export const { registerUser, setValidations, resetForm } =
-  registerSlice.actions;
+export const { setValidations, resetForm } = registerSlice.actions;
 export default registerSlice.reducer;

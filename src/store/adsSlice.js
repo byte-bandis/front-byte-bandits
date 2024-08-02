@@ -1,6 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { setError } from "./errorSlice";
-import getAds from "../pages/product/service";
+import getAds from "./adsThunk";
 export const defaultadsState = {
   
     loaded: false,

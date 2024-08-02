@@ -4,8 +4,16 @@ import Row from "react-bootstrap/Row";
 import Button from "react-bootstrap/Button";
 import { Image } from "react-bootstrap";
 import PropTypes from 'prop-types';
+import { useSelector } from "react-redux";
+import { useParams } from "react-router-dom";
+
+
 
 const ProductView = () => {
+	const { productId } = useParams();
+	const loadedAds = useSelector(state => state.adsState.data).find(onead => onead._id === productId);
+	const { /* _id,  */adTitle, adBody, sell, price, photo/* , user, createdAt, updatedAt, tags */ } = loadedAds
+	console.log(loadedAds)
 	const image = photo ? `../../assets/images/${photo}` : "../../assets/images/no-image.jpg";
 
 	return (
@@ -39,7 +47,5 @@ ProductView.propTypes = {
 	tags: PropTypes.arrayOf(PropTypes.string).isRequired,
   };
   
-  ProductView.defaultProps = {
-	photo: 'no-image.jpg',
-  };
+
 export default ProductView;

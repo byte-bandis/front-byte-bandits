@@ -6,21 +6,15 @@ import { Heart } from "react-bootstrap-icons";
 import PropTypes from 'prop-types';
 
 const ProductItem = ({ 
-  key, 
-  adTitle, 
-  adBody, 
-  sell, 
-  price, 
-  photo,
-  tags 
+  ad,
 }) => {
-
+  const { _id, adTitle, adBody, sell, price, photo, /* user, createdAt, updatedAt, */ tags } = ad
   const image = photo ? `../../assets/images/${photo}` : "../../assets/images/no-image.jpg";
 
   return (
     <Col>
       <Card>
-        <Link to={`/product/${key}`} className="position-relative">
+        <Link to={`/product/${_id}`} className="position-relative">
           <Card.Img variant='top' src={image} />
           <Stack
             direction='horizontal'
@@ -38,7 +32,7 @@ const ProductItem = ({
           </Stack>
         </Link>
         <Card.Body>
-          <Link to={`/product/${key}`}>
+          <Link to={`/product/${_id}`}>
             <Card.Title>{adTitle}</Card.Title>
           </Link>
           <Card.Text>
@@ -52,7 +46,7 @@ const ProductItem = ({
         <Card.Footer>
           <Stack direction='horizontal' gap={2}>
             {tags.map((tag, index) => (
-              <Badge key={`${key}-${index}`} pill bg='primary'>
+              <Badge key={`${_id}-${index}`} pill bg='primary'>
                 {tag}
               </Badge>
             ))}
@@ -64,20 +58,21 @@ const ProductItem = ({
 };
 
 ProductItem.propTypes = {
-  key: PropTypes.string.isRequired,
-  adTitle: PropTypes.string.isRequired,
-  adBody: PropTypes.string.isRequired,
-  sell: PropTypes.bool.isRequired,
-  price: PropTypes.number.isRequired,
-  photo: PropTypes.string,
-  user: PropTypes.string.isRequired,
-  createdAt: PropTypes.string.isRequired,
-  updatedAt: PropTypes.string.isRequired,
-  tags: PropTypes.arrayOf(PropTypes.string).isRequired,
+  ad: PropTypes.shape({
+    _id: PropTypes.string.isRequired,
+    adTitle: PropTypes.string.isRequired,
+    adBody: PropTypes.string.isRequired,
+    sell: PropTypes.bool.isRequired,
+    price: PropTypes.number.isRequired,
+    photo: PropTypes.string,
+    user: PropTypes.string.isRequired,
+    createdAt: PropTypes.string.isRequired,
+    updatedAt: PropTypes.string.isRequired,
+    tags: PropTypes.arrayOf(PropTypes.string).isRequired,
+  })
+  
 };
 
-ProductItem.defaultProps = {
-  photo: 'no-image.jpg',
-};
+
 
 export default ProductItem;

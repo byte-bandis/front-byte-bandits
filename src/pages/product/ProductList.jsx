@@ -5,7 +5,7 @@ import Search from '../search/Search';
 import Pager from '../pagination/Pager';
 import { useDispatch, useSelector } from 'react-redux';
 import { useEffect } from 'react';
-import getAds from './service';
+import getAds from '../../store/adsThunk';
 
 const ProductList = () => {
     const dispatch = useDispatch();
@@ -31,6 +31,7 @@ const ProductList = () => {
             >
                 {adsData && adsData.map(ad => (
                     <ProductItem
+                        ad={ad}
                         key={ad._id}
                         adTitle={ad.adTitle}
                         adBody={ad.adBody}

@@ -41,7 +41,7 @@ const LoginPage = () => {
       }, 2000);
       return () => clearTimeout(timer);
     }
-  }, [authState, navigate, to]);
+  }, [authState, dispatch, navigate, to]);
 
   const handleCheckboxChange = (event) => {
     setCheckboxStatus(event.target.checked);

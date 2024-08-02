@@ -1,15 +1,17 @@
-import { useSelector } from "react-redux";
 import { Navigate, useLocation } from "react-router-dom";
+import { useSelector } from "react-redux";
+import P from "prop-types";
+import { getIsLogged } from "../../../store/selectors";
 
 function RequireAuth({ children }) {
   const location = useLocation();
-  const { authState } = useSelector((state) => state.authState);
+  const isLogged = useSelector(getIsLogged);
+  //const isLogged = false;
+  console.log("Esto es isLogged.authState: ", isLogged.authState);
 
-  console.log("Y esto es authState en Require auth: ", authState);
-  return authState ? (
+  return isLogged.authState ? (
     children
   ) : (
-    /* children */
     <Navigate
       to="/login"
       state={{ from: location.pathname }}
@@ -17,5 +19,9 @@ function RequireAuth({ children }) {
     />
   );
 }
+
+RequireAuth.propTypes = {
+  children: P.node.isRequired,
+};
 
 export default RequireAuth;

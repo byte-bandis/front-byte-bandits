@@ -1,11 +1,4 @@
-import {
-  Routes,
-  Route,
-  Outlet,
-  Navigate,
-  useLoaderData,
-  useLocation,
-} from "react-router-dom";
+import { Routes, Route, Outlet, Navigate } from "react-router-dom";
 import NotFound from "../pages/NotFound";
 import LoginPage from "../pages/auth/LoginPage";
 import RegisterPage from "../pages/register/RegisterPage";
@@ -15,7 +8,6 @@ import Account from "../pages/customer/Account";
 import DeleteAccount from "../pages/customer/DeleteAccount";
 import LayoutAccount from "../pages/customer/LayoutAccount";
 import Wishlist from "../pages/customer/Wishlist";
-import { useSelector } from "react-redux";
 import NewProductPage from "../pages/product/NewProductPage";
 import TermsAndConditions from "../pages/register/TermsAndConditions";
 import PrivacyPolicy from "../pages/register/PrivacyPolicy";
@@ -84,7 +76,11 @@ const RootRouter = () => {
       </Route>
       <Route
         path="/product"
-        element={<Outlet />}
+        element={
+          <RequireAuth>
+            <Outlet />
+          </RequireAuth>
+        }
       >
         <Route
           index

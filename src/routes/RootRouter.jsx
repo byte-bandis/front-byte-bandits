@@ -8,94 +8,99 @@ import Account from "../pages/customer/Account";
 import DeleteAccount from "../pages/customer/DeleteAccount";
 import LayoutAccount from "../pages/customer/LayoutAccount";
 import Wishlist from "../pages/customer/Wishlist";
-import { useSelector } from "react-redux";
 import NewProductPage from "../pages/product/NewProductPage";
 import TermsAndConditions from "../pages/register/TermsAndConditions";
 import PrivacyPolicy from "../pages/register/PrivacyPolicy";
+import RequireAuth from "../pages/auth/components/RequireAuth";
 const RootRouter = () => {
-  const isAuthenticated = useSelector((state) => state.authState.authState);
+  //const isAuthenticated = useSelector((state) => state.authState.authState);
+  /* const loginRedirectUri = import.meta.env.VITE_LOGIN_REDIRECT_URI;
+  const location = useLocation(); */
 
-  if (!isAuthenticated) {
-    return (
-      <Routes>
+  return (
+    <Routes>
+      <Route
+        path="/"
+        element={<h1>Home</h1>}
+      />
+      <Route
+        path="/login"
+        element={<LoginPage />}
+      />
+      <Route
+        path="/register"
+        element={<RegisterPage />}
+      />
+      <Route
+        path="/terms-and-conditions"
+        element={<TermsAndConditions />}
+      />
+      <Route
+        path="/privacy-policy"
+        element={<PrivacyPolicy />}
+      />
+      {/* <Route
+        path="/login"
+        element={
+          <Navigate
+            to={location.state?.from || loginRedirectUri}
+            replace
+          />
+        }
+      /> */}
+
+      <Route
+        path=":userName"
+        element={
+          <RequireAuth>
+            <LayoutAccount />
+          </RequireAuth>
+        }
+      >
         <Route
-          path="/"
-          element={<h1>Home</h1>}
+          index
+          element={<Account />}
         />
         <Route
-          path="/login"
-          element={<LoginPage />}
-        ></Route>
+          path="edit/:productId"
+          element={<div>admin advert detail</div>}
+        />
         <Route
-          path="/register"
-          element={<RegisterPage />}
-        ></Route>
+          path="new"
+          element={<NewProductPage />}
+        />
         <Route
-          path="/terms-and-conditions"
-          element={<TermsAndConditions />}
-        ></Route>
+          path="whishlist"
+          element={<Wishlist />}
+        />
         <Route
-          path="/privacy-policy"
-          element={<PrivacyPolicy />}
-        ></Route>
-      </Routes>
-    );
-  } else {
-    return (
-      <Routes>
+          path="delete-account"
+          element={<DeleteAccount />}
+        />
+      </Route>
+      <Route
+        path="/product"
+        element={<Outlet />}
+      >
         <Route
-          path=":userName"
-          element={<LayoutAccount />}
-        >
-          <Route
-            index
-            element={<Account />}
-          />
-          <Route
-            path="edit/:productId"
-            element={<div>admin advert detail</div>}
-          />
-          <Route
-            path="new"
-            element={<NewProductPage />}
-          />
-          <Route
-            path="whishlist"
-            element={<Wishlist />}
-          />
-          <Route
-            path="delete-account"
-            element={<DeleteAccount />}
-          />
-        </Route>
-        <Route
-          path="/"
+          index
           element={<ProductList />}
         />
         <Route
-          path="/product"
-          element={<Outlet />}
-        >
-          <Route
-            index
-            element={<ProductList />}
-          />
-          <Route
-            path=":productId"
-            element={<ProductView />}
-          />
-        </Route>
-        <Route
-          path="/404"
-          element={<NotFound />}
+          path=":productId"
+          element={<ProductView />}
         />
-        <Route
-          path="*"
-          element={<Navigate to="/404" />}
-        />
-      </Routes>
-    );
-  }
+      </Route>
+      <Route
+        path="/404"
+        element={<NotFound />}
+      />
+      <Route
+        path="*"
+        element={<Navigate to="/404" />}
+      />
+    </Routes>
+  );
 };
 
 export default RootRouter;

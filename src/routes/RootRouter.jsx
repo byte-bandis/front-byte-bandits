@@ -51,7 +51,11 @@ const RootRouter = () => {
 
       <Route
         path=":userName"
-        element={<LayoutAccount />}
+        element={
+          <RequireAuth>
+            <LayoutAccount />
+          </RequireAuth>
+        }
       >
         <Route
           index
@@ -76,11 +80,7 @@ const RootRouter = () => {
       </Route>
       <Route
         path="/product"
-        element={
-          <RequireAuth>
-            <Outlet />
-          </RequireAuth>
-        }
+        element={<Outlet />}
       >
         <Route
           index

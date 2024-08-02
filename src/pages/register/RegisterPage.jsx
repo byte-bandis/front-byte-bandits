@@ -12,7 +12,7 @@ import { NavLink, useNavigate } from "react-router-dom";
 import { checkAllFieldsFilled, validate } from "./validations";
 import { loginWithThunk } from "../../store/loginThunk";
 import { resetError } from "../../store/errorSlice";
-
+import { getIsLogged } from "../../store/selectors";
 const RegisterPage = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -33,6 +33,15 @@ const RegisterPage = () => {
   const handleRememberMeStatus = (event) => {
     setRememberMeStatus(event.target.checked);
   };
+  const isLogged = useSelector(getIsLogged);
+
+  const to = import.meta.env.VITE_LOGIN_REDIRECT_URI;
+
+  useEffect(() => {
+    if (isLogged.authState) {
+      navigate(to, { replace: true });
+    }
+  }, [isLogged.authState, to, navigate]);
 
   useEffect(() => {
     checkAllFieldsFilled({
@@ -56,6 +65,7 @@ const RegisterPage = () => {
           })
         );
       }, 2000);
+
       return () => clearTimeout(timer);
     }
   }, [success, dispatch, email, password, rememberMe, navigate]);
@@ -85,8 +95,6 @@ const RegisterPage = () => {
       birthdate,
       acceptTerms,
     };
-
-    console.log("User data enviando:", userData);
     dispatch(registerAsync(userData));
   };
 

@@ -1,9 +1,8 @@
 import { configureStore } from "@reduxjs/toolkit";
-import authReducer from './authSlice'; 
+import authReducer, { setRememberMe } from "./authSlice";
 import errorReducer from "./errorSlice";
 import registerReducer from "./registerSlice";
-import productsReducer from './productsSlice';
-
+import productsReducer from "./productsSlice";
 
 export const store = configureStore({
   reducer: {
@@ -15,3 +14,4 @@ export const store = configureStore({
   devTools: import.meta.env.NODE_ENV !== "production",
 });
 
+store.dispatch(setRememberMe());

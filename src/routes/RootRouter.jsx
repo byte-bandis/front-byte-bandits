@@ -1,4 +1,11 @@
-import { Routes, Route, Outlet, Navigate } from "react-router-dom";
+import {
+  Routes,
+  Route,
+  Outlet,
+  Navigate,
+  useLoaderData,
+  useLocation,
+} from "react-router-dom";
 import NotFound from "../pages/NotFound";
 import LoginPage from "../pages/auth/LoginPage";
 import RegisterPage from "../pages/register/RegisterPage";
@@ -12,102 +19,92 @@ import { useSelector } from "react-redux";
 import NewProductPage from "../pages/product/NewProductPage";
 import TermsAndConditions from "../pages/register/TermsAndConditions";
 import PrivacyPolicy from "../pages/register/PrivacyPolicy";
-import { login } from "../pages/auth/service";
+import RequireAuth from "../pages/auth/components/RequireAuth";
 const RootRouter = () => {
-  const isAuthenticated = useSelector((state) => state.authState.authState);
-  const loginRedirectUri = import.meta.env.VITE_LOGIN_REDIRECT_URI;
+  //const isAuthenticated = useSelector((state) => state.authState.authState);
+  /* const loginRedirectUri = import.meta.env.VITE_LOGIN_REDIRECT_URI;
+  const location = useLocation(); */
 
-  if (!isAuthenticated) {
-    return (
-      <Routes>
-        <Route
-          path="/"
-          element={<h1>Home</h1>}
-        />
-        <Route
-          path="/login"
-          element={<LoginPage />}
-        ></Route>
-        <Route
-          path="/register"
-          element={<RegisterPage />}
-        ></Route>
-        <Route
-          path="/terms-and-conditions"
-          element={<TermsAndConditions />}
-        ></Route>
-        <Route
-          path="/privacy-policy"
-          element={<PrivacyPolicy />}
-        ></Route>
-      </Routes>
-    );
-  } else {
-    return (
-      <Routes>
-        <Route
-          path="/login"
-          element={
-            <Navigate
-              to={loginRedirectUri}
-              replace
-            />
-          }
-        />
+  return (
+    <Routes>
+      <Route
+        path="/"
+        element={<h1>Home</h1>}
+      />
+      <Route
+        path="/login"
+        element={<LoginPage />}
+      />
+      <Route
+        path="/register"
+        element={<RegisterPage />}
+      />
+      <Route
+        path="/terms-and-conditions"
+        element={<TermsAndConditions />}
+      />
+      <Route
+        path="/privacy-policy"
+        element={<PrivacyPolicy />}
+      />
+      {/* <Route
+        path="/login"
+        element={
+          <Navigate
+            to={location.state?.from || loginRedirectUri}
+            replace
+          />
+        }
+      /> */}
 
+      <Route
+        path=":userName"
+        element={<LayoutAccount />}
+      >
         <Route
-          path=":userName"
-          element={<LayoutAccount />}
-        >
-          <Route
-            index
-            element={<Account />}
-          />
-          <Route
-            path="edit/:productId"
-            element={<div>admin advert detail</div>}
-          />
-          <Route
-            path="new"
-            element={<NewProductPage />}
-          />
-          <Route
-            path="whishlist"
-            element={<Wishlist />}
-          />
-          <Route
-            path="delete-account"
-            element={<DeleteAccount />}
-          />
-        </Route>
-        <Route
-          path="/"
-          element={<h1>Home</h1>}
+          index
+          element={<Account />}
         />
         <Route
-          path="/product"
-          element={<Outlet />}
-        >
-          <Route
-            index
-            element={<ProductList />}
-          />
-          <Route
-            path=":productId"
-            element={<ProductView />}
-          />
-        </Route>
-        <Route
-          path="/404"
-          element={<NotFound />}
+          path="edit/:productId"
+          element={<div>admin advert detail</div>}
         />
         <Route
-          path="*"
-          element={<Navigate to="/404" />}
+          path="new"
+          element={<NewProductPage />}
         />
-      </Routes>
-    );
-  }
+        <Route
+          path="whishlist"
+          element={<Wishlist />}
+        />
+        <Route
+          path="delete-account"
+          element={<DeleteAccount />}
+        />
+      </Route>
+      <Route
+        path="/product"
+        element={<Outlet />}
+      >
+        <Route
+          index
+          element={<ProductList />}
+        />
+        <Route
+          path=":productId"
+          element={<ProductView />}
+        />
+      </Route>
+      <Route
+        path="/404"
+        element={<NotFound />}
+      />
+      <Route
+        path="*"
+        element={<Navigate to="/404" />}
+      />
+    </Routes>
+  );
 };
 
 export default RootRouter;

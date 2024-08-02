@@ -8,13 +8,13 @@ import "./login.css";
 import Logo from "../../assets/images/logo.svg";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { setAuth } from "../../store/authSlice";
 
 const LoginPage = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const to = import.meta.env.VITE_LOGIN_REDIRECT_URI;
-  const { error, loading, authState } = useSelector((state) => state.authState);
+  const { loading, authState } = useSelector((state) => state.authState);
+  const { errorMessage } = useSelector((state) => state.errorState);
   const [inputEmail, setInputEmail] = useState("");
   const [inputPassword, setInputPassword] = useState("");
   const [checkboxStatus, setCheckboxStatus] = useState(false);
@@ -27,18 +27,16 @@ const LoginPage = () => {
     setCheckboxStatus(false);
   };
 
-  console.log("Esto es authState: ", authState);
   useEffect(() => {
-    if (error) {
+    if (errorMessage) {
       setShow(true);
     }
-  }, [error, dispatch]);
+  }, [errorMessage]);
 
   useEffect(() => {
     if (authState) {
       resetForm();
       const timer = setTimeout(() => {
-        console.log("esto es el nuevo authState: ", authState);
         navigate(to, { replace: true });
       }, 2000);
       return () => clearTimeout(timer);
@@ -58,7 +56,6 @@ const LoginPage = () => {
         requestStorage: checkboxStatus,
       })
     );
-    dispatch(setAuth(true));
   };
 
   const handleCloseErrorAlert = () => {
@@ -83,7 +80,7 @@ const LoginPage = () => {
           alt="logo"
         />
         <div className="h4 mb-2 text-center">Sign In</div>
-        {/* ALert */}
+        {/* Alert */}
         {show ? (
           <Alert
             className="mb-2"
@@ -91,7 +88,7 @@ const LoginPage = () => {
             onClose={handleCloseErrorAlert}
             dismissible
           >
-            {error}
+            {errorMessage.message}
           </Alert>
         ) : (
           <div />

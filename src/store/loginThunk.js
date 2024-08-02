@@ -12,7 +12,6 @@ export const loginWithThunk = createAsyncThunk(
     try {
       const response = await login(email, password, requestStorage);
       dispatch(setAuth(true));
-
       return response;
     } catch (error) {
       const errorPayload = {

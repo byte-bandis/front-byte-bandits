@@ -1,5 +1,4 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { setError } from "./errorSlice";
 import getAds from "./adsThunk";
 export const defaultadsState = {
   
@@ -21,11 +20,6 @@ export const defaultadsState = {
         state.loaded = true;
         state.data = action.payload;
       })
-      .addCase(getAds.rejected, (state, action) => {
-        state.loaded = false;
-        setError({ message: action.error.message, status: action.error.response?.status })
-        throw action.error;
-      });
   },
 });
 export default adsSlice.reducer;

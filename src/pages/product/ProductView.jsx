@@ -12,16 +12,17 @@ import { useParams } from "react-router-dom";
 const ProductView = () => {
 	const { productId } = useParams();
 	const loadedAds = useSelector(state => state.adsState.data).find(onead => onead._id === productId);
+	console.log(loadedAds)
 	const { /* _id,  */adTitle, adBody, sell, price, photo/* , user, createdAt, updatedAt, tags */ } = loadedAds
 	console.log(loadedAds)
-	const image = photo ? `../../assets/images/${photo}` : "../../assets/images/no-image.jpg";
-
+	const image = photo ? `${photo}` : "../../assets/images/no-image.jpg";
+	const origin = import.meta.env.VITE_API_BASE_URL
 	return (
 		<>
 			<Container>
 				<Row className="d-flex flex-column d-md-flex flex-md-row">
 					<Col>
-						<Image src={image} alt='default image' fluid />
+						<Image src={image} alt='default image' crossorigin={origin} fluid />
 					</Col>
 					<Col>
 						<h1>{adTitle}</h1>

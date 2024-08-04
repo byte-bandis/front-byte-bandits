@@ -7,22 +7,12 @@ export const defaultAuthState = {
   error: null,
 };
 
-export const checkAuthTokenSaved = () => {
-  const token = localStorage.getItem("authToken");
-  return !!token;
-};
-
 export const authSlice = createSlice({
   name: "authSlice",
   initialState: defaultAuthState,
   reducers: {
     setAuth: (state, action) => {
       state.authState = action.payload;
-    },
-    setRememberMe: (state) => {
-      if (checkAuthTokenSaved()) {
-        state.authState = checkAuthTokenSaved();
-      }
     },
   },
   extraReducers: (builder) => {
@@ -42,5 +32,5 @@ export const authSlice = createSlice({
   },
 });
 
-export const { setAuth, setRememberMe } = authSlice.actions;
+export const { setAuth } = authSlice.actions;
 export default authSlice.reducer;

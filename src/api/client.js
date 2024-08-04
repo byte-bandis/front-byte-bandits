@@ -23,16 +23,8 @@ client.interceptors.response.use(
 
 export const setAuthorizationHeader = (token) => {
   client.defaults.headers.common["Authorization"] = `Bearer ${token}`;
-  console.log(
-    "Esto es client defaults al setear la cabecera: ",
-    client.defaults.headers.common
-  );
 };
 
 export const removeAuthorizationHeader = () => {
   delete client.defaults.headers.common["Authorization"];
-  console.log(
-    "Esto es client defaults al retirar la cabecera: ",
-    client.defaults.headers.common
-  );
 };

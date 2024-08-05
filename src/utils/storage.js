@@ -6,11 +6,11 @@ const storage = {
       return null;
     }
 
-    return JSON.parse(value);
+    return value;
   },
 
   set(key, value) {
-    localStorage.setItem(key, JSON.stringify(value));
+    localStorage.setItem(key, value);
   },
 
   remove(key) {

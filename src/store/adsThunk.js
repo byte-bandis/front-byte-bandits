@@ -1,11 +1,12 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import {client} from '../api/client';
 
-const getAds = createAsyncThunk('ads/fetchAds', async (id='', { rejectWithValue }) => {
+const getAds = createAsyncThunk('ads/fetchAds', async (params={page: 1,id: ''}, { rejectWithValue }) => {
+  const{page,id} = params
   try {
-    const response = await client.get(`/ads/${id}`);
-    console.log(response.data)
-    return response.ads;
+    const response = await client.get(`/ads/${id}/?page=${page}&limit=6`);
+    const result = response.ads ||response.ad
+    return result;
     
   } catch (error) {
     return rejectWithValue({

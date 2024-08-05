@@ -9,13 +9,14 @@ const ProductItem = ({
   ad,
 }) => {
   const { _id, adTitle, adBody, sell, price, photo, /* user, createdAt, updatedAt, */ tags } = ad
-  const image = photo ? `../../assets/images/${photo}` : "../../assets/images/no-image.jpg";
+  const image = photo ? `${photo}` : "../../assets/images/no-image.jpg";
+	const origin = import.meta.env.VITE_API_BASE_URL
 
   return (
     <Col>
       <Card>
         <Link to={`/product/${_id}`} className="position-relative">
-          <Card.Img variant='top' src={image} />
+          <Card.Img variant='top' src={image} crossOrigin={origin}/>
           <Stack
             direction='horizontal'
             gap={2}

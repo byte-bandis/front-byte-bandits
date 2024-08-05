@@ -11,7 +11,7 @@ export const loginWithThunk = createAsyncThunk(
   "auth/login",
   async (
     { email, password, requestStorage },
-    { dispatch, rejectWithValue }
+    { dispatch, rejectWithValue },
   ) => {
     try {
       const response = await login(email, password, requestStorage);
@@ -24,7 +24,7 @@ export const loginWithThunk = createAsyncThunk(
       dispatch(setError(errorPayload));
       return rejectWithValue(errorPayload);
     }
-  }
+  },
 );
 
 export const setRememberMe = () => (dispatch) => {

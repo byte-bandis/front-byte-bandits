@@ -1,8 +1,15 @@
-import { createSlice } from "@reduxjs/toolkit";
+import {
+  createSlice,
+  isAnyOf,
+  isFulfilled,
+  isPending,
+  isRejected,
+} from "@reduxjs/toolkit";
 
 export const defaultErrorState = {
   errorState: false,
   errorMessage: null,
+  loading: false,
 };
 
 export const errorSlice = createSlice({
@@ -17,6 +24,21 @@ export const errorSlice = createSlice({
       state.errorState = false;
       state.errorMessage = null;
     },
+  },
+  extraReducers: (builder) => {
+    builder
+      .addMatcher(isAnyOf(isRejected), (state, action) => {
+        state.errorState = true;
+        /* state.errorMessage = `${action.error.message} - ${action.payload.message} `; */
+        state.errorMessage = action.payload;
+        state.loading = false;
+      })
+      .addMatcher(isAnyOf(isPending), (state) => {
+        state.loading = true;
+      })
+      .addMatcher(isAnyOf(isFulfilled), (state) => {
+        state.loading = false;
+      });
   },
 });
 

@@ -42,7 +42,11 @@ const AccountMenu = () => {
 									<Link to={`/${userName}/whishlist`}>Wishlist</Link>
 								</Container>
 							</Navbar>
-
+							<Navbar className='bg-body-tertiary'>
+								<Container>
+									<Link to={`/${userName}/new`}>New</Link>
+								</Container>
+							</Navbar>
 							<Navbar className='bg-body-tertiary'>
 								<Container>
 									<Link to={`/${userName}/delete-account`}>Delete account</Link>

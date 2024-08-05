@@ -9,7 +9,7 @@ const storage = {
   },
 
   set(key, value) {
-    localStorage.setItem(key, JSON.stringify(value));
+    localStorage.setItem(key, value);
   },
 
   remove(key) {

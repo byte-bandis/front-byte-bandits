@@ -18,7 +18,6 @@ export const defaultadsState = {
       })
       .addCase(getAds.fulfilled, (state, action) => {
         state.loaded = true;
-        console.log(action.payload)
         state.data = action.payload;
       })
   },

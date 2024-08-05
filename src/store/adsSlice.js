@@ -11,6 +11,11 @@ export const defaultadsState = {
  const adsSlice = createSlice({
   name: "adsSlice",
   initialState: defaultadsState,
+  reducers: {
+    setPage: (state, action) => {
+      state.page = action.payload;
+    }
+  },
   extraReducers: builder => {
     builder
       .addCase(getAds.pending, state => {
@@ -23,4 +28,4 @@ export const defaultadsState = {
   },
 });
 export default adsSlice.reducer;
-export const { getAdsAction } = adsSlice.actions;
+export const { getAdsAction, setPage } = adsSlice.actions;

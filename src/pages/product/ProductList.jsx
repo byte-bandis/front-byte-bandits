@@ -9,10 +9,11 @@ import getAds from "../../store/adsThunk";
 
 const ProductList = () => {
   const dispatch = useDispatch();
+  const page = useSelector((state) => state.adsState.page);
 
   useEffect(() => {
-    dispatch(getAds());
-  }, [dispatch]);
+    dispatch(getAds({page ,id: ''}));
+  }, [dispatch, page]);
 
   const adsData = useSelector((state) => state.adsState.data);
 

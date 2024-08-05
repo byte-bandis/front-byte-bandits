@@ -1,6 +1,11 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import { login } from "../pages/auth/service";
 import { setError } from "./errorSlice";
+import { setAuth } from "./authSlice";
+import {
+  checkAuthTokenSaved,
+  setSavedAuthTokenInHeader,
+} from "../utils/authUtils";
 
 export const loginWithThunk = createAsyncThunk(
   "auth/login",
@@ -10,6 +15,7 @@ export const loginWithThunk = createAsyncThunk(
   ) => {
     try {
       const response = await login(email, password, requestStorage);
+      dispatch(setAuth(true));
       return response;
     } catch (error) {
       const errorPayload = {
@@ -20,3 +26,10 @@ export const loginWithThunk = createAsyncThunk(
     }
   }
 );
+
+export const setRememberMe = () => (dispatch) => {
+  if (checkAuthTokenSaved()) {
+    setSavedAuthTokenInHeader();
+    dispatch(setAuth(true));
+  }
+};

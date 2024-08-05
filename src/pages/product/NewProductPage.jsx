@@ -1,8 +1,10 @@
 import { useState } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
 import { Form, Button, Alert } from "react-bootstrap";
-import { createProduct } from "../../store/productsAsyncThunk";
+import { createProduct } from "../../store/productsThunk";
 import "./NewProduct.css";
+import { resetError, setError } from "../../store/errorSlice";
 
 const TAG_OPTIONS = ["lifestyle", "mobile", "motor", "work", "others"];
 
@@ -13,9 +15,10 @@ const NewProductPage = () => {
   const [inputPrice, setInputPrice] = useState("");
   const [inputTransactionType, setInputTransactionType] = useState("sell");
   const [selectedTags, setSelectedTags] = useState([]);
-  const [show, setShow] = useState(false);
-  const [loading, setLoading] = useState(false);
+  const error = useSelector((state) => state.errorState.errorMessage);
+  const loading = useSelector((state) => state.products.pending);
   const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   const handleTagChange = (tag) => {
     setSelectedTags((prevTags) =>
@@ -28,12 +31,14 @@ const NewProductPage = () => {
   const handleSubmit = async (event) => {
     event.preventDefault();
     if (selectedTags.length === 0) {
-      setShow(true);
+      dispatch(setError("Debes seleccionar al menos un tag."));
       return;
     }
 
-    setLoading(true);
-    setTimeout(() => {}, 1000);
+    await (async () => {
+      return new Promise((resolve) => setTimeout(resolve, 1000));
+    })();
+
     const formData = new FormData();
     formData.append("adTitle", inputName);
     formData.append("adBody", inputDescription);
@@ -44,12 +49,14 @@ const NewProductPage = () => {
 
     try {
       const response = await dispatch(createProduct(formData)).unwrap(); // unwrap() is used to get the actual value of the fulfilled action
-      // navigate to the product detail page
-    } catch (error) {
-      console.error("Failed to create product: ", error);
-    } finally {
-      setLoading(false);
+      navigate(`/product/${response._id}`);
+    } catch (errorMsg) {
+      console.error("Failed to create product: ", errorMsg);
     }
+  };
+
+  const clearError = () => {
+    dispatch(resetError());
   };
 
   return (
@@ -57,16 +64,6 @@ const NewProductPage = () => {
       <div className="new-product__backdrop"></div>
       <Form className="shadow p-4 bg-white rounded" onSubmit={handleSubmit}>
         <div className="h4 mb-2 text-center">Introduce tu producto</div>
-        {show && (
-          <Alert
-            className="mb-2"
-            variant="danger"
-            onClose={() => setShow(false)}
-            dismissible
-          >
-            Debes seleccionar al menos un tag.
-          </Alert>
-        )}
         <Form.Group className="mb-2" controlId="name">
           <Form.Label>Nombre</Form.Label>
           <Form.Control
@@ -152,6 +149,16 @@ const NewProductPage = () => {
           <Button className="w-100" variant="primary" type="submit" disabled>
             Creando...
           </Button>
+        )}
+        {error && (
+          <Alert
+            className="mt-2"
+            variant="danger"
+            onClose={() => clearError()}
+            dismissible
+          >
+            {error}
+          </Alert>
         )}
       </Form>
     </div>

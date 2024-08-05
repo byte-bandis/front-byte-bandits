@@ -6,17 +6,14 @@ import RootRouter from "./routes/RootRouter";
 import BreadCrumb from "./components/breadcrumb/BreadCrumb";
 import { useDispatch } from "react-redux";
 import { useEffect } from "react";
-import { setAuth } from "./store/authSlice";
+import { setRememberMe } from "./store/loginThunk";
 
 function App() {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    const token = localStorage.getItem("authToken");
-    if (token) {
-      dispatch(setAuth(true));
-    }
-  });
+    dispatch(setRememberMe());
+  }, [dispatch]);
 
   return (
     <>

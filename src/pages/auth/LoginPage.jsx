@@ -8,23 +8,46 @@ import "./login.css";
 import Logo from "../../assets/images/logo.svg";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
+import { getError, getIsLogged } from "../../store/selectors";
 
 const LoginPage = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const to = import.meta.env.VITE_LOGIN_REDIRECT_URI;
-  const { error, loading, authState } = useSelector((state) => state.authState);
+  const toRegister = "/register";
+  const isError = useSelector(getError);
+  const isLogged = useSelector(getIsLogged);
   const [inputEmail, setInputEmail] = useState("");
   const [inputPassword, setInputPassword] = useState("");
   const [checkboxStatus, setCheckboxStatus] = useState(false);
 
   const [show, setShow] = useState(false);
 
+  const resetForm = () => {
+    setInputEmail("");
+    setInputPassword("");
+    setCheckboxStatus(false);
+  };
+
   useEffect(() => {
-    if (error) {
+    if (isError) {
       setShow(true);
     }
-  }, [error, dispatch]);
+  }, [isError]);
+
+  useEffect(() => {
+    if (isLogged.authState) {
+      resetForm();
+      const timer = setTimeout(() => {
+        navigate(to, { replace: true });
+      }, 2000);
+      return () => clearTimeout(timer);
+    }
+  }, [isLogged.authState, dispatch, navigate, to]);
+
+  const handleToRegister = () => {
+    navigate(toRegister, { replace: true });
+  };
 
   const handleCheckboxChange = (event) => {
     setCheckboxStatus(event.target.checked);
@@ -39,9 +62,6 @@ const LoginPage = () => {
         requestStorage: checkboxStatus,
       })
     );
-    if (authState) {
-      navigate(to, { replace: true });
-    }
   };
 
   const handleCloseErrorAlert = () => {
@@ -51,7 +71,7 @@ const LoginPage = () => {
   const handlePassword = () => {};
 
   return (
-    <div className="sign-in__wrapper">
+    <div className={`sign-in__wrapper ${isLogged.authState ? "hidden" : ""}`}>
       {/* Overlay */}
       <div className="sign-in__backdrop"></div>
       {/* Form */}
@@ -66,7 +86,7 @@ const LoginPage = () => {
           alt="logo"
         />
         <div className="h4 mb-2 text-center">Sign In</div>
-        {/* ALert */}
+        {/* Alert */}
         {show ? (
           <Alert
             className="mb-2"
@@ -74,7 +94,7 @@ const LoginPage = () => {
             onClose={handleCloseErrorAlert}
             dismissible
           >
-            {error}
+            {isError.message}
           </Alert>
         ) : (
           <div />
@@ -116,7 +136,7 @@ const LoginPage = () => {
             onChange={handleCheckboxChange}
           />
         </Form.Group>
-        {!loading ? (
+        {!isLogged.loading ? (
           <Button
             className="w-100"
             variant="primary"
@@ -134,7 +154,14 @@ const LoginPage = () => {
             Logging In...
           </Button>
         )}
-        <div className="d-grid justify-content-end">
+        <div className="d-flex justify-content-between">
+          <Button
+            className="text-muted px-0"
+            variant="link"
+            onClick={handleToRegister}
+          >
+            Register new user
+          </Button>
           <Button
             className="text-muted px-0"
             variant="link"

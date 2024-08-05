@@ -37,7 +37,7 @@ const ProductView = () => {
 			<Container>
 				<Row className="d-flex flex-column d-md-flex flex-md-row">
 					<Col>
-						<Image src={image} alt='default image' crossorigin={origin} fluid />
+						<Image src={image} alt='default image' crossOrigin={origin} fluid />
 					</Col>
 					<Col>
 						<h1>{adTitle}</h1>

@@ -16,7 +16,7 @@ const ProductItem = ({
     <Col>
       <Card>
         <Link to={`/product/${_id}`} className="position-relative">
-          <Card.Img variant='top' src={image} crossorigin={origin}/>
+          <Card.Img variant='top' src={image} crossOrigin={origin}/>
           <Stack
             direction='horizontal'
             gap={2}

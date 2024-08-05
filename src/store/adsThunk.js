@@ -4,8 +4,9 @@ import {client} from '../api/client';
 const getAds = createAsyncThunk('ads/fetchAds', async (id='', { rejectWithValue }) => {
   try {
     const response = await client.get(`/ads/${id}`);
-    console.log(response.data)
-    return response.ads;
+    console.log(response.ad)
+    const result = response.ads ||response.ad
+    return result;
     
   } catch (error) {
     return rejectWithValue({

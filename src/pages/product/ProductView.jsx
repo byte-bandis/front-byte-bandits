@@ -4,19 +4,34 @@ import Row from "react-bootstrap/Row";
 import Button from "react-bootstrap/Button";
 import { Image } from "react-bootstrap";
 import PropTypes from 'prop-types';
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
+import { useEffect } from "react";
+import getAds from "../../store/adsThunk";
 
 
 
 const ProductView = () => {
 	const { productId } = useParams();
-	const loadedAds = useSelector(state => state.adsState.data).find(onead => onead._id === productId);
-	console.log(loadedAds)
-	const { /* _id,  */adTitle, adBody, sell, price, photo/* , user, createdAt, updatedAt, tags */ } = loadedAds
-	console.log(loadedAds)
-	const image = photo ? `${photo}` : "../../assets/images/no-image.jpg";
-	const origin = import.meta.env.VITE_API_BASE_URL
+    const dispatch = useDispatch();
+    
+    // Seleccionar los anuncios del estado
+    const loadedAds = useSelector(state => state.adsState.data).find(onead => onead._id === productId);
+    
+    // Efecto para cargar el anuncio si no se encuentra en el estado
+    useEffect(() => {
+        if (!loadedAds) {
+            dispatch(getAds(productId)); // Llama a la acción para obtener el anuncio
+        }
+    }, [loadedAds, productId, dispatch]);
+
+    if (!loadedAds) {
+        return <div>Cargando...</div>; // O algún otro indicador de carga
+    }
+
+    const { adTitle, adBody, sell, price, photo } = loadedAds;
+    const image = photo ? `${photo}` : "../../assets/images/no-image.jpg";
+    const origin = import.meta.env.VITE_API_BASE_URL;
 	return (
 		<>
 			<Container>

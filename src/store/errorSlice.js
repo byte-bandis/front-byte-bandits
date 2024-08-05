@@ -31,7 +31,6 @@ export const errorSlice = createSlice({
         state.errorState = true;
         /* state.errorMessage = `${action.error.message} - ${action.payload.message} `; */
         state.errorMessage = action.payload;
-        console.log(state.errorMessage);
         state.loading = false;
       })
       .addMatcher(isAnyOf(isPending), (state) => {

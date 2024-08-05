@@ -1,7 +1,6 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { register } from "../pages/register/service";
-import { setSuccess } from "./successSlice";
-import { setError } from "./errorSlice";
+import { setMessage } from "./uiSlice";
 
 const initialStateRegister = {
   loading: false,
@@ -13,11 +12,13 @@ export const registerAsync = createAsyncThunk(
   async (userData, { rejectWithValue, dispatch }) => {
     try {
       const response = await register(userData);
-      dispatch(setSuccess("User registered correctly."));
+      dispatch(
+        setMessage({ payload: "User registered correctly", type: "success" }),
+      );
       return response;
     } catch (error) {
-      dispatch(setError(error.message));
-      return rejectWithValue(error.message);
+      dispatch(setMessage(error.message || error), "error");
+      return rejectWithValue(error.message || error);
     }
   },
 );

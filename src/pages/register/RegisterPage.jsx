@@ -10,8 +10,8 @@ import Logo from "../../assets/images/logo.svg";
 import "../auth/login.css";
 import { NavLink, useNavigate } from "react-router-dom";
 import { checkAllFieldsFilled, validate } from "../../utils/formValidations";
-import { resetError } from "../../store/errorSlice";
-import { resetSuccess } from "../../store/successSlice";
+import { resetMessage } from "../../store/uiSlice";
+import { getUIMessage, getUIState } from "../../store/selectors";
 
 const RegisterPage = () => {
   const dispatch = useDispatch();
@@ -36,26 +36,23 @@ const RegisterPage = () => {
   } = formData;
 
   const { loading, validationErrors } = useSelector((state) => state.register);
-  const errorState = useSelector((state) => state.error.errorState);
-  const errorMessage = useSelector((state) => state.error.errorMessage);
-  const successState = useSelector((state) => state.success.successState);
-  const successMessage = useSelector((state) => state.success.successMessage);
+  const uiMessage = useSelector(getUIMessage);
+  const uiState = useSelector(getUIState);
 
   useEffect(() => {
-    if (successState) {
+    if (uiState === "success") {
       const timer = setTimeout(() => {
         navigate("/");
-        dispatch(resetSuccess());
+        dispatch(resetMessage());
       }, 3000);
       return () => clearTimeout(timer);
     }
-  }, [successState, dispatch, navigate]);
+  }, [uiState, dispatch, navigate]);
 
   useEffect(() => {
     return () => {
       dispatch(resetForm());
-      dispatch(resetError());
-      dispatch(resetSuccess());
+      dispatch(resetMessage());
     };
   }, [dispatch]);
 
@@ -65,8 +62,7 @@ const RegisterPage = () => {
       ...prevFormData,
       [name]: type === "checkbox" ? checked : value,
     }));
-    dispatch(resetError());
-    dispatch(resetSuccess());
+    dispatch(resetMessage());
   };
 
   const handleSubmit = (event) => {
@@ -92,24 +88,24 @@ const RegisterPage = () => {
           alt="logo"
         />
         <div className="h4 mb-2 text-center">Register</div>
-        {errorState && (
+        {uiState === "error" && (
           <Alert
             className="mb-2"
             variant="danger"
-            onClose={() => dispatch(resetError())}
+            onClose={() => dispatch(resetMessage())}
             dismissible
           >
-            {errorMessage}
+            {uiMessage}
           </Alert>
         )}
-        {successState && (
+        {uiState === "success" && (
           <Alert
             className="mb-2"
             variant="success"
-            onClose={() => dispatch(resetSuccess())}
+            onClose={() => dispatch(resetMessage())}
             dismissible
           >
-            {successMessage}
+            {uiMessage}
           </Alert>
         )}
         {Object.keys(validationErrors).map((key) => (

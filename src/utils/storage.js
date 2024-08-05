@@ -6,7 +6,7 @@ const storage = {
       return null;
     }
 
-    return JSON.parse(value);
+    return value;
   },
 
   set(key, value) {

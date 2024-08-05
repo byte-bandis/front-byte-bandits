@@ -7,13 +7,14 @@ import BreadCrumb from "./components/breadcrumb/BreadCrumb";
 import { useDispatch } from "react-redux";
 import { useEffect } from "react";
 import { setRememberMe } from "./store/loginThunk";
+import storage from "./utils/storage";
+import { setAuthorizationHeader } from "./api/client";
 
 function App() {
-  const dispatch = useDispatch();
-
-  useEffect(() => {
-    dispatch(setRememberMe());
-  }, [dispatch]);
+  const accessToken = storage.get("authToken");
+  if (accessToken) {
+    setAuthorizationHeader(accessToken);
+  }
 
   return (
     <>

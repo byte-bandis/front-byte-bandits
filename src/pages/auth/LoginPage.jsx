@@ -13,7 +13,8 @@ import { getError, getIsLogged } from "../../store/selectors";
 const LoginPage = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const to = import.meta.env.VITE_LOGIN_REDIRECT_URI;
+  const from =
+    location.state?.from?.pathname || import.meta.env.VITE_LOGIN_REDIRECT_URI;
   const toRegister = "/register";
   const isError = useSelector(getError);
   const isLogged = useSelector(getIsLogged);
@@ -22,6 +23,11 @@ const LoginPage = () => {
   const [checkboxStatus, setCheckboxStatus] = useState(false);
 
   const [show, setShow] = useState(false);
+
+  console.log(
+    "Esto es location.state.from.pathname: ",
+    location.state?.from?.pathname
+  );
 
   const resetForm = () => {
     setInputEmail("");
@@ -39,11 +45,11 @@ const LoginPage = () => {
     if (isLogged.authState) {
       resetForm();
       const timer = setTimeout(() => {
-        navigate(to, { replace: true });
+        navigate(from, { replace: true });
       }, 2000);
       return () => clearTimeout(timer);
     }
-  }, [isLogged.authState, dispatch, navigate, to]);
+  }, [isLogged.authState, dispatch, navigate, from]);
 
   const handleToRegister = () => {
     navigate(toRegister, { replace: true });

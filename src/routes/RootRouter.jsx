@@ -21,7 +21,7 @@ const RootRouter = () => {
     <Routes>
       <Route
         path="/"
-        element={<h1>Home</h1>}
+        element={<Navigate to="/product" />}
       />
       <Route
         path="/login"
@@ -39,16 +39,6 @@ const RootRouter = () => {
         path="/privacy-policy"
         element={<PrivacyPolicy />}
       />
-      {/* <Route
-        path="/login"
-        element={
-          <Navigate
-            to={location.state?.from || loginRedirectUri}
-            replace
-          />
-        }
-      /> */}
-
       <Route
         path=":userName"
         element={

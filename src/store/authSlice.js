@@ -1,9 +1,9 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { loginWithThunk } from "./loginThunk";
 
-const accessToken = localStorage.getItem('authToken');
+const accessToken = localStorage.getItem("authToken");
 export const defaultAuthState = {
-  authState: accessToken ? true : false,
+  authState: !!accessToken,
   loading: false,
   error: null,
 };

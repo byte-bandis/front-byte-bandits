@@ -1,27 +1,24 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import { register } from "../pages/register/register";
+import { register } from "../pages/register/service";
+import { setMessage } from "./uiSlice";
 
 const initialStateRegister = {
-  username: "",
-  email: "",
-  password: "",
-  passwordConfirmation: "",
-  birthdate: "",
-  acceptTerms: false,
   loading: false,
-  error: null,
-  success: null,
   validationErrors: {},
 };
 
 export const registerAsync = createAsyncThunk(
   "register/registerAsync",
-  async (userData, { rejectWithValue }) => {
+  async (userData, { rejectWithValue, dispatch }) => {
     try {
       const response = await register(userData);
+      dispatch(
+        setMessage({ payload: "User registered correctly", type: "success" }),
+      );
       return response;
     } catch (error) {
-      return rejectWithValue(error.message);
+      dispatch(setMessage(error.message || error), "error");
+      return rejectWithValue(error.message || error);
     }
   },
 );
@@ -29,34 +26,27 @@ export const registerSlice = createSlice({
   name: "register",
   initialState: initialStateRegister,
   reducers: {
-    registerUser: (state, action) => {
-      state[action.payload.name] = action.payload.value;
-    },
     setValidations: (state, action) => {
       state.validationErrors = action.payload;
     },
     resetForm: (state) => {
-      return initialStateRegister;
+      state.loading = false;
+      state.validationErrors = {};
     },
   },
   extraReducers: (builder) => {
     builder
       .addCase(registerAsync.pending, (state) => {
         state.loading = true;
-        state.error = null;
-        state.success = null;
       })
-      .addCase(registerAsync.fulfilled, (state, action) => {
+      .addCase(registerAsync.fulfilled, (state) => {
         state.loading = false;
-        state.success = "User created correctly";
       })
-      .addCase(registerAsync.rejected, (state, action) => {
+      .addCase(registerAsync.rejected, (state) => {
         state.loading = false;
-        state.error = action.payload;
       });
   },
 });
 
-export const { registerUser, setValidations, resetForm } =
-  registerSlice.actions;
+export const { setValidations, resetForm } = registerSlice.actions;
 export default registerSlice.reducer;

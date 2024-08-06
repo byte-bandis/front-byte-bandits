@@ -6,12 +6,13 @@ import styles from "./header.module.css";
 import Search from "../search/Search";
 import { logout } from "../../pages/auth/service";
 import { setAuth } from "../../store/authSlice";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 
 const Header = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const location = useLocation();
   const isAuthenticated = useSelector((state) => state.authState.authState);
 
   const handleLogout = () => {
@@ -50,6 +51,7 @@ const Header = () => {
                 <Nav.Link
                   as={Link}
                   to="/login"
+                  state={{ from: location }}
                 >
                   Login
                 </Nav.Link>

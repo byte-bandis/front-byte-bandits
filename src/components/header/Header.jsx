@@ -8,6 +8,7 @@ import { logout } from "../../pages/auth/service";
 import { setAuth } from "../../store/authSlice";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
+import SellBuyButton from "../../pages/product/SellBuyButton";
 
 const Header = () => {
   const dispatch = useDispatch();
@@ -28,19 +29,12 @@ const Header = () => {
           {isAuthenticated ? (
             <>
               <Nav.Item>
-                <Nav.Link
-                  as={Link}
-                  to="#"
-                  onClick={handleLogout}
-                >
+                <Nav.Link as={Link} to="#" onClick={handleLogout}>
                   LogOut
                 </Nav.Link>
               </Nav.Item>
               <Nav.Item>
-                <Nav.Link
-                  as={Link}
-                  to="/userdemo"
-                >
+                <Nav.Link as={Link} to="/userdemo">
                   My account
                 </Nav.Link>
               </Nav.Item>
@@ -48,19 +42,12 @@ const Header = () => {
           ) : (
             <>
               <Nav.Item>
-                <Nav.Link
-                  as={Link}
-                  to="/login"
-                  state={{ from: location }}
-                >
+                <Nav.Link as={Link} to="/login" state={{ from: location }}>
                   Login
                 </Nav.Link>
               </Nav.Item>
               <Nav.Item>
-                <Nav.Link
-                  as={Link}
-                  to="/register"
-                >
+                <Nav.Link as={Link} to="/register">
                   Register
                 </Nav.Link>
               </Nav.Item>
@@ -68,58 +55,35 @@ const Header = () => {
           )}
         </Nav>
       </Container>
-      <Navbar
-        expand="lg"
-        className={styles.header}
-      >
+      <Navbar expand="lg" className={styles.header}>
         <Container>
-          <Navbar.Brand
-            as={Link}
-            to="/"
-          >
+          <Navbar.Brand as={Link} to="/">
             React-Bootstrap
           </Navbar.Brand>
           <Navbar.Toggle aria-controls="basic-navbar-nav" />
           <Navbar.Collapse id="basic-navbar-nav">
             <Nav className="me-auto">
-              <Nav.Link
-                as={Link}
-                to="/product"
-              >
+              <Nav.Link as={Link} to="/product">
                 Product
               </Nav.Link>
-              <NavDropdown
-                title="Dropdown"
-                id="basic-nav-dropdown"
-              >
-                <NavDropdown.Item
-                  as={Link}
-                  to="#action/3.1"
-                >
+              <NavDropdown title="Dropdown" id="basic-nav-dropdown">
+                <NavDropdown.Item as={Link} to="#action/3.1">
                   Action
                 </NavDropdown.Item>
-                <NavDropdown.Item
-                  as={Link}
-                  to="#action/3.2"
-                >
+                <NavDropdown.Item as={Link} to="#action/3.2">
                   Another action
                 </NavDropdown.Item>
-                <NavDropdown.Item
-                  as={Link}
-                  to="#action/3.3"
-                >
+                <NavDropdown.Item as={Link} to="#action/3.3">
                   Something
                 </NavDropdown.Item>
                 <NavDropdown.Divider />
-                <NavDropdown.Item
-                  as={Link}
-                  to="#action/3.4"
-                >
+                <NavDropdown.Item as={Link} to="#action/3.4">
                   Separated link
                 </NavDropdown.Item>
               </NavDropdown>
             </Nav>
             <Search />
+            <SellBuyButton />
           </Navbar.Collapse>
         </Container>
       </Navbar>

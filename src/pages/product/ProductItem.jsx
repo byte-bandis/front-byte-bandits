@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 import { Stack, Badge } from "react-bootstrap";
 import { Heart } from "react-bootstrap-icons";
 import PropTypes from 'prop-types';
-
+import "./ProductItem.css";
 const ProductItem = ({ 
   ad,
 }) => {
@@ -16,17 +16,17 @@ const ProductItem = ({
     <Col>
       <Card>
         <Link to={`/product/${_id}`} className="position-relative">
-          <Card.Img variant='top' src={image} crossOrigin={origin}/>
+          <Card.Img variant='top' className="img-style" src={image} crossOrigin={origin}/>
           <Stack
             direction='horizontal'
             gap={2}
             className='position-absolute top-0 p-2'>
-            {/* <Badge pill bg='danger'>
+            <Badge pill bg='danger'>
               Sold
             </Badge>
             <Badge pill bg='warning' text='dark'>
               Reserved
-            </Badge> */}
+            </Badge>
           </Stack>
           <Stack direction="horizontal" gap={2} className='position-absolute bottom-0 p-2'>
             <Heart size={24} className="text-danger"/>

@@ -13,10 +13,6 @@ import TermsAndConditions from "../pages/register/TermsAndConditions";
 import PrivacyPolicy from "../pages/register/PrivacyPolicy";
 import RequireAuth from "../pages/auth/components/RequireAuth";
 const RootRouter = () => {
-  //const isAuthenticated = useSelector((state) => state.authState.authState);
-  /* const loginRedirectUri = import.meta.env.VITE_LOGIN_REDIRECT_URI;
-  const location = useLocation(); */
-
   return (
     <Routes>
       <Route

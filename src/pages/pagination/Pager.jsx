@@ -2,12 +2,14 @@ import { Pagination,Row, Col } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
 import { setPage } from "../../store/adsSlice";
 import getTotalAds from "../../store/adscounThunk";
+import { useEffect } from "react";
 
 const Pager = () => {
 	const dispatch = useDispatch()
-	dispatch(getTotalAds()).count;
+	useEffect(() => {
+		dispatch(getTotalAds());
+	}, [dispatch]);
 	const adsAccount = useSelector(state => state.adsState.totalAds)
-	console.log(adsAccount)
 	let active = useSelector((state) => state.adsState.page);
 
 	let items = [];

@@ -19,7 +19,7 @@ const ProductView = () => {
     
     useEffect(() => {
         if (!loadedAds) {
-            dispatch(getAds(productId)); 
+            dispatch(getAds({id: productId})); 
         }
     }, [loadedAds, productId, dispatch]);
 	

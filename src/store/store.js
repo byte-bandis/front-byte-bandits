@@ -2,16 +2,18 @@ import { configureStore } from "@reduxjs/toolkit";
 import authReducer from "./authSlice";
 import errorReducer from "./errorSlice";
 import registerReducer from "./registerSlice";
-import adsReducer from "./adsSlice";
 import productsReducer from "./productsSlice";
+import uiReducer from "./uiSlice";
+import adsReducer from "./adsSlice";
 
 export const store = configureStore({
   reducer: {
-    errorState: errorReducer,
     authState: authReducer,
     register: registerReducer,
-    adsState: adsReducer,
+    errorState: errorReducer,
     products: productsReducer,
+    ui: uiReducer,
+    adsState: adsReducer,
   },
   devTools: import.meta.env.NODE_ENV !== "production",
 });

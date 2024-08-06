@@ -1,0 +1,23 @@
+:root {
+  --search-bar-width: 20rem;
+  --search-bar-height: 3rem;
+  --search-button-width: 5rem;
+  --search-button-height: 3rem;
+  --general-gap: 1rem;
+}
+
+.searchRow {
+  display: flex;
+  align-items: center;
+}
+
+.barSearch {
+  width: var(--search-bar-width);
+  height: var(--search-bar-height);
+  margin-right: var(--general-gap);
+}
+
+.buttonSearch {
+  width: var(--search-button-width);
+  height: var(--search-button-height);
+}

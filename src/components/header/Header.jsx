@@ -3,54 +3,47 @@ import Nav from "react-bootstrap/Nav";
 import Navbar from "react-bootstrap/Navbar";
 import NavDropdown from "react-bootstrap/NavDropdown";
 import styles from "./header.module.css";
-import Search from "../search/Search";
-import { logout } from "../../pages/auth/service";
-import { setAuth } from "../../store/authSlice";
-import { Link, useLocation, useNavigate } from "react-router-dom";
-import { useDispatch, useSelector } from "react-redux";
-import SellBuyButton from "../../pages/product/SellBuyButton";
+import Search from "../molecules/search/Search";
+import { Link, useLocation } from "react-router-dom";
+import { useSelector } from "react-redux";
+import Logo from "../atoms/logo/Logo";
+import CustomButton from "../atoms/button/CustomButton";
 
 const Header = () => {
-  const dispatch = useDispatch();
-  const navigate = useNavigate();
   const location = useLocation();
   const isAuthenticated = useSelector((state) => state.authState.authState);
 
-  const handleLogout = () => {
-    logout();
-    dispatch(setAuth(false));
-    navigate("/");
-  };
-
   return (
     <>
-      <Container className="top-header d-flex flex-row justify-content-end">
-        <Nav>
+      <Container
+        className={`${styles.mainNav} d-flex justify-content-between align-items-center`}
+      >
+        <div className="d-flex align-items-center">
+          <Logo />
+          <Search />
+        </div>
+        <Nav className="d-flex align-items-center">
           {isAuthenticated ? (
             <>
-              <Nav.Item>
-                <Nav.Link as={Link} to="#" onClick={handleLogout}>
-                  LogOut
-                </Nav.Link>
-              </Nav.Item>
-              <Nav.Item>
-                <Nav.Link as={Link} to="/userdemo">
-                  My account
-                </Nav.Link>
-              </Nav.Item>
+              <CustomButton to="/userdemo" className={styles.myAccount}>
+                My account
+              </CustomButton>
+              <CustomButton to="/username/new" className={styles.sellButton}>
+                Sell
+              </CustomButton>
             </>
           ) : (
             <>
-              <Nav.Item>
-                <Nav.Link as={Link} to="/login" state={{ from: location }}>
-                  Login
-                </Nav.Link>
-              </Nav.Item>
-              <Nav.Item>
-                <Nav.Link as={Link} to="/register">
-                  Register
-                </Nav.Link>
-              </Nav.Item>
+              <CustomButton
+                to="/login"
+                state={{ from: location }}
+                className={styles.login}
+              >
+                Login or register
+              </CustomButton>
+              <CustomButton to="/username/new" className={styles.sellButton}>
+                Sell
+              </CustomButton>
             </>
           )}
         </Nav>
@@ -82,8 +75,6 @@ const Header = () => {
                 </NavDropdown.Item>
               </NavDropdown>
             </Nav>
-            <Search />
-            <SellBuyButton />
           </Navbar.Collapse>
         </Container>
       </Navbar>

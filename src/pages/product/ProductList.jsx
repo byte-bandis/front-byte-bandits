@@ -26,7 +26,7 @@ const ProductList = () => {
         xs={1}
         sm={2}
         md={3}
-        lg={3}
+        lg={4}
         role="list"
         className="list-wrapper g-4"
       >

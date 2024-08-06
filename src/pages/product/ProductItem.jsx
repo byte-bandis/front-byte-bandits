@@ -34,13 +34,13 @@ const ProductItem = ({
         </Link>
         <Card.Body>
           <Link to={`/product/${_id}`}>
-            <Card.Title>{adTitle}</Card.Title>
+            <Card.Title className="text-truncate">{adTitle}</Card.Title>
           </Link>
-          <Card.Text>
+          <Card.Text className="text-truncate">
             {adBody}
           </Card.Text>
           <Card.Text className='d-flex justify-content-between align-items-center'>
-            <span className='price'>{price}</span>
+            <span className='price'>{price} €</span>
             <span>{sell ? 'Venta' : 'Compra'}</span>
           </Card.Text>
         </Card.Body>

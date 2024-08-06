@@ -35,7 +35,7 @@ const AccountMenu = () => {
                 <Container>
                   <Navbar.Brand
                     as={Link}
-                    to={`/${userName}/myprofile`}
+                    to={`/${userName}/info`}
                   >
                     My Profile
                   </Navbar.Brand>

@@ -13,6 +13,8 @@ import TermsAndConditions from "../pages/register/TermsAndConditions";
 import PrivacyPolicy from "../pages/register/PrivacyPolicy";
 import RequireAuth from "../pages/auth/components/RequireAuth";
 import Profile from "../pages/customer/Profile";
+import LayoutProfile from "../pages/customer/LayoutProfile";
+import PersonalInfo from "../pages/customer/PersonalInfo";
 const RootRouter = () => {
   const userName = "pocholo";
   return (
@@ -50,9 +52,18 @@ const RootRouter = () => {
           element={<Account />}
         />
         <Route
-          path="myprofile"
-          element={<Profile />}
-        />
+          path="info"
+          element={<LayoutProfile />}
+        >
+          <Route
+            index
+            element={<Profile />}
+          />
+          <Route
+            path="mydata"
+            element={<PersonalInfo />}
+          />
+        </Route>
         <Route
           path="edit/:productId"
           element={<div>admin advert detail</div>}

@@ -3,8 +3,7 @@ import { createProduct } from './productsThunk';
 
 const productDefaultState = {
     loaded: false,
-    data: [],
-    pending: false,
+    data: []
 };
 
 const productsSlice = createSlice({
@@ -14,15 +13,8 @@ const productsSlice = createSlice({
   },
   extraReducers: (builder) => {
     builder
-      .addCase(createProduct.pending, (state) => {
-        state.pending = true;
-      })
       .addCase(createProduct.fulfilled, (state, action) => {
-        state.data.push(action.payload); 
-        state.pending = false; 
-      })
-      .addCase(createProduct.rejected, (state, action) => {
-        state.pending = false;
+        state.data.push(action.payload);  
       })
   },
 });

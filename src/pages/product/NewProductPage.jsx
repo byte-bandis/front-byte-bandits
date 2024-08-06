@@ -5,6 +5,7 @@ import { Form, Button, Alert } from "react-bootstrap";
 import { createProduct } from "../../store/productsThunk";
 import "./NewProduct.css";
 import { resetError, setError } from "../../store/errorSlice";
+import { getError, getLoading } from "../../store/selectors";
 
 const TAG_OPTIONS = ["lifestyle", "mobile", "motor", "work", "others"];
 
@@ -15,8 +16,8 @@ const NewProductPage = () => {
   const [inputPrice, setInputPrice] = useState("");
   const [inputTransactionType, setInputTransactionType] = useState("sell");
   const [selectedTags, setSelectedTags] = useState([]);
-  const error = useSelector((state) => state.errorState.errorMessage);
-  const loading = useSelector((state) => state.products.pending);
+  const error = useSelector(getError);
+  const loading = useSelector(getLoading);
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
@@ -28,10 +29,28 @@ const NewProductPage = () => {
     );
   };
 
+  const handlePriceChange = (e) => {
+    const value = e.target.value;
+    setInputPrice(value);
+  };
+
+  const handlePriceBlur = () => {
+    if (inputPrice && inputPrice > 0) {
+      setInputPrice(parseFloat(inputPrice).toFixed(2));
+    } else {
+      setInputPrice("0.00");
+    }
+  };
+
   const handleSubmit = async (event) => {
     event.preventDefault();
     if (selectedTags.length === 0) {
       dispatch(setError("Debes seleccionar al menos un tag."));
+      return;
+    }
+
+    if (inputPrice === "0.00") {
+      dispatch(setError("El precio debe ser mayor que 0."));
       return;
     }
 
@@ -92,7 +111,8 @@ const NewProductPage = () => {
             step="0.01"
             value={inputPrice}
             placeholder="Precio del producto"
-            onChange={(e) => setInputPrice(e.target.value)}
+            onChange={handlePriceChange}
+            onBlur={handlePriceBlur}
             required
           />
         </Form.Group>

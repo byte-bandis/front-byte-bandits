@@ -1,19 +1,19 @@
 import { useEffect, useState } from "react";
 import { Form, Button, Alert } from "react-bootstrap";
 import { loginWithThunk } from "../../store/loginThunk";
-
 import { resetError } from "../../store/errorSlice";
 import "./login.css";
 
 import Logo from "../../assets/images/logo.svg";
 import { useDispatch, useSelector } from "react-redux";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { getError, getIsLogged } from "../../store/selectors";
 
 const LoginPage = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const to = import.meta.env.VITE_LOGIN_REDIRECT_URI;
+  const location = useLocation();
+  const from = location.state?.from || "/";
   const toRegister = "/register";
   const isError = useSelector(getError);
   const isLogged = useSelector(getIsLogged);
@@ -39,11 +39,11 @@ const LoginPage = () => {
     if (isLogged.authState) {
       resetForm();
       const timer = setTimeout(() => {
-        navigate(to, { replace: true });
+        navigate(from, { replace: true });
       }, 2000);
       return () => clearTimeout(timer);
     }
-  }, [isLogged.authState, dispatch, navigate, to]);
+  }, [isLogged.authState, dispatch, navigate, from]);
 
   const handleToRegister = () => {
     navigate(toRegister, { replace: true });

@@ -2,6 +2,9 @@ import { client } from '../../api/client';
 
 const productsURL = '/ads';
 
+
+
+
 export const getProducts = () => {
   const url = productsURL;
   return client.get(url);

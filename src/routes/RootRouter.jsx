@@ -12,7 +12,9 @@ import NewProductPage from "../pages/product/NewProductPage";
 import TermsAndConditions from "../pages/register/TermsAndConditions";
 import PrivacyPolicy from "../pages/register/PrivacyPolicy";
 import RequireAuth from "../pages/auth/components/RequireAuth";
+import Profile from "../pages/customer/Profile";
 const RootRouter = () => {
+  const userName = "pocholo";
   return (
     <Routes>
       <Route
@@ -36,7 +38,7 @@ const RootRouter = () => {
         element={<PrivacyPolicy />}
       />
       <Route
-        path=":userName"
+        path={`:${userName}`}
         element={
           <RequireAuth>
             <LayoutAccount />
@@ -46,6 +48,10 @@ const RootRouter = () => {
         <Route
           index
           element={<Account />}
+        />
+        <Route
+          path="myprofile"
+          element={<Profile />}
         />
         <Route
           path="edit/:productId"

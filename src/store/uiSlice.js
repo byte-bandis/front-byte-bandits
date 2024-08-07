@@ -38,7 +38,7 @@ export const uiSlice = createSlice({
       })
       .addMatcher(isAnyOf(isFulfilled), (state, action) => {
         state.loading = false;
-        state.message = action.payload.message || action.payload;
+        state.message = action.payload.message || null;
         state.state = "success";
       });
   },

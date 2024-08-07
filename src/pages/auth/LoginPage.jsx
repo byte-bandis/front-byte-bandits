@@ -48,7 +48,7 @@ const LoginPage = () => {
       setShow(false);
       const timer = setTimeout(() => {
         navigate(from, { replace: true });
-      }, 500);
+      }, 5000);
       return () => clearTimeout(timer);
     }
   }, [isLogged.authState, loggedUser, dispatch, navigate, from]);

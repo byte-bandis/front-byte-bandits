@@ -1,13 +1,19 @@
 import { useEffect, useState } from "react";
 import { Form, Button, Alert } from "react-bootstrap";
 import { loginWithThunk } from "../../store/loginThunk";
-import { resetError } from "../../store/errorSlice";
+//import { resetError } from "../../store/errorSlice";
 import "./login.css";
 
 import Logo from "../../assets/images/logo.svg";
 import { useDispatch, useSelector } from "react-redux";
 import { useLocation, useNavigate } from "react-router-dom";
-import { getError, getIsLogged } from "../../store/selectors";
+import {
+  getError,
+  getIsLogged,
+  getLoggedUser,
+  getUIMessage,
+} from "../../store/selectors";
+import { resetMessage } from "../../store/uiSlice";
 
 const LoginPage = () => {
   const dispatch = useDispatch();
@@ -17,17 +23,17 @@ const LoginPage = () => {
   const toRegister = "/register";
   const isError = useSelector(getError);
   const isLogged = useSelector(getIsLogged);
+  const message = useSelector(getUIMessage);
   const [inputEmail, setInputEmail] = useState("");
   const [inputPassword, setInputPassword] = useState("");
   const [checkboxStatus, setCheckboxStatus] = useState(false);
-
   const [show, setShow] = useState(false);
-
   const resetForm = () => {
     setInputEmail("");
     setInputPassword("");
     setCheckboxStatus(false);
   };
+  const loggedUser = useSelector(getLoggedUser);
 
   useEffect(() => {
     if (isError) {
@@ -38,12 +44,14 @@ const LoginPage = () => {
   useEffect(() => {
     if (isLogged.authState) {
       resetForm();
+      dispatch(resetMessage());
+      setShow(false);
       const timer = setTimeout(() => {
         navigate(from, { replace: true });
-      }, 2000);
+      }, 500);
       return () => clearTimeout(timer);
     }
-  }, [isLogged.authState, dispatch, navigate, from]);
+  }, [isLogged.authState, loggedUser, dispatch, navigate, from]);
 
   const handleToRegister = () => {
     navigate(toRegister, { replace: true });
@@ -65,7 +73,7 @@ const LoginPage = () => {
   };
 
   const handleCloseErrorAlert = () => {
-    dispatch(resetError());
+    dispatch(resetMessage());
     setShow(false);
   };
   const handlePassword = () => {};
@@ -94,7 +102,7 @@ const LoginPage = () => {
             onClose={handleCloseErrorAlert}
             dismissible
           >
-            {isError.message}
+            {message}
           </Alert>
         ) : (
           <div />

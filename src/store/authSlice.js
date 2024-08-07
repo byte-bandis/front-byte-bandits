@@ -21,21 +21,11 @@ export const authSlice = createSlice({
     },
   },
   extraReducers: (builder) => {
-    builder
-      .addCase(loginWithThunk.pending, (state) => {
-        state.loading = true;
-        state.error = null;
-      })
-      .addCase(loginWithThunk.fulfilled, (state, action) => {
-        state.loading = false;
-        state.authState = true;
-        state.user.userName = action.payload.user.userName;
-        state.user.userId = action.payload.user.userId;
-      })
-      .addCase(loginWithThunk.rejected, (state, action) => {
-        state.loading = false;
-        state.error = action.payload.message;
-      });
+    builder.addCase(loginWithThunk.fulfilled, (state, action) => {
+      state.authState = true;
+      state.user.userName = action.payload.user.userName;
+      state.user.userId = action.payload.user.userId;
+    });
   },
 });
 

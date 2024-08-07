@@ -4,6 +4,10 @@ import { loginWithThunk } from "./loginThunk";
 const accessToken = localStorage.getItem("authToken");
 export const defaultAuthState = {
   authState: !!accessToken,
+  user: {
+    userName: null,
+    userId: null,
+  },
   loading: false,
   error: null,
 };
@@ -22,9 +26,11 @@ export const authSlice = createSlice({
         state.loading = true;
         state.error = null;
       })
-      .addCase(loginWithThunk.fulfilled, (state) => {
+      .addCase(loginWithThunk.fulfilled, (state, action) => {
         state.loading = false;
         state.authState = true;
+        state.user.userName = action.payload.user.userName;
+        state.user.userId = action.payload.user.userId;
       })
       .addCase(loginWithThunk.rejected, (state, action) => {
         state.loading = false;

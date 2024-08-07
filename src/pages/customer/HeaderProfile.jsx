@@ -1,9 +1,12 @@
 import Container from "react-bootstrap/Container";
 import Nav from "react-bootstrap/Nav";
+import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
+import { getLoggedUser } from "../../store/selectors";
 
 const HeaderProfile = () => {
-  const userName = "pocholo";
+  const loggedUser = useSelector(getLoggedUser);
+  const userName = loggedUser.userName;
 
   return (
     <>

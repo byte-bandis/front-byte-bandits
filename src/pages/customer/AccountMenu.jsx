@@ -6,10 +6,13 @@ import Offcanvas from "react-bootstrap/Offcanvas";
 import Navbar from "react-bootstrap/Navbar";
 import Container from "react-bootstrap/Container";
 import { Link } from "react-router-dom";
+import { getLoggedUser } from "../../store/selectors";
+import { useSelector } from "react-redux";
 
 const AccountMenu = () => {
+  const loggedUser = useSelector(getLoggedUser);
+  const userName = loggedUser.userName;
   const [show, setShow] = useState(false);
-  const userName = "pocholo";
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
   return (

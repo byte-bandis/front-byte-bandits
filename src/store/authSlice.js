@@ -8,8 +8,6 @@ export const defaultAuthState = {
     userName: null,
     userId: null,
   },
-  loading: false,
-  error: null,
 };
 
 export const authSlice = createSlice({

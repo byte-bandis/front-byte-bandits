@@ -4,6 +4,7 @@ export const getError = (state) => {
   if (state.ui.state === "error") {
     return state.ui.message;
   }
+  return null;
 };
 export const getLoading = (state) => state.errorState.pending;
 export const getUIMessage = (state) => state.ui.message;

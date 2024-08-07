@@ -8,10 +8,23 @@ import { Link, useLocation } from "react-router-dom";
 import { useSelector } from "react-redux";
 import Logo from "../logo/Logo";
 import CustomButton from "../CustomButton";
+import EmailLink from "../EmailLink";
+import HeartLink from "../HeartLink";
+import { logout } from "../../../pages/auth/service";
+import DropdownLink from "../DropdownLink";
 
 const Header = () => {
   const location = useLocation();
   const isAuthenticated = useSelector((state) => state.authState.authState);
+
+  const TAG_OPTIONS = ["lifestyle", "mobile", "motor", "work", "others"];
+
+  const handleLogout = () => {
+    const confirmed = window.confirm("Are you sure to close your session?");
+    if (confirmed) {
+      logout();
+    }
+  };
 
   return (
     <>
@@ -26,9 +39,25 @@ const Header = () => {
           </div>
           {isAuthenticated ? (
             <>
-              <CustomButton to="/userdemo" className={styles.myAccount}>
-                My account
-              </CustomButton>
+              <HeartLink
+                to={"/userdemo"}
+                size={30}
+                className={styles.heartHead}
+              />
+              <EmailLink
+                size={40}
+                className={styles.emailHead}
+                to={"/userdemo"}
+              />
+              <DropdownLink
+                userZone="/userdemo"
+                logoutFunction={handleLogout}
+                className={styles.myAccount}
+                optionText1="Private area"
+                optionText2="Logout"
+              >
+                My user zone
+              </DropdownLink>
               <CustomButton to="/username/new" className={styles.sellButton}>
                 Sell - Buy
               </CustomButton>

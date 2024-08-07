@@ -1,12 +1,11 @@
-:root {
+/* :root {
   --search-bar-width: 20rem;
   --search-bar-height: 3rem;
   --search-button-width: 5rem;
   --general-gap: 1rem;
 }
-
+ */
 .logo {
   width: 70px;
   height: auto;
-  margin-right: var(--general-gap);
 }

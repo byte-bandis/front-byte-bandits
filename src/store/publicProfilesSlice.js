@@ -15,10 +15,10 @@ const publicProfilesSlice = createSlice({
   },
   extraReducers: (builder) => {
     builder.addCase(getProfilesWithThunk.fulfilled, (state, action) => {
-      state.data(action.payload);
+      state.data = action.payload.usersPublicProfiles;
     });
   },
 });
 
+export const { setPublicProfiles } = publicProfilesSlice.actions;
 export default publicProfilesSlice.reducer;
-export const { setPublicProfiles } = publicProfilesSlice;

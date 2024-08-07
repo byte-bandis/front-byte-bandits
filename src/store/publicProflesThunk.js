@@ -1,18 +1,14 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import { getPublicProfiles } from "../pages/customer/service";
-import { setMessage } from "./uiSlice";
-import { setPublicProfiles } from "./publicProfilesSlice";
 
 export const getProfilesWithThunk = createAsyncThunk(
   "profiles/fetch",
-  async ({ dispatch, rejectWhithValue }) => {
+  async (_, { rejectWithValue }) => {
     try {
       const response = await getPublicProfiles();
-      console.log("Esto es response: ", response);
-      dispatch(setPublicProfiles(response));
+      return response;
     } catch (error) {
-      dispatch(setMessage(error.message));
-      return rejectWhithValue(error.message);
+      return rejectWithValue(error.message);
     }
   }
 );

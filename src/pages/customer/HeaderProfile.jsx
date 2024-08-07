@@ -1,8 +1,11 @@
 import Container from "react-bootstrap/Container";
 import Nav from "react-bootstrap/Nav";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import { getLoggedUser } from "../../store/selectors";
+import { getPublicProfiles } from "./service";
+import { useEffect } from "react";
+import { getProfilesWithThunk } from "../../store/publicProflesThunk";
 
 const HeaderProfile = () => {
   const loggedUser = useSelector(getLoggedUser);

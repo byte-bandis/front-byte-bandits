@@ -3,11 +3,11 @@ import Nav from "react-bootstrap/Nav";
 import Navbar from "react-bootstrap/Navbar";
 import NavDropdown from "react-bootstrap/NavDropdown";
 import styles from "./header.module.css";
-import Search from "../molecules/search/Search";
+import Search from "../search/Search";
 import { Link, useLocation } from "react-router-dom";
 import { useSelector } from "react-redux";
-import Logo from "../atoms/logo/Logo";
-import CustomButton from "../atoms/button/CustomButton";
+import Logo from "../logo/Logo";
+import CustomButton from "../CustomButton";
 
 const Header = () => {
   const location = useLocation();
@@ -17,19 +17,20 @@ const Header = () => {
     <>
       <Container
         className={`${styles.mainNav} d-flex justify-content-between align-items-center`}
+        fluid
       >
-        <div className="d-flex align-items-center">
-          <Logo />
-          <Search />
-        </div>
-        <Nav className="d-flex align-items-center">
+        <Nav className="d-flex align-items-center w-100">
+          <Logo className={styles.Logo} />
+          <div className="flex-grow-1 mx-3">
+            <Search />
+          </div>
           {isAuthenticated ? (
             <>
               <CustomButton to="/userdemo" className={styles.myAccount}>
                 My account
               </CustomButton>
               <CustomButton to="/username/new" className={styles.sellButton}>
-                Sell
+                Sell - Buy
               </CustomButton>
             </>
           ) : (
@@ -41,8 +42,12 @@ const Header = () => {
               >
                 Login or register
               </CustomButton>
-              <CustomButton to="/username/new" className={styles.sellButton}>
-                Sell
+              <CustomButton
+                to="/username/new"
+                className={styles.sellButton}
+                variant={"success"}
+              >
+                Sell - Buy
               </CustomButton>
             </>
           )}

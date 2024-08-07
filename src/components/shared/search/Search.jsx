@@ -1,20 +1,20 @@
 import Form from "react-bootstrap/Form";
-import Button from "react-bootstrap/Button";
+import CustomButton from "react-bootstrap/Button";
 import styles from "./search.module.css";
 
 const Search = () => {
   return (
     <>
-      <Form className={styles.searchRow}>
+      <Form className={`d-flex ${styles.rowSearch}`}>
         <Form.Control
           type="search"
           placeholder="Search"
           className={styles.barSearch}
           aria-label="Search"
         />
-        <Button variant="outline-success" className={styles.buttonSearch}>
+        <CustomButton variant="outline-success" className={styles.buttonSearch}>
           Search
-        </Button>
+        </CustomButton>
       </Form>
     </>
   );

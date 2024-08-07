@@ -1,0 +1,10 @@
+.rowSearch {
+  flex-grow: 1;
+  display: flex;
+  justify-content: space-between;
+}
+
+.barSearch {
+  flex-grow: 1;
+  margin-right: 5px;
+}

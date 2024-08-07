@@ -1,0 +1,9 @@
+.mainNav {
+  padding: 0 15px;
+}
+
+.myAccount,
+.sellButton,
+.login {
+  margin-left: 10px;
+}

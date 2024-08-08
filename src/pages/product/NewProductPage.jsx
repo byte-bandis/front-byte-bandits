@@ -6,7 +6,7 @@ import { createProduct } from "../../store/productsThunk";
 import "./NewProduct.css";
 import { resetMessage, setMessage } from "../../store/uiSlice";
 import { getError, getUILoading } from "../../store/selectors";
-import ImageUploader from "./ImageUploader";
+import ImageUploader from "./components/ImageUploader";
 
 const TAG_OPTIONS = ["lifestyle", "mobile", "motor", "work", "others"];
 
@@ -149,7 +149,6 @@ const NewProductPage = () => {
 
   return (
     <div className="new-product__wrapper">
-      <div className="new-product__backdrop"></div>
       <Form className="shadow p-4 bg-white rounded" onSubmit={handleSubmit}>
         <div className="h4 mb-2 text-center">Introduce tu producto</div>
         <Form.Group className="mb-2" controlId="name">
@@ -219,21 +218,13 @@ const NewProductPage = () => {
             ))}
           </div>
         </Form.Group>
-        <ImageUploader
-          inputImage={inputImage}
-          inputImagePreview={inputImagePreview}
-          setInputImage={setInputImage}
-          setInputImagePreview={setInputImagePreview}
-        />
-        {!loading ? (
-          <Button className="w-100" variant="primary" type="submit">
-            Crear Producto
-          </Button>
-        ) : (
-          <Button className="w-100" variant="primary" type="submit" disabled>
-            Creando...
-          </Button>
-        )}
+        <Form.Group className="mb-2">
+          <ImageUploader
+            inputImagePreview={inputImagePreview}
+            setInputImage={setInputImage}
+            setInputImagePreview={setInputImagePreview}
+          />
+        </Form.Group>
         {error && (
           <Alert
             className="mt-2"
@@ -243,6 +234,15 @@ const NewProductPage = () => {
           >
             {error}
           </Alert>
+        )}
+        {!loading ? (
+          <Button className="w-100" variant="primary" type="submit">
+            Crear Producto
+          </Button>
+        ) : (
+          <Button className="w-100" variant="primary" type="submit" disabled>
+            Creando...
+          </Button>
         )}
       </Form>
     </div>

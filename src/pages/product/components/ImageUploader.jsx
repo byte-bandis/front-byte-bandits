@@ -11,12 +11,12 @@ import {
 } from "./ImageUploaderStyles";
 
 const ImageUploader = ({
-  inputImage,
   inputImagePreview,
   setInputImage,
   setInputImagePreview,
   dropAreaText = "Arrastra y suelta aquí o haz clic para seleccionar una imagen",
   labelText = "Foto",
+  height = 300,
 }) => {
   const handleDrop = (e) => {
     e.preventDefault();
@@ -49,7 +49,11 @@ const ImageUploader = ({
   return (
     <div className="mb-2">
       <Form.Label>{labelText}</Form.Label>
-      <DropZone onDrop={handleDrop} onDragOver={(e) => e.preventDefault()}>
+      <DropZone
+        height={height}
+        onDrop={handleDrop}
+        onDragOver={(e) => e.preventDefault()}
+      >
         {inputImagePreview ? (
           <ImagePreview>
             <ImagePreviewImg src={inputImagePreview} alt="Product Preview" />

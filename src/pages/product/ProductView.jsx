@@ -1,13 +1,16 @@
 import PropTypes from "prop-types";
 import { useDispatch, useSelector } from "react-redux";
-import { useParams } from "react-router-dom";
+import {  useLocation, useNavigate, useParams } from "react-router-dom";
 import { useEffect } from "react";
 import getAds from "../../store/adsThunk";
 import styled from "styled-components";
 import Button from "./components/Button";
 import "./ProductItem.css";
+import { Heart } from "react-bootstrap-icons";
 
 const ProductView = () => {
+  const navigate = useNavigate();
+  const location = useLocation();
   const { productId } = useParams();
   const dispatch = useDispatch();
   const origin = import.meta.env.VITE_API_BASE_URL;
@@ -15,7 +18,10 @@ const ProductView = () => {
   const loadedAds = useSelector((state) => state.adsState.data).find(
     (onead) => onead._id === productId
   );
-
+  const handleBack = () => {
+    const to = location.state?.from || '/';
+    navigate(to, { replace: true });
+};
   useEffect(() => {
     if (!loadedAds) {
       dispatch(getAds({ id: productId }));
@@ -35,8 +41,12 @@ const ProductView = () => {
 			  sethiden={setHideDelete}
 		  /> */}
         <StyledAdvertPage className="advert">
+        <div className="heart">
+          <Heart color="red" size={24}/>
+        </div>
           {adTitle && (
             <>
+
               <div className="advert-img-container">
                 {image ? (
                   <img
@@ -82,7 +92,7 @@ const ProductView = () => {
                   <Button
                     id="backButton"
                     $customheight="28px"
-                    /* onClick={handleBack} */
+                    onClick={handleBack}
                   >
                     Volver
                   </Button>
@@ -128,7 +138,14 @@ const StyledAdvertPage = styled.div`
   border-radius: 10px;
   gap: 10px;
   margin: 0px auto;
+  position: relative;
 
+ & .heart {
+    position: absolute;
+    top: 30px;
+    left: 30px;
+    z-index: 10;
+  }
   & h2,
   h1,
   p {

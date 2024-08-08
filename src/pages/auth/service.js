@@ -3,7 +3,7 @@ import {
   setAuthorizationHeader,
   removeAuthorizationHeader,
 } from "../../api/client";
-import storage from "../utils/storage";
+import storage from "../../utils/storage";
 
 export const login = async (email, password, requestStorage) => {
   const credentials = {

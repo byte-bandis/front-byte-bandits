@@ -3,7 +3,8 @@ import { client } from "../api/client";
 
 const getAds = createAsyncThunk(
   "ads/fetchAds",
-  async (id = "", { rejectWithValue }) => {
+  async (params = { page: 1, id: "" }, { rejectWithValue }) => {
+    const { page, id } = params;
     try {
       const response = await client.get(`/ads/${id}/?page=${page}&limit=8`);
       const result = response.ads || response.ad;

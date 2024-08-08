@@ -1,32 +1,38 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { Form, Button, Alert } from "react-bootstrap";
 import { createProduct } from "../../store/productsThunk";
 import "./NewProduct.css";
-import { resetError, setError } from "../../store/errorSlice";
-import { getError, getLoading } from "../../store/selectors";
+import { resetMessage, setMessage } from "../../store/uiSlice";
+import { getError, getUILoading } from "../../store/selectors";
+import ImageUploader from "./ImageUploader";
 
 const TAG_OPTIONS = ["lifestyle", "mobile", "motor", "work", "others"];
 
 const NewProductPage = () => {
   const [inputName, setInputName] = useState("");
-  const [inputImage, setInputImage] = useState(null);
   const [inputDescription, setInputDescription] = useState("");
   const [inputPrice, setInputPrice] = useState("");
-  const [inputTransactionType, setInputTransactionType] = useState("sell");
+  const [inputTransactionType, setInputTransactionType] = useState(null);
   const [selectedTags, setSelectedTags] = useState([]);
+  const [inputImage, setInputImage] = useState(null);
+  const [inputImagePreview, setInputImagePreview] = useState(null);
   const error = useSelector(getError);
-  const loading = useSelector(getLoading);
+  const loading = useSelector(getUILoading);
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  const handleTagChange = (tag) => {
-    setSelectedTags((prevTags) =>
-      prevTags.includes(tag)
-        ? prevTags.filter((t) => t !== tag)
-        : [...prevTags, tag]
-    );
+  const handleInputNameChange = (e) => {
+    setInputName(e.target.value);
+  };
+
+  const handleInputDescriptionChange = (e) => {
+    setInputDescription(e.target.value);
+  };
+
+  const handleInputTransactionTypeChange = (e) => {
+    setInputTransactionType(e.target.value);
   };
 
   const handlePriceChange = (e) => {
@@ -42,15 +48,74 @@ const NewProductPage = () => {
     }
   };
 
+  const handleTagChange = (tag) => {
+    setSelectedTags((prevTags) =>
+      prevTags.includes(tag)
+        ? prevTags.filter((t) => t !== tag)
+        : [...prevTags, tag]
+    );
+  };
+
   const handleSubmit = async (event) => {
     event.preventDefault();
-    if (selectedTags.length === 0) {
-      dispatch(setError("Debes seleccionar al menos un tag."));
+
+    if (!inputName) {
+      dispatch(
+        setMessage({
+          payload: "Introduce un nombre para tu producto.",
+          type: "error",
+        })
+      );
       return;
     }
 
-    if (inputPrice === "0.00") {
-      dispatch(setError("El precio debe ser mayor que 0."));
+    if (!inputDescription) {
+      dispatch(
+        setMessage({
+          payload: "Introduce una descripción para tu producto.",
+          type: "error",
+        })
+      );
+      return;
+    }
+
+    if (inputPrice === "0.00" || !inputPrice) {
+      dispatch(
+        setMessage({
+          payload: "Introduce un precio válido para tu producto.",
+          type: "error",
+        })
+      );
+      return;
+    }
+
+    if (!inputTransactionType) {
+      dispatch(
+        setMessage({
+          payload: "Selecciona un tipo de transacción.",
+          type: "error",
+        })
+      );
+      return;
+    }
+
+    if (selectedTags.length === 0) {
+      dispatch(
+        setMessage({
+          payload: "Selecciona al menos un tag.",
+          type: "error",
+        })
+      );
+      return;
+    }
+
+    if (!inputImage) {
+      dispatch(
+        setMessage({
+          payload: "Selecciona una imagen para tu producto.",
+          type: "error",
+        })
+      );
       return;
     }
 
@@ -75,8 +140,12 @@ const NewProductPage = () => {
   };
 
   const clearError = () => {
-    dispatch(resetError());
+    dispatch(resetMessage());
   };
+
+  useEffect(() => {
+    if (error) dispatch(resetMessage());
+  }, []);
 
   return (
     <div className="new-product__wrapper">
@@ -89,8 +158,7 @@ const NewProductPage = () => {
             type="text"
             value={inputName}
             placeholder="Nombre del producto"
-            onChange={(e) => setInputName(e.target.value)}
-            required
+            onChange={handleInputNameChange}
           />
         </Form.Group>
         <Form.Group className="mb-2" controlId="description">
@@ -100,8 +168,7 @@ const NewProductPage = () => {
             rows={3}
             value={inputDescription}
             placeholder="Descripción del producto"
-            onChange={(e) => setInputDescription(e.target.value)}
-            required
+            onChange={handleInputDescriptionChange}
           />
         </Form.Group>
         <Form.Group className="mb-2" controlId="price">
@@ -110,10 +177,9 @@ const NewProductPage = () => {
             type="number"
             step="0.01"
             value={inputPrice}
-            placeholder="Precio del producto"
+            placeholder="0,00"
             onChange={handlePriceChange}
             onBlur={handlePriceBlur}
-            required
           />
         </Form.Group>
         <Form.Group className="mb-2">
@@ -123,7 +189,7 @@ const NewProductPage = () => {
             label="Venta"
             value="sell"
             checked={inputTransactionType === "sell"}
-            onChange={(e) => setInputTransactionType(e.target.value)}
+            onChange={handleInputTransactionTypeChange}
             required
             id="sell"
           />
@@ -132,7 +198,7 @@ const NewProductPage = () => {
             label="Compra"
             value="buy"
             checked={inputTransactionType === "buy"}
-            onChange={(e) => setInputTransactionType(e.target.value)}
+            onChange={handleInputTransactionTypeChange}
             required
             id="buy"
           />
@@ -153,14 +219,12 @@ const NewProductPage = () => {
             ))}
           </div>
         </Form.Group>
-        <Form.Group className="mb-2" controlId="image">
-          <Form.Label>Imagen</Form.Label>
-          <Form.Control
-            type="file"
-            onChange={(e) => setInputImage(e.target.files[0])}
-            required
-          />
-        </Form.Group>
+        <ImageUploader
+          inputImage={inputImage}
+          inputImagePreview={inputImagePreview}
+          setInputImage={setInputImage}
+          setInputImagePreview={setInputImagePreview}
+        />
         {!loading ? (
           <Button className="w-100" variant="primary" type="submit">
             Crear Producto

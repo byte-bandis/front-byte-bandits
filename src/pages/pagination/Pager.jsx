@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { setPage } from "../../store/adsSlice";
 import getTotalAds from "../../store/adscounThunk";
 import { useEffect } from "react";
+import { ArrowLeft, ArrowRight } from "react-bootstrap-icons";
 
 const Pager = () => {
   const dispatch = useDispatch();
@@ -15,12 +16,16 @@ const Pager = () => {
   const max = Math.ceil(adsAccount / 8);
   console.log(adsAccount / 8);
   let items = [];
+  items.push(
+    <Pagination.Prev><ArrowLeft  /></Pagination.Prev>
+    )
   for (let number = 1; number <= max; number++) {
     if (
       number < active - steps - Math.max(steps + active - max, 0) ||
       number > active + steps + Math.max(steps - active + 1, 0)
     )
       continue;
+      
     items.push(
       <Pagination.Item
         key={number}
@@ -33,6 +38,8 @@ const Pager = () => {
       </Pagination.Item>
     );
   }
+  <Pagination.Post><ArrowRight  /></Pagination.Post>
+
   return (
     <>
       <Row>

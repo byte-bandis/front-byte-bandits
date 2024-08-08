@@ -1,15 +1,16 @@
 import Container from "react-bootstrap/Container";
 import Nav from "react-bootstrap/Nav";
-import { useDispatch, useSelector } from "react-redux";
-import { Link } from "react-router-dom";
+import { useSelector } from "react-redux";
+import { Link, useParams } from "react-router-dom";
 import { getLoggedUser } from "../../store/selectors";
-import { getPublicProfiles } from "./service";
+/* import { getPublicProfiles } from "./service";
 import { useEffect } from "react";
 import { getProfilesWithThunk } from "../../store/publicProflesThunk";
-
+ */
 const HeaderProfile = () => {
   const loggedUser = useSelector(getLoggedUser);
-  const userName = loggedUser.userName;
+  const { username } = useParams();
+  const myProfile = username === loggedUser.username ? username : null;
 
   return (
     <>
@@ -18,7 +19,7 @@ const HeaderProfile = () => {
           <Nav.Item>
             <Nav.Link
               as={Link}
-              to={`/${userName}/info`}
+              to={`/${myProfile}/info`}
             >
               Profile
             </Nav.Link>
@@ -26,7 +27,7 @@ const HeaderProfile = () => {
           <Nav.Item>
             <Nav.Link
               as={Link}
-              to={`/${userName}/info/mydata`}
+              to={`/${myProfile}/info/mydata`}
             >
               Account
             </Nav.Link>

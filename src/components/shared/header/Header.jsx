@@ -12,10 +12,15 @@ import EmailLink from "../EmailLink";
 import HeartLink from "../HeartLink";
 import { logout } from "../../../pages/auth/service";
 import DropdownLink from "../DropdownLink";
+import { useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { setAuth } from "../../../store/authSlice";
 
 const Header = () => {
   const location = useLocation();
   const isAuthenticated = useSelector((state) => state.authState.authState);
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
 
   const TAG_OPTIONS = ["lifestyle", "mobile", "motor", "work", "others"];
 
@@ -23,8 +28,15 @@ const Header = () => {
     const confirmed = window.confirm("Are you sure to close your session?");
     if (confirmed) {
       logout();
+      dispatch(setAuth(false));
+      navigate("/");
     }
   };
+
+  const dropdownOptions = [
+    { text: "User Zone", to: "/myaccount", className: "UserZone" },
+    { text: "Log out", onClick: handleLogout, className: "Logout" },
+  ];
 
   return (
     <>
@@ -40,23 +52,20 @@ const Header = () => {
           {isAuthenticated ? (
             <>
               <HeartLink
-                to={"/userdemo"}
+                to={"/myaccount"}
                 size={30}
                 className={styles.heartHead}
               />
               <EmailLink
                 size={40}
                 className={styles.emailHead}
-                to={"/userdemo"}
+                to={"/myaccount"}
               />
               <DropdownLink
-                userZone="/userdemo"
-                logoutFunction={handleLogout}
+                options={dropdownOptions}
                 className={styles.myAccount}
-                optionText1="Private area"
-                optionText2="Logout"
               >
-                My user zone
+                My account
               </DropdownLink>
               <CustomButton to="/username/new" className={styles.sellButton}>
                 Sell - Buy

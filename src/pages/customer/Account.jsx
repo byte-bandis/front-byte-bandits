@@ -1,14 +1,18 @@
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import ProductList from "./PoductList";
 import Profile from "./Profile";
+import { getLoggedUser } from "../../store/selectors";
 import { useEffect } from "react";
-import { getProfilesWithThunk } from "../../store/publicProflesThunk";
-import { getPublicProfiles } from "./service";
+import { getMyProfileWithThunk } from "../../store/profilesThunk";
 
 const Account = () => {
-  //console.log("Esto es perfiles: ", perfiles);
   const dispatch = useDispatch();
-  dispatch(getProfilesWithThunk());
+  const isLogged = useSelector(getLoggedUser);
+  useEffect(() => {
+    if (isLogged) {
+      dispatch(getMyProfileWithThunk(isLogged.userName));
+    }
+  }, [isLogged, dispatch]);
 
   return (
     <>

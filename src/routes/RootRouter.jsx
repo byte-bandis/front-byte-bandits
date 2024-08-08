@@ -23,10 +23,6 @@ const RootRouter = () => {
   return (
     <Routes>
       <Route
-        path="/"
-        element={<Navigate to="/product" />}
-      />
-      <Route
         path="/login"
         element={<LoginPage />}
       />
@@ -105,6 +101,10 @@ const RootRouter = () => {
       <Route
         path="*"
         element={<Navigate to="/404" />}
+      />
+      <Route
+        path="/"
+        element={<Navigate to="/product" />}
       />
     </Routes>
   );

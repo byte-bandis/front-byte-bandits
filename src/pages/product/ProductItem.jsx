@@ -1,94 +1,57 @@
-import Col from "react-bootstrap/Col";
-import Card from "react-bootstrap/Card";
 import { Link } from "react-router-dom";
-import { Stack, Badge } from "react-bootstrap";
 import { Heart } from "react-bootstrap-icons";
 import PropTypes from "prop-types";
 import "./ProductItem.css";
+import styled from "styled-components";
 const ProductItem = ({ ad }) => {
-  const {
-    _id,
-    adTitle,
-    adBody,
-    sell,
-    price,
-    photo,
-    /* user, createdAt, updatedAt, */ tags,
-  } = ad;
-  const image = photo ? `${photo}` : "../../assets/images/no-image.jpg";
+  const { _id, adTitle, sell, price, photo, tags } = ad;
+  const image = photo ? `${photo}` : null;
   const origin = import.meta.env.VITE_API_BASE_URL;
 
   return (
-    <Col>
-      <Card>
-        <Link
-          to={`/product/${_id}`}
-          className="position-relative"
-        >
-          <Card.Img
-            variant="top"
-            className="img-style"
-            src={image}
-            crossOrigin={origin}
-          />
-          <Stack
-            direction="horizontal"
-            gap={2}
-            className="position-absolute top-0 p-2"
-          >
-            <Badge
-              pill
-              bg="danger"
-            >
-              Sold
-            </Badge>
-            <Badge
-              pill
-              bg="warning"
-              text="dark"
-            >
-              Reserved
-            </Badge>
-          </Stack>
-          <Stack
-            direction="horizontal"
-            gap={2}
-            className="position-absolute bottom-0 p-2"
-          >
-            <Heart
-              size={24}
-              className="text-danger"
+    <Link
+      className="add"
+      to={`/product/${_id}`}
+    >
+      <StyledSingleAd className="single-ad">
+        <div className="heart">
+          <Heart color="red" />
+        </div>
+
+        <div className="img-container">
+          {photo ? (
+            <img
+              src={image}
+              alt={"Imagen de" + adTitle}
+              crossOrigin={origin}
             />
-          </Stack>
-        </Link>
-        <Card.Body>
-          <Link to={`/product/${_id}`}>
-            <Card.Title className="text-truncate">{adTitle}</Card.Title>
-          </Link>
-          <Card.Text className="text-truncate">{adBody}</Card.Text>
-          <Card.Text className="d-flex justify-content-between align-items-center">
-            <span className="price">{price} €</span>
-            <span>{sell ? "Venta" : "Compra"}</span>
-          </Card.Text>
-        </Card.Body>
-        <Card.Footer>
-          <Stack
-            direction="horizontal"
-            gap={2}
-          >
+          ) : (
+            <img
+              className="noImg"
+              src={image}
+              alt="Articulo sin foto"
+              crossOrigin={origin}
+            />
+          )}
+        </div>
+
+        <div className="textcontainer">
+          <strong className="">{price} €</strong>
+          <p className="item">{adTitle}</p>
+          <p className="pill sell">{sell ? "Venta" : "Compra"}</p>
+          <div className="tags-container">
             {tags.map((tag, index) => (
-              <Badge
-                key={`${_id}-${index}`}
-                pill
-                bg="primary"
+              <div
+                key={index}
+                className="pill"
               >
-                {tag}
-              </Badge>
+                <p className="pill-text">{tag}</p>
+              </div>
             ))}
-          </Stack>
-        </Card.Footer>
-      </Card>
-    </Col>
+          </div>
+        </div>
+      </StyledSingleAd>
+    </Link>
   );
 };
 
@@ -108,3 +71,99 @@ ProductItem.propTypes = {
 };
 
 export default ProductItem;
+const StyledSingleAd = styled.div`
+  box-shadow: 0px 0px 9px 4px var(--shadow-1);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  width: 240px;
+  max-height: 340px;
+  gap: 4px;
+  transition: 0.09s;
+  border-radius: 10px;
+  padding-bottom: 10px;
+  position: relative;
+
+  background: var(--accent-200);
+  & .heart {
+    position: absolute;
+    top: 7px;
+    left: 10px;
+    z-index: 10;
+  }
+  & .item {
+    margin: 0;
+    color: var(--accent-100);
+    font-size: 16px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  & .img-container {
+    position: relative;
+    max-width: 100%;
+    height: 200px;
+    max-height: 100%;
+    justify-content: center;
+
+    align-items: center;
+    background: var(--accent-100);
+    overflow: hidden;
+    &:has(.noImg) img {
+      width: 40%;
+      height: 40%;
+      object-fit: cover;
+    }
+
+    & img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+    & .noImg {
+      opacity: 0.6;
+    }
+  }
+  & .textcontainer {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    padding-left: 10px;
+    padding-right: 10px;
+  }
+
+  & strong {
+    font-size: large;
+    color: var(--accent-100);
+  }
+  & .pill {
+    text-align: center;
+    padding: 1px 4px;
+    border-radius: 10px;
+    color: var(--tag-2);
+    height: fit-content;
+    background: var(--tag-1);
+    gap: 4px;
+
+    & .pill-text {
+      color: var(--tag-2);
+      font-size: 12px;
+      font-weight: bold;
+      padding: 0px 4px;
+      margin: 0;
+    }
+  }
+  & .tags-container {
+    display: flex;
+    overflow: hidden;
+    height: fit-content;
+    gap: 4px;
+  }
+  & .sell {
+    color: var(--botton-2);
+    background: var(--botton-1);
+  }
+  &:hover {
+    transform: translate(0, -5px);
+  }
+`;

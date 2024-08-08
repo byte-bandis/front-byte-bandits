@@ -28,7 +28,7 @@ const ProductList = () => {
         md={3}
         lg={4}
         role="list"
-        className="list-wrapper g-4"
+        className="list-wrapper g-5"
       >
         {adsData &&
           adsData.map((ad) => (

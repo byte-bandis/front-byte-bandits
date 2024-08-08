@@ -44,11 +44,10 @@ const LoginPage = () => {
   useEffect(() => {
     if (isLogged.authState) {
       resetForm();
-      dispatch(resetMessage());
       setShow(false);
       const timer = setTimeout(() => {
         navigate(from, { replace: true });
-      }, 5000);
+      }, 500);
       return () => clearTimeout(timer);
     }
   }, [isLogged.authState, loggedUser, dispatch, navigate, from]);

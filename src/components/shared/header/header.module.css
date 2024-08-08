@@ -18,3 +18,8 @@
 .emailHead:hover {
   color: red;
 }
+
+.Logout:hover {
+  background-color: red;
+  color: white;
+}

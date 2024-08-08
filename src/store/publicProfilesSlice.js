@@ -1,5 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { getProfilesWithThunk } from "./publicProflesThunk";
+import { getProfilesWithThunk } from "./profilesThunk";
 
 export const defaultPublicProfilesState = {
   data: [],

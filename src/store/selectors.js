@@ -10,4 +10,5 @@ export const getLoading = (state) => state.errorState.pending;
 export const getUIMessage = (state) => state.ui.message;
 export const getUIState = (state) => state.ui.state;
 export const getLoggedUser = (state) => state.authState.user;
-export const getPublicProfiles = (state) => state.getPublicProfiles.data;
+export const getPublicProfiles = (state) => state.publicProfiles.data;
+export const getMyProfile = (state) => state.myProfile.data;

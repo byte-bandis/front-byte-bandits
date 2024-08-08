@@ -8,10 +8,8 @@ import { useEffect } from "react";
 import { getProfilesWithThunk } from "../../store/publicProflesThunk";
  */
 const HeaderProfile = () => {
-  const loggedUser = useSelector(getLoggedUser);
   const { username } = useParams();
-  const myProfile = username === loggedUser.username ? username : null;
-
+  console.log("esto es username de los parámetros: ", username);
   return (
     <>
       <Container className="top-header d-flex flex-row justify-content-start">
@@ -19,7 +17,7 @@ const HeaderProfile = () => {
           <Nav.Item>
             <Nav.Link
               as={Link}
-              to={`/${myProfile}/info`}
+              to={`/${username}/info`}
             >
               Profile
             </Nav.Link>
@@ -27,7 +25,7 @@ const HeaderProfile = () => {
           <Nav.Item>
             <Nav.Link
               as={Link}
-              to={`/${myProfile}/info/mydata`}
+              to={`/${username}/info/mydata`}
             >
               Account
             </Nav.Link>

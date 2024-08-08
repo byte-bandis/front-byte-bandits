@@ -1,23 +1,25 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { Form, Button, Alert } from "react-bootstrap";
+import { Display, X } from "react-bootstrap-icons";
 import { createProduct } from "../../store/productsThunk";
 import "./NewProduct.css";
-import { resetError, setError } from "../../store/errorSlice";
-import { getError, getLoading } from "../../store/selectors";
+import { resetMessage, setMessage } from "../../store/uiSlice";
+import { getError, getUILoading } from "../../store/selectors";
 
 const TAG_OPTIONS = ["lifestyle", "mobile", "motor", "work", "others"];
 
 const NewProductPage = () => {
   const [inputName, setInputName] = useState("");
   const [inputImage, setInputImage] = useState(null);
+  const [inputImagePreview, setInputImagePreview] = useState(null);
   const [inputDescription, setInputDescription] = useState("");
   const [inputPrice, setInputPrice] = useState("");
   const [inputTransactionType, setInputTransactionType] = useState("sell");
   const [selectedTags, setSelectedTags] = useState([]);
   const error = useSelector(getError);
-  const loading = useSelector(getLoading);
+  const loading = useSelector(getUILoading);
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
@@ -42,15 +44,54 @@ const NewProductPage = () => {
     }
   };
 
+  const handleDrop = (e) => {
+    e.preventDefault();
+    const file = e.dataTransfer.files[0];
+
+    setImageFile(file);
+  };
+
+  const handleImageChange = (e) => {
+    const file = e.target.files[0];
+    setImageFile(file);
+  };
+
+  const setImageFile = (file) => {
+    setInputImage(file);
+
+    const reader = new FileReader();
+    reader.onloadend = () => {
+      setInputImagePreview(reader.result);
+    };
+    if (file) {
+      reader.readAsDataURL(file);
+    }
+  };
+
+  const handleRemoveImage = () => {
+    setInputImage(null);
+    setInputImagePreview("");
+  };
+
   const handleSubmit = async (event) => {
     event.preventDefault();
     if (selectedTags.length === 0) {
-      dispatch(setError("Debes seleccionar al menos un tag."));
+      dispatch(
+        setMessage({
+          payload: "Selecciona al menos un tag.",
+          type: "error",
+        })
+      );
       return;
     }
 
     if (inputPrice === "0.00") {
-      dispatch(setError("El precio debe ser mayor que 0."));
+      dispatch(
+        setMessage({
+          payload: "El precio debe ser mayor que 0.",
+          type: "error",
+        })
+      );
       return;
     }
 
@@ -75,8 +116,12 @@ const NewProductPage = () => {
   };
 
   const clearError = () => {
-    dispatch(resetError());
+    dispatch(resetMessage());
   };
+
+  useEffect(() => {
+    if (error) dispatch(resetMessage());
+  }, []);
 
   return (
     <div className="new-product__wrapper">
@@ -154,12 +199,30 @@ const NewProductPage = () => {
           </div>
         </Form.Group>
         <Form.Group className="mb-2" controlId="image">
-          <Form.Label>Imagen</Form.Label>
-          <Form.Control
-            type="file"
-            onChange={(e) => setInputImage(e.target.files[0])}
-            required
-          />
+          <Form.Label></Form.Label>
+          <div
+            className="drop-zone"
+            onDrop={handleDrop}
+            onDragOver={(e) => e.preventDefault()}
+          >
+            {inputImagePreview ? (
+              <div className="image-preview">
+                <img src={inputImagePreview} alt="Product Preview" />
+                <button onClick={handleRemoveImage} className="remove-btn">
+                  <X className="remove-btn-x" />
+                </button>
+              </div>
+            ) : (
+              <label className="custom-file-upload">
+                <input
+                  type="file"
+                  onChange={handleImageChange}
+                  required={!inputImage}
+                />
+                Arrastra y suelta aquí o haz clic para seleccionar una imagen
+              </label>
+            )}
+          </div>
         </Form.Group>
         {!loading ? (
           <Button className="w-100" variant="primary" type="submit">

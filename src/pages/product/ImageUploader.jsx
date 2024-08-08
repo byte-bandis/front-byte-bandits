@@ -1,4 +1,5 @@
 import React from "react";
+import PropTypes from "prop-types";
 import { Form } from "react-bootstrap";
 import {
   DropZone,
@@ -63,6 +64,15 @@ const ImageUploader = ({
       </DropZone>
     </div>
   );
+};
+
+ImageUploader.propTypes = {
+  inputImage: PropTypes.object,
+  inputImagePreview: PropTypes.string,
+  setInputImage: PropTypes.func.isRequired,
+  setInputImagePreview: PropTypes.func.isRequired,
+  dropAreaText: PropTypes.string,
+  labelText: PropTypes.string,
 };
 
 export default ImageUploader;

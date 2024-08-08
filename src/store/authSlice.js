@@ -2,9 +2,11 @@ import { createSlice } from "@reduxjs/toolkit";
 import { loginWithThunk } from "./loginThunk";
 
 export const defaultAuthState = {
-  authState: false,
-  loading: false,
-  error: null,
+  authState: !!accessToken,
+  user: {
+    userName: null,
+    userId: null,
+  },
 };
 
 export const authSlice = createSlice({
@@ -16,19 +18,11 @@ export const authSlice = createSlice({
     },
   },
   extraReducers: (builder) => {
-    builder
-      .addCase(loginWithThunk.pending, (state) => {
-        state.loading = true;
-        state.error = null;
-      })
-      .addCase(loginWithThunk.fulfilled, (state) => {
-        state.loading = false;
-        state.authState = true;
-      })
-      .addCase(loginWithThunk.rejected, (state, action) => {
-        state.loading = false;
-        state.error = action.payload.message;
-      });
+    builder.addCase(loginWithThunk.fulfilled, (state, action) => {
+      state.authState = true;
+      state.user.userName = action.payload.user.userName;
+      state.user.userId = action.payload.user.userId;
+    });
   },
 });
 

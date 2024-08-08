@@ -30,7 +30,8 @@ export const uiSlice = createSlice({
     builder
       .addMatcher(isAnyOf(isRejected), (state, action) => {
         state.state = "error";
-        state.message = action.error.message || action.payload;
+        //state.message = action.error.message || action.payload;
+        state.message = action.payload.message || action.payload;
         state.loading = false;
       })
       .addMatcher(isAnyOf(isPending), (state) => {
@@ -38,7 +39,7 @@ export const uiSlice = createSlice({
       })
       .addMatcher(isAnyOf(isFulfilled), (state, action) => {
         state.loading = false;
-        state.message = action.payload.message || action.payload;
+        state.message = action.payload.message || null;
         state.state = "success";
       });
   },

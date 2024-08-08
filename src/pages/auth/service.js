@@ -12,12 +12,23 @@ export const login = async (email, password, requestStorage) => {
     requestStorage,
   };
 
-  return client.post("user/login", credentials).then(({ token }) => {
-    setAuthorizationHeader(token);
-    if (requestStorage) {
-      storage.set("authToken", token);
-    }
-  });
+  return client
+    .post("user/login", credentials)
+    .then(({ token, userName, userId }) => {
+      setAuthorizationHeader(token);
+      if (requestStorage) {
+        storage.set("authToken", token);
+      }
+      if (token) {
+        return {
+          user: {
+            userName,
+            userId,
+          },
+          message: "Login successful!",
+        };
+      }
+    });
 };
 
 export const logout = () => {

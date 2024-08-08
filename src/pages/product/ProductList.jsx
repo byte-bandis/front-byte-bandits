@@ -1,12 +1,11 @@
-import Container from "react-bootstrap/Container";
-import Row from "react-bootstrap/Row";
+
 import ProductItem from "./ProductItem";
-import Search from "../search/Search";
-import Pager from "../pagination/Pager";
+import PropTypes from "prop-types";
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect } from "react";
 import getAds from "../../store/adsThunk";
-
+import styled from "styled-components";
+import Pager from "../pagination/Pager";
 const ProductList = () => {
   const dispatch = useDispatch();
   const page = useSelector((state) => state.adsState.page);
@@ -17,41 +16,59 @@ const ProductList = () => {
 
   const adsData = useSelector((state) => state.adsState.data);
 
-  return (
-    <Container>
-      <Row>
-        <Search />
-      </Row>
-      <Row
-        xs={1}
-        sm={2}
-        md={3}
-        lg={4}
-        role="list"
-        className="list-wrapper g-5"
-      >
-        {adsData &&
-          adsData.map((ad) => (
-            <ProductItem
-              ad={ad}
-              key={ad._id}
-              adTitle={ad.adTitle}
-              adBody={ad.adBody}
-              sell={ad.sell}
-              price={ad.price}
-              photo={ad.photo}
-              user={ad.user}
-              createdAt={ad.createdAt}
-              updatedAt={ad.updatedAt}
-              tags={ad.tags || []}
-            />
-          ))}
-      </Row>
-      <Row className="d-flex justify-content-center align-items-center p-5">
-        <Pager />
-      </Row>
-    </Container>
-  );
+  return (<>  
+    <StyledAdList className='ad-list'>
+        {adsData.length > 0 ? (
+            adsData.map((ad) => <ProductItem
+            ad={ad}
+            key={ad._id}
+            adTitle={ad.adTitle}
+            adBody={ad.adBody}
+            sell={ad.sell}
+            price={ad.price}
+            photo={ad.photo}
+            user={ad.user}
+            createdAt={ad.createdAt}
+            updatedAt={ad.updatedAt}
+            tags={ad.tags || []}
+          />)
+        ) : (
+            <p className="no-ad">No hay resultados</p>
+        )}
+        {/* {error && (
+            <ErrorMessage className='loginPage-error' onClick={resetError}>
+                <h3>{error.message.toUpperCase()}</h3>
+            </ErrorMessage>
+        )} */}
+    </StyledAdList>
+    <Pager></Pager>
+    </>
+);
 };
+ProductList.PropTypes = {
+  filtersState: PropTypes.shape({
+      search: PropTypes.string,
+      tags: PropTypes.arrayOf(PropTypes.string),
+      buysell: PropTypes.oneOf(['all', 'sell', 'buy']),
+      price: PropTypes.number,
+  }),
+};
+const StyledAdList = styled.div`
+    margin: auto;
+    display: grid;
+    justify-content: center;
+    gap: 10px;
+    grid-template-columns: repeat(4, 235px);
+    padding-top: 0px;
 
+    &:has(.no-ad[noad]) {
+        display: flex;
+    }
+
+    .no-ad {
+        color: silver;
+        text-wrap: nowrap;
+        text-align: start;
+    }
+`;
 export default ProductList;

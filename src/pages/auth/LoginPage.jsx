@@ -44,7 +44,6 @@ const LoginPage = () => {
   useEffect(() => {
     if (isLogged.authState) {
       resetForm();
-      dispatch(resetMessage());
       setShow(false);
       const timer = setTimeout(() => {
         navigate(from, { replace: true });

@@ -12,7 +12,14 @@ import NewProductPage from "../pages/product/NewProductPage";
 import TermsAndConditions from "../pages/register/TermsAndConditions";
 import PrivacyPolicy from "../pages/register/PrivacyPolicy";
 import RequireAuth from "../pages/auth/components/RequireAuth";
+import Profile from "../pages/customer/Profile";
+import LayoutProfile from "../pages/customer/LayoutProfile";
+import PersonalInfo from "../pages/customer/PersonalInfo";
+//import { useSelector } from "react-redux";
+//import { getLoggedUser } from "../store/selectors";
 const RootRouter = () => {
+  /*   const loggedUser = useSelector(getLoggedUser);
+  const userName = loggedUser.userName; */
   return (
     <Routes>
       <Route
@@ -36,7 +43,8 @@ const RootRouter = () => {
         element={<PrivacyPolicy />}
       />
       <Route
-        path=":userName"
+        //path={`:${userName}`}
+        path=":username"
         element={
           <RequireAuth>
             <LayoutAccount />
@@ -47,6 +55,19 @@ const RootRouter = () => {
           index
           element={<Account />}
         />
+        <Route
+          path="info"
+          element={<LayoutProfile />}
+        >
+          <Route
+            index
+            element={<Profile />}
+          />
+          <Route
+            path="mydata"
+            element={<PersonalInfo />}
+          />
+        </Route>
         <Route
           path="edit/:productId"
           element={<div>admin advert detail</div>}

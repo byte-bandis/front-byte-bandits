@@ -5,6 +5,7 @@ import registerReducer from "./registerSlice";
 import productsReducer from "./productsSlice";
 import uiReducer from "./uiSlice";
 import adsReducer from "./adsSlice";
+import publicProfilesReducer from "./publicProfilesSlice";
 
 export const store = configureStore({
   reducer: {
@@ -14,6 +15,7 @@ export const store = configureStore({
     products: productsReducer,
     ui: uiReducer,
     adsState: adsReducer,
+    publicProfiles: publicProfilesReducer,
   },
   devTools: import.meta.env.NODE_ENV !== "production",
 });

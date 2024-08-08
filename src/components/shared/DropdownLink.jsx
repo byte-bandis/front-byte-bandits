@@ -1,41 +1,42 @@
 import PropTypes from "prop-types";
 import { Link } from "react-router-dom";
-import { NavDropdown } from "react-bootstrap";
+import { DropdownButton, Dropdown } from "react-bootstrap";
+import styles from "./header/header.module.css";
 
-const DropdownLink = ({
-  children,
-  optionText1,
-  optionText2,
-  userZoneTo,
-  logout,
-  className,
-  ...rest
-}) => {
+const DropdownLink = ({ children, className, options, ...rest }) => {
   return (
-    <NavDropdown title={children} className={className} id="basic-nav-dropdown">
-      <NavDropdown.Item
-        as={Link}
-        to={userZoneTo}
-        className={className}
-        {...rest}
-      >
-        {optionText1}
-      </NavDropdown.Item>
-      <NavDropdown.Divider />
-      <NavDropdown.Item as="Button" onClick={logout} {...rest}>
-        {optionText2}
-      </NavDropdown.Item>
-    </NavDropdown>
+    <DropdownButton title={children} className={className}>
+      {options.map((option, index) => (
+        <>
+          <Dropdown.Item
+            key={index}
+            as={option.to ? Link : "button"}
+            to={option.to}
+            onClick={option.onClick}
+            className={styles[option.className]}
+            {...rest}
+          >
+            {option.text}
+          </Dropdown.Item>
+          {index < options.length - 1 && (
+            <Dropdown.Divider key={`divider-${index}`} />
+          )}
+        </>
+      ))}
+    </DropdownButton>
   );
 };
 
 DropdownLink.propTypes = {
   children: PropTypes.node.isRequired,
-  userZoneTo: PropTypes.string.isRequired,
-  optionText1: PropTypes.string.isRequired,
-  optionText2: PropTypes.string.isRequired,
-  logout: PropTypes.func.isRequired,
   className: PropTypes.string,
+  options: PropTypes.arrayOf(
+    PropTypes.shape({
+      text: PropTypes.string.isRequired,
+      to: PropTypes.string,
+      onClick: PropTypes.func,
+    }),
+  ).isRequired,
 };
 
 export default DropdownLink;

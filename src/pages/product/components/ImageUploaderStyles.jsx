@@ -7,7 +7,7 @@ export const DropZone = styled.div`
   position: relative;
   background: #f9f9f9;
   overflow: hidden;
-  height: 300px;
+  height: ${(props) => props.height}px;
   width: 100%;
   display: flex;
   align-items: center;
@@ -27,13 +27,14 @@ export const ImagePreviewImg = styled.img`
 `;
 
 export const CustomFileUpload = styled.label`
-  display: block;
-  padding: 138px 0px;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
   width: 100%;
   cursor: pointer;
   font-size: 16px;
-  text-align: center;
-  position: relative;
 `;
 
 export const RemoveBtn = styled.button`

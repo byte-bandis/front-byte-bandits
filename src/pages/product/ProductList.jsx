@@ -5,35 +5,37 @@ import { useEffect } from "react";
 import getAds from "../../store/adsThunk";
 import styled from "styled-components";
 import Pager from "../pagination/Pager";
+import { getWishlist } from "../../store/likesThunk";
 const ProductList = () => {
   const dispatch = useDispatch();
   const page = useSelector((state) => state.adsState.page);
 
   useEffect(() => {
     dispatch(getAds({ page, id: "" }));
+    dispatch(getWishlist('66b34cadb8e664205eacd16f'));
   }, [dispatch, page]);
 
   const adsData = useSelector((state) => state.adsState.data);
-
-  return (
-    <>
-      <StyledAdList className="ad-list">
-        {adsData.length > 0 ? (
-          adsData.map((ad) => (
-            <ProductItem
-              ad={ad}
-              key={ad._id}
-              adTitle={ad.adTitle}
-              adBody={ad.adBody}
-              sell={ad.sell}
-              price={ad.price}
-              photo={ad.photo}
-              user={ad.user}
-              createdAt={ad.createdAt}
-              updatedAt={ad.updatedAt}
-              tags={ad.tags || []}
-            />
-          ))
+  
+  return (<>  
+    <StyledAdList className='ad-list'>
+    
+        {
+        
+        adsData.length > 0 ? (
+            adsData.map((ad) => <ProductItem
+            ad={ad}
+            key={ad._id}
+            adTitle={ad.adTitle}
+            adBody={ad.adBody}
+            sell={ad.sell}
+            price={ad.price}
+            photo={ad.photo}
+            user={ad.user}
+            createdAt={ad.createdAt}
+            updatedAt={ad.updatedAt}
+            tags={ad.tags || []}
+          />)
         ) : (
           <p className="no-ad">No hay resultados</p>
         )}

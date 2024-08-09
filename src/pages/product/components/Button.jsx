@@ -9,7 +9,8 @@ const Button = styled.button`
     color: var(--botton-2);
     text-align: center;
     display: inline-block;
-    font-size: 16px;
+    font-size: ${(props) => props.$customfontsize || '16px'};
+
     height: 'fit-content';
     width: ${(props) => props.$customwidth || 'fit-content'};
     &:hover {

@@ -1,7 +1,7 @@
 import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";
 import ProductItem from "./ProductItem";
-import Search from "../search/Search";
+// import Search from "../search/Search";
 import Pager from "../pagination/Pager";
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect } from "react";
@@ -12,24 +12,17 @@ const ProductList = () => {
   const page = useSelector((state) => state.adsState.page);
 
   useEffect(() => {
-    dispatch(getAds({page ,id: ''}));
+    dispatch(getAds({ page, id: "" }));
   }, [dispatch, page]);
 
   const adsData = useSelector((state) => state.adsState.data);
 
   return (
     <Container>
-      <Row>
+      {/* <Row>
         <Search />
-      </Row>
-      <Row
-        xs={1}
-        sm={2}
-        md={3}
-        lg={3}
-        role="list"
-        className="list-wrapper g-4"
-      >
+      </Row> */}
+      <Row xs={1} sm={2} md={3} lg={3} role="list" className="list-wrapper g-4">
         {adsData &&
           adsData.map((ad) => (
             <ProductItem

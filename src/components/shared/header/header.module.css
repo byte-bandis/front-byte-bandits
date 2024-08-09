@@ -23,3 +23,35 @@
   background-color: red;
   color: white;
 }
+
+.TagsNavContainer {
+  padding: 20px 0;
+}
+
+.allCategories {
+  margin-right: 20px;
+}
+
+.TagsNavegation {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  gap: 20px;
+}
+
+@media (max-width: 768px) {
+  .TagsNavContainer {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .allCategories {
+    margin-right: 0;
+    margin-bottom: 10px;
+  }
+
+  .TagsNavegation {
+    justify-content: center;
+  }
+}

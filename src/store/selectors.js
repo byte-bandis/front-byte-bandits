@@ -10,5 +10,7 @@ export const getUIMessage = (state) => state.ui.message;
 export const getUIState = (state) => state.ui.state;
 export const getUILoading = (state) => state.ui.loading;
 export const getLoggedUser = (state) => state.authState.user;
+export const getLoggedUserName = (state) => state.authState.user.userName;
+export const getLoggedUserId = (state) => state.authState.user.userId;
 export const getPublicProfiles = (state) => state.publicProfiles.data;
 export const getMyProfile = (state) => state.myProfile.data;

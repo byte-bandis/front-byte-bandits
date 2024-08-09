@@ -14,18 +14,12 @@ const Account = () => {
   const { username } = useParams();
   const accessToken = storage.get("authToken");
   console.log("Esto es accessToken en myAccount: ", accessToken);
-  console.log("Esto es isLogged.userName en myAccount: ", isLogged.username);
+  console.log("Esto es isLogged.userName en myAccount: ", isLogged.userName);
   useEffect(() => {
     if (isLogged) {
       dispatch(getMyProfileWithThunk(isLogged.userName));
-      if (isLogged.usermame === username) {
-        dispatch(getMyProfileWithThunk(username));
-      }
     }
-    if (accessToken) {
-      dispatch(getMyProfileWithThunk(isLogged.userName));
-    }
-  }, [isLogged, username, dispatch, accessToken]);
+  }, [isLogged, username, dispatch]);
 
   return (
     <>

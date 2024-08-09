@@ -18,7 +18,7 @@ const HeartLink = ({ to, variant, size, className, ...rest }) => {
 HeartLink.propTypes = {
   to: PropTypes.string,
   variant: PropTypes.string,
-  size: PropTypes.string,
+  size: PropTypes.number,
   className: PropTypes.string,
 };
 

@@ -16,7 +16,7 @@ const Account = () => {
 
   return (
     <>
-      <h1>Welcome to your private area</h1>
+      {<h1>{isLogged.userName}, welcome to your private area</h1>}
       <Profile />
       <ProductList />
     </>

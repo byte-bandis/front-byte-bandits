@@ -1,6 +1,11 @@
 import Col from "react-bootstrap/Col";
+import { useDispatch, useSelector } from "react-redux";
+import { getMyProfile } from "../../store/selectors";
 
 const PersonalInfo = () => {
+  const dispatch = useDispatch();
+  const myProfile = useSelector(getMyProfile);
+
   return (
     <>
       <Col>

@@ -10,14 +10,12 @@ const PersonalInfo = () => {
     <>
       <Col>
         <div className="container-fluid py-5">
-          <p className="col-md-8 fs-4">
-            Formulario
-            <ul>
-              <li>Fecha de nacimiento</li>
-              <li>Tarjeta de crédito guardada</li>
-              <li>Email</li>
-            </ul>
-          </p>
+          Formulario
+          <ul className="col-md-8 fs-4">
+            <li>Fecha de nacimiento</li>
+            <li>Tarjeta de crédito guardada</li>
+            <li>Email</li>
+          </ul>
         </div>
       </Col>
     </>

@@ -6,7 +6,8 @@ import getAds from "../../store/adsThunk";
 import styled from "styled-components";
 import Button from "./components/Button";
 import "./ProductItem.css";
-import { Heart } from "react-bootstrap-icons";
+import { Heart, HeartFill } from "react-bootstrap-icons";
+import { setLike } from "../../utils/setLike";
 
 const ProductView = () => {
   const navigate = useNavigate();
@@ -22,12 +23,21 @@ const ProductView = () => {
     const to = location.state?.from || '/';
     navigate(to, { replace: true });
 };
+const handleLike = () => {
+  dispatch(setLike(productId, '66b34cadb8e664205eacd16f'));
+};
   useEffect(() => {
     if (!loadedAds) {
       dispatch(getAds({ id: productId }));
     }
   }, [loadedAds, productId, dispatch]);
-
+  let iLikeIt = false
+    const myLikes = useSelector((state) => state.likesSlice.wishlist);
+    myLikes.forEach((like) => {
+      if(like.ad._id === productId){
+        iLikeIt = true
+      }
+     })
   if (loadedAds) {
     const { adTitle, adBody, sell, price, photo, tags } = loadedAds;
     const image = photo ? `${photo}` : "../../assets/images/no-image.jpg";
@@ -41,9 +51,9 @@ const ProductView = () => {
 			  sethiden={setHideDelete}
 		  /> */}
         <StyledAdvertPage className="advert">
-        <div className="heart">
-          <Heart color="red" size={24}/>
-        </div>
+        <div className='heart'>
+                {iLikeIt ? <HeartFill color='red' /> : <Heart color='red' />}
+                </div>
           {adTitle && (
             <>
 
@@ -84,10 +94,10 @@ const ProductView = () => {
                 <div>
                   <Button
                     id="removeAdButton"
-                    /* onClick={handleDeleteAd} */
+                    onClick={handleLike} 
                     $customheight="28px"
                   >
-                    Borrar
+                    Favorito
                   </Button>
                   <Button
                     id="backButton"

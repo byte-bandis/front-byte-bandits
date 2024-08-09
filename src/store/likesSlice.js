@@ -4,7 +4,7 @@ import { getLikes, getWishlist } from "./likesThunk";
 
 export const defaultadsState = {
   adcrosslikes: {}, 
-  wishlist: [],     // [id, id, id]
+  wishlist: [], 
   loaded: false,  
 };
 const likesSlice = createSlice({

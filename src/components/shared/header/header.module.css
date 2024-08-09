@@ -1,0 +1,25 @@
+.mainNav {
+  padding: 0 15px;
+}
+
+.myAccount,
+.sellButton,
+.login {
+  margin-left: 10px;
+}
+
+.heartHead,
+.emailHead {
+  margin-right: 30px;
+  color: blue;
+  transition: color 0.3s ease;
+}
+.heartHead:hover,
+.emailHead:hover {
+  color: red;
+}
+
+.Logout:hover {
+  background-color: red;
+  color: white;
+}

@@ -11,21 +11,11 @@
     position           : relative;
 }
 
-.new-product__backdrop {
-    /* position        : absolute;
-    inset           : 0;
-    background-color: rgba(0, 0, 0, 0.3); */
-}
-
 .new-product__wrapper form {
     width    : 40rem;
     max-width: 90%;
     z-index  : 1;
-    /*animation: showSignInForm 1s;*/
-}
-
-.new-product__wrapper form img {
-    width: 4rem;
+    animation: showSignInForm 1s;
 }
 
 .tags-container {

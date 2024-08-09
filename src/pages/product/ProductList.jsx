@@ -1,7 +1,7 @@
 import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";
 import ProductItem from "./ProductItem";
-import Search from "../search/Search";
+// import Search from "../search/Search";
 import Pager from "../pagination/Pager";
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect } from "react";
@@ -19,7 +19,7 @@ const ProductList = () => {
 
   return (
     <Container>
-      <Row>
+      {/* <Row>
         <Search />
       </Row>
       <Row
@@ -30,6 +30,8 @@ const ProductList = () => {
         role="list"
         className="list-wrapper g-5"
       >
+      </Row> */}
+      <Row xs={1} sm={2} md={3} lg={3} role="list" className="list-wrapper g-4">
         {adsData &&
           adsData.map((ad) => (
             <ProductItem

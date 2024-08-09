@@ -18,7 +18,7 @@ const EmailLink = ({ to, variant, size, className, ...rest }) => {
 EmailLink.propTypes = {
   to: PropTypes.string,
   variant: PropTypes.string,
-  size: PropTypes.string,
+  size: PropTypes.number,
   className: PropTypes.string,
 };
 

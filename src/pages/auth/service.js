@@ -18,6 +18,8 @@ export const login = async (email, password, requestStorage) => {
       setAuthorizationHeader(token);
       if (requestStorage) {
         storage.set("authToken", token);
+        storage.set("userName", userName);
+        storage.set("userId", userId);
       }
       if (token) {
         return {

@@ -36,7 +36,7 @@ const Pager = () => {
   return (
     <>
       <Row>
-        <Col className="d-flex justify-content-center align-items-center p-5">
+        <Col className="d-flex justify-content-center align-items-center p-4">
           <Pagination>{items}</Pagination>
         </Col>
       </Row>

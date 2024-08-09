@@ -4,19 +4,26 @@ import Profile from "./Profile";
 import { getLoggedUser } from "../../store/selectors";
 import { useEffect } from "react";
 import { getMyProfileWithThunk } from "../../store/profilesThunk";
+import { useParams } from "react-router-dom";
+import { setMyProfile } from "../../store/myProfileSlice";
+import storage from "../../utils/storage";
 
 const Account = () => {
   const dispatch = useDispatch();
   const isLogged = useSelector(getLoggedUser);
+  const { username } = useParams();
+  const accessToken = storage.get("authToken");
+  console.log("Esto es accessToken en myAccount: ", accessToken);
+  console.log("Esto es isLogged.userName en myAccount: ", isLogged.userName);
   useEffect(() => {
     if (isLogged) {
       dispatch(getMyProfileWithThunk(isLogged.userName));
     }
-  }, [isLogged, dispatch]);
+  }, [isLogged, username, dispatch]);
 
   return (
     <>
-      <h1>Welcome to your private area</h1>
+      {<h1>{isLogged.userName}, welcome to your private area</h1>}
       <Profile />
       <ProductList />
     </>

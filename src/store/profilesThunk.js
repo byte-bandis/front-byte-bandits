@@ -19,7 +19,6 @@ export const getMyProfileWithThunk = createAsyncThunk(
   async (username, { rejectWithValue }) => {
     try {
       const response = await profiles.getMyProfile(username);
-      console.log("Esto es response en myProfileThunk: ", response);
       return response;
     } catch (error) {
       return rejectWithValue(error.message);

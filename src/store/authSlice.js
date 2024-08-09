@@ -1,12 +1,15 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { loginWithThunk } from "./loginThunk";
+import storage from "../utils/storage";
 
-const accessToken = localStorage.getItem("authToken");
+const accessToken = storage.get("authToken");
+const userName = storage.get("userName");
+const userId = storage.get("userId");
 export const defaultAuthState = {
   authState: !!accessToken,
   user: {
-    userName: null,
-    userId: null,
+    userName: userName,
+    userId: userId,
   },
 };
 

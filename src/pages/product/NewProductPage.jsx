@@ -1,7 +1,8 @@
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { Form, Button, Alert } from "react-bootstrap";
+import { Form, Alert } from "react-bootstrap";
+import Button from "./components/Button";
 import { createProduct } from "../../store/productsThunk";
 import "./NewProduct.css";
 import { resetMessage, setMessage } from "../../store/uiSlice";
@@ -109,16 +110,6 @@ const NewProductPage = () => {
       return;
     }
 
-    if (!inputImage) {
-      dispatch(
-        setMessage({
-          payload: "Selecciona una imagen para tu producto.",
-          type: "error",
-        })
-      );
-      return;
-    }
-
     await (async () => {
       return new Promise((resolve) => setTimeout(resolve, 1000));
     })();
@@ -130,6 +121,7 @@ const NewProductPage = () => {
     formData.append("sell", inputTransactionType === "sell");
     formData.append("tags", selectedTags.join(","));
     if (inputImage) formData.append("photo", inputImage);
+    else formData.append("photo", "");
 
     try {
       const response = await dispatch(createProduct(formData)).unwrap(); // unwrap() is used to get the actual value of the fulfilled action
@@ -236,11 +228,15 @@ const NewProductPage = () => {
           </Alert>
         )}
         {!loading ? (
-          <Button className="w-100" variant="primary" type="submit">
+          <Button
+            type="submit"
+            $customVerticalPadding="6px"
+            $customwidth="100%"
+          >
             Crear Producto
           </Button>
         ) : (
-          <Button className="w-100" variant="primary" type="submit" disabled>
+          <Button $customVerticalPadding="6px" $customwidth="100%" disabled>
             Creando...
           </Button>
         )}

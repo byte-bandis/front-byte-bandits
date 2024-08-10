@@ -1,7 +1,8 @@
 import React from "react";
 import PropTypes from "prop-types";
-import { Form } from "react-bootstrap";
+import { CameraFill } from "react-bootstrap-icons";
 import {
+  DropZoneWrapper,
   DropZone,
   ImagePreview,
   ImagePreviewImg,
@@ -15,8 +16,9 @@ const ImageUploader = ({
   setInputImage,
   setInputImagePreview,
   dropAreaText = "Arrastra y suelta aquí o haz clic para seleccionar una imagen",
-  labelText = "Foto",
-  height = 300,
+  $customHeight,
+  $customWidth,
+  $customRadius,
 }) => {
   const handleDrop = (e) => {
     e.preventDefault();
@@ -47,26 +49,30 @@ const ImageUploader = ({
   };
 
   return (
-    <div className="mb-2">
-      <Form.Label>{labelText}</Form.Label>
+    <DropZoneWrapper $customWidth={$customWidth}>
       <DropZone
-        height={height}
         onDrop={handleDrop}
         onDragOver={(e) => e.preventDefault()}
+        $customRadius={$customRadius}
+        $customHeight={$customHeight}
       >
         {inputImagePreview ? (
           <ImagePreview>
-            <ImagePreviewImg src={inputImagePreview} alt="Product Preview" />
             <RemoveBtn onClick={handleRemoveImage}>✕</RemoveBtn>
+            <ImagePreviewImg src={inputImagePreview} alt="Product Preview" />
           </ImagePreview>
         ) : (
           <CustomFileUpload>
             <FileInput type="file" onChange={handleImageChange} />
+            <CameraFill size={30} />
             {dropAreaText}
           </CustomFileUpload>
         )}
       </DropZone>
-    </div>
+      {inputImagePreview && (
+        <RemoveBtn onClick={handleRemoveImage}>✕</RemoveBtn>
+      )}
+    </DropZoneWrapper>
   );
 };
 

@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { Form, Alert } from "react-bootstrap";
 import Button from "./components/Button";
-import { createProduct } from "../../store/productsThunk";
+import { createAd } from "../../store/adsThunk";
 import "./NewProduct.css";
 import {
   FormWrapper,
@@ -132,7 +132,7 @@ const NewProductPage = () => {
     else formData.append("photo", "");
 
     try {
-      const response = await dispatch(createProduct(formData)).unwrap(); // unwrap() is used to get the actual value of the fulfilled action
+      const response = await dispatch(createAd(formData)).unwrap(); // unwrap() is used to get the actual value of the fulfilled action
       navigate(`/product/${response._id}`);
     } catch (errorMsg) {
       console.error("Failed to create product: ", errorMsg);

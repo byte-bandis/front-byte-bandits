@@ -5,6 +5,14 @@ import { Form, Alert } from "react-bootstrap";
 import Button from "./components/Button";
 import { createProduct } from "../../store/productsThunk";
 import "./NewProduct.css";
+import {
+  FormWrapper,
+  StyledForm,
+  StyledInputGroup,
+  StyledLabel,
+  StyledInput,
+  TagsContainer,
+} from "./NewProductPageStyles";
 import { resetMessage, setMessage } from "../../store/uiSlice";
 import { getError, getUILoading } from "../../store/selectors";
 import ImageUploader from "./components/ImageUploader";
@@ -140,31 +148,31 @@ const NewProductPage = () => {
   }, []);
 
   return (
-    <div className="new-product__wrapper">
-      <Form className="shadow p-4 bg-white rounded" onSubmit={handleSubmit}>
+    <FormWrapper>
+      <StyledForm onSubmit={handleSubmit}>
         <div className="h4 mb-2 text-center">Introduce tu producto</div>
-        <Form.Group className="mb-2" controlId="name">
-          <Form.Label>Nombre</Form.Label>
-          <Form.Control
+        <StyledInputGroup>
+          <StyledLabel>Nombre</StyledLabel>
+          <StyledInput
             type="text"
             value={inputName}
             placeholder="Nombre del producto"
             onChange={handleInputNameChange}
           />
-        </Form.Group>
-        <Form.Group className="mb-2" controlId="description">
-          <Form.Label>Descripción</Form.Label>
-          <Form.Control
+        </StyledInputGroup>
+        <StyledInputGroup>
+          <StyledLabel>Descripción</StyledLabel>
+          <StyledInput
             as="textarea"
             rows={3}
             value={inputDescription}
             placeholder="Descripción del producto"
             onChange={handleInputDescriptionChange}
           />
-        </Form.Group>
-        <Form.Group className="mb-2" controlId="price">
-          <Form.Label>Precio</Form.Label>
-          <Form.Control
+        </StyledInputGroup>
+        <StyledInputGroup>
+          <StyledLabel>Precio</StyledLabel>
+          <StyledInput
             type="number"
             step="0.01"
             value={inputPrice}
@@ -172,9 +180,9 @@ const NewProductPage = () => {
             onChange={handlePriceChange}
             onBlur={handlePriceBlur}
           />
-        </Form.Group>
-        <Form.Group className="mb-2">
-          <Form.Label>Tipo de transacción</Form.Label>
+        </StyledInputGroup>
+        <StyledInputGroup>
+          <StyledLabel>Tipo de transacción</StyledLabel>
           <Form.Check
             type="radio"
             label="Venta"
@@ -193,10 +201,10 @@ const NewProductPage = () => {
             required
             id="buy"
           />
-        </Form.Group>
-        <Form.Group className="mb-2">
-          <Form.Label>Tags</Form.Label>
-          <div className="tags-container">
+        </StyledInputGroup>
+        <StyledInputGroup>
+          <StyledLabel>Tags</StyledLabel>
+          <TagsContainer>
             {TAG_OPTIONS.map((tag) => (
               <Form.Check
                 key={tag}
@@ -208,15 +216,16 @@ const NewProductPage = () => {
                 id={tag}
               />
             ))}
-          </div>
-        </Form.Group>
-        <Form.Group className="mb-2">
+          </TagsContainer>
+        </StyledInputGroup>
+        <StyledInputGroup>
+          <StyledLabel>Foto</StyledLabel>
           <ImageUploader
             inputImagePreview={inputImagePreview}
             setInputImage={setInputImage}
             setInputImagePreview={setInputImagePreview}
           />
-        </Form.Group>
+        </StyledInputGroup>
         {error && (
           <Alert
             className="mt-2"
@@ -240,8 +249,8 @@ const NewProductPage = () => {
             Creando...
           </Button>
         )}
-      </Form>
-    </div>
+      </StyledForm>
+    </FormWrapper>
   );
 };
 

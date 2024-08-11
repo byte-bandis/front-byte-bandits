@@ -21,11 +21,12 @@ const ProductList = () => {
   if (errorUi.state === "error") {
      error = errorUi.message;
   }
+  
   useEffect(() => {
     dispatch(getAds({ page, id: "" }));
     dispatch(getWishlist(userid));
   }, [dispatch, page, userid]);
-
+  
   const adsData = useSelector((state) => state.adsState.data);
 
   return (<>  
@@ -52,7 +53,7 @@ const ProductList = () => {
         )}
         {  error && (
             <ErrorMessage className='loginPage-error' onClick={resetError}>
-                <h3>{error.message.toUpperCase()}</h3>
+                <h3>{error.toUpperCase()}</h3>
             </ErrorMessage>
         )
          }

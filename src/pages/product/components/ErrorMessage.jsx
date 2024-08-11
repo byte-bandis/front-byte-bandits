@@ -9,9 +9,9 @@ const ErrorMessage = styled.div`
     bottom: 100px;
     height: 100px;
     width: fit-content;
-    border: 2px dotted var(--accent-200);
+    border: 2px dotted var(--error-1);
     border-radius: 5px;
-    background: var(--bg-200);
+    background: var(--error-2);
 `;
 
 export default ErrorMessage;

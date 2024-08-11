@@ -66,7 +66,7 @@ const RootRouter = () => {
         </Route>
         <Route
           path="edit/:productId"
-          element={<div>admin advert detail</div>}
+          element={<NewProductPage isEditMode />}
         />
         <Route
           path="new"

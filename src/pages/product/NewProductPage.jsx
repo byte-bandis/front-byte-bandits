@@ -1,16 +1,28 @@
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { useNavigate } from "react-router-dom";
-import { Form, Button, Alert } from "react-bootstrap";
-import { createProduct } from "../../store/productsThunk";
-import "./NewProduct.css";
+import { useNavigate, useParams } from "react-router-dom";
+import { Form, Alert } from "react-bootstrap";
+import Button from "./components/Button";
+import { createAd, getAds, updateAd } from "../../store/adsThunk";
+import {
+  FormWrapper,
+  StyledForm,
+  StyledInputGroup,
+  StyledLabel,
+  StyledInput,
+  TagsContainer,
+} from "./NewProductPageStyles";
 import { resetMessage, setMessage } from "../../store/uiSlice";
 import { getError, getUILoading } from "../../store/selectors";
 import ImageUploader from "./components/ImageUploader";
 
 const TAG_OPTIONS = ["lifestyle", "mobile", "motor", "work", "others"];
 
-const NewProductPage = () => {
+const NewProductPage = ({ isEditMode = false }) => {
+  const { productId } = useParams();
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+
   const [inputName, setInputName] = useState("");
   const [inputDescription, setInputDescription] = useState("");
   const [inputPrice, setInputPrice] = useState("");
@@ -20,8 +32,9 @@ const NewProductPage = () => {
   const [inputImagePreview, setInputImagePreview] = useState(null);
   const error = useSelector(getError);
   const loading = useSelector(getUILoading);
-  const dispatch = useDispatch();
-  const navigate = useNavigate();
+  const loadedAd = useSelector((state) => state.adsState.data).find(
+    (advert) => advert._id === productId
+  );
 
   const handleInputNameChange = (e) => {
     setInputName(e.target.value);
@@ -109,16 +122,6 @@ const NewProductPage = () => {
       return;
     }
 
-    if (!inputImage) {
-      dispatch(
-        setMessage({
-          payload: "Selecciona una imagen para tu producto.",
-          type: "error",
-        })
-      );
-      return;
-    }
-
     await (async () => {
       return new Promise((resolve) => setTimeout(resolve, 1000));
     })();
@@ -129,13 +132,30 @@ const NewProductPage = () => {
     formData.append("price", inputPrice);
     formData.append("sell", inputTransactionType === "sell");
     formData.append("tags", selectedTags.join(","));
-    if (inputImage) formData.append("photo", inputImage);
+    if (inputImage) {
+      console.log(inputImage);
+      formData.append("photo", inputImage);
+    } else {
+      if (
+        !isEditMode ||
+        (isEditMode && !inputImagePreview && !loadedAd.photo.endsWith("/"))
+      ) {
+        formData.append("photo", "");
+      }
+    }
 
     try {
-      const response = await dispatch(createProduct(formData)).unwrap(); // unwrap() is used to get the actual value of the fulfilled action
+      let response;
+      if (isEditMode && productId) {
+        response = await dispatch(
+          updateAd({ adId: productId, adFormData: formData })
+        ).unwrap();
+      } else {
+        response = await dispatch(createAd(formData)).unwrap();
+      }
       navigate(`/product/${response._id}`);
     } catch (errorMsg) {
-      console.error("Failed to create product: ", errorMsg);
+      console.error("Failed to process product: ", errorMsg);
     }
   };
 
@@ -144,35 +164,70 @@ const NewProductPage = () => {
   };
 
   useEffect(() => {
-    if (error) dispatch(resetMessage());
+    if (error) clearError();
   }, []);
 
+  useEffect(() => {
+    if (isEditMode && productId) {
+      const fetchAd = async () => {
+        try {
+          let fetchedAd = loadedAd;
+          if (!fetchedAd) {
+            const fetchedAds = await dispatch(
+              getAds({ id: productId })
+            ).unwrap();
+            fetchedAd = fetchedAds[0];
+          }
+          if (fetchedAd !== undefined) {
+            setInputName(fetchedAd.adTitle);
+            setInputDescription(fetchedAd.adBody);
+            setInputPrice(fetchedAd.price);
+            setInputTransactionType(fetchedAd.sell ? "sell" : "buy");
+            fetchedAd.tags.forEach((tag) => {
+              setSelectedTags((prevTags) =>
+                prevTags.includes(tag) ? prevTags : [...prevTags, tag]
+              );
+            });
+            setInputImagePreview(
+              fetchedAd.photo.endsWith("/") ? null : fetchedAd.photo
+            );
+          }
+        } catch (errorMsg) {
+          console.error("Failed to fetch product: ", errorMsg);
+        }
+      };
+      fetchAd();
+    }
+  }, [isEditMode, productId]);
+
   return (
-    <div className="new-product__wrapper">
-      <Form className="shadow p-4 bg-white rounded" onSubmit={handleSubmit}>
-        <div className="h4 mb-2 text-center">Introduce tu producto</div>
-        <Form.Group className="mb-2" controlId="name">
-          <Form.Label>Nombre</Form.Label>
-          <Form.Control
+    <FormWrapper>
+      <StyledForm onSubmit={handleSubmit}>
+        <div className="h4 mb-2 text-center">
+          {isEditMode ? "Edita tu producto" : "Introduce tu producto"}
+        </div>
+        <StyledInputGroup>
+          <StyledLabel>Nombre</StyledLabel>
+          <StyledInput
             type="text"
             value={inputName}
             placeholder="Nombre del producto"
             onChange={handleInputNameChange}
           />
-        </Form.Group>
-        <Form.Group className="mb-2" controlId="description">
-          <Form.Label>Descripción</Form.Label>
-          <Form.Control
+        </StyledInputGroup>
+        <StyledInputGroup>
+          <StyledLabel>Descripción</StyledLabel>
+          <StyledInput
             as="textarea"
             rows={3}
             value={inputDescription}
             placeholder="Descripción del producto"
             onChange={handleInputDescriptionChange}
           />
-        </Form.Group>
-        <Form.Group className="mb-2" controlId="price">
-          <Form.Label>Precio</Form.Label>
-          <Form.Control
+        </StyledInputGroup>
+        <StyledInputGroup>
+          <StyledLabel>Precio</StyledLabel>
+          <StyledInput
             type="number"
             step="0.01"
             value={inputPrice}
@@ -180,9 +235,9 @@ const NewProductPage = () => {
             onChange={handlePriceChange}
             onBlur={handlePriceBlur}
           />
-        </Form.Group>
-        <Form.Group className="mb-2">
-          <Form.Label>Tipo de transacción</Form.Label>
+        </StyledInputGroup>
+        <StyledInputGroup>
+          <StyledLabel>Tipo de transacción</StyledLabel>
           <Form.Check
             type="radio"
             label="Venta"
@@ -201,10 +256,10 @@ const NewProductPage = () => {
             required
             id="buy"
           />
-        </Form.Group>
-        <Form.Group className="mb-2">
-          <Form.Label>Tags</Form.Label>
-          <div className="tags-container">
+        </StyledInputGroup>
+        <StyledInputGroup>
+          <StyledLabel>Tags</StyledLabel>
+          <TagsContainer>
             {TAG_OPTIONS.map((tag) => (
               <Form.Check
                 key={tag}
@@ -216,15 +271,16 @@ const NewProductPage = () => {
                 id={tag}
               />
             ))}
-          </div>
-        </Form.Group>
-        <Form.Group className="mb-2">
+          </TagsContainer>
+        </StyledInputGroup>
+        <StyledInputGroup>
+          <StyledLabel>Foto</StyledLabel>
           <ImageUploader
             inputImagePreview={inputImagePreview}
             setInputImage={setInputImage}
             setInputImagePreview={setInputImagePreview}
           />
-        </Form.Group>
+        </StyledInputGroup>
         {error && (
           <Alert
             className="mt-2"
@@ -236,16 +292,20 @@ const NewProductPage = () => {
           </Alert>
         )}
         {!loading ? (
-          <Button className="w-100" variant="primary" type="submit">
-            Crear Producto
+          <Button
+            type="submit"
+            $customVerticalPadding="6px"
+            $customwidth="100%"
+          >
+            {isEditMode ? "Guardar Cambios" : "Crear Producto"}
           </Button>
         ) : (
-          <Button className="w-100" variant="primary" type="submit" disabled>
-            Creando...
+          <Button $customVerticalPadding="6px" $customwidth="100%" disabled>
+            {isEditMode ? "Guardando..." : "Creando..."}
           </Button>
         )}
-      </Form>
-    </div>
+      </StyledForm>
+    </FormWrapper>
   );
 };
 

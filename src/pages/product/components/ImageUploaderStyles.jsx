@@ -1,21 +1,24 @@
 import styled from "styled-components";
 
+export const DropZoneWrapper = styled.div`
+  position: relative;
+  display: inline-block;
+  width: ${(props) => props.$customWidth || "100%"};
+`;
+
 export const DropZone = styled.div`
   border: 2px dashed #ccc;
-  border-radius: 5px;
+  border-radius: ${(props) => props.$customRadius || "10px"};
   text-align: center;
-  position: relative;
+  height: ${(props) => props.$customHeight || "300px"};
   background: #f9f9f9;
   overflow: hidden;
-  height: ${(props) => props.height}px;
-  width: 100%;
   display: flex;
   align-items: center;
   justify-content: center;
 `;
 
 export const ImagePreview = styled.div`
-  position: relative;
   width: 100%;
   height: 100%;
 `;
@@ -27,8 +30,8 @@ export const ImagePreviewImg = styled.img`
 `;
 
 export const CustomFileUpload = styled.label`
-  position: relative;
   display: flex;
+  flex-direction: column;
   align-items: center;
   justify-content: center;
   height: 100%;
@@ -48,6 +51,7 @@ export const RemoveBtn = styled.button`
   height: 30px;
   cursor: pointer;
   font-weight: bold;
+  z-index: 100;
 
   &:hover {
     background-color: rgba(204, 204, 204, 1);

@@ -1,5 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
-import getAds from "./adsThunk";
+import {getAds, createAd, updateAd} from "./adsThunk";
 import getTotalAds from "./adscounThunk";
 export const defaultadsState = {
   loaded: false,
@@ -27,6 +27,14 @@ const adsSlice = createSlice({
       })
       .addCase(getTotalAds.fulfilled, (state, action) => {
         state.totalAds = action.payload;
+      })
+      .addCase(createAd.fulfilled, (state, action) => {
+        state.loaded = false;
+        state.data = [];
+      })
+      .addCase(updateAd.fulfilled, (state, action) => {
+        state.loaded = false;
+        state.data = [];
       });
   },
 });

@@ -6,11 +6,21 @@ import { getAds } from "../../store/adsThunk";
 import styled from "styled-components";
 import Pager from "../pagination/Pager";
 import { getWishlist } from "../../store/likesThunk";
+import ErrorMessage from "./components/ErrorMessage";
+import { resetMessage } from "../../store/uiSlice";
+
 const ProductList = () => {
   const dispatch = useDispatch();
   const page = useSelector((state) => state.adsState.page);
-  const userid = useSelector((state) => state.authState.user.userId) || '66b34cadb8e664205eacd16f';
-
+  const userid = useSelector((state) => state.authState.user.userId);
+  const errorUi = useSelector((state) => state.ui);
+  const resetError = () => {
+    dispatch(resetMessage());
+  };
+  let error = null;
+  if (errorUi.state === "error") {
+     error = errorUi.message;
+  }
   useEffect(() => {
     dispatch(getAds({ page, id: "" }));
     dispatch(getWishlist(userid));
@@ -40,11 +50,12 @@ const ProductList = () => {
         ) : (
           <p className="no-ad">No hay resultados</p>
         )}
-        {/* {error && (
+        {  error && (
             <ErrorMessage className='loginPage-error' onClick={resetError}>
                 <h3>{error.message.toUpperCase()}</h3>
             </ErrorMessage>
-        )} */}
+        )
+         }
       </StyledAdList>
       <Pager></Pager>
     </>

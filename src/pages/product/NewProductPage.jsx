@@ -132,15 +132,25 @@ const NewProductPage = ({ isEditMode = false }) => {
     formData.append("price", inputPrice);
     formData.append("sell", inputTransactionType === "sell");
     formData.append("tags", selectedTags.join(","));
-    if (inputImage) {
-      console.log(inputImage);
-      formData.append("photo", inputImage);
-    } else {
-      if (
-        !isEditMode ||
-        (isEditMode && !inputImagePreview && !loadedAd.photo.endsWith("/"))
-      ) {
+
+    if (!isEditMode) {
+      formData.append("photo", inputImage ? inputImage : "");
+    } else if (isEditMode && productId) {
+      if (inputImage) {
+        formData.append("photo", inputImage);
+        if (!loadedAd.photo.endsWith("/")) {
+          formData.append(
+            "deletePhoto",
+            loadedAd.photo.substring(loadedAd.photo.lastIndexOf("/") + 1)
+          );
+        }
+      }
+      if (!inputImagePreview && !loadedAd.photo.endsWith("/")) {
         formData.append("photo", "");
+        formData.append(
+          "deletePhoto",
+          loadedAd.photo.substring(loadedAd.photo.lastIndexOf("/") + 1)
+        );
       }
     }
 

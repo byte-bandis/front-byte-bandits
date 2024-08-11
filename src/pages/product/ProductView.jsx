@@ -2,7 +2,7 @@ import PropTypes from "prop-types";
 import { useDispatch, useSelector } from "react-redux";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
-import { getAds } from "../../store/adsThunk";
+import { deleteAd, getAds } from "../../store/adsThunk";
 import styled from "styled-components";
 import Button from "./components/Button";
 import "./ProductItem.css";
@@ -27,6 +27,9 @@ const ProductView = () => {
     const to = location.state?.from || "/";
     navigate(to, { replace: true });
   };
+  const handleDelete = () => {
+    dispatch(deleteAd(productId));
+  };    
   const userid =
     useSelector((state) => state.authState.user.userId) ||
     "66b34cadb8e664205eacd16f";
@@ -58,9 +61,9 @@ const ProductView = () => {
 			  sethiden={setHideDelete}
 		  /> */}
         <StyledAdvertPage className="advert">
-          <div className="heart">
+          <Button className="heart" onClick={handleLike}>
             {iLikeIt ? <HeartFill color="red" /> : <Heart color="red" />}
-          </div>
+          </Button>
           {adTitle && (
             <>
               <div className="advert-img-container">
@@ -95,16 +98,12 @@ const ProductView = () => {
               </div>
               {
                 <div>
-                  <Button
-                    id="removeAdButton"
-                    onClick={handleLike}
-                    $customheight="28px"
-                  >
-                    {iLikeIt ? (
-                      <HeartFill color="red" />
-                    ) : (
-                      <Heart color="red" />
-                    )}
+                   <Button
+                                id='removeAdButton'
+                                onClick={handleDelete}
+                                $customheight='28px'
+                            >
+                    Borrar
                   </Button>
                   <Button
                     id="backButton"

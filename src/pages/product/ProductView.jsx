@@ -27,8 +27,9 @@ const ProductView = () => {
         const to = location.state?.from || '/';
         navigate(to, { replace: true });
     };
+    const userid = useSelector((state) => state.authState.user.userId) || '66b34cadb8e664205eacd16f';
     const handleLike = () => {
-        dispatch(setLike(productId, '66b34cadb8e664205eacd16f'));
+        dispatch(setLike(productId, userid));
         setiLikeIt(!iLikeIt);
     };
     useEffect(() => {

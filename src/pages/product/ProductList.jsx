@@ -9,11 +9,12 @@ import { getWishlist } from "../../store/likesThunk";
 const ProductList = () => {
   const dispatch = useDispatch();
   const page = useSelector((state) => state.adsState.page);
+  const userid = useSelector((state) => state.authState.user.userId) || '66b34cadb8e664205eacd16f';
 
   useEffect(() => {
     dispatch(getAds({ page, id: "" }));
-    dispatch(getWishlist('66b34cadb8e664205eacd16f'));
-  }, [dispatch, page]);
+    dispatch(getWishlist(userid));
+  }, [dispatch, page, userid]);
 
   const adsData = useSelector((state) => state.adsState.data);
   

@@ -35,5 +35,18 @@ const getAds = createAsyncThunk(
   }
 );
 
+const updateAd = createAsyncThunk(
+  "ads/updateAd",
+  async (params, { rejectWithValue }) => {
+    const { adId, adFormData } = params;
+    try {
+      const response = await client.put(`${adsURL}/${adId}`, adFormData);
+      return response.data;
+    } catch (error) {
+      return rejectWithValue(error.message || error);
+    }
+  }
+);
 
-export { createAd, getAds };
+
+export { createAd, getAds, updateAd };

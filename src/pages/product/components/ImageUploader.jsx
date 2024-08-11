@@ -11,6 +11,8 @@ import {
   FileInput,
 } from "./ImageUploaderStyles";
 
+const origin = import.meta.env.VITE_API_BASE_URL;
+
 const ImageUploader = ({
   inputImagePreview,
   setInputImage,
@@ -59,7 +61,11 @@ const ImageUploader = ({
         {inputImagePreview ? (
           <ImagePreview>
             <RemoveBtn onClick={handleRemoveImage}>✕</RemoveBtn>
-            <ImagePreviewImg src={inputImagePreview} alt="Product Preview" />
+            <ImagePreviewImg
+              src={inputImagePreview}
+              alt="Product Preview"
+              crossOrigin={origin}
+            />
           </ImagePreview>
         ) : (
           <CustomFileUpload>

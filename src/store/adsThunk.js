@@ -48,5 +48,18 @@ const updateAd = createAsyncThunk(
   }
 );
 
+const deleteAd = createAsyncThunk(
+  "ads/deleteAd",
+  async (adId, { rejectWithValue }) => {
+    try {
+      const response = await client.delete(`${adsURL}/${adId}`);
+      response.message = 'Anuncio borrado correctamente'
+      return response;
+    } catch (error) {
+      return rejectWithValue(error.message || error);
+    }
+  }
+);
 
-export { createAd, getAds, updateAd };
+
+export { createAd, getAds, updateAd, deleteAd };

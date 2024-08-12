@@ -28,6 +28,6 @@ export default SwitchOptionSelect;
 SwitchOptionSelect.propTypes = {
   children: PropTypes.node.isRequired,
   className: PropTypes.string,
-  isBuy: PropTypes.bool.isRequired,
+  isBuy: PropTypes.bool,
   handleSwitchChange: PropTypes.func.isRequired,
 };

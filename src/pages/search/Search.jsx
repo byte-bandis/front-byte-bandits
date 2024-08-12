@@ -13,22 +13,15 @@ import { useSelector } from "react-redux";
 import PriceRangeSelect from "../../components/shared/PriceRangeSelect";
 import SearchByName from "../../components/shared/SearchByName";
 
-const Search = ({
-  handleFilterAdsByName,
-  handleSwitchChange,
-  handleTagChange,
-  handlePriceChange,
-  maxPrice,
-  minPrice,
-}) => {
+const Search = ({ maxPrice, minPrice }) => {
   const adsData = useSelector((state) => state.adsState.data);
   const [expanded, setExpanded] = useState(false);
   const [filterName, setFilterName] = useState("");
   const [selectedTags, setSelectedTags] = useState([]);
-  const [isBuy, setIsBuy] = useState(null); // Inicialmente null para que no se aplique por defecto
+  const [isBuy, setIsBuy] = useState(null);
   const [priceRange, setPriceRange] = useState({
     minPrice: minPrice || 0,
-    maxPrice: maxPrice || 9999999999999,
+    maxPrice: maxPrice || 0,
   });
   const [filteredAds, setFilteredAds] = useState(adsData);
 
@@ -49,8 +42,10 @@ const Search = ({
         selectedTags.some((tag) => ad.tags.includes(tag));
       const filterByStatus = isBuy === null || ad.isBuy === isBuy;
       const filterByPrice =
-        ad.price >= priceRange.minPrice && ad.price <= priceRange.maxPrice;
+        (priceRange.minPrice === 0 || ad.price >= priceRange.minPrice) &&
+        (priceRange.maxPrice === 0 || ad.price <= priceRange.maxPrice);
 
+      console.log(priceRange.minPrice);
       console.log(
         `filterByName: ${filterByName}, selectByTags: ${filterByTags}, filterByStatus: ${filterByStatus}, filterByPrice: ${filterByPrice}`,
       );
@@ -59,21 +54,24 @@ const Search = ({
     });
   };
 
-  handleFilterAdsByName = (event) => {
+  const handleFilterAdsByName = (event) => {
     setFilterName(event.target.value);
   };
 
-  const handleSwitchChangeInternal = () => {
+  const handleSwitchChange = () => {
     setIsBuy((prevIsBuy) =>
       prevIsBuy === null ? true : prevIsBuy === true ? false : null,
     );
   };
 
-  const handlePriceChangeInternal = (minPrice, maxPrice) => {
-    setPriceRange({ minPrice, maxPrice });
+  const handlePriceChange = (minPrice, maxPrice) => {
+    setPriceRange({
+      minPrice: minPrice !== undefined ? minPrice : 0,
+      maxPrice: maxPrice !== undefined ? maxPrice : 0,
+    });
   };
 
-  const handleTagChangeInternal = (tag) => {
+  const handleTagChange = (tag) => {
     setSelectedTags((prevTags) =>
       prevTags.includes(tag)
         ? prevTags.filter((t) => t !== tag)
@@ -81,7 +79,8 @@ const Search = ({
     );
   };
 
-  const handleSearch = () => {
+  const handleSearch = (event) => {
+    event.preventDefault();
     const filtered = filterAdsByCriteria(adsData, {
       filterName,
       priceRange,
@@ -89,6 +88,17 @@ const Search = ({
       isBuy,
     });
     setFilteredAds(filtered);
+  };
+
+  const handledeleteSearch = () => {
+    setFilterName("");
+    setSelectedTags([]);
+    setIsBuy(null);
+    setPriceRange({
+      minPrice: minPrice || 0,
+      maxPrice: maxPrice || 0,
+    });
+    setFilteredAds(adsData);
   };
 
   console.log(adsData);
@@ -112,6 +122,7 @@ const Search = ({
                     className={styles.nameSelection}
                     onChange={handleFilterAdsByName}
                     autoComplete="Product name"
+                    value={filterName}
                   >
                     Product name
                   </SearchByName>
@@ -120,7 +131,8 @@ const Search = ({
                   <SwitchOptionSelect
                     className={styles.sellSwitch}
                     isBuy={isBuy}
-                    handleSwitchChange={handleSwitchChangeInternal}
+                    handleSwitchChange={handleSwitchChange}
+                    value={isBuy}
                   >
                     Status
                   </SwitchOptionSelect>
@@ -131,32 +143,35 @@ const Search = ({
                     className={styles.priceSelector}
                     min={minPrice}
                     max={maxPrice}
-                    onPriceChange={handlePriceChangeInternal}
+                    onPriceChange={handlePriceChange}
+                    minValue={priceRange.minPrice}
+                    maxValue={priceRange.maxPrice}
                   />
                 </Col>
                 <Col>
                   <TagsOptionsSelect
                     selectedTags={selectedTags}
-                    handleTagChange={handleTagChangeInternal}
+                    handleTagChange={handleTagChange}
+                    value={selectedTags}
                   />
-                  <CustomButton onClick={handleSearch}>Search</CustomButton>
+                  <CustomButton
+                    className={styles.deleteSearch}
+                    onClick={handledeleteSearch}
+                  >
+                    Delete search
+                  </CustomButton>
+                  <CustomButton
+                    className={styles.Search}
+                    onClick={handleSearch}
+                  >
+                    Search
+                  </CustomButton>
                 </Col>
               </Row>
             </Form>
           </Accordion.Body>
         </Accordion.Item>
       </Accordion>
-
-      {/* Aquí podrías mostrar los anuncios filtrados */}
-      <div>
-        {filteredAds.map((ad) => (
-          <div key={ad.id}>
-            <h3>{ad.adTitle}</h3>
-            <p>{ad.adDescription}</p>
-            {/* Muestra otros detalles del anuncio aquí */}
-          </div>
-        ))}
-      </div>
     </Container>
   );
 };

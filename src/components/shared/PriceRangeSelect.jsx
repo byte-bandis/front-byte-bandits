@@ -1,25 +1,40 @@
 import { Form } from "react-bootstrap";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import PropTypes from "prop-types";
 
-const PriceRangeSelect = ({ className, min, max, onPriceChange, ...rest }) => {
+const PriceRangeSelect = ({
+  className,
+  min,
+  max,
+  minValue,
+  maxValue,
+  onPriceChange,
+  ...rest
+}) => {
   const [values, setValues] = useState({
-    minPrice: min,
-    maxPrice: max,
+    minPrice: minValue || min,
+    maxPrice: maxValue !== undefined ? maxValue : max,
   });
+
+  useEffect(() => {
+    setValues({
+      minPrice: minValue !== undefined ? minValue : min,
+      maxPrice: maxValue !== undefined ? maxValue : max,
+    });
+  }, [minValue, maxValue, min, max]);
 
   const changeMinPrice = (e) => {
     const newMinPrice = Number(e.target.value);
+    setValues((prevValues) => ({ ...prevValues, minPrice: newMinPrice }));
     if (typeof onPriceChange === "function") {
-      setValues((prevValues) => ({ ...prevValues, minPrice: newMinPrice }));
       onPriceChange(newMinPrice, values.maxPrice);
     }
   };
 
   const changeMaxPrice = (e) => {
     const newMaxPrice = Number(e.target.value);
+    setValues((prevValues) => ({ ...prevValues, maxPrice: newMaxPrice }));
     if (typeof onPriceChange === "function") {
-      setValues((prevValues) => ({ ...prevValues, maxPrice: newMaxPrice }));
       onPriceChange(values.minPrice, newMaxPrice);
     }
   };
@@ -31,9 +46,10 @@ const PriceRangeSelect = ({ className, min, max, onPriceChange, ...rest }) => {
         <Form.Control
           id={`${className}-min`}
           type="number"
-          value={values.minPrice || ""}
+          value={values.minPrice !== undefined ? values.minPrice : ""}
           min={min}
           onChange={changeMinPrice}
+          minValue={values.minPrice}
           {...rest}
         />
       </div>
@@ -42,9 +58,10 @@ const PriceRangeSelect = ({ className, min, max, onPriceChange, ...rest }) => {
         <Form.Control
           id={`${className}-max`}
           type="number"
-          value={values.maxPrice || ""}
+          value={values.maxPrice !== undefined ? values.maxPrice : ""}
           max={max}
           onChange={changeMaxPrice}
+          maxValue={values.maxPrice}
           {...rest}
         />
       </div>
@@ -57,6 +74,8 @@ PriceRangeSelect.propTypes = {
   min: PropTypes.number,
   max: PropTypes.number,
   onPriceChange: PropTypes.func,
+  minValue: PropTypes.number,
+  maxValue: PropTypes.number,
 };
 
 export default PriceRangeSelect;

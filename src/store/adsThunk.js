@@ -22,8 +22,18 @@ const getAds = createAsyncThunk(
   "ads/fetchAds",
   async (params = { page: 1, id: "" }, { rejectWithValue }) => {
     const { page, id } = params;
+    let reqUrl = ``;
+    if (id) { reqUrl =reqUrl + `/${id}` }
+    else { 
+      reqUrl = reqUrl + `/?page=${page}&limit=8`
+      /* aqui se pueden añadir las opciones de filtros
+      por ejemplo: if (myFilter) { reqUrl = reqUrl + `&myFilter=${myFilterValue}` }
+      */
+     }
+     
+
     try {
-      const response = await client.get(`${adsURL}/${id}/?page=${page}&limit=8`);
+      const response = await client.get(`${adsURL}${reqUrl}`);
       const result = response.ads || response.ad;
       return result;
     } catch (error) {

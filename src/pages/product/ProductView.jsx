@@ -44,8 +44,12 @@ const ProductView = () => {
   }, [loadedAds, productId, dispatch]);
 
   useEffect(() => {
-    const liked = myLikes.some((like) => like.ad._id === productId);
-    setiLikeIt(liked);
+    myLikes.forEach((like) => {
+      console.log(like);
+    if (like.ad && like.ad._id === productId) {
+      setiLikeIt(true);
+  }
+});
   }, [myLikes, productId]);
 
   if (loadedAds) {

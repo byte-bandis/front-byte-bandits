@@ -18,23 +18,25 @@ const ProductItem = ({ ad }) => {
         (state) => state.likesSlice.adcrosslikes[_id]
     );
 
-    let iLikeIt = false
+    let iLikeIt = false;
     const myLikes = useSelector((state) => state.likesSlice.wishlist);
     myLikes.forEach((like) => {
-      if(like.ad._id === _id){
-        iLikeIt = true
-      }
-     })
-    
-   
-  
-  
+        console.log(like);
+
+        if (like.ad && like.ad._id === _id) {
+            iLikeIt = true;
+        }
+    });
+
     return (
         <Link className='add' to={`/product/${_id}`}>
             <StyledSingleAd className='single-ad'>
-              
                 <div className='heart'>
-                {iLikeIt ? <HeartFill color='red' /> : <Heart color='red' />}
+                    {iLikeIt ? (
+                        <HeartFill color='red' />
+                    ) : (
+                        <Heart color='red' />
+                    )}
                 </div>
                 <div className='heart count'>
                     <p>{likesCount}</p>
@@ -111,7 +113,7 @@ const StyledSingleAd = styled.div`
         z-index: 10;
     }
     & .count {
-    top: 4px;
+        top: 4px;
         left: 30px;
         color: red;
         font-size: 20px;

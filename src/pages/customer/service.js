@@ -15,10 +15,21 @@ export const getPublicProfiles = async () => {
 export const getMyAccount = async (userName) => {
   const url = `${userURL}/${userName}/myaccount`;
   return client.get(url).then(({ myAccount }) => {
-    console.log("Esto es myProfile en service: ", myAccount);
     const data = {
       myAccount,
       message: "My account loaded!",
+    };
+    return data;
+  });
+};
+
+export const getSinglePublicProfile = async (userName) => {
+  const url = `${userURL}/${userName}`;
+  return client.get(url).then(({ publicProfileLoaded, message }) => {
+    console.log("Esto es public profile en service: ", publicProfileLoaded);
+    const data = {
+      publicProfileLoaded,
+      message,
     };
     return data;
   });

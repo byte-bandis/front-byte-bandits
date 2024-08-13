@@ -7,6 +7,7 @@ import adsReducer from "./adsSlice";
 import publicProfilesReducer from "./publicProfilesSlice";
 import myAccountReducer from "./myAccountSlice";
 import likesReducer from "./likesSlice";
+import singleProfileReducer from "./singlePublicProfileSlice";
 
 export const store = configureStore({
   reducer: {
@@ -18,6 +19,7 @@ export const store = configureStore({
     publicProfiles: publicProfilesReducer,
     myAccount: myAccountReducer,
     likesSlice: likesReducer,
+    singlePublicProfile: singleProfileReducer,
   },
   devTools: import.meta.env.NODE_ENV !== "production",
 });

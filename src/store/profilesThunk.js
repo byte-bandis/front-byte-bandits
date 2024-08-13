@@ -19,7 +19,18 @@ export const getMyAccountWithThunk = createAsyncThunk(
   async (username, { rejectWithValue }) => {
     try {
       const response = await profiles.getMyAccount(username);
-      console.log("Esto es response de getMyProfileWithThunk: ", response);
+      return response;
+    } catch (error) {
+      return rejectWithValue(error.message);
+    }
+  }
+);
+
+export const getSinglePublicProfileWithThunk = createAsyncThunk(
+  "singlePublicProfile/fetch",
+  async (username, { rejectWithValue }) => {
+    try {
+      const response = await profiles.getSinglePublicProfile(username);
       return response;
     } catch (error) {
       return rejectWithValue(error.message);

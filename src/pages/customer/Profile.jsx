@@ -14,8 +14,6 @@ const Profile = () => {
   const loggedUserName = useSelector(getLoggedUserName);
   const loadedPublicProfile = useSelector(getSinglePublicProfile);
   const { userPhoto, headerPhoto, userDescription } = loadedPublicProfile;
-  //const fotoprueba = "super_mario_bros.jpg";
-  //const userImage = userPhoto ? `${userPhoto}`
 
   const origin = import.meta.env.VITE_API_BASE_URL;
 

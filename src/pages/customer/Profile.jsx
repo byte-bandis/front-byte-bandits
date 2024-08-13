@@ -13,9 +13,11 @@ const Profile = () => {
   const { username } = useParams();
   const loggedUserName = useSelector(getLoggedUserName);
   const loadedPublicProfile = useSelector(getSinglePublicProfile);
-  const userPhoto = loadedPublicProfile.userPhoto;
-  const headerPhoto = loadedPublicProfile.headerPhoto;
-  const description = loadedPublicProfile.userDescription;
+  const { userPhoto, headerPhoto, userDescription } = loadedPublicProfile;
+  //const fotoprueba = "super_mario_bros.jpg";
+  //const userImage = userPhoto ? `${userPhoto}`
+
+  const origin = import.meta.env.VITE_API_BASE_URL;
 
   useEffect(() => {
     if (!username) {
@@ -29,11 +31,21 @@ const Profile = () => {
     <>
       <Col>
         <div className="container-fluid py-5">
-          <ul className="col-md-8 fs-4">
-            <li>{userPhoto}</li>
-            <li>{headerPhoto}</li>
-            <li>{description}</li>
-          </ul>
+          {userPhoto && (
+            <img
+              src={userPhoto}
+              alt={`${username}'s profile picture`}
+              crossOrigin={origin}
+            />
+          )}
+          {headerPhoto && (
+            <img
+              src={headerPhoto}
+              alt={`${username}'s header picture`}
+              crossOrigin={origin}
+            />
+          )}
+          {userDescription && <div>{userDescription}</div>}
         </div>
       </Col>
     </>

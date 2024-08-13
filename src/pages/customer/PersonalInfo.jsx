@@ -1,21 +1,22 @@
 import Col from "react-bootstrap/Col";
 import { useDispatch, useSelector } from "react-redux";
-import { getLoggedUserName, getMyProfile } from "../../store/selectors";
+import { getLoggedUserName, getMyAccount } from "../../store/selectors";
 import { useEffect, useState } from "react";
-import { getMyProfileWithThunk } from "../../store/profilesThunk";
+import { getMyAccountWithThunk } from "../../store/profilesThunk";
 import { useParams } from "react-router-dom";
 import { trimDate } from "../../utils/dateTools";
 
 const PersonalInfo = () => {
   const dispatch = useDispatch();
   const loggedUsername = useSelector(getLoggedUserName);
-  const myProfile = useSelector(getMyProfile);
+  const myProfile = useSelector(getMyAccount);
   const { username } = useParams();
   const [creationDate, setCreationdate] = useState("000-00-00");
-
+  console.log("Esto es username de los params: ", username);
+  console.log("Esto es loggedUsername del estado: ", loggedUsername);
   useEffect(() => {
     if (loggedUsername === username) {
-      dispatch(getMyProfileWithThunk(username));
+      dispatch(getMyAccountWithThunk(username));
     }
   }, [username, loggedUsername, dispatch]);
 

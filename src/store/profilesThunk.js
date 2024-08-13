@@ -14,11 +14,12 @@ export const getProfilesWithThunk = createAsyncThunk(
   }
 );
 
-export const getMyProfileWithThunk = createAsyncThunk(
+export const getMyAccountWithThunk = createAsyncThunk(
   "profiles/myProfile",
   async (username, { rejectWithValue }) => {
     try {
-      const response = await profiles.getMyProfile(username);
+      const response = await profiles.getMyAccount(username);
+      console.log("Esto es response de getMyProfileWithThunk: ", response);
       return response;
     } catch (error) {
       return rejectWithValue(error.message);

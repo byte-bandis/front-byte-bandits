@@ -1,29 +1,26 @@
 import { useDispatch, useSelector } from "react-redux";
 import ProductList from "./PoductList";
 import Profile from "./Profile";
-import { getLoggedUser } from "../../store/selectors";
+import { getLoggedUserName } from "../../store/selectors";
 import { useEffect } from "react";
-import { getMyProfileWithThunk } from "../../store/profilesThunk";
-import { useParams } from "react-router-dom";
-import { setMyProfile } from "../../store/myProfileSlice";
+import { getMyAccountWithThunk } from "../../store/profilesThunk";
 import storage from "../../utils/storage";
 
 const Account = () => {
   const dispatch = useDispatch();
-  const isLogged = useSelector(getLoggedUser);
-  const { username } = useParams();
+  const isLogged = useSelector(getLoggedUserName);
   const accessToken = storage.get("authToken");
   console.log("Esto es accessToken en myAccount: ", accessToken);
-  console.log("Esto es isLogged.userName en myAccount: ", isLogged.userName);
+  console.log("Esto es isLogged en myAccount: ", isLogged);
   useEffect(() => {
     if (isLogged) {
-      dispatch(getMyProfileWithThunk(isLogged.userName));
+      dispatch(getMyAccountWithThunk(isLogged));
     }
-  }, [isLogged, username, dispatch]);
+  }, [isLogged, dispatch]);
 
   return (
     <>
-      {<h1>{isLogged.userName}, welcome to your private area</h1>}
+      {<h1>{isLogged}, welcome to your private area</h1>}
       <Profile />
       <ProductList />
     </>

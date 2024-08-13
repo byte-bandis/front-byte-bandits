@@ -12,12 +12,13 @@ export const getPublicProfiles = async () => {
   });
 };
 
-export const getMyProfile = async (userName) => {
-  const url = `${userURL}/${userName}`;
-  return client.get(url).then(({ myProfile }) => {
+export const getMyAccount = async (userName) => {
+  const url = `${userURL}/${userName}/myaccount`;
+  return client.get(url).then(({ myAccount }) => {
+    console.log("Esto es myProfile en service: ", myAccount);
     const data = {
-      myProfile,
-      message: "My profile loaded!",
+      myAccount,
+      message: "My account loaded!",
     };
     return data;
   });

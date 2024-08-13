@@ -15,7 +15,7 @@ export const getProfilesWithThunk = createAsyncThunk(
 );
 
 export const getMyAccountWithThunk = createAsyncThunk(
-  "profiles/myProfile",
+  "myAccount/fetch",
   async (username, { rejectWithValue }) => {
     try {
       const response = await profiles.getMyAccount(username);

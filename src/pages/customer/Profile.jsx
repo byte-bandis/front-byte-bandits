@@ -7,7 +7,7 @@ import {
 } from "../../store/selectors";
 import { useEffect } from "react";
 import { getSinglePublicProfileWithThunk } from "../../store/profilesThunk";
-import CustomPhoto from "../../components/shared/CustomPhoto";
+import PublicProfilePhotos from "./components/PublicProfilePhotos";
 
 const Profile = () => {
   const dispatch = useDispatch();
@@ -29,30 +29,13 @@ const Profile = () => {
   return (
     <>
       <Col>
-        <div className="container-fluid py-5">
-          {userPhoto && (
-            <CustomPhoto
-              src={userPhoto}
-              alt={`${username}'s profile picture`}
-              crossOrigin={origin}
-              $customborderradius="50%"
-              $customwidth="200px"
-              $customheight="200px"
-              $customobjectfit="cover"
-            />
-          )}
-          {headerPhoto && (
-            <CustomPhoto
-              src={headerPhoto}
-              alt={`${username}'s header picture`}
-              crossOrigin={origin}
-              $customborder="none"
-              $customboxshadow="none"
-              $customtransform="none"
-            />
-          )}
-          {userDescription && <div>{userDescription}</div>}
-        </div>
+        <PublicProfilePhotos
+          userPhoto={userPhoto}
+          headerPhoto={headerPhoto}
+          username={username}
+          origin={origin}
+        />
+        {userDescription && <div>{userDescription}</div>}
       </Col>
     </>
   );

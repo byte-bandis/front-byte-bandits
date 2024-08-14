@@ -8,6 +8,8 @@ import {
 import { useEffect } from "react";
 import { getSinglePublicProfileWithThunk } from "../../store/profilesThunk";
 import ScreenPublicProfile from "./components/ScreenPublicProfile";
+import ImageUploader from "../product/components/ImageUploader";
+import ProfileUpdaterForm from "./components/ProfileUpdaterForm";
 
 const Profile = () => {
   const dispatch = useDispatch();
@@ -36,6 +38,7 @@ const Profile = () => {
           origin={origin}
           userDescription={userDescription}
         />
+        <ProfileUpdaterForm />
       </Col>
     </>
   );

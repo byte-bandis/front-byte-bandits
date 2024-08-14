@@ -17,7 +17,7 @@ const ImageUploader = ({
   inputImagePreview,
   setInputImage,
   setInputImagePreview,
-  dropAreaText = "Arrastra y suelta aquí o haz clic para seleccionar una imagen",
+  dropAreaText = "Drag and drop your image here or clic to upload from your computer",
   $customHeight,
   $customWidth,
   $customRadius,
@@ -69,7 +69,10 @@ const ImageUploader = ({
           </ImagePreview>
         ) : (
           <CustomFileUpload>
-            <FileInput type="file" onChange={handleImageChange} />
+            <FileInput
+              type="file"
+              onChange={handleImageChange}
+            />
             <CameraFill size={30} />
             {dropAreaText}
           </CustomFileUpload>

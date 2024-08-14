@@ -3,7 +3,10 @@ import ProductList from "./PoductList";
 import Profile from "./Profile";
 import { getLoggedUserName } from "../../store/selectors";
 import { useEffect } from "react";
-import { getMyAccountWithThunk } from "../../store/profilesThunk";
+import {
+  getMyAccountWithThunk,
+  getSinglePublicProfileWithThunk,
+} from "../../store/profilesThunk";
 import storage from "../../utils/storage";
 
 const Account = () => {
@@ -15,6 +18,7 @@ const Account = () => {
   useEffect(() => {
     if (isLogged) {
       dispatch(getMyAccountWithThunk(isLogged));
+      dispatch(getSinglePublicProfileWithThunk(isLogged));
     }
   }, [isLogged, dispatch]);
 

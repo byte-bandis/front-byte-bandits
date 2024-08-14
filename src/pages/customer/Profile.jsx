@@ -8,6 +8,7 @@ import {
 import { useEffect } from "react";
 import { getSinglePublicProfileWithThunk } from "../../store/profilesThunk";
 import PublicProfilePhotos from "./components/PublicProfilePhotos";
+import DescriptionContainer from "./components/DescriptionContainer";
 
 const Profile = () => {
   const dispatch = useDispatch();
@@ -35,7 +36,9 @@ const Profile = () => {
           username={username}
           origin={origin}
         />
-        {userDescription && <div>{userDescription}</div>}
+        {userDescription && (
+          <DescriptionContainer>{userDescription}</DescriptionContainer>
+        )}
       </Col>
     </>
   );

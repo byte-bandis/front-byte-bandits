@@ -5,20 +5,15 @@ import ProfileUserPhoto from "./ProfileUserPhoto";
 import { useState } from "react";
 import UsernameOverlay from "./UsernameOverlay";
 
-const PublicProfilePhotos = ({
-  userPhoto,
-  headerPhoto,
-  username,
-  origin,
-  onClickAction,
-}) => {
+const PublicProfilePhotos = ({ userPhoto, headerPhoto, username, origin }) => {
   const [showUsername, setShowUsername] = useState(false);
 
   const handleUserPhotoInteraction = () => {
     setShowUsername(!showUsername);
-    if (onClickAction) {
-      return console.log("Something should be done?");
-    }
+  };
+
+  const handleUserPhotoClick = () => {
+    alert(`Someone wants to talk with ${username}`);
   };
 
   return (
@@ -44,6 +39,7 @@ const PublicProfilePhotos = ({
           $customobjectfit="cover"
           onMouseEnter={handleUserPhotoInteraction}
           onMouseLeave={handleUserPhotoInteraction}
+          onClick={handleUserPhotoClick}
         />
       )}
       {showUsername && <UsernameOverlay>Talk to {username}?</UsernameOverlay>}
@@ -56,7 +52,6 @@ PublicProfilePhotos.propTypes = {
   headerPhoto: PropTypes.string,
   username: PropTypes.string.isRequired,
   origin: PropTypes.string.isRequired,
-  onClickAction: PropTypes.func,
 };
 
 export default PublicProfilePhotos;

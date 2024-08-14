@@ -20,6 +20,9 @@ export const authSlice = createSlice({
     setAuth: (state, action) => {
       state.authState = action.payload;
     },
+    resetLoggedUserInfo: (state) => {
+      state.user = defaultAuthState.user;
+    },
   },
   extraReducers: (builder) => {
     builder.addCase(loginWithThunk.fulfilled, (state, action) => {
@@ -30,5 +33,5 @@ export const authSlice = createSlice({
   },
 });
 
-export const { setAuth } = authSlice.actions;
+export const { setAuth, resetLoggedUserInfo } = authSlice.actions;
 export default authSlice.reducer;

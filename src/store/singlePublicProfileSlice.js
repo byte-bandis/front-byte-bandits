@@ -12,6 +12,9 @@ const singleProfileSlice = createSlice({
     setSingleProfile: (state, action) => {
       state.data = action.payload;
     },
+    resetSinglePublicProfile: (state) => {
+      state.data = singleProfileState;
+    },
   },
   extraReducers: (builder) => {
     builder.addCase(
@@ -23,5 +26,6 @@ const singleProfileSlice = createSlice({
   },
 });
 
-export const { setSingleProfile } = singleProfileSlice.actions;
+export const { setSingleProfile, resetSinglePublicProfile } =
+  singleProfileSlice.actions;
 export default singleProfileSlice.reducer;

@@ -12,7 +12,8 @@ import { logout } from "../../../pages/auth/service";
 import DropdownLink from "../DropdownLink";
 import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
-import { setAuth } from "../../../store/authSlice";
+import { resetLoggedUserInfo, setAuth } from "../../../store/authSlice";
+import { resetSinglePublicProfile } from "../../../store/singlePublicProfileSlice";
 import TagsNav from "../TagsNav";
 
 const Header = () => {
@@ -26,6 +27,8 @@ const Header = () => {
     if (confirmed) {
       logout();
       dispatch(setAuth(false));
+      dispatch(resetLoggedUserInfo());
+      dispatch(resetSinglePublicProfile());
       navigate("/");
     }
   };
@@ -61,7 +64,7 @@ const Header = () => {
   ];
 
   const filteredTagOptions = TAG_OPTIONS.filter(
-    (tag) => tag.text !== "All categories",
+    (tag) => tag.text !== "All categories"
   );
 
   return (
@@ -93,7 +96,10 @@ const Header = () => {
               >
                 My account
               </DropdownLink>
-              <CustomButton to="/username/new" className={styles.sellButton}>
+              <CustomButton
+                to="/username/new"
+                className={styles.sellButton}
+              >
                 Sell - Buy
               </CustomButton>
             </>
@@ -121,7 +127,10 @@ const Header = () => {
         className={`${styles.TagsNav} d-flex justify-content-left align-items-center`}
         fluid
       >
-        <DropdownLink options={TAG_OPTIONS} className={styles.allCategories}>
+        <DropdownLink
+          options={TAG_OPTIONS}
+          className={styles.allCategories}
+        >
           All categories
         </DropdownLink>
         <TagsNav

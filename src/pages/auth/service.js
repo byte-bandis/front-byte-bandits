@@ -36,4 +36,6 @@ export const login = async (email, password, requestStorage) => {
 export const logout = () => {
   removeAuthorizationHeader();
   storage.remove("authToken");
+  storage.remove("userName");
+  storage.remove("userId");
 };

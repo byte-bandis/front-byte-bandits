@@ -12,6 +12,7 @@ const publicProfilesSlice = createSlice({
     setPublicProfiles: (state, action) => {
       state.data = action.payload;
     },
+    resetPublicProfiles: defaultPublicProfilesState,
   },
   extraReducers: (builder) => {
     builder.addCase(getProfilesWithThunk.fulfilled, (state, action) => {

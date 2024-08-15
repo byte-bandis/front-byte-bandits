@@ -1,10 +1,17 @@
 import styled from "styled-components";
 import ImageUploader from "../../product/components/ImageUploader";
 import Button from "../../product/components/Button";
-import { useSearchParams } from "react-router-dom";
-import { useEffect, useState } from "react";
-import { useSelector } from "react-redux";
-import { getSinglePublicProfile } from "../../../store/selectors";
+import { useParams } from "react-router-dom";
+import { useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  getLoggedUserId,
+  getSinglePublicProfile,
+} from "../../../store/selectors";
+import {
+  createSinglePublicProfileWithThunk,
+  getSinglePublicProfileWithThunk,
+} from "../../../store/profilesThunk";
 
 const PublicProfileForm = styled.form`
   display: flex;
@@ -36,28 +43,47 @@ const ProfileUpdaterForm = () => {
   const { userPhoto, headerPhoto, userDescription } = useSelector(
     getSinglePublicProfile
   );
-
+  const dispatch = useDispatch();
+  const requesterId = useSelector(getLoggedUserId);
+  const { username } = useParams();
   const [inputUserPhoto, setInputUserPhoto] = useState(null);
   const [inputUserPhotoPreview, setInputUserPhotoPreview] = useState(null);
   const [inputHeaderPhoto, setInputHeaderPhoto] = useState(null);
   const [inputHeaderPhotoPreview, setInputHeaderPhotoPreview] = useState(null);
+  const [newUserDescription, setNewUserDescription] = useState("");
 
   const handleSubmit = async (event) => {
     event.preventDefault();
     const formData = new FormData();
+    formData.append("requesterId", requesterId);
 
     if (inputUserPhoto && inputUserPhoto !== userPhoto) {
       formData.append("userPhoto", inputUserPhoto);
-      setInputUserPhotoPreview(inputUserPhoto);
+      //setInputUserPhotoPreview(inputUserPhoto);
     }
     if (inputHeaderPhoto && inputHeaderPhoto !== headerPhoto) {
       formData.append("headerPhoto", inputHeaderPhoto);
-      setInputHeaderPhotoPreview(inputHeaderPhoto);
+      //setInputHeaderPhotoPreview(inputHeaderPhoto);
     }
+    if (newUserDescription && newUserDescription !== userDescription) {
+      formData.append("userDescription", newUserDescription);
+    }
+
+    formData.forEach((value, key) => {
+      console.log(key, value);
+    });
+
+    /* try {
+      await createSinglePublicProfile(username, formData);
+    } catch (error) {
+      console.log("Este error me llega: ", error);
+    } */
+    dispatch(createSinglePublicProfileWithThunk({ username, formData }));
+    dispatch(getSinglePublicProfileWithThunk(username));
   };
 
   return (
-    <PublicProfileForm>
+    <PublicProfileForm onSubmit={handleSubmit}>
       <ImageUploader
         inputImagePreview={inputUserPhotoPreview}
         setInputImage={setInputUserPhoto}
@@ -74,10 +100,11 @@ const ProfileUpdaterForm = () => {
         $customHeight={"300px"}
       />
       <StyledTextarea
-        type="textarea"
+        value={newUserDescription}
         placeholder={
           userDescription || "Write something about you and your work here"
         }
+        onChange={(e) => setNewUserDescription(e.target.value)}
       />
       <Button type="submit">Send data</Button>
     </PublicProfileForm>

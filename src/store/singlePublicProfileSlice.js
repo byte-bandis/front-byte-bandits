@@ -1,5 +1,8 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { getSinglePublicProfileWithThunk } from "./profilesThunk";
+import {
+  createSinglePublicProfileWithThunk,
+  getSinglePublicProfileWithThunk,
+} from "./profilesThunk";
 
 export const singleProfileState = {
   data: {},
@@ -21,6 +24,12 @@ const singleProfileSlice = createSlice({
       getSinglePublicProfileWithThunk.fulfilled,
       (state, action) => {
         state.data = action.payload.publicProfileLoaded;
+      }
+    );
+    builder.addCase(
+      createSinglePublicProfileWithThunk.fulfilled,
+      (state, action) => {
+        state.data = action.payload.newPublicProfile;
       }
     );
   },

@@ -13,13 +13,19 @@ import {
   TagsContainer,
 } from "./NewProductPageStyles";
 import { resetMessage, setMessage } from "../../store/uiSlice";
-import { getError, getUILoading } from "../../store/selectors";
+import {
+  getError,
+  getUILoading,
+  getLoggedUserName,
+  getAdsSelector,
+  getLoggedUserId,
+} from "../../store/selectors";
 import ImageUploader from "./components/ImageUploader";
 
 const TAG_OPTIONS = ["lifestyle", "mobile", "motor", "work", "others"];
 
 const NewProductPage = ({ isEditMode = false }) => {
-  const { productId } = useParams();
+  const { productId, username } = useParams();
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
@@ -32,7 +38,9 @@ const NewProductPage = ({ isEditMode = false }) => {
   const [inputImagePreview, setInputImagePreview] = useState(null);
   const error = useSelector(getError);
   const loading = useSelector(getUILoading);
-  const loadedAd = useSelector((state) => state.adsState.data).find(
+  const currentUser = useSelector(getLoggedUserName);
+  const currentUserId = useSelector(getLoggedUserId);
+  const loadedAd = useSelector(getAdsSelector).find(
     (advert) => advert._id === productId
   );
 
@@ -163,6 +171,10 @@ const NewProductPage = ({ isEditMode = false }) => {
       } else {
         response = await dispatch(createAd(formData)).unwrap();
       }
+
+      await (async () => {
+        return new Promise((resolve) => setTimeout(resolve, 2000));
+      })();
       navigate(`/product/${response._id}`);
     } catch (errorMsg) {
       console.error("Failed to process product: ", errorMsg);
@@ -186,7 +198,14 @@ const NewProductPage = ({ isEditMode = false }) => {
             const fetchedAds = await dispatch(
               getAds({ id: productId })
             ).unwrap();
-            fetchedAd = fetchedAds[0];
+            fetchedAd = fetchedAds[0] || undefined;
+          }
+          if (
+            fetchedAd === undefined ||
+            username !== currentUser ||
+            fetchedAd.user !== currentUserId
+          ) {
+            navigate("/404");
           }
           if (fetchedAd !== undefined) {
             setInputName(fetchedAd.adTitle);

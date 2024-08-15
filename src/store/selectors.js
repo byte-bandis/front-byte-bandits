@@ -1,5 +1,4 @@
 export const getIsLogged = (state) => state.authState;
-//export const getError = (state) => state.errorState.errorMessage;
 export const getError = (state) => {
   if (state.ui.state === "error") {
     return state.ui.message;
@@ -15,3 +14,4 @@ export const getLoggedUserId = (state) => state.authState.user.userId;
 export const getPublicProfiles = (state) => state.publicProfiles.data;
 export const getMyAccount = (state) => state.myAccount.data;
 export const getSinglePublicProfile = (state) => state.singlePublicProfile.data;
+export const getAdsSelector = (state) => state.adsState.data;

@@ -2,7 +2,7 @@ import styled from "styled-components";
 import ImageUploader from "../../product/components/ImageUploader";
 import Button from "../../product/components/Button";
 import { useSearchParams } from "react-router-dom";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { getSinglePublicProfile } from "../../../store/selectors";
 
@@ -37,27 +37,39 @@ const ProfileUpdaterForm = () => {
     getSinglePublicProfile
   );
 
-  console.log("Esto es userPhoto en el form: ", userPhoto);
-  console.log("Esto es headerPhoto en el form: ", headerPhoto);
-  console.log("Esto es userDescription en el form: ", userDescription);
-
-  const [inputImage, setInputImage] = useState(null);
-  const [inputImagePreview, setInputImagePreview] = useState(null);
+  const [inputUserPhoto, setInputUserPhoto] = useState(null);
+  const [inputUserPhotoPreview, setInputUserPhotoPreview] = useState(null);
+  const [inputHeaderPhoto, setInputHeaderPhoto] = useState(null);
+  const [inputHeaderPhotoPreview, setInputHeaderPhotoPreview] = useState(null);
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-
     const formData = new FormData();
+
+    if (inputUserPhoto && inputUserPhoto !== userPhoto) {
+      formData.append("userPhoto", inputUserPhoto);
+      setInputUserPhotoPreview(inputUserPhoto);
+    }
+    if (inputHeaderPhoto && inputHeaderPhoto !== headerPhoto) {
+      formData.append("headerPhoto", inputHeaderPhoto);
+      setInputHeaderPhotoPreview(inputHeaderPhoto);
+    }
   };
 
   return (
     <PublicProfileForm>
       <ImageUploader
+        inputImagePreview={inputUserPhotoPreview}
+        setInputImage={setInputUserPhoto}
+        setInputImagePreview={setInputUserPhotoPreview}
         $customWidth={"200px"}
         $customHeight={"200px"}
         $customRadius={"50%"}
       />
       <ImageUploader
+        inputImagePreview={inputHeaderPhotoPreview || headerPhoto}
+        setInputImage={setInputHeaderPhoto}
+        setInputImagePreview={setInputHeaderPhotoPreview}
         $customWidth={"100%"}
         $customHeight={"300px"}
       />
@@ -67,7 +79,7 @@ const ProfileUpdaterForm = () => {
           userDescription || "Write something about you and your work here"
         }
       />
-      <Button>Send data</Button>
+      <Button type="submit">Send data</Button>
     </PublicProfileForm>
   );
 };

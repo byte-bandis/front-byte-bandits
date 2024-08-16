@@ -30,14 +30,16 @@ const Profile = () => {
   return (
     <>
       <Col>
-        <ScreenPublicProfile
-          userPhoto={userPhoto}
-          headerPhoto={headerPhoto}
-          username={username}
-          origin={origin}
-          userDescription={userDescription}
-        />
-        <ProfileUpdaterForm />
+        {loadedPublicProfile && (
+          <ScreenPublicProfile
+            userPhoto={userPhoto}
+            headerPhoto={headerPhoto}
+            username={username}
+            origin={origin}
+            userDescription={userDescription}
+          />
+        )}
+        {!loadedPublicProfile && <ProfileUpdaterForm />}
       </Col>
     </>
   );

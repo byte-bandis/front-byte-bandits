@@ -59,26 +59,14 @@ const ProfileUpdaterForm = () => {
 
     if (inputUserPhoto && inputUserPhoto !== userPhoto) {
       formData.append("userPhoto", inputUserPhoto);
-      //setInputUserPhotoPreview(inputUserPhoto);
     }
     if (inputHeaderPhoto && inputHeaderPhoto !== headerPhoto) {
       formData.append("headerPhoto", inputHeaderPhoto);
-      //setInputHeaderPhotoPreview(inputHeaderPhoto);
     }
     if (newUserDescription && newUserDescription !== userDescription) {
       formData.append("userDescription", newUserDescription);
     }
-
-    formData.forEach((value, key) => {
-      console.log(key, value);
-    });
-
-    /* try {
-      await createSinglePublicProfile(username, formData);
-    } catch (error) {
-      console.log("Este error me llega: ", error);
-    } */
-    dispatch(createSinglePublicProfileWithThunk({ username, formData }));
+    await dispatch(createSinglePublicProfileWithThunk({ username, formData }));
     dispatch(getSinglePublicProfileWithThunk(username));
   };
 
@@ -93,7 +81,7 @@ const ProfileUpdaterForm = () => {
         $customRadius={"50%"}
       />
       <ImageUploader
-        inputImagePreview={inputHeaderPhotoPreview || headerPhoto}
+        inputImagePreview={inputHeaderPhotoPreview}
         setInputImage={setInputHeaderPhoto}
         setInputImagePreview={setInputHeaderPhotoPreview}
         $customWidth={"100%"}

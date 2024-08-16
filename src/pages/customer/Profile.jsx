@@ -20,7 +20,7 @@ const Profile = () => {
   const loadedPublicProfile = useSelector(getSinglePublicProfile);
   const loadedPublicProfileOwner = useSelector(getSinglePublicProfileOwner);
   const { userPhoto, headerPhoto, userDescription } = loadedPublicProfile;
-  const [showForm, setsShowForm] = useState(false);
+  const [showForm, setsShowForm] = useState(true);
   const origin = import.meta.env.VITE_API_BASE_URL;
 
   useEffect(() => {
@@ -32,32 +32,35 @@ const Profile = () => {
   }, [loggedUserName, username, dispatch]);
 
   useEffect(() => {
-    if (!loadedPublicProfile || Object.keys(loadedPublicProfile).length === 0) {
-      setsShowForm(true);
+    if (loadedPublicProfile || Object.keys(loadedPublicProfile).length > 0) {
+      setsShowForm(false);
     }
-  }, [loadedPublicProfile]);
+  }, [loadedPublicProfile, showForm]);
 
   const handleShowForm = () => setsShowForm(!showForm);
 
   return (
     <>
       <Col>
-        {loadedPublicProfile && !showForm && (
-          <StyledContainer>
-            <ScreenPublicProfile
-              userPhoto={userPhoto}
-              headerPhoto={headerPhoto}
-              username={username}
-              origin={origin}
-              userDescription={userDescription}
-            />
-            {loggedUserName === loadedPublicProfileOwner && (
-              <Button onClick={handleShowForm}>Edit your profile</Button>
-            )}
-          </StyledContainer>
-        )}
+        {(loadedPublicProfile || Object.keys(loadedPublicProfile).length > 0) &&
+          !showForm && (
+            <StyledContainer>
+              <ScreenPublicProfile
+                userPhoto={userPhoto}
+                headerPhoto={headerPhoto}
+                username={username}
+                origin={origin}
+                userDescription={userDescription}
+              />
+              {loggedUserName === loadedPublicProfileOwner && (
+                <Button onClick={handleShowForm}>Edit your profile</Button>
+              )}
+            </StyledContainer>
+          )}
 
-        {showForm && (
+        {(!loadedPublicProfile ||
+          Object.keys(loadedPublicProfile).length === 0 ||
+          showForm) && (
           <StyledContainer>
             <ProfileUpdaterForm />
             {loggedUserName === loadedPublicProfileOwner && (

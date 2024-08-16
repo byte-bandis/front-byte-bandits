@@ -1,4 +1,3 @@
-import React from "react";
 import PropTypes from "prop-types";
 import { CameraFill } from "react-bootstrap-icons";
 import {
@@ -21,6 +20,10 @@ const ImageUploader = ({
   $customHeight,
   $customWidth,
   $customRadius,
+  $customWrapperTop,
+  $customWrapperLeft,
+  $customWrapperPosition,
+  $customWrapperZIndex,
 }) => {
   const handleDrop = (e) => {
     e.preventDefault();
@@ -51,7 +54,13 @@ const ImageUploader = ({
   };
 
   return (
-    <DropZoneWrapper $customWidth={$customWidth}>
+    <DropZoneWrapper
+      $customWidth={$customWidth}
+      $customWrapperPosition={$customWrapperPosition}
+      $customWrapperLeft={$customWrapperLeft}
+      $customWrapperTop={$customWrapperTop}
+      $customWrapperZIndex={$customWrapperZIndex}
+    >
       <DropZone
         onDrop={handleDrop}
         onDragOver={(e) => e.preventDefault()}
@@ -92,6 +101,13 @@ ImageUploader.propTypes = {
   setInputImagePreview: PropTypes.func.isRequired,
   dropAreaText: PropTypes.string,
   labelText: PropTypes.string,
+  $customHeight: PropTypes.string,
+  $customWidth: PropTypes.string,
+  $customRadius: PropTypes.string,
+  $customWrapperPosition: PropTypes.string,
+  $customWrapperTop: PropTypes.string,
+  $customWrapperLeft: PropTypes.string,
+  $customWrapperZIndex: PropTypes.string,
 };
 
 export default ImageUploader;

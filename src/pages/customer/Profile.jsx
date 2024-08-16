@@ -23,6 +23,7 @@ const Profile = () => {
   const [showForm, setsShowForm] = useState(false);
   const origin = import.meta.env.VITE_API_BASE_URL;
 
+  console.log("Esto es loadedPublicProfile: ", loadedPublicProfile);
   useEffect(() => {
     if (!username) {
       dispatch(getSinglePublicProfileWithThunk(loggedUserName));
@@ -30,6 +31,12 @@ const Profile = () => {
       dispatch(getSinglePublicProfileWithThunk(username));
     }
   }, [loggedUserName, username, dispatch]);
+
+  useEffect(() => {
+    if (!loadedPublicProfile || Object.keys(loadedPublicProfile).length === 0) {
+      setsShowForm(true);
+    }
+  }, [loadedPublicProfile]);
 
   const handleShowForm = () => setsShowForm(!showForm);
 
@@ -50,13 +57,15 @@ const Profile = () => {
             )}
           </StyledContainer>
         )}
-        {!loadedPublicProfile ||
-          (showForm && (
-            <StyledContainer>
-              <ProfileUpdaterForm />
+
+        {showForm && (
+          <StyledContainer>
+            <ProfileUpdaterForm />
+            {loggedUserName === loadedPublicProfileOwner && (
               <Button onClick={handleShowForm}>Back</Button>
-            </StyledContainer>
-          ))}
+            )}
+          </StyledContainer>
+        )}
       </Col>
     </>
   );

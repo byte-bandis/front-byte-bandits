@@ -15,10 +15,13 @@ import { useDispatch } from "react-redux";
 import { resetLoggedUserInfo, setAuth } from "../../../store/authSlice";
 import { resetSinglePublicProfile } from "../../../store/singlePublicProfileSlice";
 import TagsNav from "../TagsNav";
+import { getLoggedUserName } from "../../../store/selectors";
 
 const Header = () => {
   const location = useLocation();
   const isAuthenticated = useSelector((state) => state.authState.authState);
+
+  const loggedUser = useSelector(getLoggedUserName);
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
@@ -29,12 +32,14 @@ const Header = () => {
       dispatch(setAuth(false));
       dispatch(resetLoggedUserInfo());
       dispatch(resetSinglePublicProfile());
-      navigate("/");
+      setTimeout(() => {
+        navigate("/");
+      }, 1000);
     }
   };
 
   const dropdownOptions = [
-    { text: "User Zone", to: "/myaccount", className: "UserZone" },
+    { text: "User Zone", to: `${loggedUser}`, className: "UserZone" },
     { text: "Log out", onClick: handleLogout, className: "Logout" },
   ];
 

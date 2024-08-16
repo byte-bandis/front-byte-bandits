@@ -1,16 +1,22 @@
 import styled from "styled-components";
 
 export const DropZoneWrapper = styled.div`
-  position: relative;
-  display: inline-block;
+  position: ${(props) => props.$customWrapperPosition || "relative"};
+  display: ${(props) => props.$customWrapperDisplay || "inline-block"};
   width: ${(props) => props.$customWidth || "100%"};
+  top: ${(props) => props.$customWrapperTop || "0"};
+  left: ${(props) => props.$customWrapperLeft || "0"};
+  z-index: ${(props) => props.$customWrapperZIndex || "0"};
 `;
 
 export const DropZone = styled.div`
   border: 2px dashed #ccc;
+  position: ${(props) => props.$customDropZonePosition || "relative"};
   border-radius: ${(props) => props.$customRadius || "10px"};
   text-align: center;
   height: ${(props) => props.$customHeight || "300px"};
+  top: ${(props) => props.$customDropZoneTop || "0"};
+  left: ${(props) => props.$customDropZoneLeft || "0"};
   background: #f9f9f9;
   overflow: hidden;
   display: flex;

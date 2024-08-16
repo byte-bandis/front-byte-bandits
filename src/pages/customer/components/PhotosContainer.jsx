@@ -1,9 +1,11 @@
 import styled from "styled-components";
 
 const PhotosContainer = styled.div`
-  position: relative;
-  width: ${(props) => props.$width || "auto"};
-  height: ${(props) => props.$height || "auto"};
+  position: ${(props) => props.$customPosition || "relative"};
+  top: ${(props) => props.$customTop || "0"};
+  display: ${(props) => props.$customDisplay || "block"};
+  width: ${(props) => props.$customWidth || "auto"};
+  height: ${(props) => props.$customHeight || "auto"};
 `;
 
 export default PhotosContainer;

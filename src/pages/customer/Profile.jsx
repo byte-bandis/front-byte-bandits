@@ -31,6 +31,12 @@ const Profile = () => {
     }
   }, [loggedUserName, username, dispatch]);
 
+  useEffect(() => {
+    if (!loadedPublicProfile || Object.keys(loadedPublicProfile).length === 0) {
+      setsShowForm(true);
+    }
+  }, [loadedPublicProfile]);
+
   const handleShowForm = () => setsShowForm(!showForm);
 
   return (
@@ -50,13 +56,15 @@ const Profile = () => {
             )}
           </StyledContainer>
         )}
-        {!loadedPublicProfile ||
-          (showForm && (
-            <StyledContainer>
-              <ProfileUpdaterForm />
+
+        {showForm && (
+          <StyledContainer>
+            <ProfileUpdaterForm />
+            {loggedUserName === loadedPublicProfileOwner && (
               <Button onClick={handleShowForm}>Back</Button>
-            </StyledContainer>
-          ))}
+            )}
+          </StyledContainer>
+        )}
       </Col>
     </>
   );

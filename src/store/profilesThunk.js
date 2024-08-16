@@ -37,3 +37,18 @@ export const getSinglePublicProfileWithThunk = createAsyncThunk(
     }
   }
 );
+
+export const createSinglePublicProfileWithThunk = createAsyncThunk(
+  "singlePublicProfile/create",
+  async ({ username, formData }, { rejectWithValue }) => {
+    try {
+      const response = await profiles.createSinglePublicProfile(
+        username,
+        formData
+      );
+      return response;
+    } catch (error) {
+      return rejectWithValue(error.message);
+    }
+  }
+);

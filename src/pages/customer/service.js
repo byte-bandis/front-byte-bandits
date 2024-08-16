@@ -26,11 +26,31 @@ export const getMyAccount = async (userName) => {
 export const getSinglePublicProfile = async (userName) => {
   const url = `${userURL}/${userName}`;
   return client.get(url).then(({ publicProfileLoaded, message }) => {
-    console.log("Esto es public profile en service: ", publicProfileLoaded);
     const data = {
       publicProfileLoaded,
       message,
     };
     return data;
   });
+};
+
+export const createSinglePublicProfile = async (userName, formData) => {
+  const url = `${userURL}/${userName}`;
+
+  formData.forEach((value, key) => {
+    console.log(key, value);
+  });
+  return client
+    .post(url, formData, {
+      headers: {
+        "Content-Type": "multipart/form-data",
+      },
+    })
+    .then(({ newPublicProfile, message }) => {
+      const data = {
+        newPublicProfile,
+        message,
+      };
+      return data;
+    });
 };

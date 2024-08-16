@@ -7,8 +7,8 @@ import {
 } from "../../store/selectors";
 import { useEffect } from "react";
 import { getSinglePublicProfileWithThunk } from "../../store/profilesThunk";
-import PublicProfilePhotos from "./components/PublicProfilePhotos";
-import DescriptionContainer from "./components/DescriptionContainer";
+import ScreenPublicProfile from "./components/ScreenPublicProfile";
+import ProfileUpdaterForm from "./components/ProfileUpdaterForm";
 
 const Profile = () => {
   const dispatch = useDispatch();
@@ -30,15 +30,14 @@ const Profile = () => {
   return (
     <>
       <Col>
-        <PublicProfilePhotos
+        <ScreenPublicProfile
           userPhoto={userPhoto}
           headerPhoto={headerPhoto}
           username={username}
           origin={origin}
+          userDescription={userDescription}
         />
-        {userDescription && (
-          <DescriptionContainer>{userDescription}</DescriptionContainer>
-        )}
+        <ProfileUpdaterForm />
       </Col>
     </>
   );

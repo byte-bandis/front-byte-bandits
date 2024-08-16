@@ -23,7 +23,6 @@ const Profile = () => {
   const [showForm, setsShowForm] = useState(false);
   const origin = import.meta.env.VITE_API_BASE_URL;
 
-  console.log("Esto es loadedPublicProfile: ", loadedPublicProfile);
   useEffect(() => {
     if (!username) {
       dispatch(getSinglePublicProfileWithThunk(loggedUserName));

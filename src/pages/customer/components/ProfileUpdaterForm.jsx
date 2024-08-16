@@ -43,7 +43,7 @@ const ProfileUpdaterForm = () => {
       formData.append("userDescription", newUserDescription);
     }
     await dispatch(createSinglePublicProfileWithThunk({ username, formData }));
-    dispatch(getSinglePublicProfileWithThunk(username));
+    await dispatch(getSinglePublicProfileWithThunk(username));
   };
 
   return (

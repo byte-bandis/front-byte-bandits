@@ -60,9 +60,9 @@ const LoginPage = () => {
     setCheckboxStatus(event.target.checked);
   };
 
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
-    dispatch(
+    await dispatch(
       loginWithThunk({
         email: inputEmail,
         password: inputPassword,

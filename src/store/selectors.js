@@ -15,3 +15,5 @@ export const getLoggedUserId = (state) => state.authState.user.userId;
 export const getPublicProfiles = (state) => state.publicProfiles.data;
 export const getMyAccount = (state) => state.myAccount.data;
 export const getSinglePublicProfile = (state) => state.singlePublicProfile.data;
+export const getSinglePublicProfileOwner = (state) =>
+  state.singlePublicProfile.data.userName;

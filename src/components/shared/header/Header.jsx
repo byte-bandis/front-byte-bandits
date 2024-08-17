@@ -12,7 +12,7 @@ import { logout } from "../../../pages/auth/service";
 import DropdownLink from "../DropdownLink";
 import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
-import { resetLoggedUserInfo, setAuth } from "../../../store/authSlice";
+import { resetLoggedUserInfo } from "../../../store/authSlice";
 import { resetSinglePublicProfile } from "../../../store/singlePublicProfileSlice";
 import TagsNav from "../TagsNav";
 import { getLoggedUserName } from "../../../store/selectors";
@@ -29,7 +29,6 @@ const Header = () => {
     const confirmed = window.confirm("Are you sure to close your session?");
     if (confirmed) {
       logout();
-      dispatch(setAuth(false));
       dispatch(resetLoggedUserInfo());
       dispatch(resetSinglePublicProfile());
       setTimeout(() => {
@@ -39,7 +38,7 @@ const Header = () => {
   };
 
   const dropdownOptions = [
-    { text: "User Zone", to: `${loggedUser}`, className: "UserZone" },
+    { text: "User Zone", to: `${loggedUser}/myaccount`, className: "UserZone" },
     { text: "Log out", onClick: handleLogout, className: "Logout" },
   ];
 

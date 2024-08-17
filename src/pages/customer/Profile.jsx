@@ -23,31 +23,31 @@ const Profile = () => {
   const [showForm, setsShowForm] = useState(false);
   const origin = import.meta.env.VITE_API_BASE_URL;
 
-  useEffect(() => {
+  /*  useEffect(() => {
     const fetchProfile = async () => {
-      if (!username) {
+      if (loggedUserName === username) {
         await dispatch(getSinglePublicProfileWithThunk(loggedUserName));
-      }
-    };
-
-    fetchProfile();
-  }, [loggedUserName, username, dispatch]);
-
-  useEffect(() => {
-    const fetchProfile = async () => {
-      if (username) {
+      } else {
         await dispatch(getSinglePublicProfileWithThunk(username));
       }
     };
 
     fetchProfile();
-  }, [username, dispatch]);
+  }, [username, loggedUserName, dispatch]); */
 
   useEffect(() => {
-    if (!loadedPublicProfile || Object.keys(loadedPublicProfile).length === 0) {
+    if (loggedUserName === username) {
+      dispatch(getSinglePublicProfileWithThunk(loggedUserName));
+    } else {
+      dispatch(getSinglePublicProfileWithThunk(username));
+    }
+  }, [username, loggedUserName, dispatch]);
+
+  /*   useEffect(() => {
+    if (Object.keys(loadedPublicProfile).length === 0) {
       setsShowForm(true);
     }
-  }, [loadedPublicProfile]);
+  }, [loadedPublicProfile]); */
 
   const handleShowForm = () => setsShowForm(!showForm);
 
@@ -69,7 +69,7 @@ const Profile = () => {
           </StyledContainer>
         )}
 
-        {showForm && (
+        {(Object.keys(loadedPublicProfile).length === 0 || showForm) && (
           <StyledContainer>
             <ProfileUpdaterForm />
             {loggedUserName === loadedPublicProfileOwner && (

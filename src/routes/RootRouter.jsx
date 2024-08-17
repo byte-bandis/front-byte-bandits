@@ -37,19 +37,27 @@ const RootRouter = () => {
       />
       <Route
         path=":username"
-        element={
-          <RequireAuth>
-            <LayoutAccount />
-          </RequireAuth>
-        }
+        element={<LayoutAccount />}
       >
         <Route
           index
-          element={<Account />}
+          element={<Profile />}
+        />
+        <Route
+          path="myaccount"
+          element={
+            <RequireAuth>
+              <Account />
+            </RequireAuth>
+          }
         />
         <Route
           path="info"
-          element={<LayoutProfile />}
+          element={
+            <RequireAuth>
+              <LayoutProfile />
+            </RequireAuth>
+          }
         >
           <Route
             index

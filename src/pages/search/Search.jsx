@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import P from "prop-types";
 import Form from "react-bootstrap/Form";
 import Col from "react-bootstrap/Col";
@@ -9,11 +10,18 @@ import styles from "./Search.module.css";
 import CustomButton from "../../components/shared/CustomButton";
 import SwitchOptionSelect from "../../components/shared/SwitchOptionSelect";
 import TagsOptionsSelect from "../../components/shared/TagsOptionsSelect";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import PriceRangeSelect from "../../components/shared/PriceRangeSelect";
 import SearchByName from "../../components/shared/SearchByName";
+import { getAds } from "../../store/adsThunk";
+import { setFilters } from "../../store/adsSlice";
+
+console.log(setFilters());
 
 const Search = ({ maxPrice, minPrice }) => {
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+
   const adsData = useSelector((state) => state.adsState.data);
   const [expanded, setExpanded] = useState(false);
   const [filterName, setFilterName] = useState("");
@@ -23,36 +31,36 @@ const Search = ({ maxPrice, minPrice }) => {
     minPrice: minPrice || 0,
     maxPrice: maxPrice || 0,
   });
-  const [filteredAds, setFilteredAds] = useState(adsData);
+  // const [filteredAds, setFilteredAds] = useState(adsData);
 
   const toggleExpanded = () => {
     setExpanded(!expanded);
   };
 
-  const filterAdsByCriteria = (
-    ads,
-    { filterName, selectedTags, isBuy, priceRange },
-  ) => {
-    return ads.filter((ad) => {
-      const filterByName =
-        !filterName ||
-        ad.adTitle.toLowerCase().includes(filterName.toLowerCase());
-      const filterByTags =
-        selectedTags.length === 0 ||
-        selectedTags.some((tag) => ad.tags.includes(tag));
-      const filterByStatus = isBuy === null || ad.isBuy === isBuy;
-      const filterByPrice =
-        (priceRange.minPrice === 0 || ad.price >= priceRange.minPrice) &&
-        (priceRange.maxPrice === 0 || ad.price <= priceRange.maxPrice);
+  // const filterAdsByCriteria = (
+  //   ads,
+  //   { filterName, selectedTags, isBuy, priceRange },
+  // ) => {
+  //   return ads.filter((ad) => {
+  //     const filterByName =
+  //       !filterName ||
+  //       ad.adTitle.toLowerCase().includes(filterName.toLowerCase());
+  //     const filterByTags =
+  //       selectedTags.length === 0 ||
+  //       selectedTags.some((tag) => ad.tags.includes(tag));
+  //     const filterByStatus = isBuy === null || ad.isBuy === isBuy;
+  //     const filterByPrice =
+  //       (priceRange.minPrice === 0 || ad.price >= priceRange.minPrice) &&
+  //       (priceRange.maxPrice === 0 || ad.price <= priceRange.maxPrice);
 
-      console.log(priceRange.minPrice);
-      console.log(
-        `filterByName: ${filterByName}, selectByTags: ${filterByTags}, filterByStatus: ${filterByStatus}, filterByPrice: ${filterByPrice}`,
-      );
+  //     console.log(priceRange.minPrice);
+  //     console.log(
+  //       `filterByName: ${filterByName}, selectByTags: ${filterByTags}, filterByStatus: ${filterByStatus}, filterByPrice: ${filterByPrice}`,
+  //     );
 
-      return filterByName && filterByTags && filterByStatus && filterByPrice;
-    });
-  };
+  //     return filterByName && filterByTags && filterByStatus && filterByPrice;
+  //   });
+  // };
 
   const handleFilterAdsByName = (event) => {
     setFilterName(event.target.value);
@@ -81,13 +89,45 @@ const Search = ({ maxPrice, minPrice }) => {
 
   const handleSearch = (event) => {
     event.preventDefault();
-    const filtered = filterAdsByCriteria(adsData, {
+
+    const filters = {
       filterName,
-      priceRange,
-      selectedTags,
+      selectedTags: selectedTags.join(","),
       isBuy,
+      minPrice: priceRange.minPrice,
+      maxPrice: priceRange.maxPrice,
+    };
+
+    const queryParams = new URLSearchParams();
+
+    Object.keys(filters).forEach((key) => {
+      const value = filters[key];
+
+      if (
+        value !== null &&
+        value !== undefined &&
+        value !== "" &&
+        !(typeof value === "number" && value === 0)
+      ) {
+        queryParams.append(key, value);
+      }
     });
-    setFilteredAds(filtered);
+
+    navigate({
+      pathname: "/",
+      search: `?${queryParams.toString()}`,
+    });
+
+    console.log("Filters being dispatched", filters);
+    dispatch(setFilters(filters));
+    dispatch(getAds({ page: 1, filters }));
+    // const filtered = filterAdsByCriteria(adsData, {
+    //   filterName,
+    //   priceRange,
+    //   selectedTags,
+    //   isBuy,
+    // });
+    // setFilteredAds(filtered);
   };
 
   const handledeleteSearch = () => {
@@ -98,14 +138,17 @@ const Search = ({ maxPrice, minPrice }) => {
       minPrice: minPrice || 0,
       maxPrice: maxPrice || 0,
     });
-    setFilteredAds(adsData);
+    navigate("/");
+    // setFilteredAds(adsData);
+    dispatch(setFilters({}));
+    dispatch(getAds());
   };
 
   console.log(adsData);
   console.log(selectedTags);
   console.log(isBuy);
   console.log(priceRange);
-  console.log(filteredAds);
+  // console.log(filteredAds);
 
   return (
     <Container

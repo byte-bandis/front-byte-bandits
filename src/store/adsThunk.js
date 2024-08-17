@@ -1,36 +1,44 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import { client } from "../api/client";
 
-const adsURL = '/ads';
+const adsURL = "/ads";
 
 const createAd = createAsyncThunk(
-  'ads/create',
+  "ads/create",
   async (adFormData, { rejectWithValue }) => {
     try {
       const response = await client.post(adsURL, adFormData);
 
       if (response.success) {
-        return response.data;       
-    } else throw new Error('Failed to create advert');
-      } catch (error) {
-        return rejectWithValue(error.message || error);
-      }
-  }
+        return response.data;
+      } else throw new Error("Failed to create advert");
+    } catch (error) {
+      return rejectWithValue(error.message || error);
+    }
+  },
 );
 
 const getAds = createAsyncThunk(
   "ads/fetchAds",
-  async (params = { page: 1, id: "" }, { rejectWithValue }) => {
-    const { page, id } = params;
-    let reqUrl = ``;
-    if (id) { reqUrl =reqUrl + `/${id}` }
-    else { 
-      reqUrl = reqUrl + `/?page=${page}&limit=8`
-      /* aqui se pueden añadir las opciones de filtros
-      por ejemplo: if (myFilter) { reqUrl = reqUrl + `&myFilter=${myFilterValue}` }
-      */
-     }
-     
+  async (params = { page: 1, id: "", filters: {} }, { rejectWithValue }) => {
+    const { page, id, filters } = params;
+    let reqUrl = "";
+    if (id) {
+      reqUrl = reqUrl + `/${id}`;
+    } else {
+      reqUrl = reqUrl + `/?page=${page}&limit=8`;
+      for (const key in filters) {
+        if (
+          filters[key] !== undefined &&
+          filters[key] !== null &&
+          filters[key] !== "" &&
+          filters[key] !== 0
+        ) {
+          reqUrl += `&${key}=${filters[key]}`;
+          console.log(reqUrl);
+        }
+      }
+    }
 
     try {
       const response = await client.get(`${adsURL}${reqUrl}`);
@@ -42,7 +50,7 @@ const getAds = createAsyncThunk(
         status: error.response?.status,
       });
     }
-  }
+  },
 );
 
 const updateAd = createAsyncThunk(
@@ -55,7 +63,7 @@ const updateAd = createAsyncThunk(
     } catch (error) {
       return rejectWithValue(error.message || error);
     }
-  }
+  },
 );
 
 const deleteAd = createAsyncThunk(
@@ -63,13 +71,12 @@ const deleteAd = createAsyncThunk(
   async (adId, { rejectWithValue }) => {
     try {
       const response = await client.delete(`${adsURL}/${adId}`);
-      response.message = 'Anuncio borrado correctamente'
+      response.message = "Anuncio borrado correctamente";
       return response;
     } catch (error) {
       return rejectWithValue(error.message || error);
     }
-  }
+  },
 );
-
 
 export { createAd, getAds, updateAd, deleteAd };

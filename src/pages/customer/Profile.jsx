@@ -50,6 +50,7 @@ const Profile = () => {
   }, [loadedPublicProfile]); */
 
   const handleShowForm = () => setsShowForm(!showForm);
+  const editMode = Object.keys(loadedPublicProfile).length !== 0;
 
   return (
     <>
@@ -71,7 +72,7 @@ const Profile = () => {
 
         {(Object.keys(loadedPublicProfile).length === 0 || showForm) && (
           <StyledContainer>
-            <ProfileUpdaterForm />
+            <ProfileUpdaterForm editMode={editMode} />
             {loggedUserName === loadedPublicProfileOwner && (
               <Button onClick={handleShowForm}>Back</Button>
             )}

@@ -36,10 +36,6 @@ export const getSinglePublicProfile = async (userName) => {
 
 export const createSinglePublicProfile = async (userName, formData) => {
   const url = `${userURL}/${userName}`;
-
-  formData.forEach((value, key) => {
-    console.log(key, value);
-  });
   return client
     .post(url, formData, {
       headers: {
@@ -49,6 +45,27 @@ export const createSinglePublicProfile = async (userName, formData) => {
     .then(({ newPublicProfile, message }) => {
       const data = {
         newPublicProfile,
+        message,
+      };
+      return data;
+    });
+};
+
+export const updateSinglePublicProfile = async (userName, formData) => {
+  const url = `${userURL}/${userName}`;
+
+  formData.forEach((value, key) => {
+    console.log(key, value);
+  });
+  return client
+    .put(url, formData, {
+      headers: {
+        "Content-Type": "multipart/form-data",
+      },
+    })
+    .then(({ updatedPublicProfile, message }) => {
+      const data = {
+        updatedPublicProfile,
         message,
       };
       return data;

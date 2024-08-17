@@ -1,7 +1,7 @@
 import ImageUploader from "../../product/components/ImageUploader";
 import Button from "../../product/components/Button";
 import { useParams } from "react-router-dom";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import {
   getLoggedUserId,
@@ -15,8 +15,10 @@ import {
 import StyledTextarea from "../../../components/shared/StyledTextArea";
 import StyledForm from "../../../components/shared/StyledForm";
 import PhotosContainer from "./PhotosContainer";
+import { updateSinglePublicProfile } from "../service";
+import urlCleaner from "../../../utils/urlCleaner";
 
-const ProfileUpdaterForm = () => {
+const ProfileUpdaterForm = ({ editMode }) => {
   const { userPhoto, headerPhoto, userDescription } = useSelector(
     getSinglePublicProfile
   );
@@ -34,17 +36,24 @@ const ProfileUpdaterForm = () => {
     event.preventDefault();
     const formData = new FormData();
     formData.append("requesterId", requesterId);
-
-    if (inputUserPhoto && inputUserPhoto !== userPhoto) {
+    if (inputUserPhoto && inputUserPhoto !== urlCleaner(userPhoto)) {
       formData.append("userPhoto", inputUserPhoto);
     }
-    if (inputHeaderPhoto && inputHeaderPhoto !== headerPhoto) {
+    if (inputHeaderPhoto && inputHeaderPhoto !== urlCleaner(headerPhoto)) {
       formData.append("headerPhoto", inputHeaderPhoto);
     }
     if (newUserDescription && newUserDescription !== userDescription) {
       formData.append("userDescription", newUserDescription);
     }
-    await dispatch(createSinglePublicProfileWithThunk({ username, formData }));
+
+    if (!editMode) {
+      await dispatch(
+        createSinglePublicProfileWithThunk({ username, formData })
+      );
+      await dispatch(getSinglePublicProfileWithThunk(username));
+    } else {
+      await updateSinglePublicProfile(username, formData);
+    }
     await dispatch(getSinglePublicProfileWithThunk(username));
   };
 

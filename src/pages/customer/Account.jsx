@@ -7,14 +7,10 @@ import {
   getMyAccountWithThunk,
   getSinglePublicProfileWithThunk,
 } from "../../store/profilesThunk";
-import storage from "../../utils/storage";
 
 const Account = () => {
   const dispatch = useDispatch();
   const isLogged = useSelector(getLoggedUserName);
-  const accessToken = storage.get("authToken");
-  console.log("Esto es accessToken en myAccount: ", accessToken);
-  console.log("Esto es isLogged en myAccount: ", isLogged);
   useEffect(() => {
     if (isLogged) {
       dispatch(getMyAccountWithThunk(isLogged));

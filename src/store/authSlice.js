@@ -2,26 +2,25 @@ import { createSlice } from "@reduxjs/toolkit";
 import { loginWithThunk } from "./loginThunk";
 import storage from "../utils/storage";
 
-const accessToken = storage.get("authToken");
-const userName = storage.get("userName");
-const userId = storage.get("userId");
-export const defaultAuthState = {
-  authState: !!accessToken,
+const getDefaultAuthState = () => ({
+  authState: !!storage.get("authToken"),
   user: {
-    userName: userName,
-    userId: userId,
+    userName: storage.get("userName"),
+    userId: storage.get("userId"),
   },
-};
+});
 
 export const authSlice = createSlice({
   name: "authSlice",
-  initialState: defaultAuthState,
+  initialState: getDefaultAuthState(),
   reducers: {
     setAuth: (state, action) => {
       state.authState = action.payload;
     },
     resetLoggedUserInfo: (state) => {
-      state.user = defaultAuthState.user;
+      const defaultState = getDefaultAuthState();
+      state.authState = defaultState.authState;
+      state.user = defaultState.user;
     },
   },
   extraReducers: (builder) => {

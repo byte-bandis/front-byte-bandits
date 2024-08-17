@@ -5,6 +5,7 @@ import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import {
   getLoggedUserId,
+  getLoggedUserName,
   getSinglePublicProfile,
 } from "../../../store/selectors";
 import {
@@ -27,6 +28,7 @@ const ProfileUpdaterForm = () => {
   const [inputHeaderPhoto, setInputHeaderPhoto] = useState(null);
   const [inputHeaderPhotoPreview, setInputHeaderPhotoPreview] = useState(null);
   const [newUserDescription, setNewUserDescription] = useState("");
+  const loggedUserName = useSelector(getLoggedUserName);
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -80,7 +82,7 @@ const ProfileUpdaterForm = () => {
         }
         onChange={(e) => setNewUserDescription(e.target.value)}
       />
-      <Button type="submit">Send data</Button>
+      {loggedUserName === username && <Button type="submit">Send data</Button>}
     </StyledForm>
   );
 };

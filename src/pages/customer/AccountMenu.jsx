@@ -5,13 +5,13 @@ import Col from "react-bootstrap/Col";
 import Offcanvas from "react-bootstrap/Offcanvas";
 import Navbar from "react-bootstrap/Navbar";
 import Container from "react-bootstrap/Container";
-import { Link } from "react-router-dom";
-import { getLoggedUser } from "../../store/selectors";
+import { Link, useParams } from "react-router-dom";
+import { getLoggedUserName } from "../../store/selectors";
 import { useSelector } from "react-redux";
 
 const AccountMenu = () => {
-  const loggedUser = useSelector(getLoggedUser);
-  const userName = loggedUser.userName;
+  const loggedUserName = useSelector(getLoggedUserName);
+  const { username } = useParams();
   const [show, setShow] = useState(false);
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
@@ -19,12 +19,14 @@ const AccountMenu = () => {
     <>
       <Row>
         <Col className="d-flex justify-content-end">
-          <Button
-            variant="primary"
-            onClick={handleShow}
-          >
-            Account menu
-          </Button>
+          {loggedUserName === username && (
+            <Button
+              variant="primary"
+              onClick={handleShow}
+            >
+              Account menu
+            </Button>
+          )}
 
           <Offcanvas
             show={show}
@@ -38,7 +40,7 @@ const AccountMenu = () => {
                 <Container>
                   <Navbar.Brand
                     as={Link}
-                    to={`/${userName}/info`}
+                    to={`/${loggedUserName}/info`}
                   >
                     My Profile
                   </Navbar.Brand>
@@ -53,17 +55,19 @@ const AccountMenu = () => {
 
               <Navbar className="bg-body-tertiary">
                 <Container>
-                  <Link to={`/${userName}/whishlist`}>Wishlist</Link>
+                  <Link to={`/${loggedUserName}/whishlist`}>Wishlist</Link>
                 </Container>
               </Navbar>
               <Navbar className="bg-body-tertiary">
                 <Container>
-                  <Link to={`/${userName}/new`}>New</Link>
+                  <Link to={`/${loggedUserName}/new`}>New</Link>
                 </Container>
               </Navbar>
               <Navbar className="bg-body-tertiary">
                 <Container>
-                  <Link to={`/${userName}/delete-account`}>Delete account</Link>
+                  <Link to={`/${loggedUserName}/delete-account`}>
+                    Delete account
+                  </Link>
                 </Container>
               </Navbar>
             </Offcanvas.Body>

@@ -24,7 +24,7 @@ const Search = ({ maxPrice, minPrice }) => {
 
   const adsData = useSelector((state) => state.adsState.data);
   const [expanded, setExpanded] = useState(false);
-  const [adsTitle, setAdsTitle] = useState("");
+  const [adTitle, setAdTitle] = useState("");
   const [tags, setTags] = useState([]);
   const [sell, setSell] = useState(null);
   const [price, setPrice] = useState({
@@ -37,7 +37,7 @@ const Search = ({ maxPrice, minPrice }) => {
   };
 
   const handleFilterAdsByName = (event) => {
-    setAdsTitle(event.target.value);
+    setAdTitle(event.target.value);
   };
 
   const handleSwitchChange = () => {
@@ -65,7 +65,7 @@ const Search = ({ maxPrice, minPrice }) => {
     event.preventDefault();
 
     const filters = {
-      adsTitle: adsTitle,
+      adTitle: adTitle,
       tags: tags.join(","),
       sell,
       minPrice: price.minPrice,
@@ -84,6 +84,7 @@ const Search = ({ maxPrice, minPrice }) => {
         !(typeof value === "number" && value === 0)
       ) {
         queryParams.append(key, value);
+        console.log("Filters being dispatched", filters);
       }
     });
 
@@ -98,7 +99,7 @@ const Search = ({ maxPrice, minPrice }) => {
   };
 
   const handledeleteSearch = () => {
-    setAdsTitle("");
+    setAdTitle("");
     setTags([]);
     setSell(null);
     setPrice({
@@ -131,7 +132,7 @@ const Search = ({ maxPrice, minPrice }) => {
                     className={styles.nameSelection}
                     onChange={handleFilterAdsByName}
                     autoComplete="Product name"
-                    value={adsTitle}
+                    value={adTitle}
                   >
                     Product name
                   </SearchByName>

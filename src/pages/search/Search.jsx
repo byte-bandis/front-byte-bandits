@@ -26,7 +26,7 @@ const Search = ({ maxPrice, minPrice }) => {
   const [expanded, setExpanded] = useState(false);
   const [adTitle, setAdTitle] = useState("");
   const [tags, setTags] = useState([]);
-  const [sell, setSell] = useState(null);
+  const [sell, setSell] = useState(true);
   const [price, setPrice] = useState({
     minPrice: minPrice || 0,
     maxPrice: maxPrice || 0,
@@ -41,9 +41,7 @@ const Search = ({ maxPrice, minPrice }) => {
   };
 
   const handleSwitchChange = () => {
-    setSell((prevSell) =>
-      prevSell === null ? true : prevSell === true ? false : null,
-    );
+    setSell((prevSell) => !prevSell);
   };
 
   const handlePriceChange = (minPrice, maxPrice) => {
@@ -101,13 +99,12 @@ const Search = ({ maxPrice, minPrice }) => {
   const handledeleteSearch = () => {
     setAdTitle("");
     setTags([]);
-    setSell(null);
+    setSell(false);
     setPrice({
       minPrice: minPrice || 0,
       maxPrice: maxPrice || 0,
     });
     navigate("/");
-    // setFilteredAds(adsData);
     dispatch(setFilters({}));
     dispatch(getAds());
   };
@@ -142,7 +139,6 @@ const Search = ({ maxPrice, minPrice }) => {
                     className={styles.sellSwitch}
                     sell={sell}
                     handleSwitchChange={handleSwitchChange}
-                    value={sell}
                   >
                     Status
                   </SwitchOptionSelect>

@@ -4,7 +4,7 @@ import PropTypes from "prop-types";
 const SwitchOptionSelect = ({
   children,
   className,
-  isBuy,
+  sell,
   handleSwitchChange,
   ...rest
 }) => {
@@ -14,8 +14,8 @@ const SwitchOptionSelect = ({
       <Form.Check
         type="switch"
         className={className}
-        label={isBuy ? "Buy" : "Sell"}
-        checked={isBuy}
+        label={sell ? "Buy" : "Sell"}
+        checked={sell}
         onChange={handleSwitchChange}
         {...rest}
       ></Form.Check>
@@ -28,6 +28,6 @@ export default SwitchOptionSelect;
 SwitchOptionSelect.propTypes = {
   children: PropTypes.node.isRequired,
   className: PropTypes.string,
-  isBuy: PropTypes.bool,
+  sell: PropTypes.bool,
   handleSwitchChange: PropTypes.func.isRequired,
 };

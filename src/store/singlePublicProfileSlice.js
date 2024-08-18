@@ -2,6 +2,7 @@ import { createSlice } from "@reduxjs/toolkit";
 import {
   createSinglePublicProfileWithThunk,
   getSinglePublicProfileWithThunk,
+  updateSinglePublicProfileWithThunk,
 } from "./profilesThunk";
 
 export const singleProfileState = {
@@ -30,6 +31,12 @@ const singleProfileSlice = createSlice({
       createSinglePublicProfileWithThunk.fulfilled,
       (state, action) => {
         state.data = action.payload.newPublicProfile;
+      }
+    );
+    builder.addCase(
+      updateSinglePublicProfileWithThunk.fulfilled,
+      (state, action) => {
+        state.data = action.payload.updatedPublicProfile;
       }
     );
   },

@@ -52,3 +52,17 @@ export const createSinglePublicProfileWithThunk = createAsyncThunk(
     }
   }
 );
+export const updateSinglePublicProfileWithThunk = createAsyncThunk(
+  "singlePublicProfile/update",
+  async ({ username, formData }, { rejectWithValue }) => {
+    try {
+      const response = await profiles.updateSinglePublicProfile(
+        username,
+        formData
+      );
+      return response;
+    } catch (error) {
+      return rejectWithValue(error.message);
+    }
+  }
+);

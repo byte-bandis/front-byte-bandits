@@ -12,11 +12,11 @@ import {
 import {
   createSinglePublicProfileWithThunk,
   getSinglePublicProfileWithThunk,
+  updateSinglePublicProfileWithThunk,
 } from "../../../store/profilesThunk";
 import StyledTextarea from "../../../components/shared/StyledTextArea";
 import StyledForm from "../../../components/shared/StyledForm";
 import PhotosContainer from "./PhotosContainer";
-import { updateSinglePublicProfile } from "../service";
 import urlCleaner from "../../../utils/urlCleaner";
 import Alert from "react-bootstrap/Alert";
 import { resetUI } from "../../../store/uiSlice";
@@ -103,9 +103,11 @@ const ProfileUpdaterForm = () => {
         createSinglePublicProfileWithThunk({ username, formData })
       );
     } else {
-      await updateSinglePublicProfile(username, formData);
+      await dispatch(
+        updateSinglePublicProfileWithThunk({ username, formData })
+      );
     }
-    dispatch(getSinglePublicProfileWithThunk(username));
+    await dispatch(getSinglePublicProfileWithThunk(username));
   };
 
   const handleEditUserPhoto = (event) => {

@@ -159,6 +159,7 @@ const ProfileUpdaterForm = () => {
           {loadedUI.message}
         </Alert>
       )}
+      <h2>Click on a field to edit</h2>
       <StyledForm
         onSubmit={handleSubmit}
         $customAlignItems={"left"}
@@ -201,8 +202,8 @@ const ProfileUpdaterForm = () => {
               $customZIndex="2"
               $customboxshadow="none"
               $customtransform="none"
-              $customtop="50px"
-              $customleft="220px"
+              $customtop="10%"
+              $customleft="25%"
             >
               Click here to cancel
             </CustomCancelOption>
@@ -237,8 +238,8 @@ const ProfileUpdaterForm = () => {
               $customZIndex="2"
               $customboxshadow="none"
               $customtransform="none"
-              $customtop="200px"
-              $customleft="300px"
+              $customtop="70%"
+              $customleft="70%"
             >
               Click here to cancel
             </CustomCancelOption>

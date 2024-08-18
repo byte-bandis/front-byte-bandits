@@ -7,6 +7,7 @@ import {
   getLoggedUserId,
   getLoggedUserName,
   getSinglePublicProfile,
+  getUIState,
 } from "../../../store/selectors";
 import {
   createSinglePublicProfileWithThunk,
@@ -19,9 +20,8 @@ import { updateSinglePublicProfile } from "../service";
 import urlCleaner from "../../../utils/urlCleaner";
 
 const ProfileUpdaterForm = () => {
-  const { userPhoto, headerPhoto, userDescription } = useSelector(
-    getSinglePublicProfile
-  );
+  const loadedPublicProfile = useSelector(getSinglePublicProfile);
+  const { userPhoto, headerPhoto, userDescription } = loadedPublicProfile;
   const dispatch = useDispatch();
   const requesterId = useSelector(getLoggedUserId);
   const { username } = useParams();
@@ -32,26 +32,40 @@ const ProfileUpdaterForm = () => {
   const [newUserDescription, setNewUserDescription] = useState("");
   const [editMode, setEditMode] = useState(false);
   const loggedUserName = useSelector(getLoggedUserName);
+  const success = useSelector(getUIState);
+
+  useEffect(() => {
+    if (Object.values(loadedPublicProfile).length === 0) {
+      setEditMode(false);
+    } else {
+      setEditMode(true);
+    }
+  }, [loadedPublicProfile]);
 
   const handleSubmit = async (event) => {
     event.preventDefault();
     const formData = new FormData();
     formData.append("requesterId", requesterId);
-    if (inputUserPhoto && inputUserPhoto !== urlCleaner(userPhoto)) {
-      formData.append("userPhoto", inputUserPhoto);
+    if (userPhoto) {
+      if (inputUserPhoto && inputUserPhoto !== urlCleaner(userPhoto)) {
+        formData.append("userPhoto", inputUserPhoto);
+      }
     }
-    if (inputHeaderPhoto && inputHeaderPhoto !== urlCleaner(headerPhoto)) {
-      formData.append("headerPhoto", inputHeaderPhoto);
+    if (headerPhoto) {
+      if (inputHeaderPhoto && inputHeaderPhoto !== urlCleaner(headerPhoto)) {
+        formData.append("headerPhoto", inputHeaderPhoto);
+      }
     }
-    if (newUserDescription && newUserDescription !== userDescription) {
-      formData.append("userDescription", newUserDescription);
+    if (userDescription) {
+      if (newUserDescription && newUserDescription !== userDescription) {
+        formData.append("userDescription", newUserDescription);
+      }
     }
 
     if (!editMode) {
       await dispatch(
         createSinglePublicProfileWithThunk({ username, formData })
       );
-      await dispatch(getSinglePublicProfileWithThunk(username));
     } else {
       await updateSinglePublicProfile(username, formData);
     }

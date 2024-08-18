@@ -12,6 +12,7 @@ import ScreenPublicProfile from "./components/ScreenPublicProfile";
 import ProfileUpdaterForm from "./components/ProfileUpdaterForm";
 import StyledContainer from "../../components/shared/StyledContainer";
 import Button from "../product/components/Button";
+import { checkAuthTokenSaved } from "../../utils/authUtils";
 
 const Profile = () => {
   const dispatch = useDispatch();
@@ -20,20 +21,15 @@ const Profile = () => {
   const loadedPublicProfile = useSelector(getSinglePublicProfile);
   const loadedPublicProfileOwner = useSelector(getSinglePublicProfileOwner);
   const { userPhoto, headerPhoto, userDescription } = loadedPublicProfile;
-  const [showForm, setsShowForm] = useState(false);
+  const [showForm, setShowForm] = useState(false);
   const origin = import.meta.env.VITE_API_BASE_URL;
+  const token = checkAuthTokenSaved();
 
-  /*  useEffect(() => {
-    const fetchProfile = async () => {
-      if (loggedUserName === username) {
-        await dispatch(getSinglePublicProfileWithThunk(loggedUserName));
-      } else {
-        await dispatch(getSinglePublicProfileWithThunk(username));
-      }
-    };
-
-    fetchProfile();
-  }, [username, loggedUserName, dispatch]); */
+  useEffect(() => {
+    if (token && loggedUserName === username) {
+      dispatch(getSinglePublicProfileWithThunk(loggedUserName));
+    }
+  }, [token, loggedUserName, username, dispatch]);
 
   useEffect(() => {
     if (loggedUserName === username) {
@@ -43,14 +39,15 @@ const Profile = () => {
     }
   }, [username, loggedUserName, dispatch]);
 
-  /*   useEffect(() => {
+  useEffect(() => {
     if (Object.keys(loadedPublicProfile).length === 0) {
-      setsShowForm(true);
+      setShowForm(true);
+    } else {
+      setShowForm(false);
     }
-  }, [loadedPublicProfile]); */
+  }, [loadedPublicProfile]);
 
-  const handleShowForm = () => setsShowForm(!showForm);
-  const editMode = Object.keys(loadedPublicProfile).length !== 0;
+  const handleShowForm = () => setShowForm(!showForm);
 
   return (
     <>
@@ -70,9 +67,9 @@ const Profile = () => {
           </StyledContainer>
         )}
 
-        {(Object.keys(loadedPublicProfile).length === 0 || showForm) && (
+        {showForm && (
           <StyledContainer>
-            <ProfileUpdaterForm editMode={editMode} />
+            <ProfileUpdaterForm />
             {loggedUserName === loadedPublicProfileOwner && (
               <Button onClick={handleShowForm}>Back</Button>
             )}

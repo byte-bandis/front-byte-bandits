@@ -18,7 +18,7 @@ import PhotosContainer from "./PhotosContainer";
 import { updateSinglePublicProfile } from "../service";
 import urlCleaner from "../../../utils/urlCleaner";
 
-const ProfileUpdaterForm = ({ editMode }) => {
+const ProfileUpdaterForm = () => {
   const { userPhoto, headerPhoto, userDescription } = useSelector(
     getSinglePublicProfile
   );
@@ -30,6 +30,7 @@ const ProfileUpdaterForm = ({ editMode }) => {
   const [inputHeaderPhoto, setInputHeaderPhoto] = useState(null);
   const [inputHeaderPhotoPreview, setInputHeaderPhotoPreview] = useState(null);
   const [newUserDescription, setNewUserDescription] = useState("");
+  const [editMode, setEditMode] = useState(false);
   const loggedUserName = useSelector(getLoggedUserName);
 
   const handleSubmit = async (event) => {

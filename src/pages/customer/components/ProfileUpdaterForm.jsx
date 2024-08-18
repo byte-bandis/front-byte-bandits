@@ -7,7 +7,7 @@ import {
   getLoggedUserId,
   getLoggedUserName,
   getSinglePublicProfile,
-  getUIState,
+  getUI,
 } from "../../../store/selectors";
 import {
   createSinglePublicProfileWithThunk,
@@ -18,6 +18,8 @@ import StyledForm from "../../../components/shared/StyledForm";
 import PhotosContainer from "./PhotosContainer";
 import { updateSinglePublicProfile } from "../service";
 import urlCleaner from "../../../utils/urlCleaner";
+import Alert from "react-bootstrap/Alert";
+import { resetUI } from "../../../store/uiSlice";
 
 const ProfileUpdaterForm = () => {
   const loadedPublicProfile = useSelector(getSinglePublicProfile);
@@ -32,7 +34,8 @@ const ProfileUpdaterForm = () => {
   const [newUserDescription, setNewUserDescription] = useState("");
   const [editMode, setEditMode] = useState(false);
   const loggedUserName = useSelector(getLoggedUserName);
-  const success = useSelector(getUIState);
+  const loadedUI = useSelector(getUI);
+  const [showError, setShowError] = useState(false);
 
   useEffect(() => {
     if (Object.values(loadedPublicProfile).length === 0) {
@@ -42,24 +45,45 @@ const ProfileUpdaterForm = () => {
     }
   }, [loadedPublicProfile]);
 
+  useEffect(() => {
+    if (loadedUI.state === "success") {
+      setShowError(true);
+    } else {
+      setShowError(false);
+    }
+  }, [loadedUI, setShowError]);
+
+  const handleAlertClose = () => {
+    dispatch(resetUI());
+  };
+
   const handleSubmit = async (event) => {
     event.preventDefault();
     const formData = new FormData();
     formData.append("requesterId", requesterId);
+
     if (userPhoto) {
       if (inputUserPhoto && inputUserPhoto !== urlCleaner(userPhoto)) {
         formData.append("userPhoto", inputUserPhoto);
       }
+    } else {
+      formData.append("userPhoto", inputUserPhoto);
     }
+
     if (headerPhoto) {
       if (inputHeaderPhoto && inputHeaderPhoto !== urlCleaner(headerPhoto)) {
         formData.append("headerPhoto", inputHeaderPhoto);
       }
+    } else {
+      formData.append("headerPhoto", inputHeaderPhoto);
     }
+
     if (userDescription) {
       if (newUserDescription && newUserDescription !== userDescription) {
         formData.append("userDescription", newUserDescription);
       }
+    } else {
+      formData.append("userDescription", newUserDescription);
     }
 
     if (!editMode) {
@@ -69,45 +93,58 @@ const ProfileUpdaterForm = () => {
     } else {
       await updateSinglePublicProfile(username, formData);
     }
-    await dispatch(getSinglePublicProfileWithThunk(username));
+    dispatch(getSinglePublicProfileWithThunk(username));
   };
 
   return (
-    <StyledForm
-      onSubmit={handleSubmit}
-      $customAlignItems={"left"}
-      $customMaxWidth={"100%"}
-    >
-      <PhotosContainer>
-        <ImageUploader
-          inputImagePreview={inputUserPhotoPreview}
-          setInputImage={setInputUserPhoto}
-          setInputImagePreview={setInputUserPhotoPreview}
-          $customWidth={"200px"}
-          $customHeight={"200px"}
-          $customRadius={"50%"}
-          $customWrapperPosition={"absolute"}
-          $customWrapperTop={"-25px"}
-          $customWrapperZIndex={"1"}
+    <>
+      {showError && (
+        <Alert
+          variant="danger"
+          onClose={handleAlertClose}
+          dismissible
+        >
+          {loadedUI.message}
+        </Alert>
+      )}
+      <StyledForm
+        onSubmit={handleSubmit}
+        $customAlignItems={"left"}
+        $customMaxWidth={"100%"}
+      >
+        <PhotosContainer>
+          <ImageUploader
+            inputImagePreview={inputUserPhotoPreview}
+            setInputImage={setInputUserPhoto}
+            setInputImagePreview={setInputUserPhotoPreview}
+            $customWidth={"200px"}
+            $customHeight={"200px"}
+            $customRadius={"50%"}
+            $customWrapperPosition={"absolute"}
+            $customWrapperTop={"-25px"}
+            $customWrapperZIndex={"1"}
+          />
+          <ImageUploader
+            inputImagePreview={inputHeaderPhotoPreview}
+            setInputImage={setInputHeaderPhoto}
+            setInputImagePreview={setInputHeaderPhotoPreview}
+            $customWidth={"100%"}
+            $customHeight={"300px"}
+            $customWrapperPosition={"relative"}
+          />
+        </PhotosContainer>
+        <StyledTextarea
+          value={newUserDescription}
+          placeholder={
+            userDescription || "Write something about you and your work here"
+          }
+          onChange={(e) => setNewUserDescription(e.target.value)}
         />
-        <ImageUploader
-          inputImagePreview={inputHeaderPhotoPreview}
-          setInputImage={setInputHeaderPhoto}
-          setInputImagePreview={setInputHeaderPhotoPreview}
-          $customWidth={"100%"}
-          $customHeight={"300px"}
-          $customWrapperPosition={"relative"}
-        />
-      </PhotosContainer>
-      <StyledTextarea
-        value={newUserDescription}
-        placeholder={
-          userDescription || "Write something about you and your work here"
-        }
-        onChange={(e) => setNewUserDescription(e.target.value)}
-      />
-      {loggedUserName === username && <Button type="submit">Send data</Button>}
-    </StyledForm>
+        {loggedUserName === username && (
+          <Button type="submit">Send data</Button>
+        )}
+      </StyledForm>
+    </>
   );
 };
 

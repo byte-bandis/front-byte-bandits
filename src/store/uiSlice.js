@@ -25,6 +25,7 @@ export const uiSlice = createSlice({
       state.message = null;
       state.state = null;
     },
+    resetUI: () => defaultUIState,
   },
   extraReducers: (builder) => {
     builder
@@ -45,5 +46,5 @@ export const uiSlice = createSlice({
   },
 });
 
-export const { setMessage, resetMessage } = uiSlice.actions;
+export const { setMessage, resetMessage, resetUI } = uiSlice.actions;
 export default uiSlice.reducer;

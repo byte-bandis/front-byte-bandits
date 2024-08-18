@@ -5,6 +5,7 @@ export const getError = (state) => {
   }
   return null;
 };
+export const getUI = (state) => state.ui;
 export const getUIMessage = (state) => state.ui.message;
 export const getUIState = (state) => state.ui.state;
 export const getUILoading = (state) => state.ui.loading;

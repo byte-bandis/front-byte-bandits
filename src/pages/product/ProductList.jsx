@@ -14,28 +14,28 @@ const ProductList = () => {
   const page = useSelector((state) => state.adsState.page);
   const userid = useSelector((state) => state.authState.user.userId);
   const errorUi = useSelector((state) => state.ui);
+  const filters = useSelector((state) => state.adsState.filters);
   const resetError = () => {
     dispatch(resetMessage());
   };
   let error = null;
   if (errorUi.state === "error") {
-     error = errorUi.message;
+    error = errorUi.message;
   }
-  
+
   useEffect(() => {
-    dispatch(getAds({ page, id: "" }));
+    dispatch(getAds({ page, id: "", filters }));
     dispatch(getWishlist(userid));
-  }, [dispatch, page, userid]);
-  
+  }, [dispatch, page, userid, filters]);
+
   const adsData = useSelector((state) => state.adsState.data);
 
-  return (<>  
-    <StyledAdList className='ad-list'>
-    
-        {
-        
-        adsData.length > 0 ? (
-            adsData.map((ad) => <ProductItem
+  return (
+    <>
+      <StyledAdList className="ad-list">
+        {adsData.length > 0 ? (
+          adsData.map((ad) => (
+            <ProductItem
               ad={ad}
               key={ad._id}
               adTitle={ad.adTitle}
@@ -47,16 +47,16 @@ const ProductList = () => {
               createdAt={ad.createdAt}
               updatedAt={ad.updatedAt}
               tags={ad.tags || []}
-          />)
+            />
+          ))
         ) : (
           <p className="no-ad">No hay resultados</p>
         )}
-        {  error && (
-            <ErrorMessage className='loginPage-error' onClick={resetError}>
-                <h3>{error.toUpperCase()}</h3>
-            </ErrorMessage>
-        )
-         }
+        {error && (
+          <ErrorMessage className="loginPage-error" onClick={resetError}>
+            <h3>{error.toUpperCase()}</h3>
+          </ErrorMessage>
+        )}
       </StyledAdList>
       <Pager></Pager>
     </>

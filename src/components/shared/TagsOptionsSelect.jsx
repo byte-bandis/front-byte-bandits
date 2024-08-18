@@ -2,7 +2,7 @@ import Form from "react-bootstrap/Form";
 import TAG_OPTIONS from "../../utils/tags";
 import PropTypes from "prop-types";
 
-const TagsOptionsSelector = ({ className, selectedTags, handleTagChange }) => {
+const TagsOptionsSelector = ({ className, tags, handleTagChange }) => {
   return (
     <Form.Group className={className}>
       <Form.Label>Tags</Form.Label>
@@ -13,7 +13,7 @@ const TagsOptionsSelector = ({ className, selectedTags, handleTagChange }) => {
             type="checkbox"
             label={tag.charAt(0).toUpperCase() + tag.slice(1)}
             value={tag}
-            checked={selectedTags.includes(tag)}
+            checked={tags.includes(tag)}
             onChange={() => handleTagChange(tag)}
             id={tag}
           />
@@ -25,7 +25,7 @@ const TagsOptionsSelector = ({ className, selectedTags, handleTagChange }) => {
 
 TagsOptionsSelector.propTypes = {
   className: PropTypes.string,
-  selectedTags: PropTypes.arrayOf(PropTypes.string).isRequired,
+  tags: PropTypes.arrayOf(PropTypes.string).isRequired,
   handleTagChange: PropTypes.func.isRequired,
 };
 export default TagsOptionsSelector;

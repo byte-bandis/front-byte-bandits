@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import P from "prop-types";
 import Form from "react-bootstrap/Form";
 import Col from "react-bootstrap/Col";
@@ -9,70 +10,49 @@ import styles from "./Search.module.css";
 import CustomButton from "../../components/shared/CustomButton";
 import SwitchOptionSelect from "../../components/shared/SwitchOptionSelect";
 import TagsOptionsSelect from "../../components/shared/TagsOptionsSelect";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import PriceRangeSelect from "../../components/shared/PriceRangeSelect";
 import SearchByName from "../../components/shared/SearchByName";
+import { getAds } from "../../store/adsThunk";
+import { setFilters } from "../../store/adsSlice";
+
+console.log(setFilters());
 
 const Search = ({ maxPrice, minPrice }) => {
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+
   const adsData = useSelector((state) => state.adsState.data);
   const [expanded, setExpanded] = useState(false);
-  const [filterName, setFilterName] = useState("");
-  const [selectedTags, setSelectedTags] = useState([]);
-  const [isBuy, setIsBuy] = useState(null);
-  const [priceRange, setPriceRange] = useState({
+  const [adTitle, setAdTitle] = useState("");
+  const [tags, setTags] = useState([]);
+  const [sell, setSell] = useState(true);
+  const [price, setPrice] = useState({
     minPrice: minPrice || 0,
     maxPrice: maxPrice || 0,
   });
-  const [filteredAds, setFilteredAds] = useState(adsData);
 
   const toggleExpanded = () => {
     setExpanded(!expanded);
   };
 
-  const filterAdsByCriteria = (
-    ads,
-    { filterName, selectedTags, isBuy, priceRange },
-  ) => {
-    return ads.filter((ad) => {
-      const filterByName =
-        !filterName ||
-        ad.adTitle.toLowerCase().includes(filterName.toLowerCase());
-      const filterByTags =
-        selectedTags.length === 0 ||
-        selectedTags.some((tag) => ad.tags.includes(tag));
-      const filterByStatus = isBuy === null || ad.isBuy === isBuy;
-      const filterByPrice =
-        (priceRange.minPrice === 0 || ad.price >= priceRange.minPrice) &&
-        (priceRange.maxPrice === 0 || ad.price <= priceRange.maxPrice);
-
-      console.log(priceRange.minPrice);
-      console.log(
-        `filterByName: ${filterByName}, selectByTags: ${filterByTags}, filterByStatus: ${filterByStatus}, filterByPrice: ${filterByPrice}`,
-      );
-
-      return filterByName && filterByTags && filterByStatus && filterByPrice;
-    });
-  };
-
   const handleFilterAdsByName = (event) => {
-    setFilterName(event.target.value);
+    setAdTitle(event.target.value);
   };
 
   const handleSwitchChange = () => {
-    setIsBuy((prevIsBuy) =>
-      prevIsBuy === null ? true : prevIsBuy === true ? false : null,
-    );
+    setSell((prevSell) => !prevSell);
   };
 
   const handlePriceChange = (minPrice, maxPrice) => {
-    setPriceRange({
+    setPrice({
       minPrice: minPrice !== undefined ? minPrice : 0,
       maxPrice: maxPrice !== undefined ? maxPrice : 0,
     });
   };
 
   const handleTagChange = (tag) => {
-    setSelectedTags((prevTags) =>
+    setTags((prevTags) =>
       prevTags.includes(tag)
         ? prevTags.filter((t) => t !== tag)
         : [...prevTags, tag],
@@ -81,31 +61,58 @@ const Search = ({ maxPrice, minPrice }) => {
 
   const handleSearch = (event) => {
     event.preventDefault();
-    const filtered = filterAdsByCriteria(adsData, {
-      filterName,
-      priceRange,
-      selectedTags,
-      isBuy,
+
+    const filters = {
+      adTitle: adTitle,
+      tags: tags.join(","),
+      sell,
+      minPrice: price.minPrice,
+      maxPrice: price.maxPrice,
+    };
+
+    const queryParams = new URLSearchParams();
+
+    Object.keys(filters).forEach((key) => {
+      const value = filters[key];
+
+      if (
+        value !== null &&
+        value !== undefined &&
+        value !== "" &&
+        !(typeof value === "number" && value === 0)
+      ) {
+        queryParams.append(key, value);
+        console.log("Filters being dispatched", filters);
+      }
     });
-    setFilteredAds(filtered);
+
+    navigate({
+      pathname: "/",
+      search: `?${queryParams.toString()}`,
+    });
+
+    console.log("Filters being dispatched", filters);
+    dispatch(setFilters(filters));
+    dispatch(getAds({ page: 1, filters }));
   };
 
   const handledeleteSearch = () => {
-    setFilterName("");
-    setSelectedTags([]);
-    setIsBuy(null);
-    setPriceRange({
+    setAdTitle("");
+    setTags([]);
+    setSell(false);
+    setPrice({
       minPrice: minPrice || 0,
       maxPrice: maxPrice || 0,
     });
-    setFilteredAds(adsData);
+    navigate("/");
+    dispatch(setFilters({}));
+    dispatch(getAds());
   };
 
   console.log(adsData);
-  console.log(selectedTags);
-  console.log(isBuy);
-  console.log(priceRange);
-  console.log(filteredAds);
+  console.log(tags);
+  console.log(sell);
+  console.log(price);
 
   return (
     <Container
@@ -122,7 +129,7 @@ const Search = ({ maxPrice, minPrice }) => {
                     className={styles.nameSelection}
                     onChange={handleFilterAdsByName}
                     autoComplete="Product name"
-                    value={filterName}
+                    value={adTitle}
                   >
                     Product name
                   </SearchByName>
@@ -130,9 +137,8 @@ const Search = ({ maxPrice, minPrice }) => {
                 <Col xs={12} md={6}>
                   <SwitchOptionSelect
                     className={styles.sellSwitch}
-                    isBuy={isBuy}
+                    sell={sell}
                     handleSwitchChange={handleSwitchChange}
-                    value={isBuy}
                   >
                     Status
                   </SwitchOptionSelect>
@@ -144,15 +150,15 @@ const Search = ({ maxPrice, minPrice }) => {
                     min={minPrice}
                     max={maxPrice}
                     onPriceChange={handlePriceChange}
-                    minValue={priceRange.minPrice}
-                    maxValue={priceRange.maxPrice}
+                    minValue={price.minPrice}
+                    maxValue={price.maxPrice}
                   />
                 </Col>
                 <Col>
                   <TagsOptionsSelect
-                    selectedTags={selectedTags}
+                    tags={tags}
                     handleTagChange={handleTagChange}
-                    value={selectedTags}
+                    value={tags}
                   />
                   <CustomButton
                     className={styles.deleteSearch}

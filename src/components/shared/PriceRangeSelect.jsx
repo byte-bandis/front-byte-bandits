@@ -43,26 +43,24 @@ const PriceRangeSelect = ({
   return (
     <Container className={className}>
       <div>
-        <Label htmlFor={`${className}-min`}>Min Price</Label>
+        <Label htmlFor="min-price">Min Price</Label>
         <Input
-          id={`${className}-min`}
+          id="min-price"
           type="number"
           value={values.minPrice !== undefined ? values.minPrice : ""}
           min={min}
           onChange={changeMinPrice}
-          minValue={values.minPrice}
           {...rest}
         />
       </div>
       <div>
-        <Label htmlFor={`${className}-max`}>Max Price</Label>
+        <Label htmlFor="max-price">Max Price</Label>
         <Input
-          id={`${className}-max`}
+          id="max-price"
           type="number"
           value={values.maxPrice !== undefined ? values.maxPrice : ""}
           max={max}
           onChange={changeMaxPrice}
-          maxValue={values.maxPrice}
           {...rest}
         />
       </div>
@@ -101,5 +99,4 @@ padding: 8px
 &:focus{
 border-color: var(--border-1);
 box-shadow: 0 0 0 0.2rem rgba(13,110,253,0.25)}
-
 `;

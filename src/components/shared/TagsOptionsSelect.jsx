@@ -7,8 +7,6 @@ const TagsOptionsSelector = ({ className, tags, handleTagChange }) => {
   const firstColumn = TAG_OPTIONS.slice(0, 3);
   const secondColumn = TAG_OPTIONS.slice(3);
 
-  console.log(firstColumn);
-  console.log(secondColumn);
   return (
     <Form.Group className={className}>
       <Form.Label>Tags:</Form.Label>

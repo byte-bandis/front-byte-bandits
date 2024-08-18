@@ -11,6 +11,7 @@ export const DropZoneWrapper = styled.div`
 
 export const DropZone = styled.div`
   border: 2px dashed #ccc;
+  box-shadow: ${(props) => props.$customDropZoneShadow || "none"};
   position: ${(props) => props.$customDropZonePosition || "relative"};
   border-radius: ${(props) => props.$customRadius || "10px"};
   text-align: center;

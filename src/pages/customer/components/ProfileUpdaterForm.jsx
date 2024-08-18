@@ -20,7 +20,6 @@ import { updateSinglePublicProfile } from "../service";
 import urlCleaner from "../../../utils/urlCleaner";
 import Alert from "react-bootstrap/Alert";
 import { resetUI } from "../../../store/uiSlice";
-import CustomPhoto from "../../../components/shared/CustomPhoto";
 import ProfileUserPhoto from "./ProfileUserPhoto";
 import HeaderProfilePhoto from "./HeaderProfilePhoto";
 import CustomCancelOption from "../../../components/shared/CancelOption";
@@ -46,6 +45,9 @@ const ProfileUpdaterForm = () => {
     cancelEditUserPhoto: false,
     cancelEditHeaderPhoto: false,
   });
+
+  const [cancelUserVisible, setCancelUserVisible] = useState(false);
+  const [cancelHeaderVisible, setCancelHeaderVisible] = useState(false);
 
   useEffect(() => {
     if (Object.values(loadedPublicProfile).length === 0) {
@@ -113,6 +115,17 @@ const ProfileUpdaterForm = () => {
       ...prevState,
       cancelEditUserPhoto: true,
     }));
+    setTimeout(() => setCancelUserVisible(true), 0);
+  };
+
+  const handleCancelEditUserPhoto = (event) => {
+    event.preventDefault();
+    setCancelButton((prevState) => ({
+      ...prevState,
+      cancelEditUserPhoto: false,
+    }));
+    setEditUserPhotoField(false);
+    setCancelUserVisible(false);
   };
 
   const handleEditHeaderPhoto = (event) => {
@@ -122,6 +135,17 @@ const ProfileUpdaterForm = () => {
       ...prevState,
       cancelEditHeaderPhoto: true,
     }));
+    setTimeout(() => setCancelHeaderVisible(true), 0);
+  };
+
+  const handleCancelEditHeaderPhoto = (event) => {
+    event.preventDefault();
+    setCancelButton((prevState) => ({
+      ...prevState,
+      cancelEditHeaderPhoto: false,
+    }));
+    setEditHeaderPhotoField(false);
+    setCancelHeaderVisible(false);
   };
 
   return (
@@ -152,6 +176,7 @@ const ProfileUpdaterForm = () => {
               $customWrapperPosition={"absolute"}
               $customWrapperTop={"-25px"}
               $customWrapperZIndex={"1"}
+              $customDropZoneShadow={"0px 4px 8px rgba(0, 0, 0, 0.2)"}
             />
           ) : (
             <ProfileUserPhoto
@@ -168,10 +193,16 @@ const ProfileUpdaterForm = () => {
           )}
           {cancelButton.cancelEditUserPhoto && (
             <CustomCancelOption
+              isVisible={cancelUserVisible}
+              onClick={handleCancelEditUserPhoto}
+              $customposition="absolute"
               $customborder="none"
-              $customZIndex="9999"
+              $customborderradius="8px"
+              $customZIndex="2"
               $customboxshadow="none"
               $customtransform="none"
+              $customtop="50px"
+              $customleft="220px"
             >
               Click here to cancel
             </CustomCancelOption>
@@ -190,10 +221,27 @@ const ProfileUpdaterForm = () => {
               src={headerPhoto}
               alt={`${username}'s header picture`}
               crossOrigin={origin}
+              onClick={handleEditHeaderPhoto}
               $customborder="none"
               $customboxshadow="none"
-              onClick={handleEditHeaderPhoto}
+              $customcursor="pointer"
             />
+          )}
+          {cancelButton.cancelEditHeaderPhoto && (
+            <CustomCancelOption
+              isVisible={cancelHeaderVisible}
+              onClick={handleCancelEditHeaderPhoto}
+              $customposition="absolute"
+              $customborder="none"
+              $customborderradius="8px"
+              $customZIndex="2"
+              $customboxshadow="none"
+              $customtransform="none"
+              $customtop="200px"
+              $customleft="300px"
+            >
+              Click here to cancel
+            </CustomCancelOption>
           )}
         </PhotosContainer>
         <StyledTextarea

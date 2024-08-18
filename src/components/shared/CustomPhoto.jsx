@@ -10,6 +10,7 @@ const CustomPhoto = styled.img`
     props.$customboxshadow || "0px 4px 8px rgba(0, 0, 0, 0.2)"};
   display: block;
   transition: ${(props) => props.$customtransition || "transform 0.3s ease"};
+  cursor: ${(props) => props.$customcursor || "none"};
   z-index: ${(props) => props.$customZIndex || "0"};
 
   &:hover {

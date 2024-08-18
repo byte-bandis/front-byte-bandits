@@ -23,6 +23,7 @@ const ImageUploader = ({
   $customWrapperTop,
   $customWrapperLeft,
   $customWrapperPosition,
+  $customDropZoneShadow,
   $customWrapperZIndex,
 }) => {
   const handleDrop = (e) => {
@@ -66,6 +67,7 @@ const ImageUploader = ({
         onDragOver={(e) => e.preventDefault()}
         $customRadius={$customRadius}
         $customHeight={$customHeight}
+        $customDropZoneShadow={$customDropZoneShadow}
       >
         {inputImagePreview ? (
           <ImagePreview>
@@ -108,6 +110,7 @@ ImageUploader.propTypes = {
   $customWrapperTop: PropTypes.string,
   $customWrapperLeft: PropTypes.string,
   $customWrapperZIndex: PropTypes.string,
+  $customDropZoneShadow: PropTypes.string,
 };
 
 export default ImageUploader;

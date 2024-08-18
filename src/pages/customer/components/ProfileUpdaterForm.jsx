@@ -46,7 +46,7 @@ const ProfileUpdaterForm = () => {
   }, [loadedPublicProfile]);
 
   useEffect(() => {
-    if (loadedUI.state === "success") {
+    if (loadedUI.state === "error") {
       setShowError(true);
     } else {
       setShowError(false);

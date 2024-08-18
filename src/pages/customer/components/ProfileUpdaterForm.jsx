@@ -20,6 +20,10 @@ import { updateSinglePublicProfile } from "../service";
 import urlCleaner from "../../../utils/urlCleaner";
 import Alert from "react-bootstrap/Alert";
 import { resetUI } from "../../../store/uiSlice";
+import CustomPhoto from "../../../components/shared/CustomPhoto";
+import ProfileUserPhoto from "./ProfileUserPhoto";
+import HeaderProfilePhoto from "./HeaderProfilePhoto";
+import CustomCancelOption from "../../../components/shared/CancelOption";
 
 const ProfileUpdaterForm = () => {
   const loadedPublicProfile = useSelector(getSinglePublicProfile);
@@ -36,6 +40,12 @@ const ProfileUpdaterForm = () => {
   const loggedUserName = useSelector(getLoggedUserName);
   const loadedUI = useSelector(getUI);
   const [showError, setShowError] = useState(false);
+  const [editUserPhotoField, setEditUserPhotoField] = useState(false);
+  const [editHeaderPhotoField, setEditHeaderPhotoField] = useState(false);
+  const [cancelButton, setCancelButton] = useState({
+    cancelEditUserPhoto: false,
+    cancelEditHeaderPhoto: false,
+  });
 
   useEffect(() => {
     if (Object.values(loadedPublicProfile).length === 0) {
@@ -96,6 +106,24 @@ const ProfileUpdaterForm = () => {
     dispatch(getSinglePublicProfileWithThunk(username));
   };
 
+  const handleEditUserPhoto = (event) => {
+    event.preventDefault();
+    setEditUserPhotoField(true);
+    setCancelButton((prevState) => ({
+      ...prevState,
+      cancelEditUserPhoto: true,
+    }));
+  };
+
+  const handleEditHeaderPhoto = (event) => {
+    event.preventDefault();
+    setEditHeaderPhotoField(true);
+    setCancelButton((prevState) => ({
+      ...prevState,
+      cancelEditHeaderPhoto: true,
+    }));
+  };
+
   return (
     <>
       {showError && (
@@ -113,25 +141,60 @@ const ProfileUpdaterForm = () => {
         $customMaxWidth={"100%"}
       >
         <PhotosContainer>
-          <ImageUploader
-            inputImagePreview={inputUserPhotoPreview}
-            setInputImage={setInputUserPhoto}
-            setInputImagePreview={setInputUserPhotoPreview}
-            $customWidth={"200px"}
-            $customHeight={"200px"}
-            $customRadius={"50%"}
-            $customWrapperPosition={"absolute"}
-            $customWrapperTop={"-25px"}
-            $customWrapperZIndex={"1"}
-          />
-          <ImageUploader
-            inputImagePreview={inputHeaderPhotoPreview}
-            setInputImage={setInputHeaderPhoto}
-            setInputImagePreview={setInputHeaderPhotoPreview}
-            $customWidth={"100%"}
-            $customHeight={"300px"}
-            $customWrapperPosition={"relative"}
-          />
+          {editUserPhotoField ? (
+            <ImageUploader
+              inputImagePreview={inputUserPhotoPreview}
+              setInputImage={setInputUserPhoto}
+              setInputImagePreview={setInputUserPhotoPreview}
+              $customWidth={"200px"}
+              $customHeight={"200px"}
+              $customRadius={"50%"}
+              $customWrapperPosition={"absolute"}
+              $customWrapperTop={"-25px"}
+              $customWrapperZIndex={"1"}
+            />
+          ) : (
+            <ProfileUserPhoto
+              src={userPhoto}
+              alt={`${username}'s profile picture`}
+              crossOrigin={origin}
+              $customborderradius="50%"
+              $customwidth="200px"
+              $customheight="200px"
+              $customobjectfit="cover"
+              $customZIndex="1"
+              onClick={handleEditUserPhoto}
+            />
+          )}
+          {cancelButton.cancelEditUserPhoto && (
+            <CustomCancelOption
+              $customborder="none"
+              $customZIndex="9999"
+              $customboxshadow="none"
+              $customtransform="none"
+            >
+              Click here to cancel
+            </CustomCancelOption>
+          )}
+          {editHeaderPhotoField ? (
+            <ImageUploader
+              inputImagePreview={inputHeaderPhotoPreview}
+              setInputImage={setInputHeaderPhoto}
+              setInputImagePreview={setInputHeaderPhotoPreview}
+              $customWidth={"100%"}
+              $customHeight={"300px"}
+              $customWrapperPosition={"relative"}
+            />
+          ) : (
+            <HeaderProfilePhoto
+              src={headerPhoto}
+              alt={`${username}'s header picture`}
+              crossOrigin={origin}
+              $customborder="none"
+              $customboxshadow="none"
+              onClick={handleEditHeaderPhoto}
+            />
+          )}
         </PhotosContainer>
         <StyledTextarea
           value={newUserDescription}

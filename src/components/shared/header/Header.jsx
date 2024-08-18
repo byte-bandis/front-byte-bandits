@@ -16,6 +16,7 @@ import { resetLoggedUserInfo } from "../../../store/authSlice";
 import { resetSinglePublicProfile } from "../../../store/singlePublicProfileSlice";
 import TagsNav from "../TagsNav";
 import { getLoggedUserName } from "../../../store/selectors";
+import { resetUI } from "../../../store/uiSlice";
 
 const Header = () => {
   const location = useLocation();
@@ -31,6 +32,7 @@ const Header = () => {
       logout();
       dispatch(resetLoggedUserInfo());
       dispatch(resetSinglePublicProfile());
+      dispatch(resetUI());
       setTimeout(() => {
         navigate("/");
       }, 1000);

@@ -1,6 +1,6 @@
 import styled from "styled-components";
 
-const CustomPhoto = styled.img`
+const CustomCancelOption = styled.div`
   border: ${(props) => props.$customborder || "5px solid var(--border-1)"};
   border-radius: ${(props) => props.$customborderradius || "none"};
   width: ${(props) => props.$customwidth || "100%"};
@@ -17,4 +17,4 @@ const CustomPhoto = styled.img`
   }
 `;
 
-export default CustomPhoto;
+export default CustomCancelOption;

@@ -1,6 +1,7 @@
-import { Form } from "react-bootstrap";
 import { useEffect, useState } from "react";
 import PropTypes from "prop-types";
+import styled from "styled-components";
+import { Form } from "react-bootstrap";
 
 const PriceRangeSelect = ({
   className,
@@ -40,10 +41,10 @@ const PriceRangeSelect = ({
   };
 
   return (
-    <div>
+    <Container className={className}>
       <div>
-        Min Price:
-        <Form.Control
+        <Label htmlFor={`${className}-min`}>Min Price</Label>
+        <Input
           id={`${className}-min`}
           type="number"
           value={values.minPrice !== undefined ? values.minPrice : ""}
@@ -54,8 +55,8 @@ const PriceRangeSelect = ({
         />
       </div>
       <div>
-        Max price:
-        <Form.Control
+        <Label htmlFor={`${className}-max`}>Max Price</Label>
+        <Input
           id={`${className}-max`}
           type="number"
           value={values.maxPrice !== undefined ? values.maxPrice : ""}
@@ -65,7 +66,7 @@ const PriceRangeSelect = ({
           {...rest}
         />
       </div>
-    </div>
+    </Container>
   );
 };
 
@@ -79,3 +80,26 @@ PriceRangeSelect.propTypes = {
 };
 
 export default PriceRangeSelect;
+
+const Container = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 15px;
+  background-color: var(--advert-1);
+  border-radius: 5px;
+`;
+
+const Label = styled.div`
+  color: var(--text-1);
+`;
+
+const Input = styled(Form.Control)`
+border: 1px solid var(--border-1);
+border-radius: 5px;
+padding: 8px
+&:focus{
+border-color: var(--border-1);
+box-shadow: 0 0 0 0.2rem rgba(13,110,253,0.25)}
+
+`;

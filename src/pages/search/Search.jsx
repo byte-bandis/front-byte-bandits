@@ -10,19 +10,16 @@ import styles from "./Search.module.css";
 import CustomButton from "../../components/shared/CustomButton";
 import SwitchOptionSelect from "../../components/shared/SwitchOptionSelect";
 import TagsOptionsSelect from "../../components/shared/TagsOptionsSelect";
-import { useSelector, useDispatch } from "react-redux";
+import { useDispatch } from "react-redux";
 import PriceRangeSelect from "../../components/shared/PriceRangeSelect";
 import SearchByName from "../../components/shared/SearchByName";
 import { getAds } from "../../store/adsThunk";
 import { setFilters } from "../../store/adsSlice";
 
-console.log(setFilters());
-
 const Search = ({ maxPrice, minPrice }) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  const adsData = useSelector((state) => state.adsState.data);
   const [expanded, setExpanded] = useState(false);
   const [adTitle, setAdTitle] = useState("");
   const [tags, setTags] = useState([]);
@@ -82,7 +79,6 @@ const Search = ({ maxPrice, minPrice }) => {
         !(typeof value === "number" && value === 0)
       ) {
         queryParams.append(key, value);
-        console.log("Filters being dispatched", filters);
       }
     });
 
@@ -91,9 +87,9 @@ const Search = ({ maxPrice, minPrice }) => {
       search: `?${queryParams.toString()}`,
     });
 
-    console.log("Filters being dispatched", filters);
     dispatch(setFilters(filters));
     dispatch(getAds({ page: 1, filters }));
+    dispatch(setExpanded(false));
   };
 
   const handledeleteSearch = () => {
@@ -107,18 +103,14 @@ const Search = ({ maxPrice, minPrice }) => {
     navigate("/");
     dispatch(setFilters({}));
     dispatch(getAds());
+    dispatch(setExpanded(true));
   };
-
-  console.log(adsData);
-  console.log(tags);
-  console.log(sell);
-  console.log(price);
 
   return (
     <Container
       className={`${styles.searchWrapper} ${expanded ? styles.expanded : ""}`}
     >
-      <Accordion className="py-3">
+      <Accordion className="py-3" activeKey={expanded ? "0" : null}>
         <Accordion.Item eventKey="0">
           <Accordion.Header onClick={toggleExpanded}>Search</Accordion.Header>
           <Accordion.Body>
@@ -131,7 +123,7 @@ const Search = ({ maxPrice, minPrice }) => {
                     autoComplete="Product name"
                     value={adTitle}
                   >
-                    Product name
+                    Product name:
                   </SearchByName>
                 </Col>
                 <Col xs={12} md={6}>
@@ -140,11 +132,11 @@ const Search = ({ maxPrice, minPrice }) => {
                     sell={sell}
                     handleSwitchChange={handleSwitchChange}
                   >
-                    Status
+                    Status:
                   </SwitchOptionSelect>
                 </Col>
                 <Col xs={12} md={6}>
-                  <Form.Label>Price</Form.Label>
+                  <Form.Label>Price:</Form.Label>
                   <PriceRangeSelect
                     className={styles.priceSelector}
                     min={minPrice}
@@ -160,18 +152,20 @@ const Search = ({ maxPrice, minPrice }) => {
                     handleTagChange={handleTagChange}
                     value={tags}
                   />
-                  <CustomButton
-                    className={styles.deleteSearch}
-                    onClick={handledeleteSearch}
-                  >
-                    Delete search
-                  </CustomButton>
-                  <CustomButton
-                    className={styles.Search}
-                    onClick={handleSearch}
-                  >
-                    Search
-                  </CustomButton>
+                  <div className={styles.buttonsSearch}>
+                    <CustomButton
+                      className={styles.deleteSearch}
+                      onClick={handledeleteSearch}
+                    >
+                      Delete search
+                    </CustomButton>
+                    <CustomButton
+                      className={styles.Search}
+                      onClick={handleSearch}
+                    >
+                      Search
+                    </CustomButton>
+                  </div>
                 </Col>
               </Row>
             </Form>

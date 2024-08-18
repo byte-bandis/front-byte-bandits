@@ -1,18 +1,78 @@
 .searchWrapper {
   position: fixed;
-  top: 0;
-  right: 10;
-  right: 10;
+  top: -15px;
   z-index: 1000;
-  background-color: white;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  background-color: var(--advert-1);
   width: 60%;
   margin: 0 auto;
   overflow: hidden;
   transition: max-height 0.3s ease-in-out;
   max-height: 60px;
+  border-radius: 8px;
+  padding: 10px;
 }
 
 .searchWrapper.expanded {
   max-height: 400px;
+}
+
+.accordion-header {
+  font-size: 1.25rem;
+  color: var(--advert-2);
+  background-color: var(--advert-1);
+  border-bottom: 1px solid var(--border-1);
+  cursor: pointer;
+}
+
+.accordion-body {
+  background-color: var(--bg-1);
+  color: var(--advert-1);
+}
+
+.accordion-body .form-label {
+  color: var(--advert-2);
+}
+
+.accordion-body .form-control,
+.accordion-body .form-select {
+  background-color: var(--advert-1);
+  color: var(--advert-3);
+  border: 1px solid var(--border-1);
+  border-radius: 4px;
+  padding: 5px;
+}
+
+.accordion-body .form-control:focus,
+.accordion-body .form-select:focus {
+  border-color: var(--border-1);
+  box-shadow: 0 0 5px var(--border-1);
+}
+
+.custom-button {
+  background-color: var(--button-1);
+  color: var(--button-2);
+  border: none;
+  border-radius: 4px;
+  padding: 10px 20px;
+  margin: 10px 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.custom-button:hover {
+  background-color: darken(var(--button-1), 10%);
+}
+
+.custom-button.delete-search {
+  background-color: var(--error-1);
+}
+
+.custom-button.delete-search:hover {
+  background-color: darken(var(--error-1), 10%);
+}
+
+.buttonsSearch {
+  display: flex;
+  gap: 25px;
+  margin: 20px 30px;
 }

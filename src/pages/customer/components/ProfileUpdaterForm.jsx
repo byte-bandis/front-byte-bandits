@@ -60,6 +60,10 @@ const ProfileUpdaterForm = () => {
   useEffect(() => {
     if (loadedUI.state === "error") {
       setShowError(true);
+      const timer = setTimeout(() => {
+        setShowError(false);
+      }, 2000);
+      return () => clearTimeout(timer);
     } else {
       setShowError(false);
     }

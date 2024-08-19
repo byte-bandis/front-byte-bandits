@@ -55,7 +55,7 @@ const ProfileUpdaterForm = () => {
     } else {
       setEditMode(true);
     }
-  }, [loadedPublicProfile]);
+  }, [loadedPublicProfile, editMode]);
 
   useEffect(() => {
     if (loadedUI.state === "error") {
@@ -168,7 +168,7 @@ const ProfileUpdaterForm = () => {
         $customMaxWidth={"100%"}
       >
         <PhotosContainer>
-          {editUserPhotoField ? (
+          {editUserPhotoField || !editMode ? (
             <ImageUploader
               inputImagePreview={inputUserPhotoPreview}
               setInputImage={setInputUserPhoto}
@@ -210,7 +210,7 @@ const ProfileUpdaterForm = () => {
               Click here to cancel
             </CustomCancelOption>
           )}
-          {editHeaderPhotoField ? (
+          {editHeaderPhotoField || !editMode ? (
             <ImageUploader
               inputImagePreview={inputHeaderPhotoPreview}
               setInputImage={setInputHeaderPhoto}

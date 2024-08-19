@@ -52,11 +52,8 @@ const ProfileUpdaterForm = () => {
   useEffect(() => {
     if (Object.values(loadedPublicProfile).length === 0) {
       setEditMode(false);
-      console.log("Esto es ObjectValues: ", Object.values(loadedPublicProfile));
-      console.log("Esto es editMode: ", editMode);
     } else {
       setEditMode(true);
-      console.log("Esto es editMode: ", editMode);
     }
   }, [loadedPublicProfile, editMode]);
 

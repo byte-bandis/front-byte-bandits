@@ -1,23 +1,24 @@
 import { createSlice } from "@reduxjs/toolkit";
 import {
   createSinglePublicProfileWithThunk,
+  deleteSinglePublicProfileWithThunk,
   getSinglePublicProfileWithThunk,
   updateSinglePublicProfileWithThunk,
 } from "./profilesThunk";
 
-export const singleProfileState = {
+export const singleProfileInitialState = {
   data: {},
 };
 
 const singleProfileSlice = createSlice({
   name: "singleProfileSlice",
-  initialState: singleProfileState,
+  initialState: singleProfileInitialState,
   reducers: {
     setSingleProfile: (state, action) => {
       state.data = action.payload;
     },
     resetSinglePublicProfile: (state) => {
-      state.data = singleProfileState;
+      state.data = singleProfileInitialState;
     },
   },
   extraReducers: (builder) => {
@@ -39,6 +40,9 @@ const singleProfileSlice = createSlice({
         state.data = action.payload.updatedPublicProfile;
       }
     );
+    builder.addCase(deleteSinglePublicProfileWithThunk.fulfilled, (state) => {
+      state.data = singleProfileInitialState;
+    });
   },
 });
 

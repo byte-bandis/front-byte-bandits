@@ -4,13 +4,13 @@ import { useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import {
-  getLoggedUserId,
   getLoggedUserName,
   getSinglePublicProfile,
   getUI,
 } from "../../../store/selectors";
 import {
   createSinglePublicProfileWithThunk,
+  deleteSinglePublicProfileWithThunk,
   getSinglePublicProfileWithThunk,
   updateSinglePublicProfileWithThunk,
 } from "../../../store/profilesThunk";
@@ -23,12 +23,12 @@ import { resetUI } from "../../../store/uiSlice";
 import ProfileUserPhoto from "./ProfileUserPhoto";
 import HeaderProfilePhoto from "./HeaderProfilePhoto";
 import CustomCancelOption from "../../../components/shared/CancelOption";
+import DeleteCollection from "../../../components/shared/DeleteCollection";
 
 const ProfileUpdaterForm = () => {
   const loadedPublicProfile = useSelector(getSinglePublicProfile);
   const { userPhoto, headerPhoto, userDescription } = loadedPublicProfile;
   const dispatch = useDispatch();
-  const requesterId = useSelector(getLoggedUserId);
   const { username } = useParams();
   const [inputUserPhoto, setInputUserPhoto] = useState(null);
   const [inputUserPhotoPreview, setInputUserPhotoPreview] = useState(null);
@@ -76,7 +76,6 @@ const ProfileUpdaterForm = () => {
   const handleSubmit = async (event) => {
     event.preventDefault();
     const formData = new FormData();
-    formData.append("requesterId", requesterId);
 
     if (userPhoto) {
       if (inputUserPhoto && inputUserPhoto !== urlCleaner(userPhoto)) {
@@ -259,7 +258,16 @@ const ProfileUpdaterForm = () => {
           onChange={(e) => setNewUserDescription(e.target.value)}
         />
         {loggedUserName === username && (
-          <Button type="submit">Send data</Button>
+          <>
+            <Button type="submit">Send data</Button>
+            {Object.values(loadedPublicProfile).length > 0 && (
+              <DeleteCollection
+                username={username}
+                requestedAction={deleteSinglePublicProfileWithThunk}
+                wrapUpAction={getSinglePublicProfileWithThunk}
+              />
+            )}
+          </>
         )}
       </StyledForm>
     </>

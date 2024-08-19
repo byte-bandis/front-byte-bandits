@@ -53,10 +53,6 @@ export const createSinglePublicProfile = async (userName, formData) => {
 
 export const updateSinglePublicProfile = async (userName, formData) => {
   const url = `${userURL}/${userName}`;
-
-  formData.forEach((value, key) => {
-    console.log(key, value);
-  });
   return client
     .put(url, formData, {
       headers: {
@@ -70,4 +66,8 @@ export const updateSinglePublicProfile = async (userName, formData) => {
       };
       return data;
     });
+};
+export const deleteSinglePublicProfile = async (userName) => {
+  const url = `${userURL}/${userName}`;
+  return client.delete(url).then((message) => message);
 };

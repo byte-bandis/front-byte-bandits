@@ -66,3 +66,15 @@ export const updateSinglePublicProfileWithThunk = createAsyncThunk(
     }
   }
 );
+
+export const deleteSinglePublicProfileWithThunk = createAsyncThunk(
+  "singlePublicProfile/delete",
+  async (username, { rejectWithValue }) => {
+    try {
+      const response = await profiles.deleteSinglePublicProfile(username);
+      return response;
+    } catch (error) {
+      return rejectWithValue(error.message);
+    }
+  }
+);

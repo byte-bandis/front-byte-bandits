@@ -11,5 +11,10 @@ const StyledTextarea = styled.textarea`
   font-size: 1rem;
   line-height: 1.5;
   background-color: #f9f9f9;
+
+  &::placeholder {
+    font-style: italic;
+    color: gray;
+  }
 `;
 export default StyledTextarea;

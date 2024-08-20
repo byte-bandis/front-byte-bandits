@@ -34,7 +34,9 @@ const ProfileUpdaterForm = () => {
   const [inputUserPhotoPreview, setInputUserPhotoPreview] = useState(null);
   const [inputHeaderPhoto, setInputHeaderPhoto] = useState(null);
   const [inputHeaderPhotoPreview, setInputHeaderPhotoPreview] = useState(null);
-  const [newUserDescription, setNewUserDescription] = useState("");
+  const [newUserDescription, setNewUserDescription] = useState(
+    userDescription || ""
+  );
   const [editMode, setEditMode] = useState(false);
   const loggedUserName = useSelector(getLoggedUserName);
   const loadedUI = useSelector(getUI);
@@ -56,6 +58,20 @@ const ProfileUpdaterForm = () => {
       setEditMode(true);
     }
   }, [loadedPublicProfile, editMode]);
+
+  useEffect(() => {
+    /*    if (newUserDescription === "") {
+      setNewUserDescription("Your description is empty");
+    } */
+    console.log("Esto es newUserDescription: ", newUserDescription);
+    console.log(
+      "Esto es el typeof newUserDescription: ",
+      typeof newUserDescription
+    );
+  }, [newUserDescription]);
+
+  const handleNewDescription = (event) =>
+    setNewUserDescription(event.target.value);
 
   useEffect(() => {
     if (loadedUI.state === "error") {
@@ -93,14 +109,16 @@ const ProfileUpdaterForm = () => {
       formData.append("headerPhoto", inputHeaderPhoto);
     }
 
-    if (userDescription) {
-      if (newUserDescription && newUserDescription !== userDescription) {
-        formData.append("userDescription", newUserDescription);
-      }
-    } else {
+    /*     if (newUserDescription !== userDescription) {
       formData.append("userDescription", newUserDescription);
-    }
+    } else {
+      formData.append("userDescription", userDescription);
+    } */
+    formData.append("userDescription", newUserDescription);
 
+    for (let [key, value] of formData.entries()) {
+      console.log(`Hola ${key}:`, value);
+    }
     if (!editMode) {
       await dispatch(
         createSinglePublicProfileWithThunk({ username, formData })
@@ -252,10 +270,12 @@ const ProfileUpdaterForm = () => {
         </PhotosContainer>
         <StyledTextarea
           value={newUserDescription}
-          placeholder={
-            userDescription || "Write something about you and your work here"
-          }
-          onChange={(e) => setNewUserDescription(e.target.value)}
+          placeholder={`${
+            userDescription && userDescription.trim() !== ""
+              ? `Currently: "${userDescription}". Write here to modify your description. Or leave this field empty if you like.`
+              : "Your description is empty so far. Write something about you and your work here."
+          }`}
+          onChange={handleNewDescription}
         />
         {loggedUserName === username && (
           <>

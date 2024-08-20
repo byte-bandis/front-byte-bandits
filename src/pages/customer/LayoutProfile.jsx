@@ -2,16 +2,11 @@ import { Outlet, useParams } from "react-router-dom";
 import { Container, Row } from "react-bootstrap";
 import HeaderProfile from "./HeaderProfile";
 import { useSelector } from "react-redux";
-import {
-  getLoggedUserName,
-  getSinglePublicProfile,
-} from "../../store/selectors";
+import { getLoggedUserName } from "../../store/selectors";
 
 const LayoutProfile = () => {
   const loggedUserName = useSelector(getLoggedUserName);
-  const myPublicProfile = useSelector(getSinglePublicProfile);
   const { username } = useParams();
-  console.log("Esto es myPublicProfile en el layourProfile: ", myPublicProfile);
 
   return (
     <>

@@ -1,10 +1,22 @@
 import Container from "react-bootstrap/Container";
 import Nav from "react-bootstrap/Nav";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import CustomButton from "../../components/shared/CustomButton";
+import { useSelector } from "react-redux";
+import { getLoggedUserName } from "../../store/selectors";
+import { useEffect } from "react";
 
 const HeaderProfile = () => {
+  const loggedUserName = useSelector(getLoggedUserName);
   const { username } = useParams();
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (loggedUserName !== username) {
+      navigate(`/${username}`);
+    }
+  }, [loggedUserName, username, navigate]);
+
   return (
     <>
       <Container className="top-header d-flex flex-row justify-content-start gap-3">

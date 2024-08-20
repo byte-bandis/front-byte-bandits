@@ -25,7 +25,7 @@ const Profile = () => {
 
   useEffect(() => {
     const fetchProfile = async () => {
-      if (loggedUserName === username) {
+      if (!loadedPublicProfile && loggedUserName === username) {
         await dispatch(getSinglePublicProfileWithThunk(loggedUserName));
       } else {
         await dispatch(getSinglePublicProfileWithThunk(username));

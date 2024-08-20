@@ -1,5 +1,4 @@
 import { useDispatch, useSelector } from "react-redux";
-import ProductList from "./PoductList";
 import Profile from "./Profile";
 import { getLoggedUserName } from "../../store/selectors";
 import { useEffect } from "react";
@@ -21,7 +20,6 @@ const UserPublicInfo = () => {
     <>
       {<h1>{isLogged}, welcome to your public area</h1>}
       <Profile />
-      <ProductList />
     </>
   );
 };

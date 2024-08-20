@@ -17,7 +17,6 @@ import {
 import StyledTextarea from "../../../components/shared/StyledTextArea";
 import StyledForm from "../../../components/shared/StyledForm";
 import PhotosContainer from "./PhotosContainer";
-import urlCleaner from "../../../utils/urlCleaner";
 import Alert from "react-bootstrap/Alert";
 import { resetUI } from "../../../store/uiSlice";
 import ProfileUserPhoto from "./ProfileUserPhoto";

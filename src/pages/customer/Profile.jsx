@@ -33,16 +33,6 @@ const Profile = () => {
     };
     fetchProfile();
   }, [dispatch, loggedUserName, username]);
-  /*   useEffect(() => {
-    const fetchProfile = async () => {
-      if (!loadedPublicProfile && loggedUserName === username) {
-        await dispatch(getSinglePublicProfileWithThunk(loggedUserName));
-      } else {
-        await dispatch(getSinglePublicProfileWithThunk(username));
-      }
-    };
-    fetchProfile();
-  }, [dispatch, loggedUserName, username]); */
 
   useEffect(() => {
     if (Object.keys(loadedPublicProfile).length === 0) {

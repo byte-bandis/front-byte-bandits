@@ -82,19 +82,11 @@ const ProfileUpdaterForm = () => {
     event.preventDefault();
     const formData = new FormData();
 
-    if (userPhoto) {
-      if (inputUserPhoto && inputUserPhoto !== urlCleaner(userPhoto)) {
-        formData.append("userPhoto", inputUserPhoto);
-      }
-    } else {
+    if (inputUserPhoto) {
       formData.append("userPhoto", inputUserPhoto);
     }
 
-    if (headerPhoto) {
-      if (inputHeaderPhoto && inputHeaderPhoto !== urlCleaner(headerPhoto)) {
-        formData.append("headerPhoto", inputHeaderPhoto);
-      }
-    } else {
+    if (inputHeaderPhoto) {
       formData.append("headerPhoto", inputHeaderPhoto);
     }
 

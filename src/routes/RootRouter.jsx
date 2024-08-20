@@ -15,6 +15,7 @@ import RequireAuth from "../pages/auth/components/RequireAuth";
 import Profile from "../pages/customer/Profile";
 import LayoutProfile from "../pages/customer/LayoutProfile";
 import PersonalInfo from "../pages/customer/PersonalInfo";
+import UserPublicInfo from "../pages/customer/UserPublicInfo";
 
 const RootRouter = () => {
   return (
@@ -56,13 +57,10 @@ const RootRouter = () => {
           element={
             <RequireAuth>
               <LayoutProfile />
+              <UserPublicInfo />
             </RequireAuth>
           }
         >
-          <Route
-            index
-            element={<Profile />}
-          />
           <Route
             path="mydata"
             element={<PersonalInfo />}

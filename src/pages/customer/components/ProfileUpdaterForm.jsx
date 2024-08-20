@@ -59,17 +59,6 @@ const ProfileUpdaterForm = () => {
     }
   }, [loadedPublicProfile, editMode]);
 
-  useEffect(() => {
-    /*    if (newUserDescription === "") {
-      setNewUserDescription("Your description is empty");
-    } */
-    console.log("Esto es newUserDescription: ", newUserDescription);
-    console.log(
-      "Esto es el typeof newUserDescription: ",
-      typeof newUserDescription
-    );
-  }, [newUserDescription]);
-
   const handleNewDescription = (event) =>
     setNewUserDescription(event.target.value);
 
@@ -109,16 +98,8 @@ const ProfileUpdaterForm = () => {
       formData.append("headerPhoto", inputHeaderPhoto);
     }
 
-    /*     if (newUserDescription !== userDescription) {
-      formData.append("userDescription", newUserDescription);
-    } else {
-      formData.append("userDescription", userDescription);
-    } */
     formData.append("userDescription", newUserDescription);
 
-    for (let [key, value] of formData.entries()) {
-      console.log(`Hola ${key}:`, value);
-    }
     if (!editMode) {
       await dispatch(
         createSinglePublicProfileWithThunk({ username, formData })
@@ -285,7 +266,9 @@ const ProfileUpdaterForm = () => {
                 username={username}
                 requestedAction={deleteSinglePublicProfileWithThunk}
                 wrapUpAction={getSinglePublicProfileWithThunk}
-              />
+              >
+                Delete Profile
+              </DeleteCollection>
             )}
           </>
         )}

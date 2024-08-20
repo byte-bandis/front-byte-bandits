@@ -18,7 +18,7 @@ const singleProfileSlice = createSlice({
       state.data = action.payload;
     },
     resetSinglePublicProfile: (state) => {
-      state.data = singleProfileInitialState;
+      state.data = singleProfileInitialState.data;
     },
   },
   extraReducers: (builder) => {
@@ -41,7 +41,7 @@ const singleProfileSlice = createSlice({
       }
     );
     builder.addCase(deleteSinglePublicProfileWithThunk.fulfilled, (state) => {
-      state.data = singleProfileInitialState;
+      state.data = singleProfileInitialState.data;
     });
   },
 });

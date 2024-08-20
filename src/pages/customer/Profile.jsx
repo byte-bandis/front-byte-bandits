@@ -26,18 +26,17 @@ const Profile = () => {
   const token = checkAuthTokenSaved();
 
   useEffect(() => {
-    if (token && loggedUserName === username) {
-      dispatch(getSinglePublicProfileWithThunk(loggedUserName));
-    }
+    const fetchProfile = async () => {
+      if (token && loggedUserName === username) {
+        await dispatch(getSinglePublicProfileWithThunk(loggedUserName));
+      } else if (loggedUserName === username) {
+        await dispatch(getSinglePublicProfileWithThunk(loggedUserName));
+      } else {
+        await dispatch(getSinglePublicProfileWithThunk(username));
+      }
+    };
+    fetchProfile();
   }, [token, loggedUserName, username, dispatch]);
-
-  useEffect(() => {
-    if (loggedUserName === username) {
-      dispatch(getSinglePublicProfileWithThunk(loggedUserName));
-    } else {
-      dispatch(getSinglePublicProfileWithThunk(username));
-    }
-  }, [username, loggedUserName, dispatch]);
 
   useEffect(() => {
     if (Object.keys(loadedPublicProfile).length === 0) {

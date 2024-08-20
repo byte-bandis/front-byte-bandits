@@ -12,7 +12,6 @@ import ScreenPublicProfile from "./components/ScreenPublicProfile";
 import ProfileUpdaterForm from "./components/ProfileUpdaterForm";
 import StyledContainer from "../../components/shared/StyledContainer";
 import Button from "../product/components/Button";
-import { checkAuthTokenSaved } from "../../utils/authUtils";
 
 const Profile = () => {
   const dispatch = useDispatch();
@@ -23,20 +22,17 @@ const Profile = () => {
   const { userPhoto, headerPhoto, userDescription } = loadedPublicProfile;
   const [showForm, setShowForm] = useState(false);
   const origin = import.meta.env.VITE_API_BASE_URL;
-  const token = checkAuthTokenSaved();
 
   useEffect(() => {
     const fetchProfile = async () => {
-      if (token && loggedUserName === username) {
-        await dispatch(getSinglePublicProfileWithThunk(loggedUserName));
-      } else if (loggedUserName === username) {
+      if (loggedUserName === username) {
         await dispatch(getSinglePublicProfileWithThunk(loggedUserName));
       } else {
         await dispatch(getSinglePublicProfileWithThunk(username));
       }
     };
     fetchProfile();
-  }, [token, loggedUserName, username, dispatch]);
+  }, [dispatch, loggedUserName, username]);
 
   useEffect(() => {
     if (Object.keys(loadedPublicProfile).length === 0) {

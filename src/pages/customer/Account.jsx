@@ -3,27 +3,23 @@ import ProductList from "./PoductList";
 import Profile from "./Profile";
 import { getLoggedUserName } from "../../store/selectors";
 import { useEffect } from "react";
-import {
-  getMyAccountWithThunk,
-  getSinglePublicProfileWithThunk,
-} from "../../store/profilesThunk";
+import { getMyAccountWithThunk } from "../../store/profilesThunk";
 
 const Account = () => {
   const dispatch = useDispatch();
-  const isLogged = useSelector(getLoggedUserName);
+  const loggedUserName = useSelector(getLoggedUserName);
   useEffect(() => {
     const fetchData = async () => {
-      if (isLogged) {
-        await dispatch(getMyAccountWithThunk(isLogged));
-        await dispatch(getSinglePublicProfileWithThunk(isLogged));
+      if (loggedUserName) {
+        await dispatch(getMyAccountWithThunk(loggedUserName));
       }
     };
     fetchData();
-  }, [isLogged, dispatch]);
+  }, [loggedUserName, dispatch]);
 
   return (
     <>
-      {<h1>{isLogged}, welcome to your private area</h1>}
+      {<h1>{loggedUserName}, welcome to your private area</h1>}
       <Profile />
       <ProductList />
     </>

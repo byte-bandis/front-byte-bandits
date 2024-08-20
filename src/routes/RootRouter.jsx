@@ -57,10 +57,13 @@ const RootRouter = () => {
           element={
             <RequireAuth>
               <LayoutProfile />
-              <UserPublicInfo />
             </RequireAuth>
           }
         >
+          <Route
+            index
+            element={<UserPublicInfo />}
+          />
           <Route
             path="mydata"
             element={<PersonalInfo />}

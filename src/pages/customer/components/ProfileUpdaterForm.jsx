@@ -256,7 +256,7 @@ const ProfileUpdaterForm = () => {
               <DeleteCollection
                 username={username}
                 requestedAction={deleteSinglePublicProfileWithThunk}
-                wrapUpAction={getSinglePublicProfileWithThunk}
+                //wrapUpAction={getSinglePublicProfileWithThunk}
               >
                 Delete Profile
               </DeleteCollection>

@@ -41,13 +41,16 @@ const Profile = () => {
   useEffect(() => {
     if (Object.keys(loadedPublicProfile).length === 0) {
       setShowScreen(true);
+      setShowForm(false);
     } else {
       setShowScreen(false);
+      setShowForm(false);
     }
   }, [loadedPublicProfile]);
 
   const handleShowForm = () => {
     setShowForm(!showForm);
+    //setShowScreen(!showScreen);
   };
 
   return (

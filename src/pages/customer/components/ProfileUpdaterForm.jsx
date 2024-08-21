@@ -17,7 +17,6 @@ import {
 import StyledTextarea from "../../../components/shared/StyledTextArea";
 import StyledForm from "../../../components/shared/StyledForm";
 import PhotosContainer from "./PhotosContainer";
-import urlCleaner from "../../../utils/urlCleaner";
 import Alert from "react-bootstrap/Alert";
 import { resetUI } from "../../../store/uiSlice";
 import ProfileUserPhoto from "./ProfileUserPhoto";
@@ -82,19 +81,11 @@ const ProfileUpdaterForm = () => {
     event.preventDefault();
     const formData = new FormData();
 
-    if (userPhoto) {
-      if (inputUserPhoto && inputUserPhoto !== urlCleaner(userPhoto)) {
-        formData.append("userPhoto", inputUserPhoto);
-      }
-    } else {
+    if (inputUserPhoto) {
       formData.append("userPhoto", inputUserPhoto);
     }
 
-    if (headerPhoto) {
-      if (inputHeaderPhoto && inputHeaderPhoto !== urlCleaner(headerPhoto)) {
-        formData.append("headerPhoto", inputHeaderPhoto);
-      }
-    } else {
+    if (inputHeaderPhoto) {
       formData.append("headerPhoto", inputHeaderPhoto);
     }
 
@@ -198,7 +189,7 @@ const ProfileUpdaterForm = () => {
           )}
           {cancelButton.cancelEditUserPhoto && (
             <CustomCancelOption
-              isVisible={cancelUserVisible}
+              isvisible={cancelUserVisible}
               onClick={handleCancelEditUserPhoto}
               $customposition="absolute"
               $customborder="none"
@@ -234,7 +225,7 @@ const ProfileUpdaterForm = () => {
           )}
           {cancelButton.cancelEditHeaderPhoto && (
             <CustomCancelOption
-              isVisible={cancelHeaderVisible}
+              isvisible={cancelHeaderVisible}
               onClick={handleCancelEditHeaderPhoto}
               $customposition="absolute"
               $customborder="none"
@@ -265,7 +256,7 @@ const ProfileUpdaterForm = () => {
               <DeleteCollection
                 username={username}
                 requestedAction={deleteSinglePublicProfileWithThunk}
-                wrapUpAction={getSinglePublicProfileWithThunk}
+                //wrapUpAction={getSinglePublicProfileWithThunk}
               >
                 Delete Profile
               </DeleteCollection>

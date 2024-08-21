@@ -12,8 +12,7 @@ const PersonalInfo = () => {
   const myProfile = useSelector(getMyAccount);
   const { username } = useParams();
   const [creationDate, setCreationdate] = useState("000-00-00");
-  console.log("Esto es username de los params: ", username);
-  console.log("Esto es loggedUsername del estado: ", loggedUsername);
+
   useEffect(() => {
     if (loggedUsername === username) {
       dispatch(getMyAccountWithThunk(username));

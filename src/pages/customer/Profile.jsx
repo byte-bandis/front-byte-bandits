@@ -22,10 +22,12 @@ const Profile = () => {
   const { userPhoto, headerPhoto, userDescription } = loadedPublicProfile;
   const [showForm, setShowForm] = useState(false);
   const origin = import.meta.env.VITE_API_BASE_URL;
+  const userPhotoDefault = import.meta.env.VITE_USER_PHOTO_URL;
+  const userHeaderDefault = import.meta.env.VITE_USER_HEADER_PHOTO_URL;
 
   useEffect(() => {
     const fetchProfile = async () => {
-      if (!loadedPublicProfile && loggedUserName === username) {
+      if (loggedUserName === username) {
         await dispatch(getSinglePublicProfileWithThunk(loggedUserName));
       } else {
         await dispatch(getSinglePublicProfileWithThunk(username));
@@ -34,13 +36,11 @@ const Profile = () => {
     fetchProfile();
   }, [dispatch, loggedUserName, username]);
 
-  useEffect(() => {
+  /*   useEffect(() => {
     if (Object.keys(loadedPublicProfile).length === 0) {
       setShowForm(true);
-    } else {
-      setShowForm(false);
     }
-  }, [loadedPublicProfile]);
+  }, [loadedPublicProfile]); */
 
   const handleShowForm = () => setShowForm(!showForm);
 
@@ -50,13 +50,13 @@ const Profile = () => {
         {loadedPublicProfile && !showForm && (
           <StyledContainer>
             <ScreenPublicProfile
-              userPhoto={userPhoto}
-              headerPhoto={headerPhoto}
+              userPhoto={userPhoto || userPhotoDefault}
+              headerPhoto={headerPhoto || userHeaderDefault}
               username={username}
               origin={origin}
               userDescription={userDescription}
             />
-            {loggedUserName === loadedPublicProfileOwner && (
+            {loggedUserName === username && (
               <Button onClick={handleShowForm}>Edit your profile</Button>
             )}
           </StyledContainer>

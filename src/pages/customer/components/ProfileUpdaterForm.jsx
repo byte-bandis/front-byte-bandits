@@ -189,7 +189,7 @@ const ProfileUpdaterForm = () => {
           )}
           {cancelButton.cancelEditUserPhoto && (
             <CustomCancelOption
-              isvisible={cancelUserVisible}
+              $isvisible={cancelUserVisible}
               onClick={handleCancelEditUserPhoto}
               $customposition="absolute"
               $customborder="none"
@@ -225,7 +225,7 @@ const ProfileUpdaterForm = () => {
           )}
           {cancelButton.cancelEditHeaderPhoto && (
             <CustomCancelOption
-              isvisible={cancelHeaderVisible}
+              $isvisible={cancelHeaderVisible}
               onClick={handleCancelEditHeaderPhoto}
               $customposition="absolute"
               $customborder="none"

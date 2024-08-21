@@ -4,7 +4,6 @@ import { useParams } from "react-router-dom";
 import {
   getLoggedUserName,
   getSinglePublicProfile,
-  getSinglePublicProfileOwner,
 } from "../../store/selectors";
 import { useEffect, useState } from "react";
 import { getSinglePublicProfileWithThunk } from "../../store/profilesThunk";
@@ -18,39 +17,31 @@ const Profile = () => {
   const { username } = useParams();
   const loggedUserName = useSelector(getLoggedUserName);
   const loadedPublicProfile = useSelector(getSinglePublicProfile);
-  const loadedPublicProfileOwner = useSelector(getSinglePublicProfileOwner);
   const { userPhoto, headerPhoto, userDescription } = loadedPublicProfile;
   const [showForm, setShowForm] = useState(false);
-  const [showScreen, setShowScreen] = useState(true);
   const origin = import.meta.env.VITE_API_BASE_URL;
   const userPhotoDefault = import.meta.env.VITE_USER_PHOTO_URL;
   const userHeaderDefault = import.meta.env.VITE_USER_HEADER_PHOTO_URL;
 
-  console.log("Esto es showForm: ", showForm);
   useEffect(() => {
     const fetchProfile = async () => {
-      if (loggedUserName === username && showScreen) {
+      if (loggedUserName === username) {
         await dispatch(getSinglePublicProfileWithThunk(loggedUserName));
       } else {
         await dispatch(getSinglePublicProfileWithThunk(username));
       }
     };
     fetchProfile();
-  }, [dispatch, loggedUserName, username, showScreen]);
+  }, [dispatch, loggedUserName, username]);
 
   useEffect(() => {
-    if (Object.keys(loadedPublicProfile).length === 0) {
-      setShowScreen(true);
-      setShowForm(false);
-    } else {
-      setShowScreen(false);
+    if (loadedPublicProfile) {
       setShowForm(false);
     }
   }, [loadedPublicProfile]);
 
   const handleShowForm = () => {
     setShowForm(!showForm);
-    //setShowScreen(!showScreen);
   };
 
   return (
@@ -74,9 +65,7 @@ const Profile = () => {
         {showForm && (
           <StyledContainer>
             <ProfileUpdaterForm />
-            {loggedUserName === loadedPublicProfileOwner && (
-              <Button onClick={handleShowForm}>Back</Button>
-            )}
+            <Button onClick={handleShowForm}>Back</Button>
           </StyledContainer>
         )}
       </Col>

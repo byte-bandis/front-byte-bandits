@@ -17,7 +17,7 @@ const CustomCancelOption = styled.div`
   box-shadow: ${(props) =>
     props.$customboxshadow || "0px 4px 8px rgba(0, 0, 0, 0.2)"};
   z-index: ${(props) => props.$customZIndex || "0"};
-  opacity: ${(props) => (props.isvisible ? 1 : 0)};
+  opacity: ${(props) => (props.$isVisible ? 1 : 0)};
   transition: opacity 0.2s ease-in-out;
 
   &:hover {

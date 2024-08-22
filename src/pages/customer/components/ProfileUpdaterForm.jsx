@@ -21,7 +21,7 @@ import Alert from "react-bootstrap/Alert";
 import { resetUI } from "../../../store/uiSlice";
 import ProfileUserPhoto from "./ProfileUserPhoto";
 import HeaderProfilePhoto from "./HeaderProfilePhoto";
-import CustomCancelOption from "../../../components/shared/CancelOption";
+import CustomCancelOption from "../../../components/shared/CustomCancelOption";
 import DeleteCollection from "../../../components/shared/DeleteCollection";
 
 const ProfileUpdaterForm = () => {
@@ -189,7 +189,7 @@ const ProfileUpdaterForm = () => {
           )}
           {cancelButton.cancelEditUserPhoto && (
             <CustomCancelOption
-              $isvisible={cancelUserVisible}
+              $isVisible={cancelUserVisible}
               onClick={handleCancelEditUserPhoto}
               $customposition="absolute"
               $customborder="none"
@@ -225,7 +225,7 @@ const ProfileUpdaterForm = () => {
           )}
           {cancelButton.cancelEditHeaderPhoto && (
             <CustomCancelOption
-              $isvisible={cancelHeaderVisible}
+              $isVisible={cancelHeaderVisible}
               onClick={handleCancelEditHeaderPhoto}
               $customposition="absolute"
               $customborder="none"

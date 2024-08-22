@@ -10,6 +10,7 @@ import { Heart, HeartFill } from 'react-bootstrap-icons';
 import { setLike } from '../../utils/setLike';
 import { client } from '../../api/client';
 import CommentItem from './components/CommentItem';
+import CommentForm from './components/CommentForm';
 
 const ProductView = () => {
     const navigate = useNavigate();
@@ -137,6 +138,7 @@ const ProductView = () => {
                                     </Button>
                                 </div>
                             }
+                            <CommentForm/>
                             {comments.length > 0 && (
                                 <div className='advert-comments-box'>
                                     <h3>Comentarios</h3>

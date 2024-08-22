@@ -17,7 +17,6 @@ const Profile = () => {
   const { username } = useParams();
   const loggedUserName = useSelector(getLoggedUserName);
   const loadedPublicProfile = useSelector(getSinglePublicProfile);
-  const { userPhoto, headerPhoto, userDescription } = loadedPublicProfile;
   const [showForm, setShowForm] = useState(false);
   const origin = import.meta.env.VITE_API_BASE_URL;
   const userPhotoDefault = import.meta.env.VITE_USER_PHOTO_URL;
@@ -50,11 +49,11 @@ const Profile = () => {
         {loadedPublicProfile && !showForm && (
           <StyledContainer>
             <ScreenPublicProfile
-              userPhoto={userPhoto || userPhotoDefault}
-              headerPhoto={headerPhoto || userHeaderDefault}
+              userPhoto={loadedPublicProfile.userPhoto || userPhotoDefault}
+              headerPhoto={loadedPublicProfile.headerPhoto || userHeaderDefault}
               username={username}
               origin={origin}
-              userDescription={userDescription}
+              userDescription={loadedPublicProfile.userDescription}
             />
             {loggedUserName === username && (
               <Button onClick={handleShowForm}>Edit your profile</Button>

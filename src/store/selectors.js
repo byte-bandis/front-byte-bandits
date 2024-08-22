@@ -15,6 +15,12 @@ export const getLoggedUserId = (state) => state.authState.user.userId;
 export const getPublicProfiles = (state) => state.publicProfiles.data;
 export const getMyAccount = (state) => state.myAccount.data;
 export const getSinglePublicProfile = (state) => state.singlePublicProfile.data;
+export const getSinglePublicProfileUserPhoto = (state) =>
+  state.singlePublicProfile.data.userPhoto;
+export const getSinglePublicProfileHeaderPhoto = (state) =>
+  state.singlePublicProfile.data.headerPhoto;
+export const getSinglePublicProfileUserDescription = (state) =>
+  state.singlePublicProfile.data.userDescription;
 export const getSinglePublicProfileOwner = (state) =>
   state.singlePublicProfile.data.userName;
 export const getAdsSelector = (state) => state.adsState.data;

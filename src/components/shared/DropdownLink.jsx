@@ -3,13 +3,14 @@ import { Link } from "react-router-dom";
 import { DropdownButton, Dropdown } from "react-bootstrap";
 import styles from "./header/header.module.css";
 import React from "react";
+import styled from "styled-components";
 
 const DropdownLink = ({ children, className, options, ...rest }) => {
   return (
-    <DropdownButton title={children} className={className}>
+    <StyledDropdownButton title={children} className={className}>
       {options.map((option, index) => (
         <React.Fragment key={index}>
-          <Dropdown.Item
+          <StyledDropdownItem
             as={option.to ? Link : "button"}
             to={option.to}
             onClick={option.onClick}
@@ -17,13 +18,13 @@ const DropdownLink = ({ children, className, options, ...rest }) => {
             {...rest}
           >
             {option.text}
-          </Dropdown.Item>
+          </StyledDropdownItem>
           {index < options.length - 1 && (
-            <Dropdown.Divider key={`divider-${index}`} />
+            <StyledDropdownDivider key={`divider-${index}`} />
           )}
         </React.Fragment>
       ))}
-    </DropdownButton>
+    </StyledDropdownButton>
   );
 };
 
@@ -40,3 +41,42 @@ DropdownLink.propTypes = {
 };
 
 export default DropdownLink;
+
+const StyledDropdownButton = styled(DropdownButton).attrs({
+  variant: "custom",
+})`
+  background-color: var(--success-2);
+  color: var(--botton-2);
+  border-raidus: 5px;
+
+  &:hover,
+  &:focus {
+    background-color: var(--bg-3);
+    color: var(--boton-2);
+  }
+`;
+
+const StyledDropdownItem = styled(Dropdown.Item).attrs({
+  variant: "custom",
+})`
+  display: flex;
+  background-color: var(--advert-1);
+  color: var(--text-1);
+  padding: 0.5rem 1rem;
+  text-align: center;
+
+  &:hover,
+  &:focus {
+    background-color: var(--success-2);
+    color: var(--bg-3);
+  }
+
+  &.active {
+    background-color: var(--botton-2);
+    color: var(--bg-2);
+  }
+`;
+
+const StyledDropdownDivider = styled(Dropdown.Divider)`
+  border-color: var(--border-1);
+`;

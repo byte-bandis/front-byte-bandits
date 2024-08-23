@@ -1,19 +1,30 @@
 import { useState } from "react";
 import { StarFill } from "react-bootstrap-icons";
+import PropTypes from 'prop-types';
 import './commentForm.css'
 import Button from "./Button";
 import StyledTextarea from "../../../components/shared/StyledTextArea";
+import { useDispatch } from "react-redux";
+import { createComment } from "../../../store/commentsThunk";
 
-const CommentForm = () => {
-    /*     const [commentText, setCommentText] = useState('');
-     */
+const CommentForm = ({productId}) => {
+    const dispatch = useDispatch();
     const [score, setScore] = useState(0);
+    const [commentText, setCommentText] = useState('');
+    const handleComment = () => {
+            const comment = {
+                commentText,
+                score
+            }
+        dispatch(createComment( {comment, productId}));
+        setCommentText('');
+        setScore(0);
+    }
     const handleStars = (value ) => {
-        console.log(value);
         setScore(value);
     };
     return (
-        <div>
+        <div className='commentForm-wrapper'>
             <div className='stars-buttons'>
                 {Array.from({ length: score }).map((_, i) => (
                     <div
@@ -36,8 +47,8 @@ const CommentForm = () => {
             </div>
             {score > 0 && 
             <>  
-            <StyledTextarea className='commentText' />
-            <Button  className='sendCommentButton'>Enviar</Button    >
+            <StyledTextarea value={commentText} onChange={(e)=> setCommentText(e.target.value)} className='commentText' />
+            <Button onClick={() => handleComment()} className='sendCommentButton'>Enviar</Button>
             
             </>
             }
@@ -46,3 +57,6 @@ const CommentForm = () => {
 };
 
 export default CommentForm;
+CommentForm.propTypes = {
+    productId: PropTypes.string.isRequired,
+}

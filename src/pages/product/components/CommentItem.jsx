@@ -1,10 +1,14 @@
-import { StarFill } from 'react-bootstrap-icons';
+import { StarFill, Trash,Pencil } from 'react-bootstrap-icons';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
+import { useSelector } from 'react-redux';
 const CommentItem = ({ comment }) => {
     const stars = comment.score;
+    const authUser = useSelector((state) => state.authState.user.userId);
+    const commentUser = comment.user._id;
     return (
         <StyledComment>
+            
             <div className='commentheader'>
                 <div className='userzone'>
                     <div className='avatarwrapper'>
@@ -33,7 +37,7 @@ const CommentItem = ({ comment }) => {
                     ))}
                 </div>
             </div>
-
+            {authUser === commentUser && <div className="menu-comment"><Trash onClick={() => console.log('delete')}/> <Pencil onClick={() => console.log('edit')}/></div>}
             <div>
                 <p>{comment.commentText}</p>
             </div>
@@ -53,7 +57,7 @@ CommentItem.propTypes = {
             role: PropTypes.string.isRequired,
             birthdate: PropTypes.string.isRequired,
             creditCard: PropTypes.string,
-        }),
+        }), 
         createdAt: PropTypes.string.isRequired,
         updatedAt: PropTypes.string.isRequired,
     }),
@@ -62,6 +66,7 @@ export default CommentItem;
 
 const StyledComment = styled.div`
 width: 85%;
+position: relative;
 .avatar{
     width: 20px;
     height: 20px;
@@ -69,6 +74,13 @@ width: 85%;
     margin-right: 10px; 
     object-fit: cover;
     
+}
+.menu-comment{
+    display: flex;
+    position: absolute;
+    right: 0;
+    align-items: center;
+    margin-bottom: 10px;
 }
 .commentheader {
     border-radius: 12px 12px 0px 0px;

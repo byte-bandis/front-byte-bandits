@@ -32,7 +32,6 @@ const likesSlice = createSlice({
         })
       .addCase(getWishlist.fulfilled, (state, action) => {
         state.loaded = true;
-        console.log(action.payload)
         state.wishlist = action.payload.likes; 
       });
   },

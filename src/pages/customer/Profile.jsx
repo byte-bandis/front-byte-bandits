@@ -19,8 +19,8 @@ const Profile = () => {
   const loadedPublicProfile = useSelector(getSinglePublicProfile);
   const [showForm, setShowForm] = useState(false);
   const origin = import.meta.env.VITE_API_BASE_URL;
-  const userPhotoDefault = import.meta.env.VITE_USER_PHOTO_URL;
-  const userHeaderDefault = import.meta.env.VITE_USER_HEADER_PHOTO_URL;
+  //const userPhotoDefault = import.meta.env.VITE_USER_PHOTO_URL;
+  //const userHeaderDefault = import.meta.env.VITE_USER_HEADER_PHOTO_URL;
 
   useEffect(() => {
     const fetchProfile = async () => {
@@ -49,8 +49,8 @@ const Profile = () => {
         {loadedPublicProfile && !showForm && (
           <StyledContainer>
             <ScreenPublicProfile
-              userPhoto={loadedPublicProfile.userPhoto || userPhotoDefault}
-              headerPhoto={loadedPublicProfile.headerPhoto || userHeaderDefault}
+              userPhoto={loadedPublicProfile.userPhoto}
+              headerPhoto={loadedPublicProfile.headerPhoto}
               username={username}
               origin={origin}
               userDescription={loadedPublicProfile.userDescription}

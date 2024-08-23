@@ -9,8 +9,6 @@ import {
   getUI,
 } from "../../../store/selectors";
 import {
-  createSinglePublicProfileWithThunk,
-  deleteSinglePublicProfileWithThunk,
   getSinglePublicProfileWithThunk,
   updateSinglePublicProfileWithThunk,
 } from "../../../store/profilesThunk";
@@ -22,7 +20,6 @@ import { resetUI } from "../../../store/uiSlice";
 import ProfileUserPhoto from "./ProfileUserPhoto";
 import HeaderProfilePhoto from "./HeaderProfilePhoto";
 import CustomCancelOption from "../../../components/shared/CustomCancelOption";
-import DeleteCollection from "../../../components/shared/DeleteCollection";
 
 const ProfileUpdaterForm = () => {
   const loadedPublicProfile = useSelector(getSinglePublicProfile);
@@ -36,27 +33,16 @@ const ProfileUpdaterForm = () => {
   const [newUserDescription, setNewUserDescription] = useState(
     userDescription || ""
   );
-  const [editMode, setEditMode] = useState(false);
   const loggedUserName = useSelector(getLoggedUserName);
   const loadedUI = useSelector(getUI);
   const [showError, setShowError] = useState(false);
-  const [editUserPhotoField, setEditUserPhotoField] = useState(false);
-  const [editHeaderPhotoField, setEditHeaderPhotoField] = useState(false);
+  const [editField, setEditField] = useState(null);
   const [cancelButton, setCancelButton] = useState({
     cancelEditUserPhoto: false,
     cancelEditHeaderPhoto: false,
+    cancelUserPhotoVisible: false,
+    cancelHeaderPhotoVisible: false,
   });
-
-  const [cancelUserVisible, setCancelUserVisible] = useState(false);
-  const [cancelHeaderVisible, setCancelHeaderVisible] = useState(false);
-
-  useEffect(() => {
-    if (Object.values(loadedPublicProfile).length === 0) {
-      setEditMode(false);
-    } else {
-      setEditMode(true);
-    }
-  }, [loadedPublicProfile, editMode]);
 
   const handleNewDescription = (event) =>
     setNewUserDescription(event.target.value);
@@ -91,56 +77,28 @@ const ProfileUpdaterForm = () => {
 
     formData.append("userDescription", newUserDescription);
 
-    if (!editMode) {
-      await dispatch(
-        createSinglePublicProfileWithThunk({ username, formData })
-      );
-    } else {
-      await dispatch(
-        updateSinglePublicProfileWithThunk({ username, formData })
-      );
-    }
+    await dispatch(updateSinglePublicProfileWithThunk({ username, formData }));
     await dispatch(getSinglePublicProfileWithThunk(username));
   };
 
-  const handleEditUserPhoto = (event) => {
+  const handleEditPhoto = (photoType) => (event) => {
     event.preventDefault();
-    setEditUserPhotoField(true);
+    setEditField(photoType);
     setCancelButton((prevState) => ({
       ...prevState,
-      cancelEditUserPhoto: true,
+      [`cancelEdit${photoType}`]: true,
+      [`cancel${photoType}Visible`]: true,
     }));
-    setTimeout(() => setCancelUserVisible(true), 0);
   };
 
-  const handleCancelEditUserPhoto = (event) => {
+  const handleCancelEditPhoto = (photoType) => (event) => {
     event.preventDefault();
     setCancelButton((prevState) => ({
       ...prevState,
-      cancelEditUserPhoto: false,
+      [`cancelEdit${photoType}`]: false,
+      [`cancel${photoType}Visible`]: false,
     }));
-    setEditUserPhotoField(false);
-    setCancelUserVisible(false);
-  };
-
-  const handleEditHeaderPhoto = (event) => {
-    event.preventDefault();
-    setEditHeaderPhotoField(true);
-    setCancelButton((prevState) => ({
-      ...prevState,
-      cancelEditHeaderPhoto: true,
-    }));
-    setTimeout(() => setCancelHeaderVisible(true), 0);
-  };
-
-  const handleCancelEditHeaderPhoto = (event) => {
-    event.preventDefault();
-    setCancelButton((prevState) => ({
-      ...prevState,
-      cancelEditHeaderPhoto: false,
-    }));
-    setEditHeaderPhotoField(false);
-    setCancelHeaderVisible(false);
+    setEditField(null);
   };
 
   return (
@@ -161,7 +119,7 @@ const ProfileUpdaterForm = () => {
         $customMaxWidth={"100%"}
       >
         <PhotosContainer>
-          {editUserPhotoField || !editMode ? (
+          {editField === "UserPhoto" ? (
             <ImageUploader
               inputImagePreview={inputUserPhotoPreview}
               setInputImage={setInputUserPhoto}
@@ -184,13 +142,13 @@ const ProfileUpdaterForm = () => {
               $customheight="200px"
               $customobjectfit="cover"
               $customZIndex="1"
-              onClick={handleEditUserPhoto}
+              onClick={handleEditPhoto("UserPhoto")}
             />
           )}
           {cancelButton.cancelEditUserPhoto && (
             <CustomCancelOption
-              $isVisible={cancelUserVisible}
-              onClick={handleCancelEditUserPhoto}
+              $isVisible={cancelButton.cancelUserPhotoVisible}
+              onClick={handleCancelEditPhoto("UserPhoto")}
               $customposition="absolute"
               $customborder="none"
               $customborderradius="8px"
@@ -203,7 +161,7 @@ const ProfileUpdaterForm = () => {
               Click here to cancel
             </CustomCancelOption>
           )}
-          {editHeaderPhotoField || !editMode ? (
+          {editField === "HeaderPhoto" ? (
             <ImageUploader
               inputImagePreview={inputHeaderPhotoPreview}
               setInputImage={setInputHeaderPhoto}
@@ -217,7 +175,7 @@ const ProfileUpdaterForm = () => {
               src={headerPhoto}
               alt={`${username}'s header picture`}
               crossOrigin={origin}
-              onClick={handleEditHeaderPhoto}
+              onClick={handleEditPhoto("HeaderPhoto")}
               $customborder="none"
               $customboxshadow="none"
               $customcursor="pointer"
@@ -225,8 +183,8 @@ const ProfileUpdaterForm = () => {
           )}
           {cancelButton.cancelEditHeaderPhoto && (
             <CustomCancelOption
-              $isVisible={cancelHeaderVisible}
-              onClick={handleCancelEditHeaderPhoto}
+              $isVisible={cancelButton.cancelHeaderPhotoVisible}
+              onClick={handleCancelEditPhoto("HeaderPhoto")}
               $customposition="absolute"
               $customborder="none"
               $customborderradius="8px"
@@ -252,15 +210,6 @@ const ProfileUpdaterForm = () => {
         {loggedUserName === username && (
           <>
             <Button type="submit">Send data</Button>
-            {Object.values(loadedPublicProfile).length > 0 && (
-              <DeleteCollection
-                username={username}
-                requestedAction={deleteSinglePublicProfileWithThunk}
-                //wrapUpAction={getSinglePublicProfileWithThunk}
-              >
-                Delete Profile
-              </DeleteCollection>
-            )}
           </>
         )}
       </StyledForm>

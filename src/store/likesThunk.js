@@ -26,7 +26,6 @@ export const getWishlist = createAsyncThunk("ads/getWishlist",
     try {
       const response = await client.get(`/likes/wishlist/${userId}`);
   
-      console.log(response)
       return response;
     } catch (error) {
       return rejectWithValue({

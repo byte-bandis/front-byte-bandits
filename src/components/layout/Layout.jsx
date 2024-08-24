@@ -1,4 +1,4 @@
-import Header from "../shared/header/Header";
+import Header from "../shared/Header";
 import PropTypes from "prop-types";
 
 const Layout = ({ children }) => {

@@ -25,4 +25,29 @@
   --bg-3: #50555e;
 
   --border-1: #0d6efd;
+
+  /*color pallet*/
+  --primary-100: #6eb5a5;
+  --primary-200: #519889;
+  --primary-300: #03584b;
+  --accent-100: #f18f01;
+  --accent-200: #833500;
+  --text-100: #333333;
+  --text-200: #5c5c5c;
+  --bg-100: #ffffff;
+  --bg-200: #f5f5e5;
+  --bg-300: #cccccc;
+
+  /*color pallet dark*/
+
+  --primary-100-d: #ff703f;
+  --primary-200-d: #dc5324;
+  --primary-300-d: #8d0000;
+  --accent-100-d: #ffd670;
+  --accent-200-d: #95760b;
+  --text-100-d: #ffffff;
+  --text-200-d: #e0e0e0;
+  --bg-100-d: #1b2b34;
+  --bg-200-d: #2b3b44;
+  --bg-300-d: #43545e;
 }

@@ -30,19 +30,19 @@ const ProfileUpdaterForm = () => {
   const [inputUserPhotoPreview, setInputUserPhotoPreview] = useState(null);
   const [inputHeaderPhoto, setInputHeaderPhoto] = useState(null);
   const [inputHeaderPhotoPreview, setInputHeaderPhotoPreview] = useState(null);
-  const [newUserDescription, setNewUserDescription] = useState(
-    userDescription || ""
-  );
+  const [newUserDescription, setNewUserDescription] = useState(userDescription);
   const loggedUserName = useSelector(getLoggedUserName);
   const loadedUI = useSelector(getUI);
   const [showError, setShowError] = useState(false);
-  const [editField, setEditField] = useState(null);
+  const [editUserPhotoField, setEditUserPhotoField] = useState(false);
+  const [editHeaderPhotoField, setEditHeaderPhotoField] = useState(false);
   const [cancelButton, setCancelButton] = useState({
     cancelEditUserPhoto: false,
     cancelEditHeaderPhoto: false,
-    cancelUserPhotoVisible: false,
-    cancelHeaderPhotoVisible: false,
   });
+
+  const [cancelUserVisible, setCancelUserVisible] = useState(false);
+  const [cancelHeaderVisible, setCancelHeaderVisible] = useState(false);
 
   const handleNewDescription = (event) =>
     setNewUserDescription(event.target.value);
@@ -81,24 +81,44 @@ const ProfileUpdaterForm = () => {
     await dispatch(getSinglePublicProfileWithThunk(username));
   };
 
-  const handleEditPhoto = (photoType) => (event) => {
+  const handleEditUserPhoto = (event) => {
     event.preventDefault();
-    setEditField(photoType);
+    setEditUserPhotoField(true);
     setCancelButton((prevState) => ({
       ...prevState,
-      [`cancelEdit${photoType}`]: true,
-      [`cancel${photoType}Visible`]: true,
+      cancelEditUserPhoto: true,
     }));
+    setTimeout(() => setCancelUserVisible(true), 0);
   };
 
-  const handleCancelEditPhoto = (photoType) => (event) => {
+  const handleCancelEditUserPhoto = (event) => {
     event.preventDefault();
     setCancelButton((prevState) => ({
       ...prevState,
-      [`cancelEdit${photoType}`]: false,
-      [`cancel${photoType}Visible`]: false,
+      cancelEditUserPhoto: false,
     }));
-    setEditField(null);
+    setEditUserPhotoField(false);
+    setCancelUserVisible(false);
+  };
+
+  const handleEditHeaderPhoto = (event) => {
+    event.preventDefault();
+    setEditHeaderPhotoField(true);
+    setCancelButton((prevState) => ({
+      ...prevState,
+      cancelEditHeaderPhoto: true,
+    }));
+    setTimeout(() => setCancelHeaderVisible(true), 0);
+  };
+
+  const handleCancelEditHeaderPhoto = (event) => {
+    event.preventDefault();
+    setCancelButton((prevState) => ({
+      ...prevState,
+      cancelEditHeaderPhoto: false,
+    }));
+    setEditHeaderPhotoField(false);
+    setCancelHeaderVisible(false);
   };
 
   return (
@@ -119,7 +139,7 @@ const ProfileUpdaterForm = () => {
         $customMaxWidth={"100%"}
       >
         <PhotosContainer>
-          {editField === "UserPhoto" ? (
+          {editUserPhotoField ? (
             <ImageUploader
               inputImagePreview={inputUserPhotoPreview}
               setInputImage={setInputUserPhoto}
@@ -142,13 +162,13 @@ const ProfileUpdaterForm = () => {
               $customheight="200px"
               $customobjectfit="cover"
               $customZIndex="1"
-              onClick={handleEditPhoto("UserPhoto")}
+              onClick={handleEditUserPhoto}
             />
           )}
           {cancelButton.cancelEditUserPhoto && (
             <CustomCancelOption
-              $isVisible={cancelButton.cancelUserPhotoVisible}
-              onClick={handleCancelEditPhoto("UserPhoto")}
+              $isVisible={cancelUserVisible}
+              onClick={handleCancelEditUserPhoto}
               $customposition="absolute"
               $customborder="none"
               $customborderradius="8px"
@@ -161,7 +181,7 @@ const ProfileUpdaterForm = () => {
               Click here to cancel
             </CustomCancelOption>
           )}
-          {editField === "HeaderPhoto" ? (
+          {editHeaderPhotoField ? (
             <ImageUploader
               inputImagePreview={inputHeaderPhotoPreview}
               setInputImage={setInputHeaderPhoto}
@@ -175,7 +195,7 @@ const ProfileUpdaterForm = () => {
               src={headerPhoto}
               alt={`${username}'s header picture`}
               crossOrigin={origin}
-              onClick={handleEditPhoto("HeaderPhoto")}
+              onClick={handleEditHeaderPhoto}
               $customborder="none"
               $customboxshadow="none"
               $customcursor="pointer"
@@ -183,8 +203,8 @@ const ProfileUpdaterForm = () => {
           )}
           {cancelButton.cancelEditHeaderPhoto && (
             <CustomCancelOption
-              $isVisible={cancelButton.cancelHeaderPhotoVisible}
-              onClick={handleCancelEditPhoto("HeaderPhoto")}
+              $isVisible={cancelHeaderVisible}
+              onClick={handleCancelEditHeaderPhoto}
               $customposition="absolute"
               $customborder="none"
               $customborderradius="8px"

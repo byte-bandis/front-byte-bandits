@@ -8,8 +8,9 @@ import Button from './components/Button';
 import './ProductItem.css';
 import { Heart, HeartFill } from 'react-bootstrap-icons';
 import { setLike } from '../../utils/setLike';
-import { client } from '../../api/client';
 import CommentItem from './components/CommentItem';
+import CommentForm from './components/CommentForm';
+import { getComments } from '../../store/commentsThunk';
 
 const ProductView = () => {
     const navigate = useNavigate();
@@ -17,27 +18,29 @@ const ProductView = () => {
     const { productId } = useParams();
     const dispatch = useDispatch();
     const origin = import.meta.env.VITE_API_BASE_URL;
-    const [comments, setComments] = useState([]);
-
-    const handleComment = async () => {
-        try {
-            const response = await client.get(`/comments/${productId}`);
-            setComments(response.data);
-        } catch (error) {
-            console.log(error);
-        }
-    };
-    useEffect(() => {
-        handleComment();
-    }, []);
-    console.log(comments);
     const [iLikeIt, setiLikeIt] = useState(false);
-
+    const authUser = useSelector((state) => state.authState.user.userId);
+    const [owner, setOwnerId] = useState('');
     const loadedAds = useSelector((state) => state.adsState.data).find(
         (onead) => onead._id === productId
     );
+    
+    
     const myLikes = useSelector((state) => state.likesSlice.wishlist);
-
+    const comments = useSelector((state) => state.commentsSlice.data);
+    
+    useEffect(() => {
+        dispatch(getComments(productId));
+    }, [dispatch, productId]);
+    
+    useEffect(() => {
+        myLikes.forEach((like) => {
+            if (like.ad && like.ad._id === productId) {
+                setiLikeIt(true);
+            }
+        });
+    }, [myLikes, productId]);
+    
     const handleBack = () => {
         const to = location.state?.from || '/';
         navigate(to, { replace: true });
@@ -45,9 +48,7 @@ const ProductView = () => {
     const handleDelete = () => {
         dispatch(deleteAd(productId));
     };
-    const userid =
-        useSelector((state) => state.authState.user.userId) ||
-        '66b34cadb8e664205eacd16f';
+    const userid = useSelector((state) => state.authState.user.userId);
     const handleLike = () => {
         dispatch(setLike(productId, userid));
         setiLikeIt(!iLikeIt);
@@ -56,21 +57,17 @@ const ProductView = () => {
         if (!loadedAds) {
             dispatch(getAds({ id: productId }));
         }
+        else {
+            setOwnerId(loadedAds.user);
+        }
+        
     }, [loadedAds, productId, dispatch]);
-
-    useEffect(() => {
-        myLikes.forEach((like) => {
-            console.log(like);
-            if (like.ad && like.ad._id === productId) {
-                setiLikeIt(true);
-            }
-        });
-    }, [myLikes, productId]);
-
+    console.log(owner);
+    console.log(authUser);
     if (loadedAds) {
         const { adTitle, adBody, sell, price, photo, tags } = loadedAds;
         const image = photo ? `${photo}` : '../../assets/images/no-image.jpg';
-
+    
         return (
             <>
                 {/* <Confirmator
@@ -121,13 +118,13 @@ const ProductView = () => {
                             </div>
                             {
                                 <div>
-                                    <Button
+                                    {authUser === owner && <Button
                                         id='removeAdButton'
                                         onClick={handleDelete}
                                         $customheight='28px'
                                     >
                                         Borrar
-                                    </Button>
+                                    </Button>}
                                     <Button
                                         id='backButton'
                                         $customheight='28px'
@@ -137,6 +134,7 @@ const ProductView = () => {
                                     </Button>
                                 </div>
                             }
+                            {!!authUser &&<CommentForm productId={productId}/>}
                             {comments.length > 0 && (
                                 <div className='advert-comments-box'>
                                     <h3>Comentarios</h3>
@@ -169,7 +167,14 @@ ProductView.propTypes = {
         sell: PropTypes.bool.isRequired,
         price: PropTypes.number.isRequired,
         photo: PropTypes.string,
-        user: PropTypes.string.isRequired,
+        user: PropTypes.shape({
+            _id: PropTypes.string.isRequired,
+            username: PropTypes.string.isRequired,
+            email: PropTypes.string.isRequired,
+            role: PropTypes.string.isRequired,
+            birthdate: PropTypes.string.isRequired,
+            creditCard: PropTypes.string,
+        }), 
         createdAt: PropTypes.string.isRequired,
         updatedAt: PropTypes.string.isRequired,
         tags: PropTypes.arrayOf(PropTypes.string).isRequired,
@@ -209,13 +214,13 @@ const StyledAdvertPage = styled.div`
         align-items: start;
         width: 100%;
     }
-& .advert-comments-box {
-            width: 100%;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-           width: 100%;
-        }
+    & .advert-comments-box {
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        width: 100%;
+    }
     & .advert-img-container {
         margin-bottom: 20px;
         display: flex;
@@ -259,7 +264,6 @@ const StyledAdvertPage = styled.div`
             height: fit-content;
             background: var(--tag-1);
         }
-        
     }
 `;
 

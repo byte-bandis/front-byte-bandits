@@ -21,7 +21,6 @@ import { resetUI } from "../../../store/uiSlice";
 const Header = () => {
   const location = useLocation();
   const isAuthenticated = useSelector((state) => state.authState.authState);
-
   const loggedUser = useSelector(getLoggedUserName);
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -87,14 +86,14 @@ const Header = () => {
           {isAuthenticated ? (
             <>
               <HeartLink
-                to={"/myaccount"}
+                to={`${loggedUser}/myaccount`}
                 size={30}
                 className={styles.heartHead}
               />
               <EmailLink
                 size={40}
                 className={styles.emailHead}
-                to={"/myaccount"}
+                to={`${loggedUser}/myaccount`}
               />
               <DropdownLink
                 options={dropdownOptions}
@@ -103,7 +102,7 @@ const Header = () => {
                 My account
               </DropdownLink>
               <CustomButton
-                to="/username/new"
+                to={`${loggedUser}/new`}
                 className={styles.sellButton}
               >
                 Sell - Buy
@@ -119,7 +118,7 @@ const Header = () => {
                 Login or register
               </CustomButton>
               <CustomButton
-                to="/username/new"
+                to="/login"
                 className={styles.sellButton}
                 variant={"success"}
               >

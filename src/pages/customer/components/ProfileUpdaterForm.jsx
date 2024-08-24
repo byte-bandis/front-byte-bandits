@@ -9,8 +9,6 @@ import {
   getUI,
 } from "../../../store/selectors";
 import {
-  createSinglePublicProfileWithThunk,
-  deleteSinglePublicProfileWithThunk,
   getSinglePublicProfileWithThunk,
   updateSinglePublicProfileWithThunk,
 } from "../../../store/profilesThunk";
@@ -22,7 +20,6 @@ import { resetUI } from "../../../store/uiSlice";
 import ProfileUserPhoto from "./ProfileUserPhoto";
 import HeaderProfilePhoto from "./HeaderProfilePhoto";
 import CustomCancelOption from "../../../components/shared/CustomCancelOption";
-import DeleteCollection from "../../../components/shared/DeleteCollection";
 
 const ProfileUpdaterForm = () => {
   const loadedPublicProfile = useSelector(getSinglePublicProfile);
@@ -33,10 +30,7 @@ const ProfileUpdaterForm = () => {
   const [inputUserPhotoPreview, setInputUserPhotoPreview] = useState(null);
   const [inputHeaderPhoto, setInputHeaderPhoto] = useState(null);
   const [inputHeaderPhotoPreview, setInputHeaderPhotoPreview] = useState(null);
-  const [newUserDescription, setNewUserDescription] = useState(
-    userDescription || ""
-  );
-  const [editMode, setEditMode] = useState(false);
+  const [newUserDescription, setNewUserDescription] = useState(userDescription);
   const loggedUserName = useSelector(getLoggedUserName);
   const loadedUI = useSelector(getUI);
   const [showError, setShowError] = useState(false);
@@ -49,14 +43,6 @@ const ProfileUpdaterForm = () => {
 
   const [cancelUserVisible, setCancelUserVisible] = useState(false);
   const [cancelHeaderVisible, setCancelHeaderVisible] = useState(false);
-
-  useEffect(() => {
-    if (Object.values(loadedPublicProfile).length === 0) {
-      setEditMode(false);
-    } else {
-      setEditMode(true);
-    }
-  }, [loadedPublicProfile, editMode]);
 
   const handleNewDescription = (event) =>
     setNewUserDescription(event.target.value);
@@ -91,15 +77,7 @@ const ProfileUpdaterForm = () => {
 
     formData.append("userDescription", newUserDescription);
 
-    if (!editMode) {
-      await dispatch(
-        createSinglePublicProfileWithThunk({ username, formData })
-      );
-    } else {
-      await dispatch(
-        updateSinglePublicProfileWithThunk({ username, formData })
-      );
-    }
+    await dispatch(updateSinglePublicProfileWithThunk({ username, formData }));
     await dispatch(getSinglePublicProfileWithThunk(username));
   };
 
@@ -161,7 +139,7 @@ const ProfileUpdaterForm = () => {
         $customMaxWidth={"100%"}
       >
         <PhotosContainer>
-          {editUserPhotoField || !editMode ? (
+          {editUserPhotoField ? (
             <ImageUploader
               inputImagePreview={inputUserPhotoPreview}
               setInputImage={setInputUserPhoto}
@@ -203,7 +181,7 @@ const ProfileUpdaterForm = () => {
               Click here to cancel
             </CustomCancelOption>
           )}
-          {editHeaderPhotoField || !editMode ? (
+          {editHeaderPhotoField ? (
             <ImageUploader
               inputImagePreview={inputHeaderPhotoPreview}
               setInputImage={setInputHeaderPhoto}
@@ -252,15 +230,6 @@ const ProfileUpdaterForm = () => {
         {loggedUserName === username && (
           <>
             <Button type="submit">Send data</Button>
-            {Object.values(loadedPublicProfile).length > 0 && (
-              <DeleteCollection
-                username={username}
-                requestedAction={deleteSinglePublicProfileWithThunk}
-                //wrapUpAction={getSinglePublicProfileWithThunk}
-              >
-                Delete Profile
-              </DeleteCollection>
-            )}
           </>
         )}
       </StyledForm>

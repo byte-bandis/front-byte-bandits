@@ -5,7 +5,6 @@ import { Form, Alert } from "react-bootstrap";
 import Button from "./components/Button";
 import { createAd, getAds, updateAd } from "../../store/adsThunk";
 import {
-  FormWrapper,
   StyledForm,
   StyledInputGroup,
   StyledLabel,
@@ -25,7 +24,7 @@ import ImageUploader from "./components/ImageUploader";
 const TAG_OPTIONS = ["lifestyle", "mobile", "motor", "work", "others"];
 
 const NewProductPage = ({ isEditMode = false }) => {
-  const { productId, username } = useParams();
+  const { productId } = useParams();
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
@@ -38,8 +37,6 @@ const NewProductPage = ({ isEditMode = false }) => {
   const [inputImagePreview, setInputImagePreview] = useState(null);
   const error = useSelector(getError);
   const loading = useSelector(getUILoading);
-  const currentUser = useSelector(getLoggedUserName);
-  const currentUserId = useSelector(getLoggedUserId);
   const loadedAd = useSelector(getAdsSelector).find(
     (advert) => advert._id === productId
   );
@@ -200,11 +197,7 @@ const NewProductPage = ({ isEditMode = false }) => {
             ).unwrap();
             fetchedAd = fetchedAds[0] || undefined;
           }
-          if (
-            fetchedAd === undefined ||
-            username !== currentUser ||
-            fetchedAd.user !== currentUserId
-          ) {
+          if (fetchedAd === undefined) {
             navigate("/404");
           }
           if (fetchedAd !== undefined) {
@@ -230,11 +223,11 @@ const NewProductPage = ({ isEditMode = false }) => {
   }, [isEditMode, productId]);
 
   return (
-    <FormWrapper>
+    <div className="my-4">
       <StyledForm onSubmit={handleSubmit}>
-        <div className="h4 mb-2 text-center">
+        <h4 className="mb-2 text-center">
           {isEditMode ? "Edita tu producto" : "Introduce tu producto"}
-        </div>
+        </h4>
         <StyledInputGroup>
           <StyledLabel>Nombre</StyledLabel>
           <StyledInput
@@ -334,7 +327,7 @@ const NewProductPage = ({ isEditMode = false }) => {
           </Button>
         )}
       </StyledForm>
-    </FormWrapper>
+    </div>
   );
 };
 

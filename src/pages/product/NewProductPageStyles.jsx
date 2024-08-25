@@ -1,22 +1,10 @@
 import styled from "styled-components";
 import "../../App.css";
 
-export const FormWrapper = styled.div`
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  height: 100vh;
-  background-position: center center;
-  background-repeat: no-repeat;
-  background-size: cover;
-  position: relative;
-`;
-
 export const StyledForm = styled.form`
   width: 40rem;
   max-width: 90%;
-  z-index: 1;
+  margin: 0 auto;
   animation: showSignInForm 1s;
   padding: 1.5rem;
   box-shadow: 0 0.5rem 1rem var(--shadow-1);

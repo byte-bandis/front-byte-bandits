@@ -85,7 +85,7 @@ const Header = () => {
                 My account
               </DropdownLink>
               <CustomButton
-                to="/username/new"
+                to={`${loggedUser}/new`}
                 className="sellButton"
                 marginLeft="25px"
                 backgroundColor="var(--accent-100)"
@@ -104,7 +104,7 @@ const Header = () => {
                 Login or register
               </CustomButton>
               <CustomButton
-                to="/username/new"
+                to="/login"
                 className="sellButton"
                 marginLeft="25px"
                 backgroundColor="var(--accent-100)"

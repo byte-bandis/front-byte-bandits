@@ -31,30 +31,31 @@ export default TagsNav;
 
 const StyledNav = styled(Nav)`
   display: flex;
-  width: 80%;
-  flex-wrap: nowrap;
-  gap: 10px;
-  padding: 15px;
-  background-color: var(--advert-1);
-  border-radius: 5px;
+  width: ${({ width }) => width || "80%"};
+  flex-wrap: ${({ flexWrap }) => flexWrap || "nowrap"};
+  gap: ${({ gap }) => gap || "10px"};
+  padding: ${({ padding }) => padding || "15px"};
+  background-color: ${({ backgroundColor }) =>
+    backgroundColor || "var(--advert-1)"};
+  border-radius: ${({ borderRadius }) => borderRadius || "5px"};
   list-style: none;
 `;
 
 const NavItem = styled(Nav.Item)`
-  flex: 1 1 calc(50% - 10px);
+  flex: ${({ flex }) => flex || "1 1 calc(50% - 10px)"};
 `;
 
 const NavLink = styled(Nav.Link)`
   display: block;
-  padding: 10px 15px;
-  color: var(--tag-2);
-  background-color: var(--bg-3);
-  border-radius: 5px;
+  padding: ${({ padding }) => padding || "10px 15px"};
+  color: ${({ color }) => color || "var(--text-100)"};
+  background-color: ${({ backgroundColor }) =>
+    backgroundColor || "var(--bg-300)"};
+  border-radius: ${({ borderRadius }) => borderRadius || "5px"};
   text-align: center;
   text-decoration: none;
 
   &:hover {
-    background-color: var(--tag-2);
-    color: var(--tag-1);
+    color: ${({ hoverColor }) => hoverColor || "var(--bg-100)"};
   }
 `;

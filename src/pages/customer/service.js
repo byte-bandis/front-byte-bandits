@@ -71,3 +71,15 @@ export const deleteSinglePublicProfile = async (userName) => {
   const url = `${userURL}/${userName}`;
   return client.delete(url).then((message) => message);
 };
+
+export const getMyAddress = async (userName) => {
+  const url = `${userURL}/${userName}/myaddress`;
+  return client.get(url).then((response) => {
+    const result = {
+      status: response.status,
+      message: response.message,
+      data: response.data.address,
+    };
+    return result;
+  });
+};

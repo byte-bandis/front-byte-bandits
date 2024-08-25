@@ -8,9 +8,11 @@ import publicProfilesReducer from "./publicProfilesSlice";
 import myAccountReducer from "./myAccountSlice";
 import likesReducer from "./likesSlice";
 import singleProfileReducer from "./singlePublicProfileSlice";
+import commentsSlice from "./commentsSlice";
 
 export const store = configureStore({
   reducer: {
+    commentsSlice: commentsSlice,
     authState: authReducer,
     register: registerReducer,
     errorState: errorReducer,

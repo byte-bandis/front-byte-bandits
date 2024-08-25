@@ -19,7 +19,6 @@ const Pager = () => {
     let active = useSelector((state) => state.adsState.page);
     const steps = 3;
     const max = Math.ceil(adsAccount / 8);
-    console.log(adsAccount / 8);
     let items = [];
 
     items.push(

@@ -1,11 +1,31 @@
 import styled from "styled-components";
 
 const StyledListItem = styled.li`
-  padding: ${(props) => props.$customPadding || "none"};
+  display: ${(props) => props.$customDisplay || "block"};
+  padding: ${(props) => props.$customPadding || "0"};
   border: ${(props) => props.$customBorder || "none"};
   border-radius: ${(props) => props.$customBorderRadius || "none"};
-  background: ${(props) => props.$customBackground || "none"};
+  background: ${(props) => props.$customBackground || "transparent"};
   font-size: ${(props) => props.$customFontSize || "1rem"};
+  flex-direction: ${(props) => props.$customFlexDirection || "column"};
+  justify-content: ${(props) => props.$customJustifyContent || "flex-start"};
+  align-items: ${(props) => props.$customAlignItems || "center"};
+  gap: ${(props) => props.$customGap || "20px"};
+  margin: ${(props) => props.$customMargin || "0"};
+  margin-top: ${(props) => props.$customMarginTop || "0"};
+  margin-bottom: ${(props) => props.$customMarginBottom || "0"};
+  margin-right: ${(props) => props.$customMarginRight || "0"};
+  margin-left: ${(props) => props.$customMarginLeft || "0"};
+
+  h1,
+  h2,
+  h3,
+  h4,
+  h5 {
+    padding: ${(props) => props.$customHeaderPadding || "0"};
+    margin: ${(props) => props.$customHeaderMargin || "0"};
+    font-size: ${(props) => props.$customHeaderFontSize || "1rem"};
+  }
 `;
 
 export default StyledListItem;

@@ -84,7 +84,12 @@ const Header = () => {
               <DropdownLink options={dropdownOptions} className="myAccount">
                 My account
               </DropdownLink>
-              <CustomButton to="/username/new" className="sellButton">
+              <CustomButton
+                to="/username/new"
+                className="sellButton"
+                marginLeft="25px"
+                backgroundColor="var(--accent-100)"
+              >
                 Sell - Buy
               </CustomButton>
             </>

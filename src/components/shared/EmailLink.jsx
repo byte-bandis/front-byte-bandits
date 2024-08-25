@@ -29,8 +29,7 @@ const StyledEmailLink = styled(Link)`
   color: ${({ color }) => color || "blue"};
   transition: ${({ transition }) => transition || "color 0.3s ease"};
 
-}
-  &:hover {
+  .envelope-icon:hover {
     color: ${({ hoverColor }) => hoverColor || "red"};
   }
 `;

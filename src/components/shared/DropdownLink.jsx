@@ -53,46 +53,54 @@ DropdownLink.propTypes = {
 export default DropdownLink;
 
 const DropdownContainer = styled.div`
-  position: relative;
-  display: inline-block;
-  padding: 5px;
+  position: ${({ position }) => position || "relative"};
+  display: ${({ display }) => display || "inline-block"};
+  padding: ${({ padding }) => padding || "5px"};
 `;
 
 const DropdownToggle = styled.button`
-  background-color: var(--primary-200);
-  color: var(--botton-2);
-  padding: 11px;
+  background-color: ${({ backgroundColor }) =>
+    backgroundColor || "var(--primary-200)"};
+  color: ${({ color }) => color || "var(--botton-2)"};
+  padding: ${({ padding }) => padding || "11px"};
   text-align: left;
-  border: none;
-  border-radius: 5px;
+  border: ${({ border }) => border || "none"};
+  border-radius: ${({ borderRadius }) => borderRadius || "5px"};
 
   &:hover,
-  %:focus {
-    background-color: var(-bg--3);
-    color: var(--boton-2);
+  &:focus {
+    background-color: ${({ hoverBackgroundColor }) =>
+      hoverBackgroundColor || "var(-bg--3)"};
+    color: ${({ hoverColor }) => hoverColor || "var(--boton-2)"};
   }
 `;
 
 const DropdownMenu = styled.div`
-  display: flex;
-  flex-direction: column;
-  position: absolute;
-  background-color: var(--bg-300);
-  box-shadow: 0px 8px 16px var(--shadow-1);
-  z-index: 1;
-  padding: 10% 10% 10% 10%;
-  gap: 5px;
-  border-radius: 5px;
+  display: ${({ display }) => display || "flex"};
+  flex-direction: ${({ flexDirection }) => flexDirection || "column"};
+  position: ${({ position }) => position || "absolute"};
+  background-color: ${({ backgroundColor }) =>
+    backgroundColor || "var(--bg-300)"};
+  box-shadow: ${({ boxShadow }) => boxShadow || "0px 8px 16px var(--shadow-1)"};
+  z-index: ${({ zIndex }) => zIndex || 1};
+  padding: ${({ padding }) => padding || "10% 10% 10% 10%"};
+  gap: ${({ gap }) => gap || "5px"};
+  border-radius: ${({ borderRadius }) => borderRadius || "5px"};
 `;
 
 const DropdownItem = styled.div`
-  color: var(--text-100);
-  width: 100%;
+  color: ${({ color }) => color || "var(--text-100)"};
+  width: ${({ width }) => width || "100%"};
+
+  &:hover {
+    color: ${({ hoverColor }) => hoverColor || "white"};
+  }
 `;
 
 const DropdownDivider = styled.div`
-  border-bottom: 1px solid var(--text-100);
-  margin: 0.5rem 0;
-  width: 130%;
-  margin-left: -12px;
+  border-bottom: ${({ borderBottom }) =>
+    borderBottom || "1px solid var(--text-100)"};
+  margin: ${({ margin }) => margin || "0.5rem 0"};
+  width: ${({ width }) => width || "130%"};
+  margin-left: ${({ marginLeft }) => marginLeft || "-12px"};
 `;

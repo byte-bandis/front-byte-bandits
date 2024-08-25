@@ -30,8 +30,7 @@ const StyledHeartLink = styled(Link)`
   color: ${({ color }) => color || "blue"};
   transition: ${({ transition }) => transition || "color 0.3s ease"};
 
-}
-  &:hover {
+  .heart-icon:hover {
     color: ${({ hoverColor }) => hoverColor || "red"};
   }
 `;

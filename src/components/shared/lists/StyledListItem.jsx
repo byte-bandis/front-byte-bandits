@@ -26,6 +26,18 @@ const StyledListItem = styled.li`
     margin: ${(props) => props.$customHeaderMargin || "0"};
     font-size: ${(props) => props.$customHeaderFontSize || "1rem"};
   }
+  label {
+    padding: ${(props) => props.$customLabelPadding || "0"};
+    margin: ${(props) => props.$customLabelMargin || "0"};
+    font-size: ${(props) => props.$customLabelFontSize || "1rem"};
+    font-weight: ${(props) => props.$customLabelFontWeight || "regular"};
+  }
+  input {
+    border: ${(props) =>
+      props.$customInputBorder || "1px dotted var(--primary-100)"};
+    border-radius: ${(props) => props.$customInputBorderRadius || "5px"};
+    padding: ${(props) => props.$customInputPadding || "0"};
+  }
 `;
 
 export default StyledListItem;

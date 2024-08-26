@@ -6,9 +6,10 @@ import styled from 'styled-components';
 import { getLikes } from '../../store/likesThunk';
 import { useDispatch, useSelector } from 'react-redux';
 import { useEffect } from 'react';
+import '../../assets/images/no-image.jpg';
 const ProductItem = ({ ad }) => {
     const { _id, adTitle, sell, price, photo, tags } = ad;
-    const image = photo ? `${photo}` : null;
+    const image = photo ? `${photo}` : '../../assets/images/no-image.jpg';
     const origin = import.meta.env.VITE_API_BASE_URL;
     const dispatch = useDispatch();
     useEffect(() => {
@@ -104,7 +105,7 @@ const StyledSingleAd = styled.div`
     padding-bottom: 10px;
     position: relative;
 
-    background: var(--accent-200);
+    background: var(--bg-200);
     & .heart {
         position: absolute;
         top: 7px;
@@ -120,7 +121,7 @@ const StyledSingleAd = styled.div`
     }
     & .item {
         margin: 0;
-        color: var(--accent-100);
+        color: var(--text-100);
         font-size: 16px;
         white-space: nowrap;
         overflow: hidden;
@@ -134,7 +135,7 @@ const StyledSingleAd = styled.div`
         justify-content: center;
 
         align-items: center;
-        background: var(--accent-100);
+        background: var(--bg-100);
         overflow: hidden;
         &:has(.noImg) img {
             width: 40%;
@@ -161,7 +162,7 @@ const StyledSingleAd = styled.div`
 
     & strong {
         font-size: large;
-        color: var(--accent-100);
+        color: var(--text-100);
     }
     & .pill {
         text-align: center;

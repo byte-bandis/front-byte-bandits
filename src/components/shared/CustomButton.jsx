@@ -8,7 +8,9 @@ const CustomButton = ({ children, to, className, ...rest }) => {
       {children}
     </StyledLinkButton>
   ) : (
-    <StyleButton className={className} {...rest}></StyleButton>
+    <StyleButton className={className} {...rest}>
+      {children}
+    </StyleButton>
   );
 };
 
@@ -34,6 +36,6 @@ const StyleButton = styled.button`
   border-radius: ${({ borderRadius }) => borderRadius || "5px"};
   text-decoration: ${({ textDecoration }) => textDecoration || "none"};
   color: ${({ color }) => color || "white"};
-  background-color: ${({ backgroundColor }) => backgroundColor || "blue"};
+  background-color: ${({ backgroundcolor }) => backgroundcolor || "blue"};
   margin-left: ${({ marginLeft }) => marginLeft || "0px"};
 `;

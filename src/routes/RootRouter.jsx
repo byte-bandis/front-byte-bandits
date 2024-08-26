@@ -16,7 +16,7 @@ import Profile from "../pages/customer/Profile";
 import LayoutProfile from "../pages/customer/LayoutProfile";
 import PersonalInfo from "../pages/customer/PersonalInfo";
 import UserPublicInfo from "../pages/customer/UserPublicInfo";
-import Chat from "../pages/chat/Chat";
+import Chats from "../pages/chat/Chats";
 
 const RootRouter = () => {
   return (
@@ -89,9 +89,7 @@ const RootRouter = () => {
         <Route
           path="chat"
           element={
-            <Chat
-              productId={"66cb3270e7de258adf4dfcb4"}
-              buyerId={"66cb32e0d4253f16e9bc9c6e"}
+            <Chats
             />
           }
         />

@@ -3,11 +3,11 @@ import PropTypes from "prop-types";
 
 const ButtonContainer = styled.div`
   display: flex;
-  margin: ${({ marginContainer }) => marginContainer || "0"};
-  flex-direction: ${({ flexDirection }) => flexDirection || "row"};
-  justify-content: ${({ justifyContent }) => justifyContent || "center"};
-  align-items: ${({ alignItems }) => alignItems || "center"};
-  gap: ${({ gap }) => gap || "10px"};
+  margin: ${(props) => props.$marginContainer || "0"};
+  flex-direction: ${(props) => props.$flexDirection || "row"};
+  justify-content: ${(props) => props.$justifyContent || "center"};
+  align-items: ${(props) => props.$alignItems || "center"};
+  gap: ${(props) => props.$gap || "10px"};
 `;
 
 ButtonContainer.propTypes = {

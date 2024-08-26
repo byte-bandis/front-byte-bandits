@@ -3,7 +3,10 @@ import { getLoggedUserName } from "../../store/selectors";
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { trimDate } from "../../utils/dateTools";
-import { getAddressWithThunk } from "../../store/MyPersonalData/myAddressThunk";
+import {
+  getAddressWithThunk,
+  updateMyAddressWithThunk,
+} from "../../store/MyPersonalData/myAddressThunk";
 import { getMyAddress } from "../../store/selectors";
 import {
   StyledListContainer,
@@ -12,6 +15,7 @@ import {
 import StyledContainer from "../../components/shared/StyledContainer";
 import SendConfirmedSelection from "../../components/shared/buttons/ConfirmationButton";
 import RegularButton from "../../components/shared/buttons/RegularButton";
+import ButtonContainer from "../../components/shared/buttons/ButtonContainer";
 
 const PersonalInfo = () => {
   const dispatch = useDispatch();
@@ -20,23 +24,18 @@ const PersonalInfo = () => {
   const { username } = useParams();
   const [creationDate, setCreationdate] = useState("000-00-00");
   const [editMode, setEditMode] = useState(false);
-  const [country, setCountry] = useState(
-    myAddress.country || "Please add a country"
-  );
-  const [streetName, setStreetName] = useState(
-    myAddress.streetName || "Add your street name"
-  );
-  const [streetNumber, setStreetNumber] = useState(
-    myAddress.streetNumber || "Add your street number"
-  );
-  const [flat, setFlat] = useState(myAddress.flat || "Add your flat number");
-  const [door, setDoor] = useState(myAddress.door || "Add your flat door");
-  const [postalCode, setPostalCode] = useState(
-    myAddress.postalCode || "Add your postal code"
-  );
-  const [mobilePhoneNumber, setMobilePhoneNumber] = useState(
-    myAddress.mobilePhoneNumber || "123 123 123"
-  );
+  //const [showBackButton, setShowBackButton] = useState(true);
+
+  const [addressData, setAddressData] = useState({
+    country: "",
+    streetName: "",
+    streetNumber: "",
+    flat: "",
+    door: "",
+    postalCode: "",
+    city: "",
+    mobilePhoneNumber: "",
+  });
 
   const containerStyles = {
     $customDisplay: "flex",
@@ -63,7 +62,36 @@ const PersonalInfo = () => {
       const trimmedDate = trimDate(myAddress.createdAt, "ES");
       setCreationdate(trimmedDate);
     }
+
+    setAddressData({
+      country: myAddress.country || "",
+      streetName: myAddress.streetName || "",
+      streetNumber: myAddress.streetNumber || "",
+      flat: myAddress.flat || "",
+      door: myAddress.door || "",
+      postalCode: myAddress.postalCode || "",
+      city: myAddress.city || "",
+      mobilePhoneNumber: myAddress.mobilePhoneNumber || "",
+    });
   }, [myAddress]);
+
+  const handleShowEditMode = (event) => {
+    event.preventDefault();
+    setEditMode(true);
+  };
+
+  const handleHideEditMode = (event) => {
+    event.preventDefault();
+    setEditMode(false);
+  };
+
+  const handleInputChange = (event) => {
+    const { name, value } = event.target;
+    setAddressData((prevData) => ({
+      ...prevData,
+      [name]: value,
+    }));
+  };
 
   return (
     <>
@@ -83,8 +111,9 @@ const PersonalInfo = () => {
                 ) : (
                   <input
                     type="text"
-                    value={streetName}
-                    onChange={(e) => setStreetName(e.target.value)}
+                    name="streetName"
+                    value={addressData.streetName}
+                    onChange={handleInputChange}
                   />
                 )}
               </StyledListItem>
@@ -97,8 +126,9 @@ const PersonalInfo = () => {
                 ) : (
                   <input
                     type="text"
-                    value={streetNumber}
-                    onChange={(e) => setStreetNumber(e.target.value)}
+                    name="streetNumber"
+                    value={addressData.streetNumber}
+                    onChange={handleInputChange}
                   />
                 )}
               </StyledListItem>
@@ -112,8 +142,9 @@ const PersonalInfo = () => {
                 ) : (
                   <input
                     type="text"
-                    value={flat}
-                    onChange={(e) => setFlat(e.target.value)}
+                    name="flat"
+                    value={addressData.flat}
+                    onChange={handleInputChange}
                   />
                 )}
               </StyledListItem>
@@ -126,8 +157,9 @@ const PersonalInfo = () => {
                 ) : (
                   <input
                     type="text"
-                    value={door}
-                    onChange={(e) => setDoor(e.target.value)}
+                    name="door"
+                    value={addressData.door}
+                    onChange={handleInputChange}
                   />
                 )}
               </StyledListItem>
@@ -141,8 +173,24 @@ const PersonalInfo = () => {
                 ) : (
                   <input
                     type="text"
-                    value={postalCode}
-                    onChange={(e) => setPostalCode(e.target.value)}
+                    name="postalCode"
+                    value={addressData.postalCode}
+                    onChange={handleInputChange}
+                  />
+                )}
+              </StyledListItem>
+            </StyledContainer>
+            <StyledContainer {...containerStyles}>
+              <StyledListItem {...listItemStyles}>
+                <label>City:</label>
+                {!editMode ? (
+                  <div>{myAddress.city}</div>
+                ) : (
+                  <input
+                    type="text"
+                    name="city"
+                    value={addressData.city}
+                    onChange={handleInputChange}
                   />
                 )}
               </StyledListItem>
@@ -155,8 +203,9 @@ const PersonalInfo = () => {
                 ) : (
                   <input
                     type="text"
-                    value={country}
-                    onChange={(e) => setCountry(e.target.value)}
+                    name="country"
+                    value={addressData.country}
+                    onChange={handleInputChange}
                   />
                 )}
               </StyledListItem>
@@ -169,17 +218,36 @@ const PersonalInfo = () => {
                 ) : (
                   <input
                     type="text"
-                    value={mobilePhoneNumber}
-                    onChange={(e) => setMobilePhoneNumber(e.target.value)}
+                    name="mobilePhoneNumber"
+                    value={addressData.mobilePhoneNumber}
+                    onChange={handleInputChange}
                   />
                 )}
               </StyledListItem>
             </StyledContainer>
 
             {editMode ? (
-              <SendConfirmedSelection>Save address</SendConfirmedSelection>
+              <ButtonContainer $justifyContent="flex-start">
+                <SendConfirmedSelection
+                  username={username}
+                  formData={addressData}
+                  requestedAction={updateMyAddressWithThunk}
+                >
+                  Save address
+                </SendConfirmedSelection>
+
+                <RegularButton
+                  $customMargin="2rem 0 0 0"
+                  onClick={handleHideEditMode}
+                >
+                  Back to your saved address
+                </RegularButton>
+              </ButtonContainer>
             ) : (
-              <RegularButton $customMargin="2rem 0 0 0">
+              <RegularButton
+                $customMargin="2rem 0 0 0"
+                onClick={handleShowEditMode}
+              >
                 Click to edit
               </RegularButton>
             )}

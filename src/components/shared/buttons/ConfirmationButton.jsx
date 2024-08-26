@@ -4,18 +4,23 @@ import { useEffect, useState } from "react";
 import RegularButton from "./RegularButton";
 import ButtonContainer from "./ButtonContainer";
 
-const SendConfirmedSelection = ({ requestedAction, children }) => {
+const SendConfirmedSelection = ({
+  username,
+  formData,
+  requestedAction,
+  children,
+}) => {
   const dispatch = useDispatch();
   const [confirmProcess, setConfirmProcess] = useState(false);
   const [submitConfirmed, setSubmitConfirmed] = useState(false);
 
   useEffect(() => {
     if (submitConfirmed) {
-      dispatch(requestedAction());
+      dispatch(requestedAction({ username, formData }));
       setSubmitConfirmed(false);
       setConfirmProcess(false);
     }
-  }, [submitConfirmed, dispatch, requestedAction]);
+  }, [submitConfirmed, dispatch, requestedAction, username, formData]);
 
   const handleSubmit = () => setConfirmProcess(true);
 
@@ -37,8 +42,8 @@ const SendConfirmedSelection = ({ requestedAction, children }) => {
       {confirmProcess && (
         <>
           <ButtonContainer
-            justifyContent="flex-start"
-            marginContainer="2rem 0 0 0"
+            $justifyContent="flex-start"
+            $marginContainer="2rem 0 0 0"
           >
             <RegularButton
               onClick={handleConfirmSubmit}
@@ -57,7 +62,9 @@ const SendConfirmedSelection = ({ requestedAction, children }) => {
 };
 
 SendConfirmedSelection.propTypes = {
+  username: PropTypes.string.isRequired,
   requestedAction: PropTypes.func.isRequired,
+  formData: PropTypes.object,
   children: PropTypes.node,
 };
 

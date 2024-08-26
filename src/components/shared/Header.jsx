@@ -66,7 +66,7 @@ const Header = () => {
   ];
 
   const filteredTagOptions = TAG_OPTIONS.filter(
-    (tag) => tag.text !== "All categories",
+    (tag) => tag.text !== "All categories"
   );
 
   return (
@@ -79,16 +79,27 @@ const Header = () => {
           </SearchContainer>
           {isAuthenticated ? (
             <>
-              <HeartLink to={"/myaccount"} size={30} className="heartHead" />
-              <EmailLink to={"/myaccount"} size={35} className="emailHead" />
-              <DropdownLink options={dropdownOptions} className="myAccount">
+              <HeartLink
+                to={"/myaccount"}
+                size={30}
+                className="heartHead"
+              />
+              <EmailLink
+                to={"/myaccount"}
+                size={35}
+                className="emailHead"
+              />
+              <DropdownLink
+                options={dropdownOptions}
+                className="myAccount"
+              >
                 My account
               </DropdownLink>
               <CustomButton
                 to={`${loggedUser}/new`}
                 className="sellButton"
-                marginLeft="25px"
-                backgroundColor="var(--accent-100)"
+                $marginLeft="25px"
+                $backgroundColor="var(--accent-100)"
               >
                 Sell - Buy
               </CustomButton>
@@ -99,15 +110,15 @@ const Header = () => {
                 to="/login"
                 state={{ from: location }}
                 className="login"
-                backgroundColor="var(--primary-200)"
+                $backgroundColor="var(--primary-200)"
               >
                 Login or register
               </CustomButton>
               <CustomButton
                 to="/login"
                 className="sellButton"
-                marginLeft="25px"
-                backgroundColor="var(--accent-100)"
+                $marginLeft="25px"
+                $backgroundColor="var(--accent-100)"
               >
                 Sell - Buy
               </CustomButton>
@@ -116,7 +127,10 @@ const Header = () => {
         </StyledNav>
       </StyledContainer>
       <StyledTagsNavContainer>
-        <DropdownLink options={TAG_OPTIONS} className="allCategories">
+        <DropdownLink
+          options={TAG_OPTIONS}
+          className="allCategories"
+        >
           All categories
         </DropdownLink>
         <TagsNav

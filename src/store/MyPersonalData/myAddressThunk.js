@@ -1,11 +1,23 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
-import * as address from "../../pages/customer/service";
+import * as address from "../../pages/customer/myPersonalInfo/service";
 
 export const getAddressWithThunk = createAsyncThunk(
   "address/fetch",
   async (username, { rejectWithValue }) => {
     try {
       const response = await address.getMyAddress(username);
+      return response;
+    } catch (error) {
+      return rejectWithValue(error.message);
+    }
+  }
+);
+
+export const updateMyAddressWithThunk = createAsyncThunk(
+  "address/update",
+  async ({ username, formData }, { rejectWithValue }) => {
+    try {
+      const response = await address.updateMyAddress(username, formData);
       return response;
     } catch (error) {
       return rejectWithValue(error.message);

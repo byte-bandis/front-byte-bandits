@@ -1,5 +1,8 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { getAddressWithThunk } from "./MyPersonalData/myAddressThunk";
+import {
+  getAddressWithThunk,
+  updateMyAddressWithThunk,
+} from "./MyPersonalData/myAddressThunk";
 
 export const defaultAddressState = {
   data: {},
@@ -18,6 +21,9 @@ const myAddressSlice = createSlice({
   },
   extraReducers: (builder) => {
     builder.addCase(getAddressWithThunk.fulfilled, (state, action) => {
+      state.data = action.payload.data;
+    });
+    builder.addCase(updateMyAddressWithThunk.fulfilled, (state, action) => {
       state.data = action.payload.data;
     });
   },

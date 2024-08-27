@@ -1,6 +1,18 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import * as address from "../../pages/customer/myPersonalInfo/service";
 
+export const createMyAddressWithThunk = createAsyncThunk(
+  "address/create",
+  async ({ username, formData }, { rejectWithValue }) => {
+    try {
+      const response = await address.createMyAddress(username, formData);
+      return response;
+    } catch (error) {
+      return rejectWithValue(error.message);
+    }
+  }
+);
+
 export const getAddressWithThunk = createAsyncThunk(
   "address/fetch",
   async (username, { rejectWithValue }) => {
@@ -30,6 +42,18 @@ export const resetMyAddressWithThunk = createAsyncThunk(
   async (username, { rejectWithValue }) => {
     try {
       const response = await address.resetMyAddress(username);
+      return response;
+    } catch (error) {
+      return rejectWithValue(error.message);
+    }
+  }
+);
+
+export const deleteMyAddressWithThunk = createAsyncThunk(
+  "address/delete",
+  async (username, { rejectWithValue }) => {
+    try {
+      const response = await address.deleteMyAddress(username);
       return response;
     } catch (error) {
       return rejectWithValue(error.message);

@@ -1,18 +1,14 @@
 import styled from "styled-components";
 import P from "prop-types";
 import CustomButton from "./CustomButton";
-import CustomAlert from "./Alert";
 
 const CustomForm = ({
   children,
-  className,
+  className = "",
   onSubmit,
-  submitButtonText,
-  isLoading,
-  disableSubmit,
-  alertMessage,
-  alertVariant,
-  onAlertClose,
+  submitButtonText = "Submit",
+  isLoading = false,
+  disableSubmit = false,
   ...rest
 }) => {
   return (
@@ -20,15 +16,11 @@ const CustomForm = ({
       <form onSubmit={onSubmit}>
         <StyledLegend>{children}</StyledLegend>
 
-        {alertMessage && (
-          <CustomAlert variant={alertVariant} onClose={onAlertClose}>
-            {alertMessage}
-          </CustomAlert>
-        )}
-
-        <CustomButton type="submit" disabled={disableSubmit || isLoading}>
-          {isLoading ? "Submitting..." : submitButtonText}
-        </CustomButton>
+        <ButtonContainer>
+          <CustomButton type="submit" disabled={disableSubmit || isLoading}>
+            {isLoading ? "Submitting..." : submitButtonText}
+          </CustomButton>
+        </ButtonContainer>
       </form>
     </StyledForm>
   );
@@ -48,16 +40,6 @@ CustomForm.propTypes = {
   onAlertClose: P.func,
 };
 
-CustomForm.defaultProps = {
-  className: "",
-  submitButtonText: "Submit",
-  isLoading: "false",
-  disableSubmit: false,
-  alertMessage: null,
-  alertVariant: "other",
-  onAlertClose: () => {},
-};
-
 const StyledForm = styled.div`
   display: flex;
   flex-direction: column;
@@ -72,6 +54,12 @@ const StyledLegend = styled.div`
   align-items: center;
 `;
 
+const ButtonContainer = styled.div`
+  display: flex;
+  justify-content: center;
+  width: 100%;
+  margin-top: 20px;
+`;
 // const StyledFields = styled.div`
 //   list-style: none
 //   margin-bottom: 10px;

@@ -4,9 +4,10 @@ import {
   setValidations,
   registerAsync,
   resetForm,
+  resetValidationErrors,
 } from "../../store/registerSlice";
 import "../auth/login.css";
-import { NavLink, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { checkAllFieldsFilled, validate } from "../../utils/formValidations";
 import Logo from "../../components/shared/Logo";
 import { setMessage, resetMessage } from "../../store/uiSlice";
@@ -15,6 +16,7 @@ import { getIsLogged } from "../../store/selectors";
 import { loginWithThunk } from "../../store/loginThunk";
 import CustomForm from "../../components/shared/Form";
 import CustomAlert from "../../components/shared/Alert";
+import styled from "styled-components";
 
 const RegisterPage = () => {
   const dispatch = useDispatch();
@@ -30,13 +32,12 @@ const RegisterPage = () => {
   });
 
   const uiMessage = useSelector(getUIMessage);
+  const uiMessageArray = uiMessage ? uiMessage.split(".") : [];
   const uiState = useSelector(getUIState);
   const isLogged = useSelector(getIsLogged);
-  const { loading, validationErrors } = useSelector((state) => state.register);
+  const { loading } = useSelector((state) => state.register);
   const [disableSubmit, setDisableSubmit] = useState(true);
   const [rememberMe, setRememberMeStatus] = useState(false);
-
-  const to = import.meta.env.VITE_LOGIN_REDIRECT_URI;
 
   const handleRememberMeStatus = (event) => {
     setRememberMeStatus(event.target.checked);
@@ -44,26 +45,13 @@ const RegisterPage = () => {
 
   useEffect(() => {
     if (isLogged.authState) {
-      navigate(to, { replace: true });
+      navigate("/", { replace: true });
     }
-  }, [isLogged.authState, to, navigate]);
-
-  // useEffect(() => {
-  //   checkAllFieldsFilled({
-  //     formData,
-  //   });
-  // }, [formData]);
+  }, [isLogged.authState, navigate]);
 
   useEffect(() => {
     setDisableSubmit(!checkAllFieldsFilled(formData));
   }, [formData]);
-
-  useEffect(() => {
-    const isFormValid =
-      checkAllFieldsFilled(formData) &&
-      Object.keys(validationErrors).length === 0;
-    setDisableSubmit(!isFormValid);
-  }, [formData, validationErrors]);
 
   const {
     username,
@@ -94,6 +82,7 @@ const RegisterPage = () => {
     return () => {
       dispatch(resetForm());
       dispatch(resetMessage());
+      dispatch(resetValidationErrors());
     };
   }, [dispatch]);
 
@@ -110,145 +99,141 @@ const RegisterPage = () => {
     event.preventDefault();
 
     const errors = validate({
-      email,
       password,
       passwordConfirmation,
       birthdate,
     });
     dispatch(setValidations(errors));
 
-    if (Object.keys(errors).legnth > 0) {
+    if (Object.keys(errors).length > 0) {
       const errorMessages = Object.values(errors).join(" ");
       dispatch(setMessage({ payload: errorMessages, type: "error" }));
       return;
     }
 
-    const resultAction = await dispatch(registerAsync(formData));
-
-    if (registerAsync.fulfilled.match(resultAction)) {
-      dispatch(
-        setMessage({
-          payload: "User registered successfully",
-          type: "success",
-        }),
-      );
-    }
+    await dispatch(registerAsync(formData));
   };
 
   return (
-    <div className="RegisterForm">
-      <RegisterForm>
-        <CustomForm
-          className="registerForm"
-          onSubmit={handleSubmit}
-          submitButtonText="Register"
-          isLoading={loading}
-          disableSubmit={disableSubmit}
-          alertMessage={uiMessage}
-          alertVariant={uiState === "error" ? "error" : "success"}
-          onAlertClose={() => dispatch(resetMessage())}
-        >
-          <Logo />
-          {uiState && (
-            <CustomAlert
-              variant={uiState === "error" ? "error" : "success"}
-              onClose={dispatch(resetMessage())}
-            >
-              {uiMessage}
-            </CustomAlert>
-          )}
-          <div className="register">Register</div>
+    <Register className="RegisterForm">
+      <CustomForm
+        className="registerForm"
+        onSubmit={handleSubmit}
+        submitButtonText="Register"
+        isLoading={loading}
+        disableSubmit={disableSubmit}
+        alertMessage={uiMessage}
+        alertVariant={uiState === "error" ? "error" : "success"}
+        onAlertClose={() => {
+          dispatch(resetMessage());
+          dispatch(resetValidationErrors());
+        }}
+      >
+        <Logo />
 
-          <FormContainer>
-            <CustomLabel htmlFor="username">Username:</CustomLabel>
-            <CustomInput
-              type="text"
-              name="username"
-              id="username"
-              value={username}
+        <div className="register">Register</div>
+
+        {uiMessageArray.length > 0 && (
+          <CustomAlert
+            variant={uiState === "error" ? "error" : "success"}
+            onClose={() => {
+              dispatch(resetMessage());
+              dispatch(resetValidationErrors());
+            }}
+          >
+            {uiMessageArray}
+          </CustomAlert>
+        )}
+
+        <FormContainer>
+          <CustomLabel htmlFor="username">Username:</CustomLabel>
+          <CustomInput
+            type="text"
+            name="username"
+            id="username"
+            value={username}
+            onChange={handleChange}
+            placeholder="Username"
+            required
+          />
+
+          <CustomLabel htmlFor="email">Email:</CustomLabel>
+          <CustomInput
+            type="email"
+            name="email"
+            id="email"
+            value={email}
+            onChange={handleChange}
+            placeholder="Email"
+            required
+          />
+
+          <CustomLabel htmlFor="password">Password:</CustomLabel>
+          <CustomInput
+            type="password"
+            name="password"
+            id="password"
+            value={password}
+            onChange={handleChange}
+            placeholder="Password"
+            required
+          />
+
+          <CustomLabel htmlFor="passwordConfirmation">
+            Repeat Password:
+          </CustomLabel>
+          <CustomInput
+            type="password"
+            name="passwordConfirmation"
+            id="passwordConfirmation"
+            value={passwordConfirmation}
+            onChange={handleChange}
+            placeholder="Repeat password"
+            required
+          />
+
+          <CustomLabel htmlFor="birthdate">Birthdate:</CustomLabel>
+          <CustomInput
+            type="date"
+            name="birthdate"
+            id="birthdate"
+            value={birthdate}
+            onChange={handleChange}
+            required
+          />
+
+          <CheckedContainers>
+            <CustomInputChecked
+              type="checkbox"
+              name="acceptTerms"
+              id="acceptTerms"
+              checked={acceptTerms}
               onChange={handleChange}
-              placeholder="Username"
               required
             />
-
-            <CustomLabel htmlFor="email">Email:</CustomLabel>
-            <CustomInput
-              type="email"
-              name="email"
-              id="email"
-              value={email}
-              onChange={handleChange}
-              placeholder="Email"
-              required
-            />
-
-            <CustomLabel htmlFor="password">Password:</CustomLabel>
-            <CustomInput
-              type="password"
-              name="password"
-              id="password"
-              value={password}
-              onChange={handleChange}
-              placeholder="Password"
-              required
-            />
-
-            <CustomLabel htmlFor="passwordConfirmation">
-              Repeat Password:
+            <CustomLabel htmlFor="acceptTerms">
+              By creating an account, you agree to our &nbsp;
+              <a
+                href="/terms-and-conditions"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                terms and conditions
+              </a>
+              . Read our &nbsp;
+              <a
+                href="/privacy-policy"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                privacy and cookies policy &nbsp;
+              </a>
+              to find out how we collect and use your personal data.
             </CustomLabel>
-            <CustomInput
-              type="password"
-              name="passwordConfirmation"
-              id="passwordConfirmation"
-              value={passwordConfirmation}
-              onChange={handleChange}
-              placeholder="Repeat password"
-              required
-            />
+          </CheckedContainers>
 
-            <CustomLabel htmlFor="birthdate">Birthdate:</CustomLabel>
-            <CustomInput
-              type="date"
-              name="birthdate"
-              id="birthdate"
-              value={birthdate}
-              onChange={handleChange}
-              required
-            />
-
-            <div>
-              <CustomInput
-                type="checkbox"
-                name="acceptTerms"
-                id="acceptTerms"
-                checked={acceptTerms}
-                onChange={handleChange}
-                required
-              />
-              <CustomLabel htmlFor="acceptTerms">
-                By creating an account, you agree to our
-                <a
-                  href="/terms-and-conditions"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                >
-                  terms and conditions
-                </a>
-                . Read our
-                <a
-                  href="/privacy-policy"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                >
-                  privacy and cookies policy
-                </a>
-                to find out how we collect and use your personal data.
-              </CustomLabel>
-            </div>
-          </FormContainer>
-
-          <div>
-            <CustomInput
+          <CheckedContainers>
+            <CustomInputChecked
               type="checkbox"
               name="rememberMe"
               id="rememberMe"
@@ -256,31 +241,37 @@ const RegisterPage = () => {
               onChange={handleRememberMeStatus}
             />
             <CustomLabel htmlFor="rememberMe">Remember me</CustomLabel>
-          </div>
-        </CustomForm>
-      </RegisterForm>
-    </div>
+          </CheckedContainers>
+        </FormContainer>
+      </CustomForm>
+    </Register>
   );
 };
 
 export default RegisterPage;
 
-import styled from "styled-components";
-
-const RegisterForm = styled.div`
+const Register = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
   background-color: var(--bg-100);
+  .button {
+    margin: 0 100px;
+  }
 `;
 
-const FormContainer = styled.form`
+const FormContainer = styled.div`
   width: 400px;
   padding: 2rem;
   border-radius: 5px;
   background-color: var(--bg-200);
   box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
+`;
+
+const CheckedContainers = styled.div`
+  display: flex;
+  gap: 5px;
 `;
 
 const CustomLabel = styled.label`
@@ -294,6 +285,15 @@ const CustomInput = styled.input`
   display: block;
   width: 100%;
   padding: 10px;
+  border: 1px solid var(--border-1);
+  border-radius: 3px;
+  font-size: 1rem;
+  margin-bottom: 15px;
+`;
+
+const CustomInputChecked = styled.input`
+  display: block;
+  padding: 0px;
   border: 1px solid var(--border-1);
   border-radius: 3px;
   font-size: 1rem;

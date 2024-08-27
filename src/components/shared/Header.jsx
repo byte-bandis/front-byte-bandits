@@ -85,10 +85,10 @@ const Header = () => {
                 My account
               </DropdownLink>
               <CustomButton
-                to={`${loggedUser}/new`}
-                className="sellButton"
-                marginLeft="25px"
-                backgroundColor="var(--accent-100)"
+                $to={`${loggedUser}/new`}
+                $className="sellButton"
+                $marginLeft="25px"
+                $backgroundColor="var(--accent-100)"
               >
                 Sell - Buy
               </CustomButton>
@@ -96,18 +96,18 @@ const Header = () => {
           ) : (
             <>
               <CustomButton
-                to="/login"
-                state={{ from: location }}
-                className="login"
-                backgroundColor="var(--primary-200)"
+                $to="/login"
+                $state={{ from: location }}
+                $className="login"
+                $backgroundColor="var(--primary-200)"
               >
                 Login or register
               </CustomButton>
               <CustomButton
-                to="/login"
-                className="sellButton"
-                marginLeft="25px"
-                backgroundColor="var(--accent-100)"
+                $to="/login"
+                $className="sellButton"
+                $marginLeft="25px"
+                $backgroundColor="var(--accent-100)"
               >
                 Sell - Buy
               </CustomButton>

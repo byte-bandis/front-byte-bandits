@@ -17,7 +17,7 @@ const CustomForm = ({
         <StyledLegend>{children}</StyledLegend>
 
         <ButtonContainer>
-          <CustomButton type="submit" disabled={disableSubmit || isLoading}>
+          <CustomButton $type="submit" $disabled={disableSubmit || isLoading}>
             {isLoading ? "Submitting..." : submitButtonText}
           </CustomButton>
         </ButtonContainer>
@@ -60,18 +60,3 @@ const ButtonContainer = styled.div`
   width: 100%;
   margin-top: 20px;
 `;
-// const StyledFields = styled.div`
-//   list-style: none
-//   margin-bottom: 10px;
-// `;
-
-// const StyledLabel = styled.label`
-//   margin-right: ${({ marginRight }) => marginRight || "10px"};
-// `;
-
-// const StyledInput = styled.input`
-//   padding: ${({ padding }) => padding || "10px"};
-//   margin-bottom: ${({ marginBottom }) => marginBottom || "10px"};
-//   border-radius: ${({ borderRadius }) => borderRadius || "5px"};
-//   border: ${({ border }) => border || "1px solid"};
-// `;

@@ -10,6 +10,7 @@ import likesReducer from "./likesSlice";
 import singleProfileReducer from "./singlePublicProfileSlice";
 import commentsSlice from "./commentsSlice";
 import myAddressReducer from "./MyPersonalData/addressSlice";
+import myPaymentsReducer from "./MyPersonalData/paymentSlice";
 
 export const store = configureStore({
   reducer: {
@@ -24,6 +25,7 @@ export const store = configureStore({
     likesSlice: likesReducer,
     singlePublicProfile: singleProfileReducer,
     myAddress: myAddressReducer,
+    myPayment: myPaymentsReducer,
   },
   devTools: import.meta.env.NODE_ENV !== "production",
 });

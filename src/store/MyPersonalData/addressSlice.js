@@ -1,6 +1,9 @@
 import { createSlice } from "@reduxjs/toolkit";
 import {
+  createMyAddressWithThunk,
+  deleteMyAddressWithThunk,
   getAddressWithThunk,
+  resetMyAddressWithThunk,
   updateMyAddressWithThunk,
 } from "./myAddressThunk";
 
@@ -20,10 +23,19 @@ const myAddressSlice = createSlice({
     },
   },
   extraReducers: (builder) => {
+    builder.addCase(createMyAddressWithThunk.fulfilled, (state, action) => {
+      state.data = action.payload.data;
+    });
     builder.addCase(getAddressWithThunk.fulfilled, (state, action) => {
       state.data = action.payload.data;
     });
     builder.addCase(updateMyAddressWithThunk.fulfilled, (state, action) => {
+      state.data = action.payload.data;
+    });
+    builder.addCase(resetMyAddressWithThunk.fulfilled, (state, action) => {
+      state.data = action.payload.data;
+    });
+    builder.addCase(deleteMyAddressWithThunk.fulfilled, (state, action) => {
       state.data = action.payload.data;
     });
   },

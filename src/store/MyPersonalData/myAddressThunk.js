@@ -1,5 +1,5 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
-import * as address from "../../pages/customer/myPersonalInfo/service";
+import * as address from "../../pages/customer/myPersonalInfo/addressService";
 
 export const createMyAddressWithThunk = createAsyncThunk(
   "address/create",

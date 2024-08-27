@@ -8,10 +8,7 @@ import "./Chats.css";
 
 const Chats = () => {
   const [chatList, setChatList] = useState([]);
-  const [selectedChat, setSelectedChat] = useState({
-    product: { _id: null },
-    buyer: { _id: null },
-  });
+  const [selectedChat, setSelectedChat] = useState(null);
   const loggedUserId = useSelector(getLoggedUserId);
   const location = useLocation();
 
@@ -21,6 +18,7 @@ const Chats = () => {
     const productId = params.get("productId");
 
     if (productId) {
+      // Si hay un productId en la URL, buscar si ya existe un chat para ese producto
       setSelectedChat({
         product: { _id: productId },
         buyer: { _id: loggedUserId },
@@ -34,7 +32,18 @@ const Chats = () => {
       const fetchChats = async () => {
         try {
           const response = await client.get(`/chat`);
-          setChatList(response.chats);
+          const chats = response.chats;
+          setChatList(chats);
+
+          // Seleccionar el chat correspondiente al productId si existe
+          if (selectedChat?.product?._id) {
+            const existingChat = chats.find(
+              (c) => c.product._id === selectedChat.product._id
+            );
+            if (existingChat) {
+              setSelectedChat(existingChat);
+            }
+          }
         } catch (error) {
           console.error("Error al obtener la lista de chats:", error);
         }
@@ -42,7 +51,7 @@ const Chats = () => {
 
       fetchChats();
     }
-  }, [loggedUserId]);
+  }, [loggedUserId, selectedChat?.product?._id]);
 
   return (
     <div className="chats-container">
@@ -57,7 +66,7 @@ const Chats = () => {
                 <div
                   key={chat.product._id}
                   className={`chat-list-item ${
-                    chat.product._id === selectedChat.product._id
+                    chat.product._id === selectedChat?.product?._id
                       ? "selected"
                       : ""
                   }`}

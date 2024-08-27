@@ -4,6 +4,8 @@ import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { trimDate } from "../../utils/dateTools";
 import {
+  createMyAddressWithThunk,
+  deleteMyAddressWithThunk,
   getAddressWithThunk,
   updateMyAddressWithThunk,
 } from "../../store/MyPersonalData/myAddressThunk";
@@ -90,6 +92,10 @@ const PersonalInfo = () => {
       ...prevData,
       [name]: value,
     }));
+  };
+
+  const doDeleteAddress = () => {
+    dispatch(deleteMyAddressWithThunk(username));
   };
 
   return (
@@ -261,6 +267,14 @@ const PersonalInfo = () => {
           </StyledContainer>
         </ul>
       </StyledListContainer>
+      <RegularButton onClick={doDeleteAddress}>Borrar address</RegularButton>
+      <SendConfirmedSelection
+        username={username}
+        formData={addressData}
+        requestedAction={createMyAddressWithThunk}
+      >
+        Save address
+      </SendConfirmedSelection>
     </>
   );
 };

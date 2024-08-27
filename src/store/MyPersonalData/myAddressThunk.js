@@ -25,6 +25,18 @@ export const updateMyAddressWithThunk = createAsyncThunk(
   }
 );
 
+export const resetMyAddressWithThunk = createAsyncThunk(
+  "address/reset",
+  async (username, { rejectWithValue }) => {
+    try {
+      const response = await address.resetMyAddress(username);
+      return response;
+    } catch (error) {
+      return rejectWithValue(error.message);
+    }
+  }
+);
+
 /* export const getMyAccountWithThunk = createAsyncThunk(
   "myAccount/fetch",
   async (username, { rejectWithValue }) => {

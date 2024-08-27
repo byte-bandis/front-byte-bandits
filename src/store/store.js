@@ -9,7 +9,7 @@ import myAccountReducer from "./myAccountSlice";
 import likesReducer from "./likesSlice";
 import singleProfileReducer from "./singlePublicProfileSlice";
 import commentsSlice from "./commentsSlice";
-import myAddressReducer from "./addressSlice";
+import myAddressReducer from "./MyPersonalData/addressSlice";
 
 export const store = configureStore({
   reducer: {

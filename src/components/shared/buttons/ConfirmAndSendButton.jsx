@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import RegularButton from "./RegularButton";
 import ButtonContainer from "./ButtonContainer";
 
-const SendConfirmedSelection = ({
+const ConfirmAndSendButton = ({
   username,
   formData,
   requestedAction,
@@ -61,11 +61,11 @@ const SendConfirmedSelection = ({
   );
 };
 
-SendConfirmedSelection.propTypes = {
+ConfirmAndSendButton.propTypes = {
   username: PropTypes.string.isRequired,
   requestedAction: PropTypes.func.isRequired,
   formData: PropTypes.object,
   children: PropTypes.node,
 };
 
-export default SendConfirmedSelection;
+export default ConfirmAndSendButton;

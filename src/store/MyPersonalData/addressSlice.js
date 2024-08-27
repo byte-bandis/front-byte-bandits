@@ -2,7 +2,7 @@ import { createSlice } from "@reduxjs/toolkit";
 import {
   getAddressWithThunk,
   updateMyAddressWithThunk,
-} from "./MyPersonalData/myAddressThunk";
+} from "./myAddressThunk";
 
 export const defaultAddressState = {
   data: {},
@@ -15,7 +15,7 @@ const myAddressSlice = createSlice({
     setMyAddress: (state, action) => {
       state.data = action.payload;
     },
-    resetMyAddress: (state) => {
+    emptyMyAddress: (state) => {
       state.data = defaultAddressState;
     },
   },
@@ -29,5 +29,5 @@ const myAddressSlice = createSlice({
   },
 });
 
-export const { setMyAddress, resetMyAddress } = myAddressSlice.actions;
+export const { setMyAddress, emptyMyAddress } = myAddressSlice.actions;
 export default myAddressSlice.reducer;

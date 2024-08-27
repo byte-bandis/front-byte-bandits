@@ -24,7 +24,6 @@ const PersonalInfo = () => {
   const { username } = useParams();
   const [creationDate, setCreationdate] = useState("000-00-00");
   const [editMode, setEditMode] = useState(false);
-  //const [showBackButton, setShowBackButton] = useState(true);
 
   const [addressData, setAddressData] = useState({
     country: "",

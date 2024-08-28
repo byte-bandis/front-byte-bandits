@@ -102,7 +102,7 @@ const Search = ({ maxPrice, minPrice }) => {
 
     dispatch(setFilters(filters));
     dispatch(getAds({ page: 1, filters }));
-    dispatch(setExpanded(false));
+    dispatch(setExpanded());
   };
 
   const handledeleteSearch = () => {
@@ -116,7 +116,7 @@ const Search = ({ maxPrice, minPrice }) => {
     navigate("/");
     dispatch(setFilters({}));
     dispatch(getAds());
-    dispatch(setExpanded(true));
+    dispatch(setExpanded());
   };
 
   return (

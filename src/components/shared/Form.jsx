@@ -35,9 +35,6 @@ CustomForm.propTypes = {
   submitButtonText: P.string,
   isLoading: P.bool,
   disableSubmit: P.bool,
-  alertMessage: P.string,
-  alertVariant: P.oneOf(["success", "error", "other"]),
-  onAlertClose: P.func,
 };
 
 const StyledForm = styled.div`

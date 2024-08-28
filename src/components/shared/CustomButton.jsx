@@ -30,6 +30,7 @@ const StyledLinkButton = styled(Link)`
   background-color: ${(props) =>
     props.$disabled ? "lightblue" : props.$backgroundColor || "blue"};
   margin-left: ${(props) => props.$marginLeft || "0px"};
+  border: ${(props) => props.$border || "none"};
 `;
 
 const StyleButton = styled.button`
@@ -42,4 +43,5 @@ const StyleButton = styled.button`
       ? "lightblue"
       : props.$backgroundColor || "var(--primary-200)"};
   margin-left: ${(props) => props.$marginLeft || "0px"};
+  border: ${(props) => props.$border || "none"};
 `;

@@ -122,9 +122,9 @@ const RegisterPage = () => {
         submitButtonText="Register"
         isLoading={loading}
         disableSubmit={disableSubmit}
-        alertMessage={uiMessage}
-        alertVariant={uiState === "error" ? "error" : "success"}
-        onAlertClose={() => {
+        $alertMessage={uiMessage}
+        $alertVariant={uiState === "error" ? "error" : "success"}
+        $onAlertClose={() => {
           dispatch(resetMessage());
           dispatch(resetValidationErrors());
         }}

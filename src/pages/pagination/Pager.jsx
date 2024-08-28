@@ -23,6 +23,8 @@ const Pager = () => {
 
     items.push(
         <Pagination.Prev
+        key='initial'
+
             onClick={() => {
                 {
                     dispatch(setPage(1));
@@ -34,6 +36,8 @@ const Pager = () => {
     );
     items.push(
         <Pagination.Prev
+        key='prev'
+
             onClick={() => {
                 if (active > 1) {
                     dispatch(setPage(active - 1));
@@ -64,6 +68,7 @@ const Pager = () => {
     }
     items.push(
         <Pagination.Next
+        key='next'
         onClick={() => {
             {
                 if (active < max) {
@@ -77,6 +82,8 @@ const Pager = () => {
     );
     items.push(
         <Pagination.Next
+        key='final'
+
             onClick={() => {
                 dispatch(setPage(max));
             }}

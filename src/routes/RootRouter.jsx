@@ -20,30 +20,12 @@ import UserPublicInfo from "../pages/customer/UserPublicInfo";
 const RootRouter = () => {
   return (
     <Routes>
-      <Route
-        path="/login"
-        element={<LoginPage />}
-      />
-      <Route
-        path="/register"
-        element={<RegisterPage />}
-      />
-      <Route
-        path="/terms-and-conditions"
-        element={<TermsAndConditions />}
-      />
-      <Route
-        path="/privacy-policy"
-        element={<PrivacyPolicy />}
-      />
-      <Route
-        path=":username"
-        element={<LayoutAccount />}
-      >
-        <Route
-          index
-          element={<Profile />}
-        />
+      <Route path="/login" element={<LoginPage />} />
+      <Route path="/register" element={<RegisterPage />} />
+      <Route path="/terms-and-conditions" element={<TermsAndConditions />} />
+      <Route path="/privacy-policy" element={<PrivacyPolicy />} />
+      <Route path=":username" element={<LayoutAccount />}>
+        <Route index element={<Profile />} />
         <Route
           path="myaccount"
           element={
@@ -60,56 +42,24 @@ const RootRouter = () => {
             </RequireAuth>
           }
         >
-          <Route
-            index
-            element={<UserPublicInfo />}
-          />
-          <Route
-            path="mydata"
-            element={<PersonalInfo />}
-          />
+          <Route index element={<UserPublicInfo />} />
+          <Route path="mydata" element={<PersonalInfo />} />
         </Route>
-        <Route
-          path="edit/:productId"
-          element={<NewProductPage isEditMode />}
-        />
-        <Route
-          path="new"
-          element={<NewProductPage />}
-        />
-        <Route
-          path="whishlist"
-          element={<Wishlist />}
-        />
-        <Route
-          path="delete-account"
-          element={<DeleteAccount />}
-        />
+        <Route path="edit/:productId" element={<NewProductPage isEditMode />} />
+        <Route path="new" element={<NewProductPage />} />
+        <Route path="whishlist" element={<Wishlist />} />
+        <Route path="delete-account" element={<DeleteAccount />} />
       </Route>
-      <Route
-        path="/product"
-        element={<Outlet />}
-      >
-        <Route
-          index
-          element={<ProductList />}
-        />
-        <Route
-          path=":productId"
-          element={<ProductView />}
-        />
+      <Route path="/product" element={<Outlet />}>
+        <Route index element={<ProductList />} />
+        <Route path=":productId" element={<ProductView />} />
       </Route>
-      <Route
-        path="/404"
-        element={<NotFound />}
-      />
-      <Route
-        path="*"
-        element={<Navigate to="/404" />}
-      />
+      <Route path="/404" element={<NotFound />} />
+      <Route path="*" element={<Navigate to="/404" />} />
       <Route
         path="/"
-        element={<Navigate to="/product" />}
+        element={<ProductList />}
+        // element={<Navigate to="/product" />}
       />
     </Routes>
   );

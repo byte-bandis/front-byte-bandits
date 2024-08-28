@@ -1,5 +1,5 @@
-import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useState, useEffect } from "react";
+import { useNavigate, useLocation } from "react-router-dom";
 import P from "prop-types";
 import Form from "react-bootstrap/Form";
 import Col from "react-bootstrap/Col";
@@ -19,6 +19,19 @@ import { setFilters } from "../../store/adsSlice";
 const Search = ({ maxPrice, minPrice }) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const location = useLocation();
+
+  useEffect(() => {
+    const searchParams = new URLSearchParams(location.search);
+
+    const filters = {};
+    for (let [key, value] of searchParams.entries()) {
+      filters[key] = value;
+    }
+
+    dispatch(setFilters(filters));
+    dispatch(getAds({ page: 1, filters }));
+  });
 
   const [expanded, setExpanded] = useState(false);
   const [adTitle, setAdTitle] = useState("");

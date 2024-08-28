@@ -11,6 +11,7 @@ import { setLike } from '../../utils/setLike';
 import CommentItem from './components/CommentItem';
 import CommentForm from './components/CommentForm';
 import { getComments } from '../../store/commentsThunk';
+import Confirmator from '../../components/shared/Confirmator';
 
 const ProductView = () => {
     const navigate = useNavigate();
@@ -24,15 +25,15 @@ const ProductView = () => {
     const loadedAds = useSelector((state) => state.adsState.data).find(
         (onead) => onead._id === productId
     );
-    
-    
+    const [hideDelete, setHideDelete] = useState(false);
+
     const myLikes = useSelector((state) => state.likesSlice.wishlist);
     const comments = useSelector((state) => state.commentsSlice.data);
-    
+
     useEffect(() => {
         dispatch(getComments(productId));
     }, [dispatch, productId]);
-    
+
     useEffect(() => {
         myLikes.forEach((like) => {
             if (like.ad && like.ad._id === productId) {
@@ -40,13 +41,14 @@ const ProductView = () => {
             }
         });
     }, [myLikes, productId]);
-    
+
     const handleBack = () => {
         const to = location.state?.from || '/';
         navigate(to, { replace: true });
     };
     const handleDelete = () => {
-        dispatch(deleteAd(productId));
+        setHideDelete(true);
+
     };
     const userid = useSelector((state) => state.authState.user.userId);
     const handleLike = () => {
@@ -56,26 +58,30 @@ const ProductView = () => {
     useEffect(() => {
         if (!loadedAds) {
             dispatch(getAds({ id: productId }));
-        }
-        else {
+        } else {
             setOwnerId(loadedAds.user);
         }
-        
     }, [loadedAds, productId, dispatch]);
     console.log(owner);
     console.log(authUser);
+    const handleDeleteConfirm = async () => {
+        dispatch(deleteAd(productId));
+    };
+
     if (loadedAds) {
         const { adTitle, adBody, sell, price, photo, tags } = loadedAds;
         const image = photo ? `${photo}` : '../../assets/images/no-image.jpg';
-    
+
         return (
             <>
-                {/* <Confirmator
-			  textValue='Seguro que desea borrar?'
-			  onConfirm={handleDeleteConfirm}
-			  hidden={hideDelete}
-			  sethiden={setHideDelete}
-		  /> */}
+                {
+                    <Confirmator
+                       textValue='borrar este anuncio?'
+                       onConfirm={handleDeleteConfirm}
+                       hidden={hideDelete}
+                       sethiden={setHideDelete}
+                    />
+                }
                 <StyledAdvertPage className='advert'>
                     <Button className='heart' onClick={handleLike}>
                         {iLikeIt ? (
@@ -118,13 +124,15 @@ const ProductView = () => {
                             </div>
                             {
                                 <div>
-                                    {authUser === owner && <Button
-                                        id='removeAdButton'
-                                        onClick={handleDelete}
-                                        $customheight='28px'
-                                    >
-                                        Borrar
-                                    </Button>}
+                                    {authUser === owner && (
+                                        <Button
+                                            id='removeAdButton'
+                                            onClick={handleDelete}
+                                            $customheight='28px'
+                                        >
+                                            Borrar
+                                        </Button>
+                                    )}
                                     <Button
                                         id='backButton'
                                         $customheight='28px'
@@ -134,7 +142,9 @@ const ProductView = () => {
                                     </Button>
                                 </div>
                             }
-                            {!!authUser &&<CommentForm productId={productId}/>}
+                            {!!authUser && (
+                                <CommentForm productId={productId} />
+                            )}
                             {comments.length > 0 && (
                                 <div className='advert-comments-box'>
                                     <h3>Comentarios</h3>
@@ -174,7 +184,7 @@ ProductView.propTypes = {
             role: PropTypes.string.isRequired,
             birthdate: PropTypes.string.isRequired,
             creditCard: PropTypes.string,
-        }), 
+        }),
         createdAt: PropTypes.string.isRequired,
         updatedAt: PropTypes.string.isRequired,
         tags: PropTypes.arrayOf(PropTypes.string).isRequired,

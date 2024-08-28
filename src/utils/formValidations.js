@@ -15,13 +15,13 @@ export const validate = ({ password, passwordConfirmation, birthdate }) => {
   };
 
   if (password.length < 6) {
-    newErrors.password = "Password length requires at least 6 characters";
+    newErrors.password = "Password length requires at least 6 characters.";
   }
   if (password !== passwordConfirmation) {
-    newErrors.password = "Passwords are different";
+    newErrors.password = "Passwords are different.";
   }
   if (userAge() < 18 || userAge() > 120) {
-    newErrors.birthdate = "User need to be at least 18 years old";
+    newErrors.birthdate = "User need to be at least 18 years old.";
   }
   return newErrors;
 };

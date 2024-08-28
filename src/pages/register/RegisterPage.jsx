@@ -1,19 +1,22 @@
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { Form, Button, Alert } from "react-bootstrap";
 import {
   setValidations,
   registerAsync,
   resetForm,
+  resetValidationErrors,
 } from "../../store/registerSlice";
-import Logo from "../../assets/images/logo.svg";
 import "../auth/login.css";
-import { NavLink, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { checkAllFieldsFilled, validate } from "../../utils/formValidations";
-import { resetMessage } from "../../store/uiSlice";
+import Logo from "../../components/shared/Logo";
+import { setMessage, resetMessage } from "../../store/uiSlice";
 import { getUIMessage, getUIState } from "../../store/selectors";
 import { getIsLogged } from "../../store/selectors";
 import { loginWithThunk } from "../../store/loginThunk";
+import CustomForm from "../../components/shared/Form";
+import CustomAlert from "../../components/shared/Alert";
+import styled from "styled-components";
 
 const RegisterPage = () => {
   const dispatch = useDispatch();
@@ -29,38 +32,38 @@ const RegisterPage = () => {
   });
 
   const uiMessage = useSelector(getUIMessage);
+  const uiMessageArray = uiMessage
+    ? uiMessage.split(".").filter((str) => str.trim() !== "")
+    : [];
   const uiState = useSelector(getUIState);
-
+  const isLogged = useSelector(getIsLogged);
+  const { loading } = useSelector((state) => state.register);
+  const [disableSubmit, setDisableSubmit] = useState(true);
   const [rememberMe, setRememberMeStatus] = useState(false);
+
   const handleRememberMeStatus = (event) => {
     setRememberMeStatus(event.target.checked);
   };
-  const isLogged = useSelector(getIsLogged);
-
-  const to = import.meta.env.VITE_LOGIN_REDIRECT_URI;
-
-  const { loading, validationErrors } = useSelector((state) => state.register);
 
   useEffect(() => {
     if (isLogged.authState) {
-      navigate(to, { replace: true });
+      navigate("/", { replace: true });
     }
-  }, [isLogged.authState, to, navigate]);
+  }, [isLogged.authState, navigate]);
 
   useEffect(() => {
-    checkAllFieldsFilled({
-      formData,
-    });
+    setDisableSubmit(!checkAllFieldsFilled(formData));
   }, [formData]);
 
   const {
+    username,
     email,
     password,
     passwordConfirmation,
     birthdate,
-    username,
     acceptTerms,
   } = formData;
+
   useEffect(() => {
     if (uiState === "success") {
       const timer = setTimeout(() => {
@@ -81,6 +84,7 @@ const RegisterPage = () => {
     return () => {
       dispatch(resetForm());
       dispatch(resetMessage());
+      dispatch(resetValidationErrors());
     };
   }, [dispatch]);
 
@@ -93,158 +97,207 @@ const RegisterPage = () => {
     dispatch(resetMessage());
   };
 
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
-    const errors = validate({ password, passwordConfirmation, birthdate });
+
+    const errors = validate({
+      password,
+      passwordConfirmation,
+      birthdate,
+    });
     dispatch(setValidations(errors));
+
     if (Object.keys(errors).length > 0) {
+      const errorMessages = Object.values(errors).join(" ");
+      dispatch(setMessage({ payload: errorMessages, type: "error" }));
       return;
     }
-    dispatch(registerAsync(formData));
+
+    await dispatch(registerAsync(formData));
   };
 
   return (
-    <div className="sign-in__wrapper">
-      <div className="sign-in__backdrop"></div>
-      <Form className="shadow p-4 bg-white rounded" onSubmit={handleSubmit}>
-        <img
-          className="img-thumbnail mx-auto d-block mb-2"
-          src={Logo}
-          alt="logo"
-        />
-        <div className="h4 mb-2 text-center">Register</div>
-        {uiState === "error" && (
-          <Alert
-            className="mb-2"
-            variant="danger"
-            onClose={() => dispatch(resetMessage())}
-            dismissible
+    <Register className="RegisterForm">
+      <CustomForm
+        className="registerForm"
+        onSubmit={handleSubmit}
+        submitButtonText="Register"
+        isLoading={loading}
+        disableSubmit={disableSubmit}
+        $alertMessage={uiMessage}
+        $alertVariant={uiState === "error" ? "error" : "success"}
+        $onAlertClose={() => {
+          dispatch(resetMessage());
+          dispatch(resetValidationErrors());
+        }}
+      >
+        <Logo />
+
+        <div className="register">Register</div>
+
+        {uiMessageArray.length > 0 && (
+          <CustomAlert
+            variant={uiState === "error" ? "error" : "success"}
+            onClose={() => {
+              dispatch(resetMessage());
+              dispatch(resetValidationErrors());
+            }}
           >
-            {uiMessage}
-          </Alert>
+            {uiMessageArray}
+          </CustomAlert>
         )}
-        {uiState === "success" && (
-          <Alert
-            className="mb-2"
-            variant="success"
-            onClose={() => dispatch(resetMessage())}
-            dismissible
-          >
-            {uiMessage}
-          </Alert>
-        )}
-        {Object.keys(validationErrors).map((key) => (
-          <Alert key={key} className="mb-2" variant="warning">
-            {validationErrors[key]}
-          </Alert>
-        ))}
-        <Form.Group className="mb-2" controlId="username">
-          <Form.Label>Username</Form.Label>
-          <Form.Control
+
+        <FormContainer>
+          <CustomLabel htmlFor="username">Username:</CustomLabel>
+          <CustomInput
             type="text"
             name="username"
+            id="username"
             value={username}
-            placeholder="Username"
             onChange={handleChange}
+            placeholder="Username"
             required
           />
-        </Form.Group>
-        <Form.Group className="mb-2" controlId="email">
-          <Form.Label>Email</Form.Label>
-          <Form.Control
+
+          <CustomLabel htmlFor="email">Email:</CustomLabel>
+          <CustomInput
             type="email"
             name="email"
+            id="email"
             value={email}
-            placeholder="Email"
             onChange={handleChange}
+            placeholder="Email"
             required
           />
-        </Form.Group>
-        <Form.Group className="mb-2" controlId="password">
-          <Form.Label>Password</Form.Label>
-          <Form.Control
+
+          <CustomLabel htmlFor="password">Password:</CustomLabel>
+          <CustomInput
             type="password"
             name="password"
+            id="password"
             value={password}
-            placeholder="Password"
             onChange={handleChange}
+            placeholder="Password"
             required
           />
-        </Form.Group>
-        <Form.Group className="mb-2" controlId="repeatpassword">
-          <Form.Label>Repeat Password</Form.Label>
-          <Form.Control
+
+          <CustomLabel htmlFor="passwordConfirmation">
+            Repeat Password:
+          </CustomLabel>
+          <CustomInput
             type="password"
             name="passwordConfirmation"
+            id="passwordConfirmation"
             value={passwordConfirmation}
-            placeholder="Repeat Password"
             onChange={handleChange}
+            placeholder="Repeat password"
             required
           />
-        </Form.Group>
-        <Form.Group className="mb-2" controlId="birthdate">
-          <Form.Label>Birthdate</Form.Label>
-          <Form.Control
+
+          <CustomLabel htmlFor="birthdate">Birthdate:</CustomLabel>
+          <CustomInput
             type="date"
             name="birthdate"
+            id="birthdate"
             value={birthdate}
-            placeholder="Birthdate"
             onChange={handleChange}
             required
           />
-        </Form.Group>
-        <Form.Group className="mb-2" controlId="checkbox">
-          <Form.Check
-            type="checkbox"
-            name="acceptTerms"
-            checked={acceptTerms}
-            onChange={handleChange}
-            label={
-              <>
-                By creating an account you are agreeing to our{" "}
-                <NavLink to="/terms-and-conditions" target="_blank">
-                  terms and conditions (opens in new window)
-                </NavLink>
-                . Read our{" "}
-                <NavLink to="/privacy-policy" target="_blank">
-                  privacy and cookies policy (opens in new window)
-                </NavLink>{" "}
-                to find out how we collect and use your personal data.
-              </>
-            }
-          />
-        </Form.Group>
-        <Form.Group className="mb-2" controlId="rememberMe">
-          <Form.Check
-            type="checkbox"
-            label="Remember me"
-            checked={rememberMe}
-            onChange={handleRememberMeStatus}
-          />
-        </Form.Group>
-        <Button
-          className="w-100"
-          variant="primary"
-          type="submit"
-          disabled={
-            !checkAllFieldsFilled({
-              username,
-              email,
-              password,
-              passwordConfirmation,
-              birthdate,
-              acceptTerms,
-            }) || loading
-          }
-        >
-          {loading ? "Registering... " : "Register"}
-        </Button>
-      </Form>
-      <div className="w-100 mb-2 position-absolute bottom-0 start-50 translate-middle-x text-white text-center">
-        Made by Hendrik C | &copy;2022
-      </div>
-    </div>
+
+          <CheckedContainers>
+            <CustomInputChecked
+              type="checkbox"
+              name="acceptTerms"
+              id="acceptTerms"
+              checked={acceptTerms}
+              onChange={handleChange}
+              required
+            />
+            <CustomLabel htmlFor="acceptTerms">
+              By creating an account, you agree to our &nbsp;
+              <a
+                href="/terms-and-conditions"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                terms and conditions
+              </a>
+              . Read our &nbsp;
+              <a
+                href="/privacy-policy"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                privacy and cookies policy &nbsp;
+              </a>
+              to find out how we collect and use your personal data.
+            </CustomLabel>
+          </CheckedContainers>
+
+          <CheckedContainers>
+            <CustomInputChecked
+              type="checkbox"
+              name="rememberMe"
+              id="rememberMe"
+              checked={rememberMe}
+              onChange={handleRememberMeStatus}
+            />
+            <CustomLabel htmlFor="rememberMe">Remember me</CustomLabel>
+          </CheckedContainers>
+        </FormContainer>
+      </CustomForm>
+    </Register>
   );
 };
 
 export default RegisterPage;
+
+const Register = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background-color: var(--bg-100);
+  .button {
+    margin: 0 100px;
+  }
+`;
+
+const FormContainer = styled.div`
+  width: 400px;
+  padding: 2rem;
+  border-radius: 5px;
+  background-color: var(--bg-200);
+  box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
+`;
+
+const CheckedContainers = styled.div`
+  display: flex;
+  gap: 5px;
+`;
+
+const CustomLabel = styled.label`
+  display: block;
+  margin-bottom: 5px;
+  font-size: 0.8rem;
+  color: var(--text-100);
+`;
+
+const CustomInput = styled.input`
+  display: block;
+  width: 100%;
+  padding: 10px;
+  border: 1px solid var(--border-1);
+  border-radius: 3px;
+  font-size: 1rem;
+  margin-bottom: 15px;
+`;
+
+const CustomInputChecked = styled.input`
+  display: block;
+  padding: 0px;
+  border: 1px solid var(--border-1);
+  border-radius: 3px;
+  font-size: 1rem;
+  margin-bottom: 15px;
+`;

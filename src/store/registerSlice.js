@@ -29,6 +29,9 @@ export const registerSlice = createSlice({
     setValidations: (state, action) => {
       state.validationErrors = action.payload;
     },
+    resetValidationErrors: (state) => {
+      state.validationErrors = {};
+    },
     resetForm: (state) => {
       state.loading = false;
       state.validationErrors = {};
@@ -48,5 +51,6 @@ export const registerSlice = createSlice({
   },
 });
 
-export const { setValidations, resetForm } = registerSlice.actions;
+export const { setValidations, resetForm, resetValidationErrors } =
+  registerSlice.actions;
 export default registerSlice.reducer;

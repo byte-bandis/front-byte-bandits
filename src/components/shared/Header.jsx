@@ -66,7 +66,7 @@ const Header = () => {
   ];
 
   const filteredTagOptions = TAG_OPTIONS.filter(
-    (tag) => tag.text !== "All categories"
+    (tag) => tag.text !== "All categories",
   );
 
   return (
@@ -79,20 +79,9 @@ const Header = () => {
           </SearchContainer>
           {isAuthenticated ? (
             <>
-              <HeartLink
-                to={"/myaccount"}
-                size={30}
-                className="heartHead"
-              />
-              <EmailLink
-                to={"/myaccount"}
-                size={35}
-                className="emailHead"
-              />
-              <DropdownLink
-                options={dropdownOptions}
-                className="myAccount"
-              >
+              <HeartLink to={"/myaccount"} size={30} className="heartHead" />
+              <EmailLink to={"/myaccount"} size={35} className="emailHead" />
+              <DropdownLink options={dropdownOptions} className="myAccount">
                 My account
               </DropdownLink>
               <CustomButton
@@ -127,10 +116,7 @@ const Header = () => {
         </StyledNav>
       </StyledContainer>
       <StyledTagsNavContainer>
-        <DropdownLink
-          options={TAG_OPTIONS}
-          className="allCategories"
-        >
+        <DropdownLink options={TAG_OPTIONS} className="allCategories">
           All categories
         </DropdownLink>
         <TagsNav

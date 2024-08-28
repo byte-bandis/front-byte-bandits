@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import logo from "../../../public/ICraftYou.png";
+import logo from "../../assets/images/ICraftYou.png";
 
 import styled from "styled-components";
 

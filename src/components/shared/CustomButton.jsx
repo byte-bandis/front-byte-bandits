@@ -8,7 +8,9 @@ const CustomButton = ({ children, to, className, ...rest }) => {
       {children}
     </StyledLinkButton>
   ) : (
-    <StyleButton className={className} {...rest}></StyleButton>
+    <StyleButton className={className} {...rest}>
+      {children}
+    </StyleButton>
   );
 };
 
@@ -21,19 +23,25 @@ CustomButton.propTypes = {
 export default CustomButton;
 
 const StyledLinkButton = styled(Link)`
-  padding: ${({ padding }) => padding || "10px 20px"};
-  border-radius: ${({ borderRadius }) => borderRadius || "5px"};
-  text-decoration: ${({ textDecoration }) => textDecoration || "none"};
-  color: ${({ color }) => color || "white"};
-  background-color: ${({ backgroundColor }) => backgroundColor || "blue"};
-  margin-left: ${({ marginLeft }) => marginLeft || "0px"};
+  padding: ${(props) => props.$padding || "10px 20px"};
+  border-radius: ${(props) => props.$borderRadius || "5px"};
+  text-decoration: ${(props) => props.$textDecoration || "none"};
+  color: ${(props) => props.$color || "white"};
+  background-color: ${(props) =>
+    props.$disabled ? "lightblue" : props.$backgroundColor || "blue"};
+  margin-left: ${(props) => props.$marginLeft || "0px"};
+  border: ${(props) => props.$border || "none"};
 `;
 
 const StyleButton = styled.button`
-  padding: ${({ padding }) => padding || "10px 20px"};
-  border-radius: ${({ borderRadius }) => borderRadius || "5px"};
-  text-decoration: ${({ textDecoration }) => textDecoration || "none"};
-  color: ${({ color }) => color || "white"};
-  background-color: ${({ backgroundColor }) => backgroundColor || "blue"};
-  margin-left: ${({ marginLeft }) => marginLeft || "0px"};
+  padding: ${(props) => props.$padding || "10px 20px"};
+  border-radius: ${(props) => props.$borderRadius || "5px"};
+  text-decoration: ${(props) => props.$textDecoration || "none"};
+  color: ${(props) => props.$color || "white"};
+  background-color: ${(props) =>
+    props.$disabled
+      ? "lightblue"
+      : props.$backgroundColor || "var(--primary-200)"};
+  margin-left: ${(props) => props.$marginLeft || "0px"};
+  border: ${(props) => props.$border || "none"};
 `;

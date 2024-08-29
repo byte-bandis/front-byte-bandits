@@ -12,6 +12,7 @@ import CommentItem from './components/CommentItem';
 import CommentForm from './components/CommentForm';
 import { getComments } from '../../store/commentsThunk';
 import Confirmator from '../../components/shared/Confirmator';
+import { getSinglePublicProfileWithThunk } from '../../store/profilesThunk';
 
 const ProductView = () => {
     const navigate = useNavigate();
@@ -48,8 +49,18 @@ const ProductView = () => {
     };
     const handleDelete = () => {
         setHideDelete(true);
-
     };
+    useEffect(() => {
+        const publicProfile = async () => {
+            console.log(owner);
+            await dispatch(getSinglePublicProfileWithThunk(owner.username));
+        };
+        publicProfile();
+    }, [owner, dispatch]);
+    const userphoto = useSelector(
+        (state) => state.singlePublicProfile.data.userPhoto
+    );
+    console.log(userphoto);
     const userid = useSelector((state) => state.authState.user.userId);
     const handleLike = () => {
         dispatch(setLike(productId, userid));
@@ -62,34 +73,41 @@ const ProductView = () => {
             setOwnerId(loadedAds.user);
         }
     }, [loadedAds, productId, dispatch]);
-    console.log(owner);
+    console.log(owner._id);
     console.log(authUser);
     const handleDeleteConfirm = async () => {
         dispatch(deleteAd(productId));
     };
+    console.log(owner);
 
     if (loadedAds) {
         const { adTitle, adBody, sell, price, photo, tags } = loadedAds;
         const image = photo ? `${photo}` : '../../assets/images/no-image.jpg';
-
         return (
             <>
                 {
                     <Confirmator
-                       textValue='borrar este anuncio?'
-                       onConfirm={handleDeleteConfirm}
-                       hidden={hideDelete}
-                       sethiden={setHideDelete}
+                        textValue='borrar este anuncio?'
+                        onConfirm={handleDeleteConfirm}
+                        hidden={hideDelete}
+                        sethiden={setHideDelete}
                     />
                 }
                 <StyledAdvertPage className='advert'>
-                    <Button className='heart' onClick={handleLike}>
-                        {iLikeIt ? (
-                            <HeartFill color='red' />
-                        ) : (
-                            <Heart color='red' />
-                        )}
-                    </Button>
+                    {iLikeIt ? (
+                        <HeartFill
+                            className='heart'
+                            color='red'
+                            onClick={handleLike}
+                        />
+                    ) : (
+                        <Heart
+                            className='heart'
+                            color='red'
+                            onClick={handleLike}
+                        />
+                    )}
+
                     {adTitle && (
                         <>
                             <div className='advert-img-container'>
@@ -106,6 +124,15 @@ const ProductView = () => {
                                         alt='Articulo sin foto'
                                     />
                                 )}
+                            </div>
+                            <div className='userBlock'>
+                                <img
+                                    className='userPhoto'
+                                    src={userphoto}
+                                    alt='userphoto'
+                                    crossOrigin={origin}
+                                />
+                                <p className='username'>{owner.username}</p>
                             </div>
                             <div className='advert-priceNameBlock'>
                                 <h2>{adTitle}</h2>
@@ -124,7 +151,7 @@ const ProductView = () => {
                             </div>
                             {
                                 <div>
-                                    {authUser === owner && (
+                                    {authUser === owner._id && (
                                         <Button
                                             id='removeAdButton'
                                             onClick={handleDelete}
@@ -217,7 +244,24 @@ const StyledAdvertPage = styled.div`
         margin-left: 14px;
         color: var(--text-1);
     }
-
+    & .userBlock {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        width: 100%;
+        height: 25px;
+        margin-left: 14px;
+    }
+    & .username {
+        font-weight: bold;
+        margin: 0;
+    }
+    & .userPhoto {
+        width: 25px;
+        height: 25px;
+        border-radius: 50%;
+        object-fit: cover;
+    }
     & .advert-priceNameBlock {
         display: flex;
         flex-direction: column;

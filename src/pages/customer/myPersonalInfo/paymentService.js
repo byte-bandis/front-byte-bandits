@@ -40,8 +40,7 @@ export const updateMyCreditCard = async (username, formData) => {
 
 export const resetMyCreditCard = async (username) => {
   const resetData = {
-    creditCard: "1234123412341234",
-    last4Digits: "",
+    creditCard: "Insert your credit card here",
   };
   const url = `${userURL}/${username}/mycreditcard`;
   return client.put(url, resetData).then((response) => {

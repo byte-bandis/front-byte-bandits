@@ -32,6 +32,7 @@ export const updateMyCreditCardWithThunk = createAsyncThunk(
       const response = await payment.updateMyCreditCard(username, formData);
       return response;
     } catch (error) {
+      console.log("Esto es error en el creditCardThunk: ", error);
       return rejectWithValue(error.message);
     }
   }

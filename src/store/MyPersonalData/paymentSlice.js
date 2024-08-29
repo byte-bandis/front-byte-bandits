@@ -7,6 +7,8 @@ import {
 } from "./myPaymentsThunk";
 
 export const defaultPaymentState = {
+  success: false,
+  message: "",
   data: {},
 };
 
@@ -26,6 +28,8 @@ const myPaymentsSlice = createSlice({
       state.data = action.payload.data;
     });
     builder.addCase(updateMyCreditCardWithThunk.fulfilled, (state, action) => {
+      state.success = action.payload.success;
+      state.message = action.payload.message;
       state.data = action.payload.data;
     });
     builder.addCase(deleteMyCreditCardWithThunk.fulfilled, (state, action) => {

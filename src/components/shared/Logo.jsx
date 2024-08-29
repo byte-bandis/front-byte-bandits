@@ -18,8 +18,8 @@ const Logo = () => {
 export default Logo;
 
 const StyledLogo = styled.div`
-  width: ${({ width }) => width || "70px"};
-  height: ${({ height }) => height || "auto"};
+  width: ${(props) => props.$CustomWidth || "70px"};
+  height: ${(props) => props.$CustomHeight || "auto"};
 
   img.logo {
     width: 100%;

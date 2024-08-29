@@ -3,7 +3,7 @@ import Search from "../../pages/search/Search";
 import { useLocation, useNavigate } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import Logo from "./Logo";
-import CustomButton from "./CustomButton";
+import RegularButton from "./buttons/RegularButton";
 import EmailLink from "./EmailLink";
 import HeartLink from "./HeartLink";
 import { logout } from "../../pages/auth/service";
@@ -13,31 +13,47 @@ import { resetSinglePublicProfile } from "../../store/singlePublicProfileSlice";
 import TagsNav from "./TagsNav";
 import { getLoggedUserName } from "../../store/selectors";
 import { resetUI } from "../../store/uiSlice";
+import Confirmator from "./Confirmator";
+import { useState } from "react";
 
 const Header = () => {
   const location = useLocation();
   const isAuthenticated = useSelector((state) => state.authState.authState);
+  const [showConfirmator, setShowConfirmator] = useState(false);
 
   const loggedUser = useSelector(getLoggedUserName);
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
   const handleLogout = () => {
-    const confirmed = window.confirm("Are you sure to close your session?");
-    if (confirmed) {
-      logout();
-      dispatch(resetLoggedUserInfo());
-      dispatch(resetSinglePublicProfile());
-      dispatch(resetUI());
-      setTimeout(() => {
-        navigate("/");
-      }, 1000);
+    logout();
+    dispatch(resetLoggedUserInfo());
+    dispatch(resetSinglePublicProfile());
+    dispatch(resetUI());
+    setTimeout(() => {
+      navigate("/");
+    }, 1000);
+  };
+
+  const handleSellButton = () => {
+    if (isAuthenticated) {
+      navigate(`${loggedUser}/new`);
+    } else {
+      navigate("/login", { state: { from: location } });
     }
   };
 
   const dropdownOptions = [
     { text: "User Zone", to: `${loggedUser}/myaccount`, className: "UserZone" },
-    { text: "Log out", onClick: handleLogout, className: "Logout" },
+    {
+      text: "Log out",
+      onClick: () => {
+        console.log("Setting showConfirmator to true");
+        setShowConfirmator(true);
+        console.log("Setting now to true?");
+      },
+      className: "Logout",
+    },
   ];
 
   const TAG_OPTIONS = [
@@ -52,7 +68,7 @@ const Header = () => {
       text: "lifestyle",
     },
     {
-      to: `?tags=mobilele&sell=true`,
+      to: `?tags=mobile&sell=true`,
       className: "mobile",
       text: "mobile",
     },
@@ -71,6 +87,14 @@ const Header = () => {
 
   return (
     <>
+      {showConfirmator && (
+        <Confirmator
+          textValue="cerrar su sesión de usuario?"
+          onConfirm={handleLogout}
+          sethiden={() => setShowConfirmator(false)}
+          hidden={showConfirmator}
+        />
+      )}
       <StyledContainer>
         <StyledNav className="d-flex align-items-center w-100">
           <Logo />
@@ -81,36 +105,48 @@ const Header = () => {
             <>
               <HeartLink to={"/myaccount"} size={30} className="heartHead" />
               <EmailLink to={"/myaccount"} size={35} className="emailHead" />
-              <DropdownLink options={dropdownOptions} className="myAccount">
+              <DropdownLink
+                options={dropdownOptions}
+                className="myAccount"
+                $CustomWidth="120px"
+              >
                 My account
               </DropdownLink>
-              <CustomButton
-                to={`${loggedUser}/new`}
+              <RegularButton
+                onClick={handleSellButton}
                 className="sellButton"
-                $marginLeft="25px"
-                $backgroundColor="var(--accent-100)"
+                $customMargin="0px 25px"
+                $customBackGroundColor="var(--accent-100)"
+                $CustomPadding="5px"
+                $customBorder="none"
               >
                 Sell - Buy
-              </CustomButton>
+              </RegularButton>
             </>
           ) : (
             <>
-              <CustomButton
-                to="/login"
+              <RegularButton
+                onClick={() =>
+                  navigate("/login", { state: { from: location } })
+                }
                 state={{ from: location }}
                 className="login"
                 $backgroundColor="var(--primary-200)"
               >
                 Login or register
-              </CustomButton>
-              <CustomButton
-                to="/login"
+              </RegularButton>
+              <RegularButton
+                onClick={() =>
+                  navigate("/login", { state: { from: location } })
+                }
                 className="sellButton"
-                $marginLeft="25px"
-                $backgroundColor="var(--accent-100)"
+                $customMargin="0px 25px"
+                $customBackGroundColor="var(--accent-100)"
+                $CustomPadding="5px"
+                $customBorder="none"
               >
                 Sell - Buy
-              </CustomButton>
+              </RegularButton>
             </>
           )}
         </StyledNav>
@@ -131,53 +167,65 @@ const Header = () => {
 export default Header;
 
 const StyledContainer = styled.div`
-  padding: 0 15px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  width: 100%;
+  position: ${(props) => props.$CustomPosition || "fixed"};
+  top: ${(props) => props.$CustomTop || 0};
+  left: ${(props) => props.$CustomLeft || 0};
+  right: ${(props) => props.$CustomRight || 0};
+  padding: ${(props) => props.$CustomPadding || "0 15px"};
+  display: ${(props) => props.$CustomDisplay || "flex"};
+  justify-content: ${(props) => props.$CustomJustifyContent || "space-between"};
+  align-items: ${(props) => props.$CustomAlignItems || "center"};
+  width: ${(props) => props.$CustomWidth || "100%"};
+  z-index: ${(props) => props.$CustomZIndex || 2000};
+  background-color: ${(props) =>
+    props.$customBackGroundColor || "var(--bg-100)"};
 `;
 
 const StyledNav = styled.nav`
-  display: flex;
-  align-items: center;
-  width: 100%;
+  display: ${(props) => props.$CustomDisplay || "flex"};
+  align-items: ${(props) => props.$CustomAlignItems || "center"};
+  width: ${(props) => props.$CustomWidth || "100%"};
 `;
 
 const SearchContainer = styled.div`
-  flex-grow: 1;
-  margin: 0 15px;
+  flex-grow: ${(props) => props.$CustomFlexGrow || 1};
+  margin: ${(props) => props.$CustomMargin || "0 15px"};
 `;
 
 const StyledTagsNavContainer = styled.div`
-  display: flex;
-  justify-content: flex-start;
-  align-items: center;
-  width: 100%;
-
+  position: ${(props) => props.$CustomPosition || "fixed"};
+  top: ${(props) => props.$CustomTop || "60px"};
+  left: ${(props) => props.$CustomLeft || 0};
+  right: ${(props) => props.$CustomRight || 0};
+  display: ${(props) => props.$CustomDisplay || "flex"};
+  justify-content: ${(props) => props.$CustomJustifyContent || "flex-start"};
+  align-items: ${(props) => props.$CustomAlignItems || "center"};
+  width: ${(props) => props.$CustomWidth || "100%"};
+  background-color: ${(props) =>
+    props.$customBackGroundColor || "var(--bg-100)"};
   .allCategories {
-    margin-right: 20px;
+    margin-right: ${(props) => props.$CustomMarginRight || "20px"};
   }
 
   .TagsNavegation {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    align-items: center;
-    gap: 20px;
+    display: ${(props) => props.$CustomDisplay || "flex"};
+    flex-wrap: ${(props) => props.$CustomFlexWrap || "wrap"};
+    justify-content: ${(props) => props.$CustomJustifyContent || "center"};
+    align-items: ${(props) => props.$CustomAlignItems || "center"};
+    gap: ${(props) => props.$CustomGap || "20px"};
   }
 
   @media (max-width: 768px) {
-    flex-direction: column;
-    align-items: center;
+    flex-direction: ${(props) => props.$CustomFlexDirection || "column"};
+    align-items: ${(props) => props.$CustomAlignItems || "center"};
 
     .allCategories {
-      margin-right: 0;
-      margin-bottom: 10px;
+      margin-right: ${(props) => props.$CustomMarginRight || "0"};
+      margin-bottom: ${(props) => props.$CustomMarginBottom || "10px"};
     }
 
     .TagsNavegation {
-      justify-content: center;
+      justify-content: ${(props) => props.$CustomJustifyContent || "center"};
     }
   }
 `;

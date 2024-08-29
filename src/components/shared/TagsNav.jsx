@@ -31,31 +31,31 @@ export default TagsNav;
 
 const StyledNav = styled(Nav)`
   display: flex;
-  width: ${({ width }) => width || "80%"};
-  flex-wrap: ${({ flexWrap }) => flexWrap || "nowrap"};
-  gap: ${({ gap }) => gap || "10px"};
-  padding: ${({ padding }) => padding || "15px"};
-  background-color: ${({ backgroundColor }) =>
-    backgroundColor || "var(--advert-1)"};
-  border-radius: ${({ borderRadius }) => borderRadius || "5px"};
+  width: ${(props) => props.$CustomWidth || "80%"};
+  flex-wrap: ${(props) => props.$CustomFlexWrap || "nowrap"};
+  gap: ${(props) => props.$CustomGap || "10px"};
+  padding: ${(props) => props.$CustomPadding || "15px"};
+  background-color: ${(props) =>
+    props.$CustomBackgroundColor || "var(--advert-1)"};
+  border-radius: ${(props) => props.$CustomBorderRadius || "5px"};
   list-style: none;
 `;
 
 const NavItem = styled(Nav.Item)`
-  flex: ${({ flex }) => flex || "1 1 calc(50% - 10px)"};
+  flex: ${(props) => props.$CustomFlex || "1 1 calc(50% - 10px)"};
 `;
 
 const NavLink = styled(Nav.Link)`
   display: block;
-  padding: ${({ padding }) => padding || "10px 15px"};
-  color: ${({ color }) => color || "var(--text-100)"};
-  background-color: ${({ backgroundColor }) =>
-    backgroundColor || "var(--bg-300)"};
-  border-radius: ${({ borderRadius }) => borderRadius || "5px"};
+  padding: ${(props) => props.$CustomPadding || "5px"};
+  color: ${(props) => props.$CustomColor || "var(--text-100)"};
+  background-color: ${(props) =>
+    props.$CustomBackgroundColor || "var(--bg-300)"};
+  border-radius: ${(props) => props.$CustomBorderRadius || "5px"};
   text-align: center;
   text-decoration: none;
 
   &:hover {
-    color: ${({ hoverColor }) => hoverColor || "var(--bg-100)"};
+    color: ${(props) => props.$CustomHoverColor || "var(--bg-100)"};
   }
 `;

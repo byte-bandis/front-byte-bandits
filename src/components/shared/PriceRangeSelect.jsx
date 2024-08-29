@@ -80,23 +80,27 @@ PriceRangeSelect.propTypes = {
 export default PriceRangeSelect;
 
 const Container = styled.div`
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-  padding: 15px;
-  background-color: var(--advert-1);
-  border-radius: 5px;
+  display: ${(props) => props.$CustomDisplay || "flex"};
+  flex-direction: ${(props) => props.$CustomFlexDirection || "column"};
+  gap: ${(props) => props.$CustomGap || "10px"};
+  padding: ${(props) => props.$CustomPadding || "15px"};
+  background-color: ${(props) =>
+    props.$CustomBackgroundColor || "var(--advert-1)"};
+  border-radius: ${(props) => props.$CustomBorderRadius || "5px"};
 `;
 
 const Label = styled.div`
-  color: var(--text-1);
+  color: ${(props) => props.$CustomColor || "var(--text-1)"};
 `;
 
 const Input = styled(Form.Control)`
-border: 1px solid var(--border-1);
-border-radius: 5px;
-padding: 8px
-&:focus{
-border-color: var(--border-1);
-box-shadow: 0 0 0 0.2rem rgba(13,110,253,0.25)}
+  border: ${(props) => props.$CustomBorder || "1px solid var(--border-1)"};
+  border-radius: ${(props) => props.$CustomBorderRadius || "5px"};
+  padding: ${(props) => props.$CustomPadding || "8px"};
+
+  &:focus {
+    border-color: ${(props) => props.$CustomBorderColor || "var(--border-1)"};
+    box-shadow: ${(props) =>
+      props.$CustomBoxShadow || "0 0 0 0.2rem rgba(13,110,253,0.25)"};
+  }
 `;

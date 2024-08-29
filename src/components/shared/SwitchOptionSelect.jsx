@@ -34,47 +34,51 @@ SwitchOptionSelect.propTypes = {
 export default SwitchOptionSelect;
 
 const StyledLabel = styled(Form.Label)`
-  display: block;
-  margin-bottom: 5px;
-  color: var(--text-1);
+  display: ${(props) => props.$CustomDisplay || "block"};
+  margin-bottom: ${(props) => props.$CustomMarginBottom || "5px"};
+  color: ${(props) => props.$CustomColor || "var(--text-1)"};
 `;
 
 const StyledSwitch = styled(Form.Check)`
   .form-check-input {
-    width: 50px;
-    height: 25px;
-    background-color: var(--bg-3);
-    border-radius: 50px;
-    position: relative;
-    cursor: pointer;
-    border: none;
+    width: ${(props) => props.$CustomWidth || "50px"};
+    height: ${(props) => props.$CustomHeight || "25px"};
+    background-color: ${(props) =>
+      props.$CustomBackgroundColor || "var(--bg-3)"};
+    border-radius: ${(props) => props.$CustomBorderRadius || "50px"};
+    position: ${(props) => props.$CustomPosition || "relative"};
+    cursor: ${(props) => props.$CustomCursor || "pointer"};
+    border: ${(props) => props.$CustomBorder || "none"};
     appearance: none;
     -webkit-appearance: none;
-    transition: background-color 0.3s;
+    transition: ${(props) =>
+      props.$CustomTransition || "background-color 0.3s"};
   }
 
   .form-check-input:checked {
-    background-color: var(--botton-1);
+    background-color: ${(props) =>
+      props.$CustomCheckedBackgroundColor || "var(--botton-1)"};
   }
 
   .form-check-input::before {
     content: "";
-    position: absolute;
-    top: 2px;
-    left: 2px;
-    width: 21px;
-    height: 21px;
-    background-color: var(--botton-2);
-    border-radius: 50%;
-    transition: transform 0.3s;
+    position: ${(props) => props.$CustomPosition || "absolute"};
+    top: ${(props) => props.$CustomTop || "2px"};
+    left: ${(props) => props.$CustomLeft || "2px"};
+    width: ${(props) => props.$CustomWidth || "21px"};
+    height: ${(props) => props.$CustomHeight || "21px"};
+    background-color: ${(props) =>
+      props.$CustomBackgroundColor || "var(--botton-2)"};
+    border-radius: ${(props) => props.$CustomBorderRadius || "50%"};
+    transition: ${(props) => props.$CustomTransition || "transform 0.3s"};
   }
 
   .form-check-input:checked::before {
-    transform: translateX(25px);
+    transform: ${(props) => props.$CustomTransform || "translateX(25px)"};
   }
 
   .form-check-label {
-    margin-left: 10px;
-    color: var(--text-1);
+    margin-left: ${(props) => props.$CustomMarginLeft || "10px"};
+    color: ${(props) => props.$CustomColor || "var(--text-1)"};
   }
 `;

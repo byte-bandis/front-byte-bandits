@@ -1,5 +1,5 @@
 import Form from "react-bootstrap/Form";
-import CustomButton from "react-bootstrap/Button";
+import RegularButton from "../buttons/RegularButton";
 import styles from "./search.module.css";
 
 const Search = () => {
@@ -12,9 +12,12 @@ const Search = () => {
           className={styles.barSearch}
           aria-label="Search"
         />
-        <CustomButton variant="outline-success" className={styles.buttonSearch}>
+        <RegularButton
+          variant="outline-success"
+          className={styles.buttonSearch}
+        >
           Search
-        </CustomButton>
+        </RegularButton>
       </Form>
     </>
   );

@@ -1,6 +1,6 @@
 import styled from "styled-components";
 import P from "prop-types";
-import CustomButton from "./CustomButton";
+import RegularButton from "./buttons/RegularButton";
 
 const CustomForm = ({
   children,
@@ -17,9 +17,9 @@ const CustomForm = ({
         <StyledLegend>{children}</StyledLegend>
 
         <ButtonContainer>
-          <CustomButton $type="submit" $disabled={disableSubmit || isLoading}>
+          <RegularButton $type="submit" $disabled={disableSubmit || isLoading}>
             {isLoading ? "Submitting..." : submitButtonText}
-          </CustomButton>
+          </RegularButton>
         </ButtonContainer>
       </form>
     </StyledForm>
@@ -38,22 +38,22 @@ CustomForm.propTypes = {
 };
 
 const StyledForm = styled.div`
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
+  display: ${(props) => props.$CustomDisplay || "flex"};
+  flex-direction: ${(props) => props.$CustomFlexDirection || "column"};
+  justify-content: ${(props) => props.$CustomJustifyContent || "center"};
+  align-items: ${(props) => props.$CustomAlignItems || "center"};
 `;
 
 const StyledLegend = styled.div`
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
+  display: ${(props) => props.$CustomDisplay || "flex"};
+  flex-direction: ${(props) => props.$CustomFlexDirection || "column"};
+  justify-content: ${(props) => props.$CustomJustifyContent || "center"};
+  align-items: ${(props) => props.$CustomAlignItems || "center"};
 `;
 
 const ButtonContainer = styled.div`
-  display: flex;
-  justify-content: center;
-  width: 100%;
-  margin-top: 20px;
+  display: ${(props) => props.$CustomDisplay || "flex"};
+  justify-content: ${(props) => props.$CustomJustifyContent || "center"};
+  width: ${(props) => props.$CustomWidth || "100%"};
+  margin-top: ${(props) => props.$CustomMarginTop || "20px"};
 `;

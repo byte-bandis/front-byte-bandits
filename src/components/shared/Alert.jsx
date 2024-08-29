@@ -26,10 +26,10 @@ CustomAlert.propTypes = {
 };
 
 const AlertMessage = styled.div`
-  padding: ${(props) => props.$padding || "15px"};
-  margin-bottom: ${(props) => props.$marginBottom || "0px"};
-  border: ${(props) => props.$border || "1px solid transparent"};
-  border-radius: ${(props) => props.$borderRadius || "4px"};
+  padding: ${(props) => props.$CustomPadding || "15px"};
+  margin-bottom: ${(props) => props.$CustomMarginBottom || "0px"};
+  border: ${(props) => props.$CustomBorder || "1px solid transparent"};
+  border-radius: ${(props) => props.$CustomBorderRadius || "4px"};
   background-color: ${(props) =>
     props.variant === "success"
       ? "var(--success-2)"
@@ -39,9 +39,9 @@ const AlertMessage = styled.div`
 `;
 
 const CloseButton = styled.button`
-  background: ${(props) => props.$background || "none"};
-  border: ${(props) => props.$border || "none"};
-  font-size: ${(props) => props.$fontSize || "16px"};
+  background: ${(props) => props.$CustomBackground || "none"};
+  border: ${(props) => props.$CustomBorder || "none"};
+  font-size: ${(props) => props.$CustomFontSize || "16px"};
   float: right;
   cursor: pointer;
 `;

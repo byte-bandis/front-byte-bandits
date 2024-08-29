@@ -71,6 +71,7 @@ const CreditCard = () => {
     }
     if (uiState === "error") {
       setErrorAlert(true);
+      setSuccessAlert(false);
     }
   }, [uiState]);
 

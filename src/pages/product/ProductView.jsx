@@ -52,7 +52,6 @@ const ProductView = () => {
     };
     useEffect(() => {
         const publicProfile = async () => {
-            console.log(owner);
             await dispatch(getSinglePublicProfileWithThunk(owner.username));
         };
         publicProfile();
@@ -60,7 +59,6 @@ const ProductView = () => {
     const userphoto = useSelector(
         (state) => state.singlePublicProfile.data.userPhoto
     );
-    console.log(userphoto);
     const userid = useSelector((state) => state.authState.user.userId);
     const handleLike = () => {
         dispatch(setLike(productId, userid));
@@ -73,12 +71,9 @@ const ProductView = () => {
             setOwnerId(loadedAds.user);
         }
     }, [loadedAds, productId, dispatch]);
-    console.log(owner._id);
-    console.log(authUser);
     const handleDeleteConfirm = async () => {
         dispatch(deleteAd(productId));
     };
-    console.log(owner);
 
     if (loadedAds) {
         const { adTitle, adBody, sell, price, photo, tags } = loadedAds;
@@ -96,15 +91,15 @@ const ProductView = () => {
                 <StyledAdvertPage className='advert'>
                     {iLikeIt ? (
                         <HeartFill
-                            className='heart'
+                            className={authUser ? 'heart heartbutton' : 'heart'}
                             color='red'
-                            onClick={handleLike}
+                            onClick={authUser ? handleLike : null}
                         />
                     ) : (
                         <Heart
-                            className='heart'
+                            className={authUser ? 'heart heartbutton' : 'heart'}
                             color='red'
-                            onClick={handleLike}
+                            onClick={authUser ? handleLike : null}
                         />
                     )}
 
@@ -237,6 +232,9 @@ const StyledAdvertPage = styled.div`
         top: 30px;
         left: 30px;
         z-index: 10;
+    }
+    & .heartbutton {
+        cursor: pointer;
     }
     & h2,
     h1,

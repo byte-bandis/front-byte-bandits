@@ -1,6 +1,5 @@
 import { configureStore } from "@reduxjs/toolkit";
 import authReducer from "./authSlice";
-import errorReducer from "./errorSlice";
 import registerReducer from "./registerSlice";
 import uiReducer from "./uiSlice";
 import adsReducer from "./adsSlice";
@@ -17,7 +16,6 @@ export const store = configureStore({
     commentsSlice: commentsSlice,
     authState: authReducer,
     register: registerReducer,
-    errorState: errorReducer,
     ui: uiReducer,
     adsState: adsReducer,
     publicProfiles: publicProfilesReducer,

@@ -15,9 +15,12 @@ const ProductList = () => {
     const userid = useSelector((state) => state.authState.user.userId);
     const errorUi = useSelector((state) => state.ui);
     const filters = useSelector((state) => state.adsState.filters);
+    const adsData = useSelector((state) => state.adsState.data);
+
     const resetError = () => {
         dispatch(resetMessage());
     };
+
     let error = null;
     if (errorUi.state === 'error') {
         error = errorUi.message;
@@ -29,8 +32,6 @@ const ProductList = () => {
             dispatch(getWishlist(userid));
         }
     }, [dispatch, page, userid, filters]);
-
-    const adsData = useSelector((state) => state.adsState.data);
 
     return (
         <>

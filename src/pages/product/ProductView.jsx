@@ -1,6 +1,6 @@
 import PropTypes from 'prop-types';
 import { useDispatch, useSelector } from 'react-redux';
-import { useLocation, useNavigate, useParams } from 'react-router-dom';
+import { Link, useLocation, useNavigate, useParams } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import { deleteAd, getAds } from '../../store/adsThunk';
 import styled from 'styled-components';
@@ -120,7 +120,7 @@ const ProductView = () => {
                                     />
                                 )}
                             </div>
-                            <div className='userBlock'>
+                            <Link className='userBlock' to={`/${owner.username}`}>
                                 <img
                                     className='userPhoto'
                                     src={userphoto}
@@ -128,7 +128,7 @@ const ProductView = () => {
                                     crossOrigin={origin}
                                 />
                                 <p className='username'>{owner.username}</p>
-                            </div>
+                            </Link>
                             <div className='advert-priceNameBlock'>
                                 <h2>{adTitle}</h2>
                                 <h2>{`${price}  €`}</h2>

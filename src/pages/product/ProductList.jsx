@@ -8,7 +8,6 @@ import Pager from "../pagination/Pager";
 import { getWishlist } from "../../store/likesThunk";
 import ErrorMessage from "./components/ErrorMessage";
 import { resetMessage } from "../../store/uiSlice";
-import ReplaceHeaderSpace from "../../components/shared/ReplaceHeaderSpace";
 
 const ProductList = () => {
   const dispatch = useDispatch();

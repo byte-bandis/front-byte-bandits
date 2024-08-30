@@ -35,7 +35,6 @@ const Address = () => {
     door: "",
     postalCode: "",
     city: "",
-    mobilePhoneNumber: "",
   });
 
   const containerStyles = {
@@ -72,7 +71,6 @@ const Address = () => {
       door: myAddress.door || "",
       postalCode: myAddress.postalCode || "",
       city: myAddress.city || "",
-      mobilePhoneNumber: myAddress.mobilePhoneNumber || "",
     });
   }, [myAddress]);
 
@@ -205,21 +203,6 @@ const Address = () => {
                     type="text"
                     name="country"
                     value={addressData.country}
-                    onChange={handleInputChange}
-                  />
-                )}
-              </StyledListItem>
-            </StyledContainer>
-            <StyledContainer {...containerStyles}>
-              <StyledListItem {...listItemStyles}>
-                <label>Phone Number:</label>
-                {!editMode ? (
-                  <div>{myAddress.mobilePhoneNumber}</div>
-                ) : (
-                  <input
-                    type="text"
-                    name="mobilePhoneNumber"
-                    value={addressData.mobilePhoneNumber}
                     onChange={handleInputChange}
                   />
                 )}

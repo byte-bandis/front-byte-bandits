@@ -39,6 +39,7 @@ const MyData = () => {
     email: "",
     password: "******",
     birthdate: "",
+    mobilePhoneNumber: "",
   });
   const uiState = useSelector(getUIState);
   const uiMessage = useSelector(getUIMessage);
@@ -88,10 +89,11 @@ const MyData = () => {
 
     setFormData({
       username: myData.username || "",
-      name: myData.name || "",
-      lastname: myData.lastname || "",
+      name: myData.name || "Your name",
+      lastname: myData.lastname || "Your last name",
       email: myData.email || "",
-      password: myData.password || "",
+      password: myData.password || "******",
+      mobilePhoneNumber: myData.mobilePhoneNumber || "Your phone",
       birthdate: myData.birthdate
         ? moment(myData.birthdate).format("DD-MM-YYYY")
         : "",
@@ -189,7 +191,7 @@ const MyData = () => {
                       name="name"
                       value={formData.name}
                       onChange={handleInputChange}
-                      placeholder="Name can not be empty"
+                      placeholder="Enter your name"
                       maxLength={18}
                       minLength={1}
                     />
@@ -205,7 +207,7 @@ const MyData = () => {
                       name="lastname"
                       value={formData.lastname}
                       onChange={handleInputChange}
-                      placeholder="Last name can not be empty"
+                      placeholder="Enter your last name"
                       maxLength={18}
                       minLength={1}
                     />
@@ -213,22 +215,7 @@ const MyData = () => {
                 </StyledListItem>
               </StyledContainer>
             </StyledContainer>
-            <StyledContainer {...containerStyles}>
-              <StyledListItem {...listItemStyles}>
-                <label>Email: </label>
-                {!editMode ? (
-                  <div>{myData.email}</div>
-                ) : (
-                  <input
-                    type="text"
-                    name="email"
-                    value={formData.email}
-                    onChange={handleInputChange}
-                    placeholder="Email can not be empty"
-                  />
-                )}
-              </StyledListItem>
-            </StyledContainer>
+
             <StyledContainer {...containerStyles}>
               <StyledListItem {...listItemStyles}>
                 <label>Password: </label>
@@ -245,6 +232,41 @@ const MyData = () => {
                 )}
               </StyledListItem>
             </StyledContainer>
+
+            <StyledContainer {...containerStyles}>
+              <StyledListItem {...listItemStyles}>
+                <label>Email: </label>
+                {!editMode ? (
+                  <div>{myData.email}</div>
+                ) : (
+                  <input
+                    type="text"
+                    name="email"
+                    value={formData.email}
+                    onChange={handleInputChange}
+                    placeholder="Email can not be empty"
+                  />
+                )}
+              </StyledListItem>
+            </StyledContainer>
+
+            <StyledContainer {...containerStyles}>
+              <StyledListItem {...listItemStyles}>
+                <label>Phone: </label>
+                {!editMode ? (
+                  <div>{myData.mobilePhoneNumber}</div>
+                ) : (
+                  <input
+                    type="text"
+                    name="mobilePhoneNumber"
+                    value={formData.mobilePhoneNumber}
+                    onChange={handleInputChange}
+                    placeholder="Enter your phone number"
+                  />
+                )}
+              </StyledListItem>
+            </StyledContainer>
+
             <StyledContainer {...containerStyles}>
               <StyledListItem {...listItemStyles}>
                 <label>Birth date: </label>

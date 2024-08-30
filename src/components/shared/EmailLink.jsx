@@ -25,11 +25,11 @@ EmailLink.propTypes = {
 export default EmailLink;
 
 const StyledEmailLink = styled(Link)`
-  margin-right: ${({ marginRight }) => marginRight || "30px"};
-  color: ${({ color }) => color || "blue"};
-  transition: ${({ transition }) => transition || "color 0.3s ease"};
+  margin-right: ${(props) => props.$CustomMarginRight || "30px"};
+  color: ${(props) => props.$CustomColor || "blue"};
+  transition: ${(props) => props.$CustomTransition || "color 0.3s ease"};
 
   .envelope-icon:hover {
-    color: ${({ hoverColor }) => hoverColor || "red"};
+    color: ${(props) => props.$CustomHoverColor || "red"};
   }
 `;

@@ -7,7 +7,7 @@ import Row from "react-bootstrap/Row";
 import Container from "react-bootstrap/Container";
 import { Accordion } from "react-bootstrap";
 import styles from "./Search.module.css";
-import CustomButton from "../../components/shared/CustomButton";
+import RegularButton from "../../components/shared/buttons/RegularButton";
 import SwitchOptionSelect from "../../components/shared/SwitchOptionSelect";
 import TagsOptionsSelect from "../../components/shared/TagsOptionsSelect";
 import { useDispatch } from "react-redux";
@@ -166,18 +166,18 @@ const Search = ({ maxPrice, minPrice }) => {
                     value={tags}
                   />
                   <div className={styles.buttonsSearch}>
-                    <CustomButton
+                    <RegularButton
                       className={styles.deleteSearch}
                       onClick={handledeleteSearch}
                     >
                       Delete search
-                    </CustomButton>
-                    <CustomButton
+                    </RegularButton>
+                    <RegularButton
                       className={styles.Search}
                       onClick={handleSearch}
                     >
                       Search
-                    </CustomButton>
+                    </RegularButton>
                   </div>
                 </Col>
               </Row>

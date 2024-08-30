@@ -50,12 +50,12 @@ TagsOptionsSelector.propTypes = {
 export default TagsOptionsSelector;
 
 const TagsContainer = styled.div`
-  display: flex;
-  flex-wrap: wrap;
-  gap: 10px;
+  display: ${(props) => props.$CustomDisplay || "flex"};
+  flex-wrap: ${(props) => props.$CustomFlexWrap || "wrap"};
+  gap: ${(props) => props.$CustomGap || "10px"};
 `;
 
 const TagColumn = styled.div`
-  flex: 1;
-  min-width: 150px;
+  flex: ${(props) => props.$CustomFlex || 1};
+  min-width: ${(props) => props.$CustomMinWidth || "150px"};
 `;

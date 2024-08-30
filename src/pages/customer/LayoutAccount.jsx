@@ -4,6 +4,7 @@ import { Container, Row } from "react-bootstrap";
 import { useEffect } from "react";
 import { useSelector } from "react-redux";
 import { getLoggedUserName } from "../../store/selectors";
+import ReplaceHeaderSpace from "../../components/shared/ReplaceHeaderSpace";
 
 const LayoutAccount = () => {
   const loggedUserName = useSelector(getLoggedUserName);
@@ -17,6 +18,7 @@ const LayoutAccount = () => {
   }, [loggedUserName, username, navigate]);
   return (
     <>
+      <ReplaceHeaderSpace></ReplaceHeaderSpace>
       <Container>
         <Row>
           <AccountMenu />

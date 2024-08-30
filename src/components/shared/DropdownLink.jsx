@@ -3,11 +3,26 @@ import PropTypes from "prop-types";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
 
-const DropdownLink = ({ children, className, options, ...rest }) => {
+const DropdownLink = ({
+  children,
+  className,
+  options,
+  dividerWith,
+  ...rest
+}) => {
   const [isOpen, setIsOpen] = useState(false);
 
   const toggleDropdown = () => {
     setIsOpen(!isOpen);
+  };
+
+  const handleItemClick = (option) => {
+    if (option.onClick) {
+      option.onClick();
+    }
+    if (option.to) {
+      setIsOpen(false);
+    }
   };
 
   return (
@@ -22,14 +37,13 @@ const DropdownLink = ({ children, className, options, ...rest }) => {
               <DropdownItem
                 as={option.to ? Link : "button"}
                 to={option.to}
-                onClick={() => {
-                  option.onClick && option.onClick();
-                  setIsOpen(false);
-                }}
+                onClick={() => handleItemClick(option)}
               >
                 {option.text}
               </DropdownItem>
-              {index < options.length - 1 && <DropdownDivider />}
+              {index < options.length - 1 && (
+                <DropdownDivider style={{ width: dividerWith }} />
+              )}
             </React.Fragment>
           ))}
         </DropdownMenu>
@@ -41,6 +55,7 @@ const DropdownLink = ({ children, className, options, ...rest }) => {
 DropdownLink.propTypes = {
   children: PropTypes.node.isRequired,
   className: PropTypes.string,
+  dividerWith: PropTypes.string,
   options: PropTypes.arrayOf(
     PropTypes.shape({
       text: PropTypes.string.isRequired,
@@ -53,54 +68,58 @@ DropdownLink.propTypes = {
 export default DropdownLink;
 
 const DropdownContainer = styled.div`
-  position: ${({ position }) => position || "relative"};
-  display: ${({ display }) => display || "inline-block"};
-  padding: ${({ padding }) => padding || "5px"};
+  position: ${(props) => props.$CustomPosition || "relative"};
+  display: ${(props) => props.$CustomDisplay || "inline-block"};
+  padding: ${(props) => props.$CustomPadding || "5px"};
 `;
 
 const DropdownToggle = styled.button`
-  background-color: ${({ backgroundColor }) =>
-    backgroundColor || "var(--primary-200)"};
-  color: ${({ color }) => color || "var(--botton-2)"};
-  padding: ${({ padding }) => padding || "11px"};
-  text-align: left;
-  border: ${({ border }) => border || "none"};
-  border-radius: ${({ borderRadius }) => borderRadius || "5px"};
+  background-color: ${(props) =>
+    props.$CustomBackgroundColor || "var(--primary-200)"};
+  color: ${(props) => props.$CustomColor || "var(--botton-2)"};
+  padding: ${(props) => props.$CustomPadding || "5px"};
+  text-align: ${(props) => props.$CustomTextAlign || "center"};
+  border: ${(props) => props.$CustomBorder || "none"};
+  border-radius: ${(props) => props.$CustomBorderRadius || "5px"};
+  width: ${(props) => props.$CustomWidth || "125px"};
 
-  &:hover,
-  &:focus {
-    background-color: ${({ hoverBackgroundColor }) =>
-      hoverBackgroundColor || "var(-bg--3)"};
-    color: ${({ hoverColor }) => hoverColor || "var(--boton-2)"};
+  &:hover {
+    background-color: ${(props) =>
+      props.$CustomHoverBackgroundColor || "var(--bg-3)"};
+    color: ${(props) => props.$CustomHoverColor || "var(--boton-2)"};
   }
 `;
 
 const DropdownMenu = styled.div`
-  display: ${({ display }) => display || "flex"};
-  flex-direction: ${({ flexDirection }) => flexDirection || "column"};
-  position: ${({ position }) => position || "absolute"};
-  background-color: ${({ backgroundColor }) =>
-    backgroundColor || "var(--bg-300)"};
-  box-shadow: ${({ boxShadow }) => boxShadow || "0px 8px 16px var(--shadow-1)"};
-  z-index: ${({ zIndex }) => zIndex || 1};
-  padding: ${({ padding }) => padding || "10% 10% 10% 10%"};
-  gap: ${({ gap }) => gap || "5px"};
-  border-radius: ${({ borderRadius }) => borderRadius || "5px"};
+  display: ${(props) => props.$CustomDisplay || "flex"};
+  flex-direction: ${(props) => props.$CustomFlexDirection || "column"};
+  position: ${(props) => props.$CustomPosition || "absolute"};
+  background-color: ${(props) =>
+    props.$CustomBackgroundColor || "var(--bg-300)"};
+  box-shadow: ${(props) =>
+    props.$CustomBoxShadow || "0px 8px 16px var(--shadow-1)"};
+  z-index: ${(props) => props.$CustomZIndex || 1};
+  padding: ${(props) => props.$CustomPadding || "10% 5% 10% 10%"};
+  gap: ${(props) => props.$CustomGap || "5px"};
+  border-radius: ${(props) => props.$CustomBorderRadius || "5px"};
 `;
 
 const DropdownItem = styled.div`
-  color: ${({ color }) => color || "var(--text-100)"};
-  width: ${({ width }) => width || "100%"};
-
+  color: ${(props) => props.$CustomColor || "var(--text-100)"};
+  width: ${(props) => props.$CustomWidth || "100%"};
+  border: ${(props) => props.$CustomBorder || "none"};
+  background-color: ${(props) =>
+    props.$CustomBackgroundColor || "var(--bg-300)"};
+  text-align: ${(props) => props.$CustomTextAlign || "center"};
   &:hover {
-    color: ${({ hoverColor }) => hoverColor || "white"};
+    color: ${(props) => props.$CustomHoverColor || "white"};
   }
 `;
 
 const DropdownDivider = styled.div`
-  border-bottom: ${({ borderBottom }) =>
-    borderBottom || "1px solid var(--text-100)"};
-  margin: ${({ margin }) => margin || "0.5rem 0"};
-  width: ${({ width }) => width || "130%"};
-  margin-left: ${({ marginLeft }) => marginLeft || "-12px"};
+  border-bottom: ${(props) =>
+    props.$CustomBorderBottom || "1px solid var(--text-100)"};
+  margin: ${(props) => props.$CustomMargin || "0.5rem 0"};
+  width: ${(props) => props.$CustomWidth || "118%"};
+  margin-left: ${(props) => props.$CustomMarginLeft || "-13px"};
 `;

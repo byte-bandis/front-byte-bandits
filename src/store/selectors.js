@@ -16,6 +16,7 @@ export const getPublicProfiles = (state) => state.publicProfiles.data;
 export const getMyAccount = (state) => state.myAccount.data;
 export const getMyAddress = (state) => state.myAddress.data;
 export const getMyPayment = (state) => state.myPayment.data;
+export const getMyData = (state) => state.myData.data;
 export const getSinglePublicProfile = (state) => state.singlePublicProfile.data;
 export const getSinglePublicProfileUserPhoto = (state) =>
   state.singlePublicProfile.data.userPhoto;

@@ -12,7 +12,7 @@ export const getPublicProfiles = async () => {
   });
 };
 
-export const getMyAccount = async (userName) => {
+/* export const getMyAccount = async (userName) => {
   const url = `${userURL}/${userName}/myaccount`;
   return client.get(url).then(({ myAccount }) => {
     const data = {
@@ -21,7 +21,7 @@ export const getMyAccount = async (userName) => {
     };
     return data;
   });
-};
+}; */
 
 export const getSinglePublicProfile = async (userName) => {
   const url = `${userURL}/${userName}`;
@@ -72,13 +72,13 @@ export const deleteSinglePublicProfile = async (userName) => {
   return client.delete(url).then((message) => message);
 };
 
-export const getMyAddress = async (userName) => {
-  const url = `${userURL}/${userName}/myaddress`;
-  return client.get(url).then((response) => {
+export const deleteUser = async (username) => {
+  const url = `${userURL}/${username}`;
+
+  return client.delete(url).then((response) => {
     const result = {
       status: response.status,
       message: response.message,
-      data: response.data.address,
     };
     return result;
   });

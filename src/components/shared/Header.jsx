@@ -58,26 +58,34 @@ const Header = () => {
 
   const TAG_OPTIONS = [
     {
-      to: "/",
+      onClick: () => navigate("/"),
       className: "all",
       text: "All categories",
     },
     {
-      to: `?tags=lifestyle&sell=true`,
-      className: "lifestyle",
       text: "lifestyle",
+      onClick: () => navigate(`/product/?tags=lifestyle&sell=true`),
+      className: "lifestyle",
     },
     {
-      to: `?tags=mobile&sell=true`,
-      className: "mobile",
       text: "mobile",
+      onClick: () => navigate("/product/?tags=mobile&sell=true"),
+      className: "mobile",
     },
-    { to: `?tags=motor&sell=true`, className: "motor", text: "motor" },
-    { to: `?tags=work&sell=true`, className: "work", text: "work" },
     {
-      to: `?tags=others&sell=true`,
-      className: "others",
+      text: "motor",
+      onClick: () => navigate("/product/?tags=motor&sell=true"),
+      className: "motor",
+    },
+    {
+      text: "work",
+      onClick: () => navigate("/product/?tags=work&sell=true"),
+      className: "work",
+    },
+    {
       text: "others",
+      onClick: () => navigate("/product/?tags=others&sell=true"),
+      className: "others",
     },
   ];
 
@@ -108,7 +116,8 @@ const Header = () => {
               <DropdownLink
                 options={dropdownOptions}
                 className="myAccount"
-                $CustomWidth="120px"
+                $CustomWidth="130px"
+                dividerWith="128%"
               >
                 My account
               </DropdownLink>

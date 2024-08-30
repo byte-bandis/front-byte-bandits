@@ -1,16 +1,25 @@
 import { Nav } from "react-bootstrap";
 import PropTypes from "prop-types";
 import styled from "styled-components";
+import { Link } from "react-router-dom";
 
 const TagsNav = ({ className, options, ...rest }) => {
+  const handleItemClick = (option) => {
+    option.onClick();
+  };
   return (
     <StyledNav className={className} {...rest}>
       {options.map((option, index) => (
-        <NavItem as="li" key={index}>
-          <NavLink href={option.to} className={option.className}>
+        <StyledNavItem as="li" key={index}>
+          <StyledNavLink
+            as={Link}
+            to={option.to}
+            className={option.className}
+            onClick={() => handleItemClick(option)}
+          >
             {option.text}
-          </NavLink>
-        </NavItem>
+          </StyledNavLink>
+        </StyledNavItem>
       ))}
     </StyledNav>
   );
@@ -41,11 +50,11 @@ const StyledNav = styled(Nav)`
   list-style: none;
 `;
 
-const NavItem = styled(Nav.Item)`
+const StyledNavItem = styled(Nav.Item)`
   flex: ${(props) => props.$CustomFlex || "1 1 calc(50% - 10px)"};
 `;
 
-const NavLink = styled(Nav.Link)`
+const StyledNavLink = styled(Nav.Link)`
   display: block;
   padding: ${(props) => props.$CustomPadding || "5px"};
   color: ${(props) => props.$CustomColor || "var(--text-100)"};

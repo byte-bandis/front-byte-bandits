@@ -3,7 +3,13 @@ import PropTypes from "prop-types";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
 
-const DropdownLink = ({ children, className, options, ...rest }) => {
+const DropdownLink = ({
+  children,
+  className,
+  options,
+  dividerWith,
+  ...rest
+}) => {
   const [isOpen, setIsOpen] = useState(false);
 
   const toggleDropdown = () => {
@@ -12,9 +18,7 @@ const DropdownLink = ({ children, className, options, ...rest }) => {
 
   const handleItemClick = (option) => {
     if (option.onClick) {
-      console.log("onClick dropdown");
       option.onClick();
-      console.log("onClick executed");
     }
     if (option.to) {
       setIsOpen(false);
@@ -37,7 +41,9 @@ const DropdownLink = ({ children, className, options, ...rest }) => {
               >
                 {option.text}
               </DropdownItem>
-              {index < options.length - 1 && <DropdownDivider />}
+              {index < options.length - 1 && (
+                <DropdownDivider style={{ width: dividerWith }} />
+              )}
             </React.Fragment>
           ))}
         </DropdownMenu>
@@ -49,6 +55,7 @@ const DropdownLink = ({ children, className, options, ...rest }) => {
 DropdownLink.propTypes = {
   children: PropTypes.node.isRequired,
   className: PropTypes.string,
+  dividerWith: PropTypes.string,
   options: PropTypes.arrayOf(
     PropTypes.shape({
       text: PropTypes.string.isRequired,
@@ -92,7 +99,7 @@ const DropdownMenu = styled.div`
   box-shadow: ${(props) =>
     props.$CustomBoxShadow || "0px 8px 16px var(--shadow-1)"};
   z-index: ${(props) => props.$CustomZIndex || 1};
-  padding: ${(props) => props.$CustomPadding || "10% 10% 10% 10%"};
+  padding: ${(props) => props.$CustomPadding || "10% 5% 10% 10%"};
   gap: ${(props) => props.$CustomGap || "5px"};
   border-radius: ${(props) => props.$CustomBorderRadius || "5px"};
 `;
@@ -100,7 +107,10 @@ const DropdownMenu = styled.div`
 const DropdownItem = styled.div`
   color: ${(props) => props.$CustomColor || "var(--text-100)"};
   width: ${(props) => props.$CustomWidth || "100%"};
-
+  border: ${(props) => props.$CustomBorder || "none"};
+  background-color: ${(props) =>
+    props.$CustomBackgroundColor || "var(--bg-300)"};
+  text-align: ${(props) => props.$CustomTextAlign || "center"};
   &:hover {
     color: ${(props) => props.$CustomHoverColor || "white"};
   }
@@ -110,6 +120,6 @@ const DropdownDivider = styled.div`
   border-bottom: ${(props) =>
     props.$CustomBorderBottom || "1px solid var(--text-100)"};
   margin: ${(props) => props.$CustomMargin || "0.5rem 0"};
-  width: ${(props) => props.$CustomWidth || "130%"};
-  margin-left: ${(props) => props.$CustomMarginLeft || "-12px"};
+  width: ${(props) => props.$CustomWidth || "118%"};
+  margin-left: ${(props) => props.$CustomMarginLeft || "-13px"};
 `;

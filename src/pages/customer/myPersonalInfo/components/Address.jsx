@@ -1,5 +1,10 @@
 import { useDispatch, useSelector } from "react-redux";
-import { getLoggedUserName, getMyAddress } from "../../../../store/selectors";
+import {
+  getLoggedUserName,
+  getMyAddress,
+  getUIMessage,
+  getUIState,
+} from "../../../../store/selectors";
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { trimDate } from "../../../../utils/dateTools";
@@ -14,20 +19,20 @@ import {
 } from "../../../../components/shared/lists";
 import StyledContainer from "../../../../components/shared/StyledContainer";
 import {
-  ConfirmAndSendButton,
   RegularButton,
   ButtonContainer,
 } from "../../../../components/shared/buttons";
+import { Alert } from "react-bootstrap";
 
 const Address = () => {
   const dispatch = useDispatch();
   const loggedUsername = useSelector(getLoggedUserName);
   const myAddress = useSelector(getMyAddress);
   const { username } = useParams();
-  const [creationDate, setCreationdate] = useState("000-00-00");
+  const [updateTime, setUpdateTime] = useState("000-00-00");
   const [editMode, setEditMode] = useState(false);
-
-  const [addressData, setAddressData] = useState({
+  const [confirmProcess, setConfirmProcess] = useState(false);
+  const [formData, setFormData] = useState({
     country: "",
     streetName: "",
     streetNumber: "",
@@ -35,8 +40,12 @@ const Address = () => {
     door: "",
     postalCode: "",
     city: "",
-    mobilePhoneNumber: "",
   });
+
+  const uiState = useSelector(getUIState);
+  const uiMessage = useSelector(getUIMessage);
+  const [successAlert, setSuccessAlert] = useState(false);
+  const [errorAlert, setErrorAlert] = useState(false);
 
   const containerStyles = {
     $customDisplay: "flex",
@@ -53,18 +62,33 @@ const Address = () => {
   };
 
   useEffect(() => {
-    if (loggedUsername === username) {
+    if (uiState !== "error" && loggedUsername === username) {
       dispatch(getAddressWithThunk(username));
     }
-  }, [username, loggedUsername, dispatch]);
+  }, [username, loggedUsername, dispatch, uiState]);
+
+  useEffect(() => {
+    if (uiState === "success" && loggedUsername === username) {
+      dispatch(getAddressWithThunk(loggedUsername));
+      setSuccessAlert(true);
+      setErrorAlert(false);
+      const timer = setTimeout(() => {
+        setSuccessAlert(false);
+      }, 3000);
+      return () => clearTimeout(timer);
+    } else {
+      setErrorAlert(true);
+      setSuccessAlert(false);
+    }
+  }, [uiState, username, loggedUsername, dispatch]);
 
   useEffect(() => {
     if (myAddress.createdAt) {
       const trimmedDate = trimDate(myAddress.createdAt, "ES");
-      setCreationdate(trimmedDate);
+      setUpdateTime(trimmedDate);
     }
 
-    setAddressData({
+    setFormData({
       country: myAddress.country || "",
       streetName: myAddress.streetName || "",
       streetNumber: myAddress.streetNumber || "",
@@ -72,7 +96,6 @@ const Address = () => {
       door: myAddress.door || "",
       postalCode: myAddress.postalCode || "",
       city: myAddress.city || "",
-      mobilePhoneNumber: myAddress.mobilePhoneNumber || "",
     });
   }, [myAddress]);
 
@@ -86,19 +109,55 @@ const Address = () => {
     setEditMode(false);
   };
 
+  const handleConfirmProcess = (event) => {
+    event.preventDefault();
+    setConfirmProcess(true);
+  };
+
   const handleInputChange = (event) => {
     const { name, value } = event.target;
-    setAddressData((prevData) => ({
+    setFormData((prevData) => ({
       ...prevData,
       [name]: value,
     }));
   };
 
+  const handleSubmit = (event) => {
+    event.preventDefault();
+    const formattedData = {
+      ...formData,
+      country: formData.country || "Your country",
+      streetName: formData.streetName || "Your street name",
+      streetNumber: formData.streetNumber || "Your street number",
+      flat: formData.flat || "Your flat",
+      door: formData.door || "Your door",
+      postalCode: formData.postalCode || "Your zip code",
+      city: formData.city || "Your city",
+    };
+    console.log("Esto es formdata de address: ", formData);
+    dispatch(updateMyAddressWithThunk({ username, formData: formattedData }));
+    setConfirmProcess(false);
+    setEditMode(false);
+  };
+
+  const handleCancelSubmit = () => {
+    setConfirmProcess(false);
+    setEditMode(false);
+  };
+
   return (
     <>
+      {errorAlert && <Alert className="alert alert-danger">{uiMessage}</Alert>}
+      {successAlert && (
+        <Alert className="alert alert-success">{uiMessage}</Alert>
+      )}
+
       <StyledListContainer>
         <ul key={myAddress._id}>
-          <form>
+          <form
+            onSubmit={handleSubmit}
+            noValidate
+          >
             <StyledListItem $customHeaderFontSize="1.5rem">
               <h3>Postal Address:</h3>
             </StyledListItem>
@@ -112,7 +171,7 @@ const Address = () => {
                   <input
                     type="text"
                     name="streetName"
-                    value={addressData.streetName}
+                    value={formData.streetName}
                     onChange={handleInputChange}
                   />
                 )}
@@ -127,7 +186,7 @@ const Address = () => {
                   <input
                     type="text"
                     name="streetNumber"
-                    value={addressData.streetNumber}
+                    value={formData.streetNumber}
                     onChange={handleInputChange}
                   />
                 )}
@@ -143,7 +202,7 @@ const Address = () => {
                   <input
                     type="text"
                     name="flat"
-                    value={addressData.flat}
+                    value={formData.flat}
                     onChange={handleInputChange}
                   />
                 )}
@@ -158,7 +217,7 @@ const Address = () => {
                   <input
                     type="text"
                     name="door"
-                    value={addressData.door}
+                    value={formData.door}
                     onChange={handleInputChange}
                   />
                 )}
@@ -174,7 +233,7 @@ const Address = () => {
                   <input
                     type="text"
                     name="postalCode"
-                    value={addressData.postalCode}
+                    value={formData.postalCode}
                     onChange={handleInputChange}
                   />
                 )}
@@ -189,7 +248,7 @@ const Address = () => {
                   <input
                     type="text"
                     name="city"
-                    value={addressData.city}
+                    value={formData.city}
                     onChange={handleInputChange}
                   />
                 )}
@@ -204,22 +263,7 @@ const Address = () => {
                   <input
                     type="text"
                     name="country"
-                    value={addressData.country}
-                    onChange={handleInputChange}
-                  />
-                )}
-              </StyledListItem>
-            </StyledContainer>
-            <StyledContainer {...containerStyles}>
-              <StyledListItem {...listItemStyles}>
-                <label>Phone Number:</label>
-                {!editMode ? (
-                  <div>{myAddress.mobilePhoneNumber}</div>
-                ) : (
-                  <input
-                    type="text"
-                    name="mobilePhoneNumber"
-                    value={addressData.mobilePhoneNumber}
+                    value={formData.country}
                     onChange={handleInputChange}
                   />
                 )}
@@ -228,20 +272,40 @@ const Address = () => {
 
             {editMode ? (
               <ButtonContainer $justifyContent="flex-start">
-                <ConfirmAndSendButton
-                  username={username}
-                  formData={addressData}
-                  requestedAction={updateMyAddressWithThunk}
-                >
-                  Save address
-                </ConfirmAndSendButton>
-
-                <RegularButton
-                  $customMargin="2rem 0 0 0"
-                  onClick={handleHideEditMode}
-                >
-                  Back to your saved address
-                </RegularButton>
+                {!confirmProcess && (
+                  <>
+                    <RegularButton
+                      $customHoverBackgroundColor="var(--accent-100)"
+                      $customMargin="2rem 0 0 0"
+                      onClick={handleConfirmProcess}
+                    >
+                      Save your data
+                    </RegularButton>
+                    <RegularButton
+                      $customMargin="2rem 0 0 0"
+                      onClick={handleHideEditMode}
+                    >
+                      Back to your saved data
+                    </RegularButton>
+                  </>
+                )}
+                {confirmProcess && (
+                  <>
+                    <RegularButton
+                      type="submit"
+                      $customHoverBackgroundColor="var(--accent-100)"
+                      $customMargin="2rem 0 0 0"
+                    >
+                      Confirm save
+                    </RegularButton>
+                    <RegularButton
+                      $customMargin="2rem 0 0 0"
+                      onClick={handleCancelSubmit}
+                    >
+                      Cancel
+                    </RegularButton>
+                  </>
+                )}
               </ButtonContainer>
             ) : (
               <RegularButton
@@ -252,14 +316,16 @@ const Address = () => {
               </RegularButton>
             )}
           </form>
-          <StyledContainer {...containerStyles}>
-            <StyledListItem {...listItemStyles}>
-              <i>Address updated at:</i>
-              <div>
-                <i>{creationDate}</i>
-              </div>
-            </StyledListItem>
-          </StyledContainer>
+          {editMode && (
+            <StyledContainer {...containerStyles}>
+              <StyledListItem {...listItemStyles}>
+                <i>Last time you updated your data:</i>
+                <div>
+                  <i>{updateTime}</i>
+                </div>
+              </StyledListItem>
+            </StyledContainer>
+          )}
         </ul>
       </StyledListContainer>
     </>

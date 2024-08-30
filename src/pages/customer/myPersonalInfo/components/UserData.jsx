@@ -37,8 +37,8 @@ const MyData = () => {
     name: "",
     lastname: "",
     email: "",
-    password: "******",
     birthdate: "",
+    mobilePhoneNumber: "",
   });
   const uiState = useSelector(getUIState);
   const uiMessage = useSelector(getUIMessage);
@@ -73,8 +73,7 @@ const MyData = () => {
         setSuccessAlert(false);
       }, 3000);
       return () => clearTimeout(timer);
-    }
-    if (uiState === "error") {
+    } else {
       setErrorAlert(true);
       setSuccessAlert(false);
     }
@@ -91,7 +90,7 @@ const MyData = () => {
       name: myData.name || "",
       lastname: myData.lastname || "",
       email: myData.email || "",
-      password: myData.password || "",
+      mobilePhoneNumber: myData.mobilePhoneNumber || "",
       birthdate: myData.birthdate
         ? moment(myData.birthdate).format("DD-MM-YYYY")
         : "",
@@ -124,11 +123,14 @@ const MyData = () => {
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    /*     const formattedData = {
+    const formattedData = {
       ...formData,
-      birthdate: moment(formData.birthdate, "DD-MM-YYYY").toISOString(),
-    }; */
-    dispatch(updateMyDataWithThunk({ username, formData }));
+      name: formData.name || "Your name",
+      lastname: formData.lastname || "Your last name",
+      mobilePhoneNumber: formData.mobilePhoneNumber || "Your phone number",
+      //birthdate: moment(formData.birthdate, "DD-MM-YYYY").toISOString(),
+    };
+    dispatch(updateMyDataWithThunk({ username, formData: formattedData }));
     setConfirmProcess(false);
     setEditMode(false);
   };
@@ -167,8 +169,6 @@ const MyData = () => {
                     value={formData.username}
                     onChange={handleInputChange}
                     placeholder="Nick name must have at least 6 characters"
-                    maxLength={18}
-                    minLength={13}
                   />
                 )}
               </StyledListItem>
@@ -189,9 +189,7 @@ const MyData = () => {
                       name="name"
                       value={formData.name}
                       onChange={handleInputChange}
-                      placeholder="Name can not be empty"
-                      maxLength={18}
-                      minLength={1}
+                      placeholder="Enter your name"
                     />
                   )}
                 </StyledListItem>
@@ -205,9 +203,7 @@ const MyData = () => {
                       name="lastname"
                       value={formData.lastname}
                       onChange={handleInputChange}
-                      placeholder="Last name can not be empty"
-                      maxLength={18}
-                      minLength={1}
+                      placeholder="Enter your last name"
                     />
                   )}
                 </StyledListItem>
@@ -229,22 +225,24 @@ const MyData = () => {
                 )}
               </StyledListItem>
             </StyledContainer>
+
             <StyledContainer {...containerStyles}>
               <StyledListItem {...listItemStyles}>
-                <label>Password: </label>
+                <label>Phone: </label>
                 {!editMode ? (
-                  <div>{myData.password}</div>
+                  <div>{myData.mobilePhoneNumber}</div>
                 ) : (
                   <input
                     type="text"
-                    name="password"
-                    value={formData.password}
+                    name="mobilePhoneNumber"
+                    value={formData.mobilePhoneNumber}
                     onChange={handleInputChange}
-                    placeholder="Password can not be empty"
+                    placeholder="Enter your phone number"
                   />
                 )}
               </StyledListItem>
             </StyledContainer>
+
             <StyledContainer {...containerStyles}>
               <StyledListItem {...listItemStyles}>
                 <label>Birth date: </label>

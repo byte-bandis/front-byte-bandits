@@ -1,17 +1,13 @@
 import { useDispatch, useSelector } from "react-redux";
 import {
   getLoggedUserName,
-  getMyPayment,
+  getMyData,
   getUIMessage,
   getUIState,
 } from "../../../../store/selectors";
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import { trimDate } from "../../../../utils/dateTools";
-import {
-  getMyCreditCardWithThunk,
-  updateMyCreditCardWithThunk,
-} from "../../../../store/MyPersonalData/myPaymentsThunk";
+import moment from "moment";
 
 import {
   StyledListContainer,
@@ -23,17 +19,26 @@ import {
   ButtonContainer,
 } from "../../../../components/shared/buttons";
 import { Alert } from "react-bootstrap";
+import {
+  getMyDataWithThunk,
+  updateMyDataWithThunk,
+} from "../../../../store/MyPersonalData/myDataThunk";
 
-const CreditCard = () => {
+const MyData = () => {
   const dispatch = useDispatch();
   const loggedUsername = useSelector(getLoggedUserName);
-  const myCreditCard = useSelector(getMyPayment);
+  const myData = useSelector(getMyData);
   const { username } = useParams();
-  const [creationDate, setCreationdate] = useState("000-00-00");
+  const [updateTime, setUpdateTime] = useState("000-00-00");
   const [editMode, setEditMode] = useState(false);
   const [confirmProcess, setConfirmProcess] = useState(false);
   const [formData, setFormData] = useState({
-    creditCard: "",
+    username: "",
+    name: "",
+    lastname: "",
+    email: "",
+    password: "******",
+    birthdate: "",
   });
   const uiState = useSelector(getUIState);
   const uiMessage = useSelector(getUIMessage);
@@ -56,7 +61,7 @@ const CreditCard = () => {
 
   useEffect(() => {
     if (uiState !== "error" && loggedUsername === username) {
-      dispatch(getMyCreditCardWithThunk(username));
+      dispatch(getMyDataWithThunk(loggedUsername));
     }
   }, [uiState, username, loggedUsername, dispatch]);
 
@@ -76,15 +81,22 @@ const CreditCard = () => {
   }, [uiState]);
 
   useEffect(() => {
-    if (myCreditCard.updatedAt) {
-      const trimmedDate = trimDate(myCreditCard.updatedAt, "ES");
-      setCreationdate(trimmedDate);
+    if (myData.updatedAt) {
+      const formattedDate = moment(myData.updatedAt).format("DD-MM-YYYY");
+      setUpdateTime(formattedDate);
     }
 
     setFormData({
-      creditCard: myCreditCard.creditCard || "",
+      username: myData.username || "",
+      name: myData.name || "",
+      lastname: myData.lastname || "",
+      email: myData.email || "",
+      password: myData.password || "",
+      birthdate: myData.birthdate
+        ? moment(myData.birthdate).format("DD-MM-YYYY")
+        : "",
     });
-  }, [myCreditCard]);
+  }, [myData]);
 
   const handleShowEditMode = (event) => {
     event.preventDefault();
@@ -112,7 +124,11 @@ const CreditCard = () => {
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    dispatch(updateMyCreditCardWithThunk({ username, formData }));
+    /*     const formattedData = {
+      ...formData,
+      birthdate: moment(formData.birthdate, "DD-MM-YYYY").toISOString(),
+    }; */
+    dispatch(updateMyDataWithThunk({ username, formData }));
     setConfirmProcess(false);
     setEditMode(false);
   };
@@ -130,29 +146,117 @@ const CreditCard = () => {
       )}
 
       <StyledListContainer>
-        <ul key={myCreditCard._id}>
+        <ul key={myData._id}>
           <form
             onSubmit={handleSubmit}
             noValidate
           >
             <StyledListItem $customHeaderFontSize="1.5rem">
-              <h3>Credit card:</h3>
+              <h3>Your data:</h3>
             </StyledListItem>
 
             <StyledContainer {...containerStyles}>
               <StyledListItem {...listItemStyles}>
-                <label>Credit card: </label>
+                <label>Nick name: </label>
                 {!editMode ? (
-                  <div>{myCreditCard.creditCard}</div>
+                  <div>{myData.username}</div>
                 ) : (
                   <input
                     type="text"
-                    name="creditCard"
-                    value={formData.creditCard}
+                    name="username"
+                    value={formData.username}
                     onChange={handleInputChange}
-                    placeholder="Write between 13 to 18 digits"
+                    placeholder="Nick name must have at least 6 characters"
                     maxLength={18}
                     minLength={13}
+                  />
+                )}
+              </StyledListItem>
+            </StyledContainer>
+            <StyledContainer {...containerStyles}>
+              <StyledContainer
+                $customDisplay="flex"
+                $customFlexDirection="row"
+                $customGap="40px"
+              >
+                <StyledListItem {...listItemStyles}>
+                  <label>Name: </label>
+                  {!editMode ? (
+                    <div>{myData.name}</div>
+                  ) : (
+                    <input
+                      type="text"
+                      name="name"
+                      value={formData.name}
+                      onChange={handleInputChange}
+                      placeholder="Name can not be empty"
+                      maxLength={18}
+                      minLength={1}
+                    />
+                  )}
+                </StyledListItem>
+                <StyledListItem {...listItemStyles}>
+                  <label>Last name: </label>
+                  {!editMode ? (
+                    <div>{myData.lastname}</div>
+                  ) : (
+                    <input
+                      type="text"
+                      name="lastname"
+                      value={formData.lastname}
+                      onChange={handleInputChange}
+                      placeholder="Last name can not be empty"
+                      maxLength={18}
+                      minLength={1}
+                    />
+                  )}
+                </StyledListItem>
+              </StyledContainer>
+            </StyledContainer>
+            <StyledContainer {...containerStyles}>
+              <StyledListItem {...listItemStyles}>
+                <label>Email: </label>
+                {!editMode ? (
+                  <div>{myData.email}</div>
+                ) : (
+                  <input
+                    type="text"
+                    name="email"
+                    value={formData.email}
+                    onChange={handleInputChange}
+                    placeholder="Email can not be empty"
+                  />
+                )}
+              </StyledListItem>
+            </StyledContainer>
+            <StyledContainer {...containerStyles}>
+              <StyledListItem {...listItemStyles}>
+                <label>Password: </label>
+                {!editMode ? (
+                  <div>{myData.password}</div>
+                ) : (
+                  <input
+                    type="text"
+                    name="password"
+                    value={formData.password}
+                    onChange={handleInputChange}
+                    placeholder="Password can not be empty"
+                  />
+                )}
+              </StyledListItem>
+            </StyledContainer>
+            <StyledContainer {...containerStyles}>
+              <StyledListItem {...listItemStyles}>
+                <label>Birth date: </label>
+                {!editMode ? (
+                  <div>{moment(myData.birthdate).format("DD-MM-YYYY")}</div> // Display formatted date
+                ) : (
+                  <input
+                    type="text"
+                    name="birthdate"
+                    value={formData.birthdate}
+                    onChange={handleInputChange}
+                    placeholder="Birth date can not be empty"
                   />
                 )}
               </StyledListItem>
@@ -167,13 +271,13 @@ const CreditCard = () => {
                       $customMargin="2rem 0 0 0"
                       onClick={handleConfirmProcess}
                     >
-                      Save your card number
+                      Save your data
                     </RegularButton>
                     <RegularButton
                       $customMargin="2rem 0 0 0"
                       onClick={handleHideEditMode}
                     >
-                      Back to your saved card
+                      Back to your saved data
                     </RegularButton>
                   </>
                 )}
@@ -207,9 +311,9 @@ const CreditCard = () => {
           {editMode && (
             <StyledContainer {...containerStyles}>
               <StyledListItem {...listItemStyles}>
-                <i>Last time you updated your credit card:</i>
+                <i>Last time you updated your data:</i>
                 <div>
-                  <i>{creationDate}</i>
+                  <i>{updateTime}</i>
                 </div>
               </StyledListItem>
             </StyledContainer>
@@ -220,4 +324,4 @@ const CreditCard = () => {
   );
 };
 
-export default CreditCard;
+export default MyData;

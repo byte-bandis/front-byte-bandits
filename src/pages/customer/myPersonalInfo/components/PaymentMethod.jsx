@@ -68,8 +68,7 @@ const CreditCard = () => {
         setSuccessAlert(false);
       }, 3000);
       return () => clearTimeout(timer);
-    }
-    if (uiState === "error") {
+    } else {
       setErrorAlert(true);
       setSuccessAlert(false);
     }
@@ -112,7 +111,14 @@ const CreditCard = () => {
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    dispatch(updateMyCreditCardWithThunk({ username, formData }));
+    const formattedData = {
+      //...formData,
+      creditCard: formData.creditCard || "card",
+    };
+
+    dispatch(
+      updateMyCreditCardWithThunk({ username, formData: formattedData })
+    );
     setConfirmProcess(false);
     setEditMode(false);
   };

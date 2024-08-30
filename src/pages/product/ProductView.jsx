@@ -5,7 +5,6 @@ import { useEffect, useState } from 'react';
 import { deleteAd, getAds } from '../../store/adsThunk';
 import styled from 'styled-components';
 import Button from './components/Button';
-import './ProductItem.css';
 import { Heart, HeartFill } from 'react-bootstrap-icons';
 import { setLike } from '../../utils/setLike';
 import CommentItem from './components/CommentItem';
@@ -15,21 +14,28 @@ import Confirmator from '../../components/shared/Confirmator';
 import { getSinglePublicProfileWithThunk } from '../../store/profilesThunk';
 
 const ProductView = () => {
+    const origin = import.meta.env.VITE_API_BASE_URL;
+
     const navigate = useNavigate();
     const location = useLocation();
-    const { productId } = useParams();
     const dispatch = useDispatch();
-    const origin = import.meta.env.VITE_API_BASE_URL;
-    const [iLikeIt, setiLikeIt] = useState(false);
-    const authUser = useSelector((state) => state.authState.user.userId);
+
+    const { productId } = useParams();
+
     const [owner, setOwnerId] = useState('');
+    const [iLikeIt, setiLikeIt] = useState(false);
+    const [hideDelete, setHideDelete] = useState(false);
+
+    const authUser = useSelector((state) => state.authState.user.userId);
     const loadedAds = useSelector((state) => state.adsState.data).find(
         (onead) => onead._id === productId
     );
-    const [hideDelete, setHideDelete] = useState(false);
-
     const myLikes = useSelector((state) => state.likesSlice.wishlist);
     const comments = useSelector((state) => state.commentsSlice.data);
+    const userphoto = useSelector(
+        (state) => state.singlePublicProfile.data.userPhoto
+    );
+    const userid = useSelector((state) => state.authState.user.userId);
 
     useEffect(() => {
         dispatch(getComments(productId));
@@ -43,27 +49,13 @@ const ProductView = () => {
         });
     }, [myLikes, productId]);
 
-    const handleBack = () => {
-        const to = location.state?.from || '/';
-        navigate(to, { replace: true });
-    };
-    const handleDelete = () => {
-        setHideDelete(true);
-    };
     useEffect(() => {
         const publicProfile = async () => {
             await dispatch(getSinglePublicProfileWithThunk(owner.username));
         };
         publicProfile();
     }, [owner, dispatch]);
-    const userphoto = useSelector(
-        (state) => state.singlePublicProfile.data.userPhoto
-    );
-    const userid = useSelector((state) => state.authState.user.userId);
-    const handleLike = () => {
-        dispatch(setLike(productId, userid));
-        setiLikeIt(!iLikeIt);
-    };
+
     useEffect(() => {
         if (!loadedAds) {
             dispatch(getAds({ id: productId }));
@@ -71,6 +63,17 @@ const ProductView = () => {
             setOwnerId(loadedAds.user);
         }
     }, [loadedAds, productId, dispatch]);
+    const handleBack = () => {
+        const to = location.state?.from || '/';
+        navigate(to, { replace: true });
+    };
+    const handleDelete = () => {
+        setHideDelete(true);
+    };
+    const handleLike = () => {
+        dispatch(setLike(productId, userid));
+        setiLikeIt(!iLikeIt);
+    };
     const handleDeleteConfirm = async () => {
         dispatch(deleteAd(productId));
     };
@@ -120,7 +123,10 @@ const ProductView = () => {
                                     />
                                 )}
                             </div>
-                            <Link className='userBlock' to={`/${owner.username}`}>
+                            <Link
+                                className='userBlock'
+                                to={`/${owner.username}`}
+                            >
                                 <img
                                     className='userPhoto'
                                     src={userphoto}

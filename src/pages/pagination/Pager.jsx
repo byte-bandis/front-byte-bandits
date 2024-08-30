@@ -10,6 +10,7 @@ import {
 } from 'react-bootstrap-icons';
 import { useNavigate, useLocation } from 'react-router-dom';
 import Button from '../product/components/Button';
+import styled from 'styled-components';
 
 const Pager = () => {
     const dispatch = useDispatch();
@@ -132,17 +133,17 @@ const Pager = () => {
     );
 
     return (
-        <div
-            style={{
-                display: 'flex',
-                justifyContent: 'center',
-                alignItems: 'center',
-                padding: '20px',
-            }}
-        >
+        <Paginator>
             {items}
-        </div>
+        </Paginator>
     );
 };
+
+const Paginator = styled.div`
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 20px 0;
+`;
 
 export default Pager;

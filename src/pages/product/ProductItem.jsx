@@ -22,6 +22,7 @@ const ProductItem = ({ ad }) => {
     let iLikeIt = false;
     const myLikes = useSelector((state) => state.likesSlice.wishlist);
     myLikes.forEach((like) => {
+
         if (like.ad && like.ad._id === _id) {
             iLikeIt = true;
         }
@@ -83,7 +84,14 @@ ProductItem.propTypes = {
         sell: PropTypes.bool.isRequired,
         price: PropTypes.number.isRequired,
         photo: PropTypes.string,
-        user: PropTypes.string.isRequired,
+        user: PropTypes.shape({
+            _id: PropTypes.string.isRequired,
+            username: PropTypes.string.isRequired,
+            email: PropTypes.string.isRequired,
+            role: PropTypes.string.isRequired,
+            birthdate: PropTypes.string.isRequired,
+            creditCard: PropTypes.string,
+        }),
         createdAt: PropTypes.string.isRequired,
         updatedAt: PropTypes.string.isRequired,
         tags: PropTypes.arrayOf(PropTypes.string).isRequired,

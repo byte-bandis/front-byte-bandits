@@ -67,10 +67,10 @@ export const updateSinglePublicProfile = async (userName, formData) => {
       return data;
     });
 };
-export const deleteSinglePublicProfile = async (userName) => {
+/* export const deleteSinglePublicProfile = async (userName) => {
   const url = `${userURL}/${userName}`;
   return client.delete(url).then((message) => message);
-};
+}; */
 
 export const deleteUser = async (username) => {
   const url = `${userURL}/${username}`;

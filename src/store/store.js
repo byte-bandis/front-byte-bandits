@@ -4,13 +4,13 @@ import registerReducer from "./registerSlice";
 import uiReducer from "./uiSlice";
 import adsReducer from "./adsSlice";
 import publicProfilesReducer from "./publicProfilesSlice";
-import myAccountReducer from "./myAccountSlice";
 import likesReducer from "./likesSlice";
 import singleProfileReducer from "./singlePublicProfileSlice";
 import commentsSlice from "./commentsSlice";
 import myAddressReducer from "./MyPersonalData/addressSlice";
 import myPaymentsReducer from "./MyPersonalData/paymentSlice";
 import myDataReducer from "./MyPersonalData/myDataSlice";
+import userReducer from "./userSlice";
 
 export const store = configureStore({
   reducer: {
@@ -20,12 +20,12 @@ export const store = configureStore({
     ui: uiReducer,
     adsState: adsReducer,
     publicProfiles: publicProfilesReducer,
-    myAccount: myAccountReducer,
     likesSlice: likesReducer,
     singlePublicProfile: singleProfileReducer,
     myAddress: myAddressReducer,
     myPayment: myPaymentsReducer,
     myData: myDataReducer,
+    account: userReducer,
   },
   devTools: import.meta.env.NODE_ENV !== "production",
 });

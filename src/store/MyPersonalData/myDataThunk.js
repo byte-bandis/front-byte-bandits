@@ -1,18 +1,6 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import * as myData from "../../pages/customer/myPersonalInfo/userDataService";
 
-/* export const createMyAddressWithThunk = createAsyncThunk(
-  "address/create",
-  async ({ username, formData }, { rejectWithValue }) => {
-    try {
-      const response = await myData.createMyAddress(username, formData);
-      return response;
-    } catch (error) {
-      return rejectWithValue(error.message);
-    }
-  }
-); */
-
 export const getMyDataWithThunk = createAsyncThunk(
   "mydata/fetch",
   async (username, { rejectWithValue }) => {

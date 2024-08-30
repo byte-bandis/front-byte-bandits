@@ -22,6 +22,7 @@ const ProductItem = ({ ad }) => {
     let iLikeIt = false;
     const myLikes = useSelector((state) => state.likesSlice.wishlist);
     myLikes.forEach((like) => {
+
         if (like.ad && like.ad._id === _id) {
             iLikeIt = true;
         }

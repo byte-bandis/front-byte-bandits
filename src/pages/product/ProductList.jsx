@@ -25,7 +25,9 @@ const ProductList = () => {
 
     useEffect(() => {
         dispatch(getAds({ page, id: '', filters }));
-        dispatch(getWishlist(userid));
+        if (userid) {
+            dispatch(getWishlist(userid));
+        }
     }, [dispatch, page, userid, filters]);
 
     const adsData = useSelector((state) => state.adsState.data);

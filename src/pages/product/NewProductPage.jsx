@@ -12,13 +12,7 @@ import {
   TagsContainer,
 } from "./NewProductPageStyles";
 import { resetMessage, setMessage } from "../../store/uiSlice";
-import {
-  getError,
-  getUILoading,
-  getLoggedUserName,
-  getAdsSelector,
-  getLoggedUserId,
-} from "../../store/selectors";
+import { getError, getUILoading, getAdsSelector } from "../../store/selectors";
 import ImageUploader from "./components/ImageUploader";
 
 const TAG_OPTIONS = ["lifestyle", "mobile", "motor", "work", "others"];

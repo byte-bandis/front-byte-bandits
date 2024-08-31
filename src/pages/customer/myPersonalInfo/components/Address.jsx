@@ -23,6 +23,14 @@ import {
   ButtonContainer,
 } from "../../../../components/shared/buttons";
 import { Alert } from "react-bootstrap";
+import { validate } from "./addressValidations";
+import {
+  emptyMyAddress,
+  setValidations,
+} from "../../../../store/MyPersonalData/addressSlice";
+import { resetMessage, setMessage } from "../../../../store/uiSlice";
+import { resetValidationErrors } from "../../../../store/MyPersonalData/paymentSlice";
+import countriesDB from "../../../../utils/countriesDB.json";
 
 const Address = () => {
   const dispatch = useDispatch();
@@ -32,6 +40,7 @@ const Address = () => {
   const [updateTime, setUpdateTime] = useState("000-00-00");
   const [editMode, setEditMode] = useState(false);
   const [confirmProcess, setConfirmProcess] = useState(false);
+  const [countryList, setCountryList] = useState([]);
   const [formData, setFormData] = useState({
     country: "",
     streetName: "",
@@ -83,6 +92,11 @@ const Address = () => {
   }, [uiState, username, loggedUsername, dispatch]);
 
   useEffect(() => {
+    const countries = countriesDB.map((c) => c.name); // Extrae los nombres de los países
+    setCountryList(countries); // Guarda los países en el estado
+  }, []);
+
+  useEffect(() => {
     if (myAddress.createdAt) {
       const trimmedDate = trimDate(myAddress.createdAt, "ES");
       setUpdateTime(trimmedDate);
@@ -124,20 +138,30 @@ const Address = () => {
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    const formattedData = {
-      ...formData,
-      country: formData.country || "Your country",
-      streetName: formData.streetName || "Your street name",
-      streetNumber: formData.streetNumber || "Your street number",
-      flat: formData.flat || "Your flat",
-      door: formData.door || "Your door",
-      postalCode: formData.postalCode || "Your zip code",
-      city: formData.city || "Your city",
-    };
-    console.log("Esto es formdata de address: ", formData);
-    dispatch(updateMyAddressWithThunk({ username, formData: formattedData }));
+
+    const errors = validate({
+      country: formData.country,
+      streetName: formData.streetName,
+      streetNumber: formData.streetNumber,
+      flat: formData.flat,
+      door: formData.door,
+      postalCode: formData.postalCode,
+      city: formData.city,
+    });
+    dispatch(setValidations(errors));
+
+    if (Object.keys(errors).length > 0) {
+      const errorMessages = Object.values(errors).join(" ");
+      dispatch(setMessage({ payload: errorMessages, type: "error" }));
+      return;
+    }
+
+    dispatch(updateMyAddressWithThunk({ username, formData }));
     setConfirmProcess(false);
     setEditMode(false);
+    dispatch(resetMessage());
+    dispatch(emptyMyAddress());
+    dispatch(resetValidationErrors());
   };
 
   const handleCancelSubmit = () => {
@@ -173,6 +197,7 @@ const Address = () => {
                     name="streetName"
                     value={formData.streetName}
                     onChange={handleInputChange}
+                    placeholder="Your street name here"
                   />
                 )}
               </StyledListItem>
@@ -188,6 +213,7 @@ const Address = () => {
                     name="streetNumber"
                     value={formData.streetNumber}
                     onChange={handleInputChange}
+                    placeholder="Your street number here"
                   />
                 )}
               </StyledListItem>
@@ -204,6 +230,7 @@ const Address = () => {
                     name="flat"
                     value={formData.flat}
                     onChange={handleInputChange}
+                    placeholder="Your flat here"
                   />
                 )}
               </StyledListItem>
@@ -219,6 +246,7 @@ const Address = () => {
                     name="door"
                     value={formData.door}
                     onChange={handleInputChange}
+                    placeholder="Your door here"
                   />
                 )}
               </StyledListItem>
@@ -235,6 +263,7 @@ const Address = () => {
                     name="postalCode"
                     value={formData.postalCode}
                     onChange={handleInputChange}
+                    placeholder="Your zip code here"
                   />
                 )}
               </StyledListItem>
@@ -250,6 +279,7 @@ const Address = () => {
                     name="city"
                     value={formData.city}
                     onChange={handleInputChange}
+                    placeholder="Your city here"
                   />
                 )}
               </StyledListItem>
@@ -260,12 +290,27 @@ const Address = () => {
                 {!editMode ? (
                   <div>{myAddress.country}</div>
                 ) : (
-                  <input
-                    type="text"
+                  <select
                     name="country"
                     value={formData.country}
                     onChange={handleInputChange}
-                  />
+                    placeholder="Your country here"
+                  >
+                    <option
+                      value=""
+                      disabled
+                    >
+                      Select your country
+                    </option>
+                    {countryList.map((country) => (
+                      <option
+                        key={country}
+                        value={country}
+                      >
+                        {country}
+                      </option>
+                    ))}
+                  </select>
                 )}
               </StyledListItem>
             </StyledContainer>

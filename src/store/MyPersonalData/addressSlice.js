@@ -9,6 +9,7 @@ import {
 
 export const defaultAddressState = {
   data: {},
+  validationErrors: {},
 };
 
 const myAddressSlice = createSlice({
@@ -20,6 +21,12 @@ const myAddressSlice = createSlice({
     },
     emptyMyAddress: (state) => {
       state.data = defaultAddressState;
+    },
+    setValidations: (state, action) => {
+      state.validationErrors = action.payload;
+    },
+    resetValidationErrors: (state) => {
+      state.validationErrors = {};
     },
   },
   extraReducers: (builder) => {
@@ -41,5 +48,10 @@ const myAddressSlice = createSlice({
   },
 });
 
-export const { setMyAddress, emptyMyAddress } = myAddressSlice.actions;
+export const {
+  setMyAddress,
+  emptyMyAddress,
+  setValidations,
+  resetValidationErrors,
+} = myAddressSlice.actions;
 export default myAddressSlice.reducer;

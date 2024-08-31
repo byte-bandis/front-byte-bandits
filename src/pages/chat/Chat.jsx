@@ -59,23 +59,29 @@ const Chat = ({ productId, buyerId }) => {
     if (message.trim()) {
       try {
         // Si no hay chatId, crear uno nuevo antes de enviar el mensaje
+        let currentChatId = chatId;
         if (!chatId) {
           const response = await client.post("/chat", { productId, buyerId });
-          setChatId(response.chat._id);
+          currentChatId = response.chat._id;
+
+          setChatId(currentChatId);
+          console.log("Chat creado:", response.chat);
 
           // Unirse al nuevo chat
           socket.emit("joinChat", {
-            chatId: response.chat._id,
+            chatId: currentChatId,
             userId: loggedUserId,
           });
         }
 
-        // Enviar el mensaje
-        socket.emit("sendMessage", {
-          chatId,
+        const newMessage = {
+          chatId: currentChatId,
           senderId: loggedUserId,
           content: message,
-        });
+        };
+
+        // Enviar el mensaje
+        socket.emit("sendMessage", newMessage);
 
         setMessage("");
       } catch (error) {

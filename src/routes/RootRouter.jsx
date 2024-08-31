@@ -16,6 +16,7 @@ import Profile from "../pages/customer/Profile";
 import LayoutProfile from "../pages/customer/LayoutProfile";
 import PersonalInfo from "../pages/customer/PersonalInfo";
 import UserPublicInfo from "../pages/customer/UserPublicInfo";
+import Chats from "../pages/chat/Chats";
 
 const RootRouter = () => {
   return (
@@ -49,6 +50,7 @@ const RootRouter = () => {
         <Route path="new" element={<NewProductPage />} />
         <Route path="whishlist" element={<Wishlist />} />
         <Route path="delete-account" element={<DeleteAccount />} />
+        <Route path="chat" element={<Chats />} />
       </Route>
       <Route path="/product" element={<Outlet />}>
         <Route index element={<ProductList />} />

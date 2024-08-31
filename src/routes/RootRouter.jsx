@@ -35,7 +35,6 @@ const RootRouter = () => {
           </RequireAuth>
         }
       >
-        <Route path="myaccount" element={<Account />} />
         <Route path="info" element={<LayoutProfile />}>
           <Route index element={<UserPublicInfo />} />
           <Route path="mydata" element={<PersonalInfo />} />

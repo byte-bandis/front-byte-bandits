@@ -7,9 +7,7 @@ import StyledContainer from "../../components/shared/StyledContainer";
 
 const LayoutAccount = () => {
   const loggedUserName = useSelector(getLoggedUserName);
-  console.log(loggedUserName);
   const { username } = useParams();
-  console.log(username);
   const navigate = useNavigate();
 
   useEffect(() => {

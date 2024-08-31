@@ -7,12 +7,10 @@ import P from "prop-types";
 
 const StyledMyAccount = ({ children }) => {
   const loggedUserName = useSelector(getLoggedUserName);
-  console.log(loggedUserName);
   const navigate = useNavigate();
   const sideBarElements = [
     {
       text: "My Profile",
-      //   onClick: () => navigate(`${loggedUserName}/myaccount`),
       to: `/${loggedUserName}/myaccount`,
     },
     {
@@ -27,7 +25,6 @@ const StyledMyAccount = ({ children }) => {
     { text: "Email", onClick: () => navigate("/") },
     {
       text: "WishList",
-      //   onClick: () => navigate(`/${loggedUserName}/Whishlist`),
       to: `/${loggedUserName}/whishlist`,
     },
     { text: "Reserved", onClick: () => navigate("/") },

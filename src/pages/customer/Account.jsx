@@ -8,7 +8,6 @@ import StyledMyAccount from "../../components/shared/StyledMyAccount";
 const Account = () => {
   const dispatch = useDispatch();
   const loggedUserName = useSelector(getLoggedUserName);
-  console.log(loggedUserName);
 
   useEffect(() => {
     const fetchData = async () => {

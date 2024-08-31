@@ -27,3 +27,4 @@ export const getSinglePublicProfileUserDescription = (state) =>
 export const getSinglePublicProfileOwner = (state) =>
   state.singlePublicProfile.data.userName;
 export const getAdsSelector = (state) => state.adsState.data;
+export const getUiIDState = (state) => state.uiID.errors;

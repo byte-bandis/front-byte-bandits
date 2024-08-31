@@ -122,7 +122,7 @@ const CreditCard = () => {
 
     const formattedData = {
       //...formData,
-      creditCard: formData.creditCard || "card",
+      creditCard: formData.creditCard || "----",
     };
 
     const errors = validate({ creditCard: formattedData.creditCard });

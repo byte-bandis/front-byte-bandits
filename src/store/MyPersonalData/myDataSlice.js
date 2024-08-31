@@ -3,6 +3,7 @@ import { getMyDataWithThunk, updateMyDataWithThunk } from "./myDataThunk";
 
 export const defaultMyDataState = {
   data: {},
+  validationErrors: {},
 };
 
 const myDataSlice = createSlice({
@@ -15,6 +16,12 @@ const myDataSlice = createSlice({
     emptyMyData: (state) => {
       state.data = defaultMyDataState;
     },
+    setValidations: (state, action) => {
+      state.validationErrors = action.payload;
+    },
+    resetValidationErrors: (state) => {
+      state.validationErrors = {};
+    },
   },
   extraReducers: (builder) => {
     builder.addCase(getMyDataWithThunk.fulfilled, (state, action) => {
@@ -26,5 +33,6 @@ const myDataSlice = createSlice({
   },
 });
 
-export const { setMyData, emptyMyData } = myDataSlice.actions;
+export const { setMyData, emptyMyData, setValidations, resetValidationErrors } =
+  myDataSlice.actions;
 export default myDataSlice.reducer;

@@ -17,6 +17,7 @@ export const updateMyDataWithThunk = createAsyncThunk(
   "mydata/update",
   async ({ username, formData }, { rejectWithValue }) => {
     try {
+      console.log("Esto es formdata en el thunk de data: ", formData);
       const response = await myData.updateMyData(username, formData);
       return response;
     } catch (error) {

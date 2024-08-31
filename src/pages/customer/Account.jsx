@@ -1,13 +1,15 @@
 import { useDispatch, useSelector } from "react-redux";
-import ProductList from "./PoductList";
 import Profile from "./Profile";
 import { getLoggedUserName } from "../../store/selectors";
 import { useEffect } from "react";
 import { getMyAccountWithThunk } from "../../store/profilesThunk";
+import StyledMyAccount from "../../components/shared/StyledMyAccount";
 
 const Account = () => {
   const dispatch = useDispatch();
   const loggedUserName = useSelector(getLoggedUserName);
+  console.log(loggedUserName);
+
   useEffect(() => {
     const fetchData = async () => {
       if (loggedUserName) {
@@ -19,9 +21,11 @@ const Account = () => {
 
   return (
     <>
-      {<h1>{loggedUserName}, welcome to your private area</h1>}
-      <Profile />
-      <ProductList />
+      <StyledMyAccount>
+        {<h1>{loggedUserName}, welcome to your private area</h1>}
+        <Profile />
+      </StyledMyAccount>
+      {/* <ProductList /> */}
     </>
   );
 };

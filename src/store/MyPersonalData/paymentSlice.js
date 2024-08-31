@@ -8,6 +8,7 @@ import {
 
 export const defaultPaymentState = {
   data: {},
+  validationErrors: {},
 };
 
 const myPaymentsSlice = createSlice({
@@ -19,6 +20,12 @@ const myPaymentsSlice = createSlice({
     },
     emptyMyPayment: (state) => {
       state.data = defaultPaymentState;
+    },
+    setValidations: (state, action) => {
+      state.validationErrors = action.payload;
+    },
+    resetValidationErrors: (state) => {
+      state.validationErrors = {};
     },
   },
   extraReducers: (builder) => {
@@ -37,5 +44,10 @@ const myPaymentsSlice = createSlice({
   },
 });
 
-export const { setMyPayment, emptyMyPayment } = myPaymentsSlice.actions;
+export const {
+  setMyPayment,
+  emptyMyPayment,
+  setValidations,
+  resetValidationErrors,
+} = myPaymentsSlice.actions;
 export default myPaymentsSlice.reducer;

@@ -23,6 +23,12 @@ import {
   getMyDataWithThunk,
   updateMyDataWithThunk,
 } from "../../../../store/MyPersonalData/myDataThunk";
+import { validate } from "./userDataValidations";
+import {
+  resetValidationErrors,
+  setValidations,
+} from "../../../../store/MyPersonalData/myDataSlice";
+import { resetMessage, setMessage } from "../../../../store/uiSlice";
 
 const MyData = () => {
   const dispatch = useDispatch();
@@ -67,17 +73,21 @@ const MyData = () => {
 
   useEffect(() => {
     if (uiState === "success") {
-      setSuccessAlert(true);
+      //setSuccessAlert(true);
       setErrorAlert(false);
       const timer = setTimeout(() => {
         setSuccessAlert(false);
       }, 3000);
       return () => clearTimeout(timer);
-    } else {
+    } else if (uiState === "error") {
       setErrorAlert(true);
       setSuccessAlert(false);
+      const timer = setTimeout(() => {
+        dispatch(resetMessage());
+      }, 3000);
+      return () => clearTimeout(timer);
     }
-  }, [uiState]);
+  }, [uiState, dispatch]);
 
   useEffect(() => {
     if (myData.updatedAt) {
@@ -92,7 +102,7 @@ const MyData = () => {
       email: myData.email || "",
       mobilePhoneNumber: myData.mobilePhoneNumber || "",
       birthdate: myData.birthdate
-        ? moment(myData.birthdate).format("DD-MM-YYYY")
+        ? moment(myData.birthdate).format("YYYY-MM-DD") // Formato correcto para input de tipo date
         : "",
     });
   }, [myData]);
@@ -123,16 +133,26 @@ const MyData = () => {
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    const formattedData = {
-      ...formData,
-      name: formData.name || "Your name",
-      lastname: formData.lastname || "Your last name",
-      mobilePhoneNumber: formData.mobilePhoneNumber || "Your phone number",
-      //birthdate: moment(formData.birthdate, "DD-MM-YYYY").toISOString(),
-    };
-    dispatch(updateMyDataWithThunk({ username, formData: formattedData }));
+    const errors = validate({
+      name: formData.name,
+      username: formData.username,
+      lastname: formData.lastname,
+      email: formData.email,
+      birthdate: formData.birthdate,
+      mobilePhoneNumber: formData.birthdate,
+    });
+    dispatch(setValidations(errors));
+
+    if (Object.keys(errors).length > 0) {
+      const errorMessages = Object.values(errors).join(" ");
+      dispatch(setMessage({ payload: errorMessages, type: "error" }));
+      return;
+    }
+
+    dispatch(updateMyDataWithThunk({ username, formData }));
     setConfirmProcess(false);
     setEditMode(false);
+    dispatch(resetValidationErrors());
   };
 
   const handleCancelSubmit = () => {
@@ -250,7 +270,7 @@ const MyData = () => {
                   <div>{moment(myData.birthdate).format("DD-MM-YYYY")}</div> // Display formatted date
                 ) : (
                   <input
-                    type="text"
+                    type="date"
                     name="birthdate"
                     value={formData.birthdate}
                     onChange={handleInputChange}

@@ -10,28 +10,28 @@ import ErrorMessage from "./components/ErrorMessage";
 import { resetMessage } from "../../store/uiSlice";
 
 const ProductList = () => {
-    const dispatch = useDispatch();
-    const page = useSelector((state) => state.adsState.page);
-    const userid = useSelector((state) => state.authState.user.userId);
-    const errorUi = useSelector((state) => state.ui);
-    const filters = useSelector((state) => state.adsState.filters);
-    const adsData = useSelector((state) => state.adsState.data);
+  const dispatch = useDispatch();
+  const page = useSelector((state) => state.adsState.page);
+  const userid = useSelector((state) => state.authState.user.userId);
+  const errorUi = useSelector((state) => state.ui);
+  const filters = useSelector((state) => state.adsState.filters);
+  const adsData = useSelector((state) => state.adsState.data);
 
-    const resetError = () => {
-        dispatch(resetMessage());
-    };
+  const resetError = () => {
+    dispatch(resetMessage());
+  };
 
-    let error = null;
-    if (errorUi.state === 'error') {
-        error = errorUi.message;
+  let error = null;
+  if (errorUi.state === "error") {
+    error = errorUi.message;
+  }
+
+  useEffect(() => {
+    dispatch(getAds({ page, id: "", filters }));
+    if (userid) {
+      dispatch(getWishlist(userid));
     }
-
-    useEffect(() => {
-        dispatch(getAds({ page, id: '', filters }));
-        if (userid) {
-            dispatch(getWishlist(userid));
-        }
-    }, [dispatch, page, userid, filters]);
+  }, [dispatch, page, userid, filters]);
 
   return (
     <>
@@ -56,7 +56,10 @@ const ProductList = () => {
           <p className="no-ad">No hay resultados</p>
         )}
         {error && (
-          <ErrorMessage className="loginPage-error" onClick={resetError}>
+          <ErrorMessage
+            className="loginPage-error"
+            onClick={resetError}
+          >
             <h3>{error.toUpperCase()}</h3>
           </ErrorMessage>
         )}

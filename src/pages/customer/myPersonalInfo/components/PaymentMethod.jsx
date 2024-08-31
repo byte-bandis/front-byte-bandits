@@ -179,7 +179,6 @@ const CreditCard = () => {
                     onChange={handleInputChange}
                     placeholder="Write between 13 to 18 digits"
                     maxLength={18}
-                    /* minLength={13} */
                   />
                 )}
               </StyledListItem>

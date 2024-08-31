@@ -1,6 +1,11 @@
 import styled from "styled-components";
+import P from "prop-types";
 
-const StyledContainer = styled.div`
+const StyledContainer = ({ children, ...props }) => {
+  return <StyleContainer {...props}>{children}</StyleContainer>;
+};
+
+const StyleContainer = styled.div`
   display: ${(props) => props.$customDisplay || "block"};
   position: ${(props) => props.$customPosition || "relative"};
   flex-direction: ${(props) => props.$customFlexDirection || "column"};
@@ -16,3 +21,7 @@ const StyledContainer = styled.div`
 `;
 
 export default StyledContainer;
+
+StyledContainer.propTypes = {
+  children: P.node,
+};

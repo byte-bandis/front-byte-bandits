@@ -14,10 +14,7 @@ const Confirmator = ({ textValue, onConfirm, sethiden, hidden }) => {
       <StyledConfirm>
         <div className="blurer"></div>
         <div className="confirmator">
-          <h2>
-            Seguro que desea {textValue}
-            {console.log("entras confirmator?")}
-          </h2>
+          <h2>Seguro que desea {textValue}</h2>
           <div className="buttonWrapper">
             <Button onClick={handleAccept} $customheight="25px">
               Si

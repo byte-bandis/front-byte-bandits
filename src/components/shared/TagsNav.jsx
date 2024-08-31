@@ -3,20 +3,12 @@ import PropTypes from "prop-types";
 import styled from "styled-components";
 import { Link } from "react-router-dom";
 
-const TagsNav = ({ className, options, ...rest }) => {
-  const handleItemClick = (option) => {
-    option.onClick();
-  };
+const TagsNav = ({ options, ...rest }) => {
   return (
-    <StyledNav className={className} {...rest}>
+    <StyledNav {...rest}>
       {options.map((option, index) => (
         <StyledNavItem as="li" key={index}>
-          <StyledNavLink
-            as={Link}
-            to={option.to}
-            className={option.className}
-            onClick={() => handleItemClick(option)}
-          >
+          <StyledNavLink as={Link} to={option.to}>
             {option.text}
           </StyledNavLink>
         </StyledNavItem>
@@ -38,8 +30,11 @@ TagsNav.propTypes = {
 
 export default TagsNav;
 
-const StyledNav = styled(Nav)`
+const StyledNav = styled(Nav).attrs((props) => ({
+  className: props.className || "StyledNav-TagsNav",
+}))`
   display: flex;
+  flex-direction: ${(props) => props.$FlexDirection || "row"};
   width: ${(props) => props.$CustomWidth || "80%"};
   flex-wrap: ${(props) => props.$CustomFlexWrap || "nowrap"};
   gap: ${(props) => props.$CustomGap || "10px"};
@@ -50,11 +45,17 @@ const StyledNav = styled(Nav)`
   list-style: none;
 `;
 
-const StyledNavItem = styled(Nav.Item)`
+const StyledNavItem = styled(Nav.Item).attrs((props) => ({
+  className: props.className || "StyledNavItem-TagsNav",
+}))`
   flex: ${(props) => props.$CustomFlex || "1 1 calc(50% - 10px)"};
 `;
 
-const StyledNavLink = styled(Nav.Link)`
+StyledNavItem.displayName = "StyledNavItem-TagsNav";
+
+const StyledNavLink = styled(Nav.Link).attrs((props) => ({
+  className: props.className || "StyledNavLink-TagsNav",
+}))`
   display: block;
   padding: ${(props) => props.$CustomPadding || "5px"};
   color: ${(props) => props.$CustomColor || "var(--text-100)"};
@@ -68,3 +69,4 @@ const StyledNavLink = styled(Nav.Link)`
     color: ${(props) => props.$CustomHoverColor || "var(--bg-100)"};
   }
 `;
+StyledNavLink.displayName = "StyledNavLink-TagsNav";

@@ -11,7 +11,11 @@ const StyledMyAccount = ({ children }) => {
   const sideBarElements = [
     {
       text: "My Profile",
-      to: `/${loggedUserName}/myaccount`,
+      to: `/${loggedUserName}/info`,
+    },
+    {
+      text: "My Data",
+      to: `/${loggedUserName}/info/mydata`,
     },
     {
       text: "Sell",

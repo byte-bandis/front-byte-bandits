@@ -44,7 +44,7 @@ const Header = () => {
   };
 
   const dropdownOptions = [
-    { text: "User Zone", to: `${loggedUser}/myaccount`, className: "UserZone" },
+    { text: "User Zone", to: `/${loggedUser}/info`, className: "UserZone" },
     {
       text: "Log out",
       onClick: () => {

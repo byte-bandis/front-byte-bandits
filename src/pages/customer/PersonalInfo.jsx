@@ -7,6 +7,7 @@ import { deleteUserWithThunk } from "../../store/userThunk";
 import { useParams } from "react-router-dom";
 import { logout } from "../auth/service";
 import StyledContainer from "../../components/shared/StyledContainer";
+import DeleteAccount from "./DeleteAccount";
 
 const PersonalInfo = () => {
   const { username } = useParams();
@@ -39,6 +40,7 @@ const PersonalInfo = () => {
       <Address />
       <CreditCard />
       <RegularButton onClick={handleDeletion}>Delete user</RegularButton>
+      <DeleteAccount />
     </>
   );
 };

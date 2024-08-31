@@ -23,6 +23,13 @@ import {
   ButtonContainer,
 } from "../../../../components/shared/buttons";
 import { Alert } from "react-bootstrap";
+import { validate } from "./paymentValidations";
+import { setMessage, resetMessage } from "../../../../store/uiSlice";
+import {
+  emptyMyPayment,
+  resetValidationErrors,
+  setValidations,
+} from "../../../../store/MyPersonalData/paymentSlice";
 
 const CreditCard = () => {
   const dispatch = useDispatch();
@@ -35,6 +42,7 @@ const CreditCard = () => {
   const [formData, setFormData] = useState({
     creditCard: "",
   });
+
   const uiState = useSelector(getUIState);
   const uiMessage = useSelector(getUIMessage);
   const [successAlert, setSuccessAlert] = useState(false);
@@ -80,9 +88,9 @@ const CreditCard = () => {
       setCreationdate(trimmedDate);
     }
 
-    setFormData({
+    /*    setFormData({
       creditCard: myCreditCard.creditCard || "",
-    });
+    }); */
   }, [myCreditCard]);
 
   const handleShowEditMode = (event) => {
@@ -111,16 +119,29 @@ const CreditCard = () => {
 
   const handleSubmit = (event) => {
     event.preventDefault();
+
     const formattedData = {
       //...formData,
       creditCard: formData.creditCard || "card",
     };
+
+    const errors = validate({ creditCard: formattedData.creditCard });
+    dispatch(setValidations(errors));
+
+    if (Object.keys(errors).length > 0) {
+      const errorMessages = Object.values(errors).join(" ");
+      dispatch(setMessage({ payload: errorMessages, type: "error" }));
+      return;
+    }
 
     dispatch(
       updateMyCreditCardWithThunk({ username, formData: formattedData })
     );
     setConfirmProcess(false);
     setEditMode(false);
+    dispatch(resetMessage());
+    dispatch(emptyMyPayment());
+    dispatch(resetValidationErrors());
   };
 
   const handleCancelSubmit = () => {
@@ -158,7 +179,7 @@ const CreditCard = () => {
                     onChange={handleInputChange}
                     placeholder="Write between 13 to 18 digits"
                     maxLength={18}
-                    minLength={13}
+                    /* minLength={13} */
                   />
                 )}
               </StyledListItem>

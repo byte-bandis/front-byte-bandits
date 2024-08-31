@@ -35,22 +35,28 @@ const Chat = ({ productId, buyerId }) => {
     };
 
     checkChatExists();
+  }, [productId, buyerId, loggedUserId]);
 
-    // Escuchar el historial de mensajes
-    socket.on("chatHistory", (chatHistory) => {
-      setMessages(chatHistory);
-    });
+  // Suscribirse a los eventos del chat después de que `chatId` esté disponible
+  useEffect(() => {
+    if (chatId) {
+      // Escuchar el historial de mensajes
+      socket.on("chatHistory", (chatHistory) => {
+        setMessages(chatHistory);
+      });
 
-    // Escuchar nuevos mensajes
-    socket.on("newMessage", (newMessage) => {
-      setMessages((prevMessages) => [...prevMessages, newMessage]);
-    });
+      // Escuchar nuevos mensajes
+      socket.on("newMessage", (newMessage) => {
+        setMessages((prevMessages) => [...prevMessages, newMessage]);
+      });
 
-    return () => {
-      socket.off("chatHistory");
-      socket.off("newMessage");
-    };
-  }, [productId, buyerId, loggedUserId, socket]);
+      // Limpiar las suscripciones cuando el componente se desmonte o `chatId` cambie
+      return () => {
+        socket.off("chatHistory");
+        socket.off("newMessage");
+      };
+    }
+  }, [chatId]);
 
   // Manejar el envío del mensaje
   const handleSendMessage = async (e) => {

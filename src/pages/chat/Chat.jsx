@@ -5,7 +5,14 @@ import { client } from "../../api/client";
 import { getLoggedUserId } from "../../store/selectors";
 import { useSelector } from "react-redux";
 
-const socket = io(import.meta.env.VITE_API_BASE_URL);
+const socket = io(import.meta.env.VITE_API_BASE_URL.replace("api/", ""), {
+  transports: ["websocket"],
+  path:
+    import.meta.env.VITE_USER_NODE_ENV !== "production"
+      ? "/socket.io"
+      : "/api/socket.io",
+  withCredentials: true,
+});
 
 const Chat = ({ productId, buyerId }) => {
   const [chatId, setChatId] = useState(null);

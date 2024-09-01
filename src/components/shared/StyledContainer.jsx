@@ -8,6 +8,7 @@ const StyledContainer = ({ children, ...props }) => {
 const StyleContainer = styled.div`
   display: ${(props) => props.$customDisplay || "block"};
   position: ${(props) => props.$customPosition || "relative"};
+  background: ${(props) => props.$customBackground || "var(--bg-100)"};
   flex-direction: ${(props) => props.$customFlexDirection || "column"};
   gap: ${(props) => props.$customGap || "10px"};
   justify-content: ${(props) => props.$customJustifyContent || "flex-start"};

@@ -11,26 +11,27 @@ const PersonalInfo = () => {
   const uiState = useSelector(getUIState);
 
   return (
-    <StyledContainer>
+    <StyledContainer $customMarginTop="3rem">
       <h1>These are your personal details</h1>
 
       {uiState === "error" && (
         <FixedPositionAlert
           position="top-right"
           $customTop="25%"
-          $customRight="20px"
+          $customRight="10%"
         />
       )}
 
       <StyledContainer
         $customDisplay="flex"
-        $customFlexDirection="row"
-        $customJustifyItems="flex-start"
+        $customFlexDirection="column"
+        $customAlignItems="left"
+        $customMarginTop="1rem"
       >
         <MyData />
+        <Address />
+        <CreditCard />
       </StyledContainer>
-      <Address />
-      <CreditCard />
     </StyledContainer>
   );
 };

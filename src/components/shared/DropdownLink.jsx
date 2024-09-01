@@ -25,13 +25,17 @@ const DropdownLink = ({
     }
   };
 
+  const handleMouseLeave = () => {
+    setIsOpen(false);
+  };
+
   return (
     <DropdownContainer className={className}>
-      <DropdownToggle onClick={toggleDropdown} {...rest}>
+      <DropdownToggle onMouseEnter={toggleDropdown} {...rest}>
         {children}
       </DropdownToggle>
       {isOpen && (
-        <DropdownMenu>
+        <DropdownMenu onMouseLeave={handleMouseLeave}>
           {options.map((option, index) => (
             <React.Fragment key={index}>
               <DropdownItem
@@ -82,6 +86,7 @@ const DropdownToggle = styled.button`
   border: ${(props) => props.$CustomBorder || "none"};
   border-radius: ${(props) => props.$CustomBorderRadius || "5px"};
   width: ${(props) => props.$CustomWidth || "125px"};
+  margin: ${(props) => props.$CustomMagin || "10px"};
 
   &:hover {
     background-color: ${(props) =>
@@ -102,6 +107,8 @@ const DropdownMenu = styled.div`
   padding: ${(props) => props.$CustomPadding || "10% 5% 10% 10%"};
   gap: ${(props) => props.$CustomGap || "5px"};
   border-radius: ${(props) => props.$CustomBorderRadius || "5px"};
+  margin: ${(props) => props.$CustomMagin || "1px 10px"};
+  width: ${(props) => props.$CustomWidth || "140px"};
 `;
 
 const DropdownItem = styled.div`

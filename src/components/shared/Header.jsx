@@ -44,13 +44,11 @@ const Header = () => {
   };
 
   const dropdownOptions = [
-    { text: "User Zone", to: `${loggedUser}/myaccount`, className: "UserZone" },
+    { text: "User Zone", to: `/${loggedUser}/info`, className: "UserZone" },
     {
       text: "Log out",
       onClick: () => {
-        console.log("Setting showConfirmator to true");
         setShowConfirmator(true);
-        console.log("Setting now to true?");
       },
       className: "Logout",
     },
@@ -64,27 +62,27 @@ const Header = () => {
     },
     {
       text: "lifestyle",
-      onClick: () => navigate(`/product/?tags=lifestyle&sell=true`),
+      to: `/product/?tags=lifestyle&sell=true`,
       className: "lifestyle",
     },
     {
       text: "mobile",
-      onClick: () => navigate("/product/?tags=mobile&sell=true"),
+      to: "/product/?tags=mobile&sell=true",
       className: "mobile",
     },
     {
       text: "motor",
-      onClick: () => navigate("/product/?tags=motor&sell=true"),
+      to: "/product/?tags=motor&sell=true",
       className: "motor",
     },
     {
       text: "work",
-      onClick: () => navigate("/product/?tags=work&sell=true"),
+      to: "/product/?tags=work&sell=true",
       className: "work",
     },
     {
       text: "others",
-      onClick: () => navigate("/product/?tags=others&sell=true"),
+      to: "/product/?tags=others&sell=true",
       className: "others",
     },
   ];
@@ -103,7 +101,7 @@ const Header = () => {
           hidden={showConfirmator}
         />
       )}
-      <StyledContainer>
+      <HeaderStyledContainer>
         <StyledNav className="d-flex align-items-center w-100">
           <Logo />
           <SearchContainer>
@@ -128,6 +126,7 @@ const Header = () => {
                 $customBackGroundColor="var(--accent-100)"
                 $CustomPadding="5px"
                 $customBorder="none"
+                $customwidth="130px"
               >
                 Sell - Buy
               </RegularButton>
@@ -159,23 +158,29 @@ const Header = () => {
             </>
           )}
         </StyledNav>
-      </StyledContainer>
-      <StyledTagsNavContainer>
-        <DropdownLink options={TAG_OPTIONS} className="allCategories">
-          All categories
-        </DropdownLink>
-        <TagsNav
-          className="tagsNavegation"
-          options={filteredTagOptions}
-        ></TagsNav>
-      </StyledTagsNavContainer>
+
+        <StyledTagsNavContainer>
+          <DropdownLink
+            options={TAG_OPTIONS}
+            className="allCategories"
+            $CustomMargin="10px"
+            $CustomWidth="140px"
+          >
+            All categories
+          </DropdownLink>
+          <TagsNav
+            className="tagsNavegation"
+            options={filteredTagOptions}
+          ></TagsNav>
+        </StyledTagsNavContainer>
+      </HeaderStyledContainer>
     </>
   );
 };
 
 export default Header;
 
-const StyledContainer = styled.div`
+const HeaderStyledContainer = styled.div`
   position: ${(props) => props.$CustomPosition || "fixed"};
   top: ${(props) => props.$CustomTop || 0};
   left: ${(props) => props.$CustomLeft || 0};

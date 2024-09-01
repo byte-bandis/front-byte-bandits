@@ -16,6 +16,7 @@ import Profile from "../pages/customer/Profile";
 import LayoutProfile from "../pages/customer/LayoutProfile";
 import PersonalInfo from "../pages/customer/PersonalInfo";
 import UserPublicInfo from "../pages/customer/UserPublicInfo";
+import Chats from "../pages/chat/Chats";
 
 const RootRouter = () => {
   return (
@@ -24,24 +25,18 @@ const RootRouter = () => {
       <Route path="/register" element={<RegisterPage />} />
       <Route path="/terms-and-conditions" element={<TermsAndConditions />} />
       <Route path="/privacy-policy" element={<PrivacyPolicy />} />
-      <Route path=":username" element={<LayoutAccount />}>
-        <Route index element={<Profile />} />
-        <Route
-          path="myaccount"
-          element={
-            <RequireAuth>
-              <Account />
-            </RequireAuth>
-          }
-        />
-        <Route
-          path="info"
-          element={
-            <RequireAuth>
-              <LayoutProfile />
-            </RequireAuth>
-          }
-        >
+      <Route path=":username" element={<Profile />} />
+
+      {/*Private routes*/}
+      <Route
+        path=":username"
+        element={
+          <RequireAuth>
+            <LayoutAccount />
+          </RequireAuth>
+        }
+      >
+        <Route path="info" element={<LayoutProfile />}>
           <Route index element={<UserPublicInfo />} />
           <Route path="mydata" element={<PersonalInfo />} />
         </Route>
@@ -49,18 +44,17 @@ const RootRouter = () => {
         <Route path="new" element={<NewProductPage />} />
         <Route path="whishlist" element={<Wishlist />} />
         <Route path="delete-account" element={<DeleteAccount />} />
+        <Route path="chat" element={<Chats />} />
       </Route>
+
+      {/*Public routes*/}
       <Route path="/product" element={<Outlet />}>
         <Route index element={<ProductList />} />
         <Route path=":productId" element={<ProductView />} />
       </Route>
       <Route path="/404" element={<NotFound />} />
       <Route path="*" element={<Navigate to="/404" />} />
-      <Route
-        path="/"
-        element={<ProductList />}
-        // element={<Navigate to="/product" />}
-      />
+      <Route path="/" element={<ProductList />} />
     </Routes>
   );
 };

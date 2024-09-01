@@ -217,7 +217,7 @@ const NewProductPage = ({ isEditMode = false }) => {
   }, [isEditMode, productId]);
 
   return (
-    <div className="my-4">
+    <div className="my-4 mx-auto">
       <StyledForm onSubmit={handleSubmit}>
         <h4 className="mb-2 text-center">
           {isEditMode ? "Edita tu producto" : "Introduce tu producto"}

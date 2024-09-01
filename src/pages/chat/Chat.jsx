@@ -57,12 +57,20 @@ const Chat = ({ productId, buyerId }) => {
       // Escuchar nuevos mensajes
       socket.on("newMessage", (newMessage) => {
         setMessages((prevMessages) => [...prevMessages, newMessage]);
+
+        // Marcar el mensaje como leído si el mensaje no fue enviado por el usuario actual
+        if (newMessage.user._id !== loggedUserId) {
+          socket.emit("readMessage", {
+            chatId,
+            userId: loggedUserId,
+          });
+        }
       });
 
-      socket.on("messagesRead", ({ chatId, userId }) => {
+      socket.on("messagesRead", (userId) => {
         setMessages((prevMessages) =>
           prevMessages.map((msg) => {
-            if (msg.user._id !== loggedUserId) {
+            if (msg.user._id !== userId) {
               return { ...msg, read: true };
             }
             return msg;

@@ -1,22 +1,26 @@
 // PersonalInfo.js
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import Address from "./myPersonalInfo/components/Address";
 import CreditCard from "./myPersonalInfo/components/PaymentMethod";
 import MyData from "./myPersonalInfo/components/UserData";
 import StyledContainer from "../../components/shared/StyledContainer";
 import FixedPositionAlert from "../../components/shared/alerts/FixedPositionAlert";
-import { getUIMessage, getUIState } from "../../store/selectors";
+import { getUIState } from "../../store/selectors";
 
 const PersonalInfo = () => {
-  const dispatch = useDispatch();
   const uiState = useSelector(getUIState);
-  const uiMessage = useSelector(getUIMessage);
 
   return (
     <StyledContainer>
       <h1>These are your personal details</h1>
 
-      <FixedPositionAlert />
+      {uiState === "error" && (
+        <FixedPositionAlert
+          position="top-right"
+          $customTop="25%"
+          $customRight="20px"
+        />
+      )}
 
       <StyledContainer
         $customDisplay="flex"

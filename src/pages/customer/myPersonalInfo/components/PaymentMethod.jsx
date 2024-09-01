@@ -25,6 +25,7 @@ import {
   resetValidationErrors,
   setValidations,
 } from "../../../../store/MyPersonalData/paymentSlice";
+import { CreditCard2Back } from "react-bootstrap-icons";
 
 const CreditCard = () => {
   const dispatch = useDispatch();
@@ -196,9 +197,9 @@ const CreditCard = () => {
             </RegularButton>
           )}
         </form>
-        <CreditCard
-          width="25px"
-          height="25px"
+        <CreditCard2Back
+          width="75px"
+          height="75px"
           color="var(--primary-200)"
           style={{
             position: "absolute",

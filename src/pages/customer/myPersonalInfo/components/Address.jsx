@@ -334,8 +334,8 @@ const Address = () => {
             )}
           </form>
           <Postcard
-            width="25px"
-            height="25px"
+            width="75px"
+            height="75px"
             color="var(--primary-200)"
             style={{
               position: "absolute",

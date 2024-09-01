@@ -31,6 +31,10 @@ const StyledMyAccount = ({ children }) => {
       text: "WishList",
       to: `/${loggedUserName}/whishlist`,
     },
+    {
+      text: "Chat",
+      to: `/${loggedUserName}/chat`,
+    },
     { text: "Reserved", onClick: () => navigate("/") },
     { text: "Others", onClick: () => navigate("/") },
   ];

@@ -42,7 +42,12 @@ export const validate = ({
     newErrors.birthdate = "User needs to be between 18 and 120 years old.";
   }
 
-  if (mobilePhoneNumber && /^\d{3}\s\d{3}\s\d{3}$/.test(mobilePhoneNumber)) {
+  if (
+    mobilePhoneNumber &&
+    mobilePhoneNumber !== "--- --- ---" &&
+    !/^\d{3}\s\d{3}\s\d{3}$/.test(mobilePhoneNumber)
+  ) {
+    console.log("Esto es mobilePhoneNumber en validators: ", mobilePhoneNumber);
     newErrors.mobilePhoneNumber =
       "Phone number should be formatted as 111 111 111 or left empty";
   }

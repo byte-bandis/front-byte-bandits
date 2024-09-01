@@ -82,10 +82,6 @@ const MyData = () => {
     } else if (uiState === "error") {
       setErrorAlert(true);
       setSuccessAlert(false);
-      const timer = setTimeout(() => {
-        dispatch(resetMessage());
-      }, 3000);
-      return () => clearTimeout(timer);
     }
   }, [uiState, dispatch]);
 
@@ -139,7 +135,7 @@ const MyData = () => {
       lastname: formData.lastname,
       email: formData.email,
       birthdate: formData.birthdate,
-      mobilePhoneNumber: formData.birthdate,
+      mobilePhoneNumber: formData.mobilePhoneNumber,
     });
     dispatch(setValidations(errors));
 
@@ -153,6 +149,7 @@ const MyData = () => {
     setConfirmProcess(false);
     setEditMode(false);
     dispatch(resetValidationErrors());
+    dispatch(resetMessage());
   };
 
   const handleCancelSubmit = () => {

@@ -1,13 +1,9 @@
 import { useDispatch, useSelector } from "react-redux";
-import {
-  getLoggedUserName,
-  getMyData,
-  getUIMessage,
-  getUIState,
-} from "../../../../store/selectors";
+import { getLoggedUserName, getMyData } from "../../../../store/selectors";
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import moment from "moment";
+import { PersonCircle } from "react-bootstrap-icons";
 
 import {
   StyledListContainer,
@@ -18,7 +14,7 @@ import {
   RegularButton,
   ButtonContainer,
 } from "../../../../components/shared/buttons";
-import { Alert } from "react-bootstrap";
+
 import {
   getMyDataWithThunk,
   updateMyDataWithThunk,
@@ -46,11 +42,6 @@ const MyData = () => {
     birthdate: "",
     mobilePhoneNumber: "",
   });
-  const uiState = useSelector(getUIState);
-  /* const uiState = useSelector(getUIState);
-  const uiMessage = useSelector(getUIMessage);
-  const [successAlert, setSuccessAlert] = useState(false);
-  const [errorAlert, setErrorAlert] = useState(false); */
 
   const containerStyles = {
     $customDisplay: "flex",
@@ -71,26 +62,7 @@ const MyData = () => {
       dispatch(getMyDataWithThunk(loggedUsername));
     }
   }, [username, loggedUsername, dispatch]);
-  /*   useEffect(() => {
-    if (!uiState === "error" && loggedUsername === username) {
-      dispatch(getMyDataWithThunk(loggedUsername));
-    }
-  }, [uiState, username, loggedUsername, dispatch]);
- */
-  /*   useEffect(() => {
-    if (uiState === "success") {
-      //setSuccessAlert(true);
-      setErrorAlert(false);
-      const timer = setTimeout(() => {
-        setSuccessAlert(false);
-      }, 3000);
-      return () => clearTimeout(timer);
-    } else if (uiState === "error") {
-      setErrorAlert(true);
-      setSuccessAlert(false);
-    }
-  }, [uiState, dispatch]);
- */
+
   useEffect(() => {
     if (myData.updatedAt) {
       const formattedDate = moment(myData.updatedAt).format("DD-MM-YYYY");
@@ -104,7 +76,7 @@ const MyData = () => {
       email: myData.email || "",
       mobilePhoneNumber: myData.mobilePhoneNumber || "",
       birthdate: myData.birthdate
-        ? moment(myData.birthdate).format("YYYY-MM-DD") // Formato correcto para input de tipo date
+        ? moment(myData.birthdate).format("YYYY-MM-DD")
         : "",
     });
   }, [myData]);
@@ -165,7 +137,7 @@ const MyData = () => {
 
   return (
     <>
-      <StyledListContainer>
+      <StyledListContainer $customWidth="80%">
         <ul key={myData._id}>
           <form
             onSubmit={handleSubmit}
@@ -324,6 +296,16 @@ const MyData = () => {
               </RegularButton>
             )}
           </form>
+          <PersonCircle
+            width="25px"
+            height="25px"
+            color="var(--primary-200)"
+            style={{
+              position: "absolute",
+              top: "10%",
+              right: "5%",
+            }}
+          />
           {editMode && (
             <StyledContainer {...containerStyles}>
               <StyledListItem {...listItemStyles}>

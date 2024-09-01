@@ -1,13 +1,9 @@
 import { useDispatch, useSelector } from "react-redux";
-import {
-  getLoggedUserName,
-  getMyPayment,
-  getUIMessage,
-  getUIState,
-} from "../../../../store/selectors";
+import { getLoggedUserName, getMyPayment } from "../../../../store/selectors";
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { trimDate } from "../../../../utils/dateTools";
+
 import {
   getMyCreditCardWithThunk,
   updateMyCreditCardWithThunk,
@@ -22,7 +18,6 @@ import {
   RegularButton,
   ButtonContainer,
 } from "../../../../components/shared/buttons";
-import { Alert } from "react-bootstrap";
 import { validate } from "./paymentValidations";
 import { setMessage, resetMessage } from "../../../../store/uiSlice";
 import {
@@ -43,13 +38,6 @@ const CreditCard = () => {
     creditCard: "",
   });
 
-  const uiState = useSelector(getUIState);
-
-  /* const uiState = useSelector(getUIState);
-  const uiMessage = useSelector(getUIMessage);
-  const [successAlert, setSuccessAlert] = useState(false);
-  const [errorAlert, setErrorAlert] = useState(false);
- */
   const containerStyles = {
     $customDisplay: "flex",
     $customAlignItems: "flex-start",
@@ -69,35 +57,12 @@ const CreditCard = () => {
       dispatch(getMyCreditCardWithThunk(username));
     }
   }, [username, loggedUsername, dispatch]);
-  /* useEffect(() => {
-    if (!uiState === "error" && loggedUsername === username) {
-      dispatch(getMyCreditCardWithThunk(username));
-    }
-  }, [uiState, username, loggedUsername, dispatch]);
- */
-  /*   useEffect(() => {
-    if (uiState === "success") {
-      setSuccessAlert(true);
-      setErrorAlert(false);
-      const timer = setTimeout(() => {
-        setSuccessAlert(false);
-      }, 3000);
-      return () => clearTimeout(timer);
-    } else {
-      setErrorAlert(true);
-      setSuccessAlert(false);
-    }
-  }, [uiState]); */
 
   useEffect(() => {
     if (myCreditCard.updatedAt) {
       const trimmedDate = trimDate(myCreditCard.updatedAt, "ES");
       setCreationdate(trimmedDate);
     }
-
-    /*    setFormData({
-      creditCard: myCreditCard.creditCard || "",
-    }); */
   }, [myCreditCard]);
 
   const handleShowEditMode = (event) => {
@@ -157,94 +122,102 @@ const CreditCard = () => {
   };
 
   return (
-    <>
-      <StyledListContainer>
-        <ul key={myCreditCard._id}>
-          <form
-            onSubmit={handleSubmit}
-            noValidate
-          >
-            <StyledListItem $customHeaderFontSize="1.5rem">
-              <h3>Credit card:</h3>
+    <StyledListContainer $customWidth="80%">
+      <ul key={myCreditCard._id}>
+        <form
+          onSubmit={handleSubmit}
+          noValidate
+        >
+          <StyledListItem $customHeaderFontSize="1.5rem">
+            <h3>Credit card:</h3>
+          </StyledListItem>
+
+          <StyledContainer {...containerStyles}>
+            <StyledListItem {...listItemStyles}>
+              <label>Credit card: </label>
+              {!editMode ? (
+                <div>{myCreditCard.creditCard}</div>
+              ) : (
+                <input
+                  type="text"
+                  name="creditCard"
+                  value={formData.creditCard}
+                  onChange={handleInputChange}
+                  placeholder="Write between 13 to 18 digits"
+                  maxLength={18}
+                />
+              )}
             </StyledListItem>
+          </StyledContainer>
 
-            <StyledContainer {...containerStyles}>
-              <StyledListItem {...listItemStyles}>
-                <label>Credit card: </label>
-                {!editMode ? (
-                  <div>{myCreditCard.creditCard}</div>
-                ) : (
-                  <input
-                    type="text"
-                    name="creditCard"
-                    value={formData.creditCard}
-                    onChange={handleInputChange}
-                    placeholder="Write between 13 to 18 digits"
-                    maxLength={18}
-                  />
-                )}
-              </StyledListItem>
-            </StyledContainer>
-
-            {editMode ? (
-              <ButtonContainer $justifyContent="flex-start">
-                {!confirmProcess && (
-                  <>
-                    <RegularButton
-                      $customHoverBackgroundColor="var(--accent-100)"
-                      $customMargin="2rem 0 0 0"
-                      onClick={handleConfirmProcess}
-                    >
-                      Save your card number
-                    </RegularButton>
-                    <RegularButton
-                      $customMargin="2rem 0 0 0"
-                      onClick={handleHideEditMode}
-                    >
-                      Back to your saved card
-                    </RegularButton>
-                  </>
-                )}
-                {confirmProcess && (
-                  <>
-                    <RegularButton
-                      type="submit"
-                      $customHoverBackgroundColor="var(--accent-100)"
-                      $customMargin="2rem 0 0 0"
-                    >
-                      Confirm save
-                    </RegularButton>
-                    <RegularButton
-                      $customMargin="2rem 0 0 0"
-                      onClick={handleCancelSubmit}
-                    >
-                      Cancel
-                    </RegularButton>
-                  </>
-                )}
-              </ButtonContainer>
-            ) : (
-              <RegularButton
-                $customMargin="2rem 0 0 0"
-                onClick={handleShowEditMode}
-              >
-                Click to edit
-              </RegularButton>
-            )}
-          </form>
-          {editMode && (
-            <StyledContainer {...containerStyles}>
-              <StyledListItem {...listItemStyles}>
-                <i>Last time you updated your credit card:</i>
-                <div>
-                  <i>{creationDate}</i>
-                </div>
-              </StyledListItem>
-            </StyledContainer>
+          {editMode ? (
+            <ButtonContainer $justifyContent="flex-start">
+              {!confirmProcess && (
+                <>
+                  <RegularButton
+                    $customHoverBackgroundColor="var(--accent-100)"
+                    $customMargin="2rem 0 0 0"
+                    onClick={handleConfirmProcess}
+                  >
+                    Save your card number
+                  </RegularButton>
+                  <RegularButton
+                    $customMargin="2rem 0 0 0"
+                    onClick={handleHideEditMode}
+                  >
+                    Back to your saved card
+                  </RegularButton>
+                </>
+              )}
+              {confirmProcess && (
+                <>
+                  <RegularButton
+                    type="submit"
+                    $customHoverBackgroundColor="var(--accent-100)"
+                    $customMargin="2rem 0 0 0"
+                  >
+                    Confirm save
+                  </RegularButton>
+                  <RegularButton
+                    $customMargin="2rem 0 0 0"
+                    onClick={handleCancelSubmit}
+                  >
+                    Cancel
+                  </RegularButton>
+                </>
+              )}
+            </ButtonContainer>
+          ) : (
+            <RegularButton
+              $customMargin="2rem 0 0 0"
+              onClick={handleShowEditMode}
+            >
+              Click to edit
+            </RegularButton>
           )}
-        </ul>
-      </StyledListContainer>
-    </>
+        </form>
+        <CreditCard
+          width="25px"
+          height="25px"
+          color="var(--primary-200)"
+          style={{
+            position: "absolute",
+            top: "10%",
+            right: "5%",
+          }}
+        />
+        {editMode && (
+          <StyledContainer {...containerStyles}>
+            <StyledListItem {...listItemStyles}>
+              <i>Last time you updated your credit card:</i>
+              <div>
+                <i>{creationDate}</i>
+              </div>
+            </StyledListItem>
+          </StyledContainer>
+        )}
+      </ul>
+    </StyledListContainer>
   );
 };
 

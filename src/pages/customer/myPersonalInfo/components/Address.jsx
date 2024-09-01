@@ -1,13 +1,11 @@
 import { useDispatch, useSelector } from "react-redux";
-import {
-  getLoggedUserName,
-  getMyAddress,
-  getUIMessage,
-  getUIState,
-} from "../../../../store/selectors";
+import { getLoggedUserName, getMyAddress } from "../../../../store/selectors";
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { trimDate } from "../../../../utils/dateTools";
+
+import { Postcard } from "react-bootstrap-icons";
+
 import {
   getAddressWithThunk,
   updateMyAddressWithThunk,
@@ -22,7 +20,6 @@ import {
   RegularButton,
   ButtonContainer,
 } from "../../../../components/shared/buttons";
-import { Alert } from "react-bootstrap";
 import { validate } from "./addressValidations";
 import {
   emptyMyAddress,
@@ -50,12 +47,6 @@ const Address = () => {
     postalCode: "",
     city: "",
   });
-  const uiState = useSelector(getUIState);
-
-  /* const uiState = useSelector(getUIState);
-  const uiMessage = useSelector(getUIMessage);
-  const [successAlert, setSuccessAlert] = useState(false);
-  const [errorAlert, setErrorAlert] = useState(false); */
 
   const containerStyles = {
     $customDisplay: "flex",
@@ -76,26 +67,6 @@ const Address = () => {
       dispatch(getAddressWithThunk(username));
     }
   }, [username, loggedUsername, dispatch]);
-  /* useEffect(() => {
-    if (!uiState === "error" && loggedUsername === username) {
-      dispatch(getAddressWithThunk(username));
-    }
-  }, [uiState, username, loggedUsername, dispatch]); */
-
-  /*   useEffect(() => {
-    if (uiState === "success" && loggedUsername === username) {
-      dispatch(getAddressWithThunk(loggedUsername));
-      setSuccessAlert(true);
-      setErrorAlert(false);
-      const timer = setTimeout(() => {
-        setSuccessAlert(false);
-      }, 3000);
-      return () => clearTimeout(timer);
-    } else {
-      setErrorAlert(true);
-      setSuccessAlert(false);
-    }
-  }, [uiState, username, loggedUsername, dispatch]); */
 
   useEffect(() => {
     const countries = countriesDB.map((c) => c.name); // Extrae los nombres de los países
@@ -177,7 +148,7 @@ const Address = () => {
 
   return (
     <>
-      <StyledListContainer>
+      <StyledListContainer $customWidth="80%">
         <ul key={myAddress._id}>
           <form
             onSubmit={handleSubmit}
@@ -362,6 +333,16 @@ const Address = () => {
               </RegularButton>
             )}
           </form>
+          <Postcard
+            width="25px"
+            height="25px"
+            color="var(--primary-200)"
+            style={{
+              position: "absolute",
+              top: "10%",
+              right: "5%",
+            }}
+          />
           {editMode && (
             <StyledContainer {...containerStyles}>
               <StyledListItem {...listItemStyles}>

@@ -1,24 +1,23 @@
-import { useDispatch } from "react-redux";
-import { RegularButton } from "../../components/shared/buttons";
+// PersonalInfo.js
+import { useDispatch, useSelector } from "react-redux";
 import Address from "./myPersonalInfo/components/Address";
 import CreditCard from "./myPersonalInfo/components/PaymentMethod";
 import MyData from "./myPersonalInfo/components/UserData";
-import { deleteUserWithThunk } from "../../store/userThunk";
-import { useParams } from "react-router-dom";
-import { logout } from "../auth/service";
 import StyledContainer from "../../components/shared/StyledContainer";
-import DeleteAccount from "./DeleteAccount";
+import FixedPositionAlert from "../../components/shared/alerts/FixedPositionAlert";
+import { getUIMessage, getUIState } from "../../store/selectors";
 
 const PersonalInfo = () => {
-  const { username } = useParams();
   const dispatch = useDispatch();
-  const handleDeletion = () => {
-    dispatch(deleteUserWithThunk(username));
-    logout();
-  };
+  const uiState = useSelector(getUIState);
+  const uiMessage = useSelector(getUIMessage);
+
   return (
-    <>
+    <StyledContainer>
       <h1>These are your personal details</h1>
+
+      <FixedPositionAlert />
+
       <StyledContainer
         $customDisplay="flex"
         $customFlexDirection="row"
@@ -39,9 +38,7 @@ const PersonalInfo = () => {
       </StyledContainer>
       <Address />
       <CreditCard />
-      <RegularButton onClick={handleDeletion}>Delete user</RegularButton>
-      <DeleteAccount />
-    </>
+    </StyledContainer>
   );
 };
 

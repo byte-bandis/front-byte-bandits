@@ -44,10 +44,12 @@ const CreditCard = () => {
   });
 
   const uiState = useSelector(getUIState);
+
+  /* const uiState = useSelector(getUIState);
   const uiMessage = useSelector(getUIMessage);
   const [successAlert, setSuccessAlert] = useState(false);
   const [errorAlert, setErrorAlert] = useState(false);
-
+ */
   const containerStyles = {
     $customDisplay: "flex",
     $customAlignItems: "flex-start",
@@ -63,12 +65,17 @@ const CreditCard = () => {
   };
 
   useEffect(() => {
-    if (uiState !== "error" && loggedUsername === username) {
+    if (loggedUsername === username) {
+      dispatch(getMyCreditCardWithThunk(username));
+    }
+  }, [username, loggedUsername, dispatch]);
+  /* useEffect(() => {
+    if (!uiState === "error" && loggedUsername === username) {
       dispatch(getMyCreditCardWithThunk(username));
     }
   }, [uiState, username, loggedUsername, dispatch]);
-
-  useEffect(() => {
+ */
+  /*   useEffect(() => {
     if (uiState === "success") {
       setSuccessAlert(true);
       setErrorAlert(false);
@@ -80,7 +87,7 @@ const CreditCard = () => {
       setErrorAlert(true);
       setSuccessAlert(false);
     }
-  }, [uiState]);
+  }, [uiState]); */
 
   useEffect(() => {
     if (myCreditCard.updatedAt) {
@@ -151,11 +158,6 @@ const CreditCard = () => {
 
   return (
     <>
-      {errorAlert && <Alert className="alert alert-danger">{uiMessage}</Alert>}
-      {successAlert && (
-        <Alert className="alert alert-success">{uiMessage}</Alert>
-      )}
-
       <StyledListContainer>
         <ul key={myCreditCard._id}>
           <form

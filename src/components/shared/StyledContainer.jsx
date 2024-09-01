@@ -18,6 +18,7 @@ const StyleContainer = styled.div`
   margin-bottom: ${(props) => props.$customMarginBottom || "0"};
   margin-right: ${(props) => props.$customMarginRight || "0"};
   margin-left: ${(props) => props.$customMarginLeft || "0"};
+  z-index: ${(props) => props.$customZIndex || "0"};
 `;
 
 export default StyledContainer;

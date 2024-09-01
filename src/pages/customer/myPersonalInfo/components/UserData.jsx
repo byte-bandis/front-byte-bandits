@@ -47,9 +47,10 @@ const MyData = () => {
     mobilePhoneNumber: "",
   });
   const uiState = useSelector(getUIState);
+  /* const uiState = useSelector(getUIState);
   const uiMessage = useSelector(getUIMessage);
   const [successAlert, setSuccessAlert] = useState(false);
-  const [errorAlert, setErrorAlert] = useState(false);
+  const [errorAlert, setErrorAlert] = useState(false); */
 
   const containerStyles = {
     $customDisplay: "flex",
@@ -66,12 +67,17 @@ const MyData = () => {
   };
 
   useEffect(() => {
-    if (uiState !== "error" && loggedUsername === username) {
+    if (loggedUsername === username) {
+      dispatch(getMyDataWithThunk(loggedUsername));
+    }
+  }, [username, loggedUsername, dispatch]);
+  /*   useEffect(() => {
+    if (!uiState === "error" && loggedUsername === username) {
       dispatch(getMyDataWithThunk(loggedUsername));
     }
   }, [uiState, username, loggedUsername, dispatch]);
-
-  useEffect(() => {
+ */
+  /*   useEffect(() => {
     if (uiState === "success") {
       //setSuccessAlert(true);
       setErrorAlert(false);
@@ -84,7 +90,7 @@ const MyData = () => {
       setSuccessAlert(false);
     }
   }, [uiState, dispatch]);
-
+ */
   useEffect(() => {
     if (myData.updatedAt) {
       const formattedDate = moment(myData.updatedAt).format("DD-MM-YYYY");
@@ -159,11 +165,6 @@ const MyData = () => {
 
   return (
     <>
-      {errorAlert && <Alert className="alert alert-danger">{uiMessage}</Alert>}
-      {successAlert && (
-        <Alert className="alert alert-success">{uiMessage}</Alert>
-      )}
-
       <StyledListContainer>
         <ul key={myData._id}>
           <form

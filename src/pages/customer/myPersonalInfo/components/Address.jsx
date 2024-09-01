@@ -50,11 +50,12 @@ const Address = () => {
     postalCode: "",
     city: "",
   });
-
   const uiState = useSelector(getUIState);
+
+  /* const uiState = useSelector(getUIState);
   const uiMessage = useSelector(getUIMessage);
   const [successAlert, setSuccessAlert] = useState(false);
-  const [errorAlert, setErrorAlert] = useState(false);
+  const [errorAlert, setErrorAlert] = useState(false); */
 
   const containerStyles = {
     $customDisplay: "flex",
@@ -71,12 +72,17 @@ const Address = () => {
   };
 
   useEffect(() => {
-    if (uiState !== "error" && loggedUsername === username) {
+    if (loggedUsername === username) {
       dispatch(getAddressWithThunk(username));
     }
-  }, [username, loggedUsername, dispatch, uiState]);
+  }, [username, loggedUsername, dispatch]);
+  /* useEffect(() => {
+    if (!uiState === "error" && loggedUsername === username) {
+      dispatch(getAddressWithThunk(username));
+    }
+  }, [uiState, username, loggedUsername, dispatch]); */
 
-  useEffect(() => {
+  /*   useEffect(() => {
     if (uiState === "success" && loggedUsername === username) {
       dispatch(getAddressWithThunk(loggedUsername));
       setSuccessAlert(true);
@@ -89,7 +95,7 @@ const Address = () => {
       setErrorAlert(true);
       setSuccessAlert(false);
     }
-  }, [uiState, username, loggedUsername, dispatch]);
+  }, [uiState, username, loggedUsername, dispatch]); */
 
   useEffect(() => {
     const countries = countriesDB.map((c) => c.name); // Extrae los nombres de los países
@@ -171,11 +177,6 @@ const Address = () => {
 
   return (
     <>
-      {errorAlert && <Alert className="alert alert-danger">{uiMessage}</Alert>}
-      {successAlert && (
-        <Alert className="alert alert-success">{uiMessage}</Alert>
-      )}
-
       <StyledListContainer>
         <ul key={myAddress._id}>
           <form

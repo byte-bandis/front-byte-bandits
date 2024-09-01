@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { trimDate } from "../../../../utils/dateTools";
 
-import { Postcard } from "react-bootstrap-icons";
+import { MailboxFlag } from "react-bootstrap-icons";
 
 import {
   getAddressWithThunk,
@@ -28,6 +28,7 @@ import {
 import { resetMessage, setMessage } from "../../../../store/uiSlice";
 import { resetValidationErrors } from "../../../../store/MyPersonalData/paymentSlice";
 import countriesDB from "../../../../utils/countriesDB.json";
+import IconWrapper from "../../../../components/shared/iconsComponents/IconWrapper";
 
 const Address = () => {
   const dispatch = useDispatch();
@@ -333,15 +334,12 @@ const Address = () => {
               </RegularButton>
             )}
           </form>
-          <Postcard
-            width="75px"
-            height="75px"
+          <IconWrapper
+            IconComponent={MailboxFlag}
+            size="75px"
             color="var(--primary-200)"
-            style={{
-              position: "absolute",
-              top: "10%",
-              right: "5%",
-            }}
+            top="10%"
+            right="5%"
           />
           {editMode && (
             <StyledContainer {...containerStyles}>

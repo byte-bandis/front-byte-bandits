@@ -26,6 +26,7 @@ import {
   setValidations,
 } from "../../../../store/MyPersonalData/paymentSlice";
 import { CreditCard2Back } from "react-bootstrap-icons";
+import IconWrapper from "../../../../components/shared/iconsComponents/IconWrapper";
 
 const CreditCard = () => {
   const dispatch = useDispatch();
@@ -197,15 +198,12 @@ const CreditCard = () => {
             </RegularButton>
           )}
         </form>
-        <CreditCard2Back
-          width="75px"
-          height="75px"
+        <IconWrapper
+          IconComponent={CreditCard2Back}
+          size="75px"
           color="var(--primary-200)"
-          style={{
-            position: "absolute",
-            top: "10%",
-            right: "5%",
-          }}
+          top="10%"
+          right="5%"
         />
         {editMode && (
           <StyledContainer {...containerStyles}>

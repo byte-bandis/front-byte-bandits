@@ -25,6 +25,7 @@ import {
   setValidations,
 } from "../../../../store/MyPersonalData/myDataSlice";
 import { resetMessage, setMessage } from "../../../../store/uiSlice";
+import IconWrapper from "../../../../components/shared/iconsComponents/IconWrapper";
 
 const MyData = () => {
   const dispatch = useDispatch();
@@ -296,15 +297,12 @@ const MyData = () => {
               </RegularButton>
             )}
           </form>
-          <PersonCircle
-            width="75px"
-            height="75px"
+          <IconWrapper
+            IconComponent={PersonCircle}
+            size="75px"
             color="var(--primary-200)"
-            style={{
-              position: "absolute",
-              top: "10%",
-              right: "5%",
-            }}
+            top="10%"
+            right="5%"
           />
           {editMode && (
             <StyledContainer {...containerStyles}>

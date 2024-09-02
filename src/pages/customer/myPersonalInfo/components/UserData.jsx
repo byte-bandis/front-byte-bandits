@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import moment from "moment";
 import { PersonCircle } from "react-bootstrap-icons";
+import { useTranslation } from "react-i18next";
 
 import {
   StyledListContainer,
@@ -29,6 +30,7 @@ import IconWrapper from "../../../../components/shared/iconsComponents/IconWrapp
 
 const MyData = () => {
   const dispatch = useDispatch();
+  const { t } = useTranslation();
   const loggedUsername = useSelector(getLoggedUserName);
   const myData = useSelector(getMyData);
   const { username } = useParams();
@@ -145,12 +147,12 @@ const MyData = () => {
             noValidate
           >
             <StyledListItem $customHeaderFontSize="1.5rem">
-              <h3>Your data:</h3>
+              <h3>{t("yourData")}</h3>
             </StyledListItem>
 
             <StyledContainer {...containerStyles}>
               <StyledListItem {...listItemStyles}>
-                <label>Nick name: </label>
+                <label>{t("nickname")}</label>
                 {!editMode ? (
                   <div>{myData.username}</div>
                 ) : (
@@ -159,7 +161,7 @@ const MyData = () => {
                     name="username"
                     value={formData.username}
                     onChange={handleInputChange}
-                    placeholder="Nick name must have at least 6 characters"
+                    placeholder={t("nickname_placeholder")}
                   />
                 )}
               </StyledListItem>
@@ -171,7 +173,7 @@ const MyData = () => {
                 $customGap="40px"
               >
                 <StyledListItem {...listItemStyles}>
-                  <label>Name: </label>
+                  <label>{t("name")}</label>
                   {!editMode ? (
                     <div>{myData.name}</div>
                   ) : (
@@ -180,12 +182,12 @@ const MyData = () => {
                       name="name"
                       value={formData.name}
                       onChange={handleInputChange}
-                      placeholder="Enter your name"
+                      placeholder={t("name_placeholder")}
                     />
                   )}
                 </StyledListItem>
                 <StyledListItem {...listItemStyles}>
-                  <label>Last name: </label>
+                  <label>{t("lastname")}</label>
                   {!editMode ? (
                     <div>{myData.lastname}</div>
                   ) : (
@@ -194,7 +196,7 @@ const MyData = () => {
                       name="lastname"
                       value={formData.lastname}
                       onChange={handleInputChange}
-                      placeholder="Enter your last name"
+                      placeholder={t("lastname_placeholder")}
                     />
                   )}
                 </StyledListItem>
@@ -202,7 +204,7 @@ const MyData = () => {
             </StyledContainer>
             <StyledContainer {...containerStyles}>
               <StyledListItem {...listItemStyles}>
-                <label>Email: </label>
+                <label>{t("email")}</label>
                 {!editMode ? (
                   <div>{myData.email}</div>
                 ) : (
@@ -211,7 +213,7 @@ const MyData = () => {
                     name="email"
                     value={formData.email}
                     onChange={handleInputChange}
-                    placeholder="Email can not be empty"
+                    placeholder={t("email_placeholder")}
                   />
                 )}
               </StyledListItem>
@@ -219,7 +221,7 @@ const MyData = () => {
 
             <StyledContainer {...containerStyles}>
               <StyledListItem {...listItemStyles}>
-                <label>Phone: </label>
+                <label>{t("phone")}</label>
                 {!editMode ? (
                   <div>{myData.mobilePhoneNumber}</div>
                 ) : (
@@ -228,7 +230,7 @@ const MyData = () => {
                     name="mobilePhoneNumber"
                     value={formData.mobilePhoneNumber}
                     onChange={handleInputChange}
-                    placeholder="Enter your phone number"
+                    placeholder={t("phone_placeholder")}
                   />
                 )}
               </StyledListItem>
@@ -236,16 +238,16 @@ const MyData = () => {
 
             <StyledContainer {...containerStyles}>
               <StyledListItem {...listItemStyles}>
-                <label>Birth date: </label>
+                <label>{t("birthdate")}</label>
                 {!editMode ? (
-                  <div>{moment(myData.birthdate).format("DD-MM-YYYY")}</div> // Display formatted date
+                  <div>{moment(myData.birthdate).format("DD-MM-YYYY")}</div>
                 ) : (
                   <input
                     type="date"
                     name="birthdate"
                     value={formData.birthdate}
                     onChange={handleInputChange}
-                    placeholder="Birth date can not be empty"
+                    placeholder={t("birthdate_placeholder")}
                   />
                 )}
               </StyledListItem>
@@ -260,13 +262,13 @@ const MyData = () => {
                       $customMargin="2rem 0 0 0"
                       onClick={handleConfirmProcess}
                     >
-                      Save your data
+                      {t("save_your_data")}
                     </RegularButton>
                     <RegularButton
                       $customMargin="2rem 0 0 0"
                       onClick={handleHideEditMode}
                     >
-                      Back to your saved data
+                      {t("back_to_saved_data")}
                     </RegularButton>
                   </>
                 )}
@@ -277,13 +279,13 @@ const MyData = () => {
                       $customHoverBackgroundColor="var(--accent-100)"
                       $customMargin="2rem 0 0 0"
                     >
-                      Confirm save
+                      {t("confirm_save")}
                     </RegularButton>
                     <RegularButton
                       $customMargin="2rem 0 0 0"
                       onClick={handleCancelSubmit}
                     >
-                      Cancel
+                      {t("cancel")}
                     </RegularButton>
                   </>
                 )}
@@ -293,7 +295,7 @@ const MyData = () => {
                 $customMargin="2rem 0 0 0"
                 onClick={handleShowEditMode}
               >
-                Click to edit
+                {t("click_to_edit")}
               </RegularButton>
             )}
           </form>
@@ -307,7 +309,7 @@ const MyData = () => {
           {editMode && (
             <StyledContainer {...containerStyles}>
               <StyledListItem {...listItemStyles}>
-                <i>Last time you updated your data:</i>
+                <i>{t("last_update")}</i>
                 <div>
                   <i>{updateTime}</i>
                 </div>

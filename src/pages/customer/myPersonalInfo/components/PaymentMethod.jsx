@@ -3,6 +3,7 @@ import { getLoggedUserName, getMyPayment } from "../../../../store/selectors";
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { trimDate } from "../../../../utils/dateTools";
+import { useTranslation } from "react-i18next";
 
 import {
   getMyCreditCardWithThunk,
@@ -29,6 +30,7 @@ import { CreditCard2Back } from "react-bootstrap-icons";
 import IconWrapper from "../../../../components/shared/iconsComponents/IconWrapper";
 
 const CreditCard = () => {
+  const { t } = useTranslation();
   const dispatch = useDispatch();
   const loggedUsername = useSelector(getLoggedUserName);
   const myCreditCard = useSelector(getMyPayment);
@@ -95,7 +97,6 @@ const CreditCard = () => {
     event.preventDefault();
 
     const formattedData = {
-      //...formData,
       creditCard: formData.creditCard || "----",
     };
 
@@ -131,12 +132,12 @@ const CreditCard = () => {
           noValidate
         >
           <StyledListItem $customHeaderFontSize="1.5rem">
-            <h3>Credit card:</h3>
+            <h3>{t("credit_card")}</h3>
           </StyledListItem>
 
           <StyledContainer {...containerStyles}>
             <StyledListItem {...listItemStyles}>
-              <label>Credit card: </label>
+              <label>{t("credit_card_label")}</label>
               {!editMode ? (
                 <div>{myCreditCard.creditCard}</div>
               ) : (
@@ -145,7 +146,7 @@ const CreditCard = () => {
                   name="creditCard"
                   value={formData.creditCard}
                   onChange={handleInputChange}
-                  placeholder="Write between 13 to 18 digits"
+                  placeholder={t("credit_card_placeholder")}
                   maxLength={18}
                 />
               )}
@@ -161,13 +162,13 @@ const CreditCard = () => {
                     $customMargin="2rem 0 0 0"
                     onClick={handleConfirmProcess}
                   >
-                    Save your card number
+                    {t("save_card_number")}
                   </RegularButton>
                   <RegularButton
                     $customMargin="2rem 0 0 0"
                     onClick={handleHideEditMode}
                   >
-                    Back to your saved card
+                    {t("back_to_saved_card")}
                   </RegularButton>
                 </>
               )}
@@ -178,13 +179,13 @@ const CreditCard = () => {
                     $customHoverBackgroundColor="var(--accent-100)"
                     $customMargin="2rem 0 0 0"
                   >
-                    Confirm save
+                    {t("confirm_save")}
                   </RegularButton>
                   <RegularButton
                     $customMargin="2rem 0 0 0"
                     onClick={handleCancelSubmit}
                   >
-                    Cancel
+                    {t("cancel")}
                   </RegularButton>
                 </>
               )}
@@ -194,7 +195,7 @@ const CreditCard = () => {
               $customMargin="2rem 0 0 0"
               onClick={handleShowEditMode}
             >
-              Click to edit
+              {t("click_to_edit")}
             </RegularButton>
           )}
         </form>
@@ -208,7 +209,7 @@ const CreditCard = () => {
         {editMode && (
           <StyledContainer {...containerStyles}>
             <StyledListItem {...listItemStyles}>
-              <i>Last time you updated your credit card:</i>
+              <i>{t("last_update")}</i>
               <div>
                 <i>{creationDate}</i>
               </div>

@@ -1,7 +1,7 @@
 import styled from "styled-components";
 
 const CustomPhoto = styled.img`
-  border: ${(props) => props.$customborder || "5px solid var(--border-1)"};
+  border: ${(props) => props.$customborder || "5px solid var(--primary-100)"};
   border-radius: ${(props) => props.$customborderradius || "none"};
   width: ${(props) => props.$customwidth || "100%"};
   height: ${(props) => props.$customheight || "auto"};

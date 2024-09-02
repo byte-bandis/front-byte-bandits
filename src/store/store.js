@@ -28,4 +28,5 @@ export const store = configureStore({
     account: userReducer,
   },
   devTools: import.meta.env.NODE_ENV !== "production",
+  //devTools: true,
 });

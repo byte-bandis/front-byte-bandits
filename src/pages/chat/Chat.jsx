@@ -1,17 +1,26 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import io from "socket.io-client";
 import "./Chat.css";
 import { client } from "../../api/client";
 import { getLoggedUserId } from "../../store/selectors";
 import { useSelector } from "react-redux";
+import { Check2All, Send } from "react-bootstrap-icons";
 
-const socket = io(import.meta.env.VITE_API_BASE_URL);
+const socket = io(import.meta.env.VITE_API_BASE_URL.replace("api/", ""), {
+  transports: ["websocket"],
+  path:
+    import.meta.env.VITE_USER_NODE_ENV !== "production"
+      ? "/socket.io"
+      : "/api/socket.io",
+  withCredentials: true,
+});
 
 const Chat = ({ productId, buyerId }) => {
   const [chatId, setChatId] = useState(null);
   const [message, setMessage] = useState("");
   const [messages, setMessages] = useState([]);
   const loggedUserId = useSelector(getLoggedUserId);
+  const messageContainerRef = useRef(null);
 
   useEffect(() => {
     const checkChatExists = async () => {
@@ -48,15 +57,42 @@ const Chat = ({ productId, buyerId }) => {
       // Escuchar nuevos mensajes
       socket.on("newMessage", (newMessage) => {
         setMessages((prevMessages) => [...prevMessages, newMessage]);
+
+        // Marcar el mensaje como leído si el mensaje no fue enviado por el usuario actual
+        if (newMessage.user._id !== loggedUserId) {
+          socket.emit("readMessage", {
+            chatId,
+            userId: loggedUserId,
+          });
+        }
+      });
+
+      socket.on("messagesRead", (userId) => {
+        setMessages((prevMessages) =>
+          prevMessages.map((msg) => {
+            if (msg.user._id !== userId) {
+              return { ...msg, read: true };
+            }
+            return msg;
+          })
+        );
       });
 
       // Limpiar las suscripciones cuando el componente se desmonte o `chatId` cambie
       return () => {
         socket.off("chatHistory");
         socket.off("newMessage");
+        socket.off("messagesRead");
       };
     }
   }, [chatId]);
+
+  useEffect(() => {
+    if (messageContainerRef.current) {
+      messageContainerRef.current.scrollTop =
+        messageContainerRef.current.scrollHeight;
+    }
+  }, [messages]);
 
   // Manejar el envío del mensaje
   const handleSendMessage = async (e) => {
@@ -98,7 +134,7 @@ const Chat = ({ productId, buyerId }) => {
 
   return (
     <div className="chat-container">
-      <div className="message-container">
+      <div className="message-container" ref={messageContainerRef}>
         {messages.map((msg, index) => (
           <div
             key={index}
@@ -106,7 +142,28 @@ const Chat = ({ productId, buyerId }) => {
               msg.user._id === loggedUserId ? "sent" : "received"
             }`}
           >
-            <span>{msg.content}</span>
+            <div className="message-content">
+              <span>{msg.content}</span>
+            </div>
+            <div className="message-info">
+              <span className="timestamp">
+                {new Date(msg.timestamp)
+                  .toLocaleString("es-ES", {
+                    day: "2-digit",
+                    month: "2-digit",
+                    year: "2-digit",
+                    hour: "2-digit",
+                    minute: "2-digit",
+                  })
+                  .replace(",", "")}
+              </span>
+              {msg.user._id === loggedUserId && (
+                <span className={`tick ${msg.read ? "read" : ""}`}>
+                  <span />
+                  <Check2All />
+                </span>
+              )}
+            </div>
           </div>
         ))}
       </div>
@@ -117,7 +174,12 @@ const Chat = ({ productId, buyerId }) => {
           onChange={(e) => setMessage(e.target.value)}
           placeholder="Escribe un mensaje..."
         />
-        <button type="submit">Enviar</button>
+        <button
+          type="submit"
+          className={`${message === "" ? "empty" : "filled"}`}
+        >
+          <Send />{" "}
+        </button>
       </form>
     </div>
   );

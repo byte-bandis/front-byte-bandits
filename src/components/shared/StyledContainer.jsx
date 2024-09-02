@@ -8,6 +8,7 @@ const StyledContainer = ({ children, ...props }) => {
 const StyleContainer = styled.div`
   display: ${(props) => props.$customDisplay || "block"};
   position: ${(props) => props.$customPosition || "relative"};
+  background: ${(props) => props.$customBackground || "var(--bg-100)"};
   flex-direction: ${(props) => props.$customFlexDirection || "column"};
   gap: ${(props) => props.$customGap || "10px"};
   justify-content: ${(props) => props.$customJustifyContent || "flex-start"};
@@ -18,6 +19,7 @@ const StyleContainer = styled.div`
   margin-bottom: ${(props) => props.$customMarginBottom || "0"};
   margin-right: ${(props) => props.$customMarginRight || "0"};
   margin-left: ${(props) => props.$customMarginLeft || "0"};
+  z-index: ${(props) => props.$customZIndex || "0"};
 `;
 
 export default StyledContainer;

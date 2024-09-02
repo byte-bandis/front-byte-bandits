@@ -1,15 +1,15 @@
-export const validate = ({ creditCard }) => {
+export const validate = (t, { creditCard }) => {
   const newErrors = {};
 
-  if (creditCard !== "card") {
+  if (creditCard !== "----") {
     if (creditCard.length < 13 || creditCard.length > 18) {
-      newErrors.creditCard = "Credit card number must be 13 to 18 digits";
+      newErrors.creditCard = t("credit_card_length_invalid");
     }
   }
 
-  if (creditCard !== "card") {
+  if (creditCard !== "----") {
     if (!/^\d*$/.test(creditCard)) {
-      newErrors.creditCard = "Credit card number must contain only digits";
+      newErrors.creditCard = t("credit_card_digits_only");
     }
   }
 

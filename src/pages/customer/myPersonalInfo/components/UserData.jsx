@@ -1,13 +1,10 @@
 import { useDispatch, useSelector } from "react-redux";
-import {
-  getLoggedUserName,
-  getMyData,
-  getUIMessage,
-  getUIState,
-} from "../../../../store/selectors";
+import { getLoggedUserName, getMyData } from "../../../../store/selectors";
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import moment from "moment";
+import { PersonCircle } from "react-bootstrap-icons";
+import { useTranslation } from "react-i18next";
 
 import {
   StyledListContainer,
@@ -18,7 +15,7 @@ import {
   RegularButton,
   ButtonContainer,
 } from "../../../../components/shared/buttons";
-import { Alert } from "react-bootstrap";
+
 import {
   getMyDataWithThunk,
   updateMyDataWithThunk,
@@ -29,9 +26,11 @@ import {
   setValidations,
 } from "../../../../store/MyPersonalData/myDataSlice";
 import { resetMessage, setMessage } from "../../../../store/uiSlice";
+import IconWrapper from "../../../../components/shared/iconsComponents/IconWrapper";
 
 const MyData = () => {
   const dispatch = useDispatch();
+  const { t } = useTranslation();
   const loggedUsername = useSelector(getLoggedUserName);
   const myData = useSelector(getMyData);
   const { username } = useParams();
@@ -46,10 +45,6 @@ const MyData = () => {
     birthdate: "",
     mobilePhoneNumber: "",
   });
-  const uiState = useSelector(getUIState);
-  const uiMessage = useSelector(getUIMessage);
-  const [successAlert, setSuccessAlert] = useState(false);
-  const [errorAlert, setErrorAlert] = useState(false);
 
   const containerStyles = {
     $customDisplay: "flex",
@@ -66,28 +61,10 @@ const MyData = () => {
   };
 
   useEffect(() => {
-    if (uiState !== "error" && loggedUsername === username) {
+    if (loggedUsername === username) {
       dispatch(getMyDataWithThunk(loggedUsername));
     }
-  }, [uiState, username, loggedUsername, dispatch]);
-
-  useEffect(() => {
-    if (uiState === "success") {
-      //setSuccessAlert(true);
-      setErrorAlert(false);
-      const timer = setTimeout(() => {
-        setSuccessAlert(false);
-      }, 3000);
-      return () => clearTimeout(timer);
-    } else if (uiState === "error") {
-      setErrorAlert(true);
-      setSuccessAlert(false);
-      const timer = setTimeout(() => {
-        dispatch(resetMessage());
-      }, 3000);
-      return () => clearTimeout(timer);
-    }
-  }, [uiState, dispatch]);
+  }, [username, loggedUsername, dispatch]);
 
   useEffect(() => {
     if (myData.updatedAt) {
@@ -102,7 +79,7 @@ const MyData = () => {
       email: myData.email || "",
       mobilePhoneNumber: myData.mobilePhoneNumber || "",
       birthdate: myData.birthdate
-        ? moment(myData.birthdate).format("YYYY-MM-DD") // Formato correcto para input de tipo date
+        ? moment(myData.birthdate).format("YYYY-MM-DD")
         : "",
     });
   }, [myData]);
@@ -133,13 +110,13 @@ const MyData = () => {
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    const errors = validate({
+    const errors = validate(t, {
       name: formData.name,
       username: formData.username,
       lastname: formData.lastname,
       email: formData.email,
       birthdate: formData.birthdate,
-      mobilePhoneNumber: formData.birthdate,
+      mobilePhoneNumber: formData.mobilePhoneNumber,
     });
     dispatch(setValidations(errors));
 
@@ -153,6 +130,7 @@ const MyData = () => {
     setConfirmProcess(false);
     setEditMode(false);
     dispatch(resetValidationErrors());
+    dispatch(resetMessage());
   };
 
   const handleCancelSubmit = () => {
@@ -162,24 +140,19 @@ const MyData = () => {
 
   return (
     <>
-      {errorAlert && <Alert className="alert alert-danger">{uiMessage}</Alert>}
-      {successAlert && (
-        <Alert className="alert alert-success">{uiMessage}</Alert>
-      )}
-
-      <StyledListContainer>
+      <StyledListContainer $customWidth="80%">
         <ul key={myData._id}>
           <form
             onSubmit={handleSubmit}
             noValidate
           >
             <StyledListItem $customHeaderFontSize="1.5rem">
-              <h3>Your data:</h3>
+              <h3>{t("yourData")}</h3>
             </StyledListItem>
 
             <StyledContainer {...containerStyles}>
               <StyledListItem {...listItemStyles}>
-                <label>Nick name: </label>
+                <label>{t("nickname")}</label>
                 {!editMode ? (
                   <div>{myData.username}</div>
                 ) : (
@@ -188,7 +161,7 @@ const MyData = () => {
                     name="username"
                     value={formData.username}
                     onChange={handleInputChange}
-                    placeholder="Nick name must have at least 6 characters"
+                    placeholder={t("nickname_placeholder")}
                   />
                 )}
               </StyledListItem>
@@ -200,7 +173,7 @@ const MyData = () => {
                 $customGap="40px"
               >
                 <StyledListItem {...listItemStyles}>
-                  <label>Name: </label>
+                  <label>{t("name")}</label>
                   {!editMode ? (
                     <div>{myData.name}</div>
                   ) : (
@@ -209,12 +182,12 @@ const MyData = () => {
                       name="name"
                       value={formData.name}
                       onChange={handleInputChange}
-                      placeholder="Enter your name"
+                      placeholder={t("name_placeholder")}
                     />
                   )}
                 </StyledListItem>
                 <StyledListItem {...listItemStyles}>
-                  <label>Last name: </label>
+                  <label>{t("lastname")}</label>
                   {!editMode ? (
                     <div>{myData.lastname}</div>
                   ) : (
@@ -223,7 +196,7 @@ const MyData = () => {
                       name="lastname"
                       value={formData.lastname}
                       onChange={handleInputChange}
-                      placeholder="Enter your last name"
+                      placeholder={t("lastname_placeholder")}
                     />
                   )}
                 </StyledListItem>
@@ -231,7 +204,7 @@ const MyData = () => {
             </StyledContainer>
             <StyledContainer {...containerStyles}>
               <StyledListItem {...listItemStyles}>
-                <label>Email: </label>
+                <label>{t("email")}</label>
                 {!editMode ? (
                   <div>{myData.email}</div>
                 ) : (
@@ -240,7 +213,7 @@ const MyData = () => {
                     name="email"
                     value={formData.email}
                     onChange={handleInputChange}
-                    placeholder="Email can not be empty"
+                    placeholder={t("email_placeholder")}
                   />
                 )}
               </StyledListItem>
@@ -248,7 +221,7 @@ const MyData = () => {
 
             <StyledContainer {...containerStyles}>
               <StyledListItem {...listItemStyles}>
-                <label>Phone: </label>
+                <label>{t("phone")}</label>
                 {!editMode ? (
                   <div>{myData.mobilePhoneNumber}</div>
                 ) : (
@@ -257,7 +230,7 @@ const MyData = () => {
                     name="mobilePhoneNumber"
                     value={formData.mobilePhoneNumber}
                     onChange={handleInputChange}
-                    placeholder="Enter your phone number"
+                    placeholder={t("phone_placeholder")}
                   />
                 )}
               </StyledListItem>
@@ -265,16 +238,16 @@ const MyData = () => {
 
             <StyledContainer {...containerStyles}>
               <StyledListItem {...listItemStyles}>
-                <label>Birth date: </label>
+                <label>{t("birthdate")}</label>
                 {!editMode ? (
-                  <div>{moment(myData.birthdate).format("DD-MM-YYYY")}</div> // Display formatted date
+                  <div>{moment(myData.birthdate).format("DD-MM-YYYY")}</div>
                 ) : (
                   <input
                     type="date"
                     name="birthdate"
                     value={formData.birthdate}
                     onChange={handleInputChange}
-                    placeholder="Birth date can not be empty"
+                    placeholder={t("birthdate_placeholder")}
                   />
                 )}
               </StyledListItem>
@@ -289,13 +262,13 @@ const MyData = () => {
                       $customMargin="2rem 0 0 0"
                       onClick={handleConfirmProcess}
                     >
-                      Save your data
+                      {t("save_your_data")}
                     </RegularButton>
                     <RegularButton
                       $customMargin="2rem 0 0 0"
                       onClick={handleHideEditMode}
                     >
-                      Back to your saved data
+                      {t("back_to_saved_data")}
                     </RegularButton>
                   </>
                 )}
@@ -306,13 +279,13 @@ const MyData = () => {
                       $customHoverBackgroundColor="var(--accent-100)"
                       $customMargin="2rem 0 0 0"
                     >
-                      Confirm save
+                      {t("confirm_save")}
                     </RegularButton>
                     <RegularButton
                       $customMargin="2rem 0 0 0"
                       onClick={handleCancelSubmit}
                     >
-                      Cancel
+                      {t("cancel")}
                     </RegularButton>
                   </>
                 )}
@@ -322,14 +295,21 @@ const MyData = () => {
                 $customMargin="2rem 0 0 0"
                 onClick={handleShowEditMode}
               >
-                Click to edit
+                {t("click_to_edit")}
               </RegularButton>
             )}
           </form>
+          <IconWrapper
+            IconComponent={PersonCircle}
+            size="75px"
+            color="var(--primary-200)"
+            top="10%"
+            right="5%"
+          />
           {editMode && (
             <StyledContainer {...containerStyles}>
               <StyledListItem {...listItemStyles}>
-                <i>Last time you updated your data:</i>
+                <i>{t("last_update")}</i>
                 <div>
                   <i>{updateTime}</i>
                 </div>

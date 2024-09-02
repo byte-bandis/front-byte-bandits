@@ -110,7 +110,7 @@ const MyData = () => {
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    const errors = validate({
+    const errors = validate(t, {
       name: formData.name,
       username: formData.username,
       lastname: formData.lastname,

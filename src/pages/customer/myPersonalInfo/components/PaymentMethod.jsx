@@ -100,7 +100,7 @@ const CreditCard = () => {
       creditCard: formData.creditCard || "----",
     };
 
-    const errors = validate({ creditCard: formattedData.creditCard });
+    const errors = validate(t, { creditCard: formattedData.creditCard });
     dispatch(setValidations(errors));
 
     if (Object.keys(errors).length > 0) {

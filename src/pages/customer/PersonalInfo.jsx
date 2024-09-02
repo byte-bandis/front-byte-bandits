@@ -18,7 +18,7 @@ const PersonalInfo = () => {
       {uiState === "error" && (
         <FixedPositionAlert
           position="top-right"
-          $customTop="25%"
+          $customTop="30%"
           $customRight="10%"
         />
       )}

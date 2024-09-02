@@ -119,7 +119,7 @@ const Address = () => {
   const handleSubmit = (event) => {
     event.preventDefault();
 
-    const errors = validate({
+    const errors = validate(t, {
       country: formData.country,
       streetName: formData.streetName,
       streetNumber: formData.streetNumber,

@@ -1,5 +1,6 @@
 import styled from "styled-components";
 import Search from "../../pages/search/Search";
+import { useTranslation } from "react-i18next";
 import { useLocation, useNavigate } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import Logo from "./Logo";
@@ -18,6 +19,7 @@ import { useState } from "react";
 import LanguageSwitcher from "./localization/LanguageSwitcher";
 
 const Header = () => {
+  const { t } = useTranslation();
   const location = useLocation();
   const isAuthenticated = useSelector((state) => state.authState.authState);
   const [showConfirmator, setShowConfirmator] = useState(false);
@@ -45,9 +47,9 @@ const Header = () => {
   };
 
   const dropdownOptions = [
-    { text: "User Zone", to: `/${loggedUser}/info`, className: "UserZone" },
+    { text: t("user_zone"), to: `/${loggedUser}/info`, className: "UserZone" },
     {
-      text: "Log out",
+      text: t("log_out"),
       onClick: () => {
         setShowConfirmator(true);
       },
@@ -59,44 +61,44 @@ const Header = () => {
     {
       onClick: () => navigate("/"),
       className: "all",
-      text: "All categories",
+      text: t("all_categories"),
     },
     {
-      text: "lifestyle",
+      text: t("lifestyle"),
       to: `/product/?tags=lifestyle&sell=true`,
       className: "lifestyle",
     },
     {
-      text: "mobile",
+      text: t("mobile"),
       to: "/product/?tags=mobile&sell=true",
       className: "mobile",
     },
     {
-      text: "motor",
+      text: t("motor"),
       to: "/product/?tags=motor&sell=true",
       className: "motor",
     },
     {
-      text: "work",
+      text: t("work"),
       to: "/product/?tags=work&sell=true",
       className: "work",
     },
     {
-      text: "others",
+      text: t("others"),
       to: "/product/?tags=others&sell=true",
       className: "others",
     },
   ];
 
   const filteredTagOptions = TAG_OPTIONS.filter(
-    (tag) => tag.text !== "All categories"
+    (tag) => tag.text !== t("all_categories")
   );
 
   return (
     <>
       {showConfirmator && (
         <Confirmator
-          textValue="cerrar su sesión de usuario?"
+          textValue={t("confirm_logout")}
           onConfirm={handleLogout}
           sethiden={() => setShowConfirmator(false)}
           hidden={showConfirmator}
@@ -127,7 +129,7 @@ const Header = () => {
                 $CustomWidth="130px"
                 dividerWith="128%"
               >
-                My account
+                {t("user_zone")}
               </DropdownLink>
               <RegularButton
                 onClick={handleSellButton}
@@ -138,7 +140,7 @@ const Header = () => {
                 $customBorder="none"
                 $customwidth="130px"
               >
-                Sell - Buy
+                {t("sell_buy")}
               </RegularButton>
             </>
           ) : (
@@ -151,7 +153,7 @@ const Header = () => {
                 className="login"
                 $backgroundColor="var(--primary-200)"
               >
-                Login or register
+                {t("login_register")}
               </RegularButton>
               <RegularButton
                 onClick={() =>
@@ -163,7 +165,7 @@ const Header = () => {
                 $CustomPadding="5px"
                 $customBorder="none"
               >
-                Sell - Buy
+                {t("sell_buy")}
               </RegularButton>
             </>
           )}
@@ -176,12 +178,12 @@ const Header = () => {
             $CustomMargin="10px"
             $CustomWidth="140px"
           >
-            All categories
+            {t("all_categories")}
           </DropdownLink>
           <TagsNav
             className="tagsNavegation"
             options={filteredTagOptions}
-          ></TagsNav>
+          />
         </StyledTagsNavContainer>
       </HeaderStyledContainer>
     </>

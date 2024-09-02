@@ -86,5 +86,6 @@
   "work": "Trabajo",
   "others": "Otros",
   "sell_buy": "Vender - Comprar",
-  "login_register": "Iniciar sesión o registrarse"
+  "login_register": "Iniciar sesión o registrarse",
+  "confirm_logout": "salir"
 }

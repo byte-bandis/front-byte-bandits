@@ -16,6 +16,8 @@ const ProductList = () => {
   const errorUi = useSelector((state) => state.ui);
   const filters = useSelector((state) => state.adsState.filters);
   const adsData = useSelector((state) => state.adsState.data);
+  const urlParams = new URLSearchParams(window.location.search);
+  const limit = urlParams.get("limit");
 
   const resetError = () => {
     dispatch(resetMessage());
@@ -27,11 +29,13 @@ const ProductList = () => {
   }
 
   useEffect(() => {
-    dispatch(getAds({ page, id: "", filters }));
+    const allFilters = { ...filters, page, limit };
+    dispatch(getAds({ id: "", filters: allFilters }));
+
     if (userid) {
       dispatch(getWishlist(userid));
     }
-  }, [dispatch, page, userid, filters]);
+  }, [dispatch, page, limit, userid, filters]);
 
   return (
     <>
@@ -56,10 +60,7 @@ const ProductList = () => {
           <p className="no-ad">No hay resultados</p>
         )}
         {error && (
-          <ErrorMessage
-            className="loginPage-error"
-            onClick={resetError}
-          >
+          <ErrorMessage className="loginPage-error" onClick={resetError}>
             <h3>{error.toUpperCase()}</h3>
           </ErrorMessage>
         )}

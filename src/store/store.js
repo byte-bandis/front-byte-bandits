@@ -11,7 +11,6 @@ import myAddressReducer from "./MyPersonalData/addressSlice";
 import myPaymentsReducer from "./MyPersonalData/paymentSlice";
 import myDataReducer from "./MyPersonalData/myDataSlice";
 import userReducer from "./userSlice";
-//import uiIDReducer from "./uiIDSlice";
 
 export const store = configureStore({
   reducer: {
@@ -27,7 +26,7 @@ export const store = configureStore({
     myPayment: myPaymentsReducer,
     myData: myDataReducer,
     account: userReducer,
-    //uiID: uiIDReducer,
   },
   devTools: import.meta.env.NODE_ENV !== "production",
+  //devTools: true,
 });

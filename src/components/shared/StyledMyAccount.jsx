@@ -34,7 +34,7 @@ const StyledMyAccount = ({ children }) => {
       to: `/${loggedUserName}/whishlist`,
     },
     { text: t("reserved"), onClick: () => navigate("/") },
-    { text: t("chat"), onClick: () => navigate("/") },
+    { text: t("chat"), to: `/${loggedUserName}/chat` },
   ];
 
   return (

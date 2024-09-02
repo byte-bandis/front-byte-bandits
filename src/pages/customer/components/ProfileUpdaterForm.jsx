@@ -1,8 +1,9 @@
-import ImageUploader from "../../product/components/ImageUploader";
-import Button from "../../product/components/Button";
-import { useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
+import { useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
+import { useTranslation } from "react-i18next";
+import ImageUploader from "../../product/components/ImageUploader";
+import { RegularButton } from "../../../components/shared/buttons";
 import {
   getLoggedUserName,
   getSinglePublicProfile,
@@ -22,6 +23,7 @@ import HeaderProfilePhoto from "./HeaderProfilePhoto";
 import CustomCancelOption from "../../../components/shared/CustomCancelOption";
 
 const ProfileUpdaterForm = () => {
+  const { t } = useTranslation();
   const loadedPublicProfile = useSelector(getSinglePublicProfile);
   const { userPhoto, headerPhoto, userDescription } = loadedPublicProfile;
   const dispatch = useDispatch();
@@ -57,7 +59,7 @@ const ProfileUpdaterForm = () => {
     } else {
       setShowError(false);
     }
-  }, [loadedUI, setShowError]);
+  }, [loadedUI]);
 
   const handleAlertClose = () => {
     dispatch(resetUI());
@@ -132,7 +134,7 @@ const ProfileUpdaterForm = () => {
           {loadedUI.message}
         </Alert>
       )}
-      <h2>Click on a field to edit</h2>
+      <h2>{t("click_to_edit")}</h2>
       <StyledForm
         onSubmit={handleSubmit}
         $customAlignItems={"left"}
@@ -178,7 +180,7 @@ const ProfileUpdaterForm = () => {
               $customtop="10%"
               $customleft="25%"
             >
-              Click here to cancel
+              {t("cancel_edit_user_photo")}
             </CustomCancelOption>
           )}
           {editHeaderPhotoField ? (
@@ -214,23 +216,21 @@ const ProfileUpdaterForm = () => {
               $customtop="70%"
               $customleft="70%"
             >
-              Click here to cancel
+              {t("cancel_edit_header_photo")}
             </CustomCancelOption>
           )}
         </PhotosContainer>
         <StyledTextarea
           value={newUserDescription}
-          placeholder={`${
+          placeholder={
             userDescription && userDescription.trim() !== ""
-              ? `Currently: "${userDescription}". Write here to modify your description. Or leave this field empty if you like.`
-              : "Your description is empty so far. Write something about you and your work here."
-          }`}
+              ? t("description_current", { userDescription })
+              : t("description_empty")
+          }
           onChange={handleNewDescription}
         />
         {loggedUserName === username && (
-          <>
-            <Button type="submit">Send data</Button>
-          </>
+          <RegularButton type="submit">{t("send_data")}</RegularButton>
         )}
       </StyledForm>
     </>

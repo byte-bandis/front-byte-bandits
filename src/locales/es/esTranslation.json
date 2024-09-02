@@ -38,5 +38,18 @@
   "credit_card_label": "Tarjeta de crédito:",
   "credit_card_placeholder": "Escribe entre 13 y 18 dígitos",
   "save_card_number": "Guardar tu número de tarjeta",
-  "back_to_saved_card": "Volver a tu tarjeta guardada"
+  "back_to_saved_card": "Volver a tu tarjeta guardada",
+  "title_public_profile": "Este es tu perfil público",
+  "cancel_edit_user_photo": "Haz clic aquí para cancelar",
+  "cancel_edit_header_photo": "Haz clic aquí para cancelar",
+  "description_current": "Actualmente: \"{{userDescription}}\". Escribe aquí para modificar tu descripción. O deja este campo vacío si lo prefieres.",
+  "description_empty": "Tu descripción está vacía por ahora. Escribe algo sobre ti y tu trabajo aquí.",
+  "send_data": "Enviar datos",
+  "your_public_profile": "Tu perfil público",
+  "your_private_data": "Tus datos privados",
+  "welcome_you_zone": "{{username}}, esta es tu zona personal",
+  "profile_zone_intro": "Aquí puedes ver y editar tu perfil público y tus datos privados.",
+  "title_personal_details": "Estos son tus datos privados",
+  "back": "Volver",
+  "edit_your_profile": "Editar mi perfil"
 }

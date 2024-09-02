@@ -38,5 +38,17 @@
   "credit_card_label": "Credit card:",
   "credit_card_placeholder": "Write between 13 to 18 digits",
   "save_card_number": "Save your card number",
-  "back_to_saved_card": "Back to your saved card"
+  "back_to_saved_card": "Back to your saved card",
+  "title_public_profile": "This is your public profile",
+  "cancel_edit_user_photo": "Click here to cancel",
+  "cancel_edit_header_photo": "Click here to cancel",
+  "description_current": "Currently: \"{{userDescription}}\". Write here to modify your description. Or leave this field empty if you like.",
+  "description_empty": "Your description is empty so far. Write something about you and your work here.",
+  "send_data": "Send data",
+  "your_public_profile": "Your public profile",
+  "welcome_you_zone": "{{username}}, this is your user zone",
+  "profile_zone_intro": "Here you can see and change your public profile and your private data.",
+  "title_personal_details": "This are your personal details",
+  "back": "Back",
+  "edit_your_profile": "Edit your profile"
 }

@@ -1,35 +1,33 @@
 import { Outlet, useParams } from "react-router-dom";
-import { Container, Row } from "react-bootstrap";
+import { useTranslation } from "react-i18next";
 import HeaderProfile from "./HeaderProfile";
 import { useSelector } from "react-redux";
 import { getLoggedUserName } from "../../store/selectors";
 import StyledMyAccount from "../../components/shared/StyledMyAccount";
+import StyledContainer from "../../components/shared/StyledContainer";
 
 const LayoutProfile = () => {
+  const { t } = useTranslation();
   const loggedUserName = useSelector(getLoggedUserName);
   const { username } = useParams();
 
   return (
-    <>
-      <StyledMyAccount>
-        <Container>
-          {loggedUserName ? (
-            <Row>
-              {
-                <h1 className="display-5 fw-bold">
-                  {loggedUserName}, this is your profile
-                </h1>
-              }
-              <p>Here you can see and change your profile data</p>
-              <HeaderProfile />
-              <Outlet />
-            </Row>
-          ) : (
-            `No info found for user ${username}`
-          )}
-        </Container>
-      </StyledMyAccount>
-    </>
+    <StyledMyAccount>
+      {loggedUserName ? (
+        <StyledContainer $customMarginTop="2rem">
+          {
+            <h1 className="display-5 fw-bold">
+              {t("welcome_you_zone", { username: loggedUserName })}
+            </h1>
+          }
+          <p>{t("profile_zone_intro")}</p>
+          <HeaderProfile />
+          <Outlet />
+        </StyledContainer>
+      ) : (
+        `No info found for user ${username}`
+      )}
+    </StyledMyAccount>
   );
 };
 

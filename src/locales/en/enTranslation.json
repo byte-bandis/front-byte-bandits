@@ -85,5 +85,7 @@
   "work": "Work",
   "others": "Others",
   "sell_buy": "Sell - Buy",
-  "login_register": "Login or register"
+  "login_register": "Login or register",
+  "your_private_data": "Your private data",
+  "confirm_logout": "logout"
 }

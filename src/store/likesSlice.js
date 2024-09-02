@@ -36,7 +36,6 @@ const likesSlice = createSlice({
       })
       .addCase(getWishlist.fulfilled, (state, action) => {
         state.loaded = true;
-        console.log("Resposta do backend", action.payload);
         state.wishlist = action.payload;
       });
   },

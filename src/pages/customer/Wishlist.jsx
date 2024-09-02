@@ -6,7 +6,6 @@ import styled from "styled-components";
 import P from "prop-types";
 import { useSelector, useDispatch } from "react-redux";
 import { useEffect } from "react";
-import likesSlice from "../../store/likesSlice";
 
 const Wishlist = () => {
   const dispatch = useDispatch();
@@ -14,23 +13,19 @@ const Wishlist = () => {
   const urlSegment = window.location.pathname.split("/");
   const userName = urlSegment[1];
   const userLikes = useSelector((state) => state.likesSlice.wishlist);
-
-  console.log(userName);
-  // console.log(filters);
-  console.log(page);
-  console.log(userLikes);
+  const searchParams = new URLSearchParams(window.location.search);
+  const limit = searchParams.get("limit");
 
   useEffect(() => {
     if (userName) {
-      console.log({ username: userName, page });
-      dispatch(getWishlist({ username: userName, page }));
+      dispatch(getWishlist({ username: userName, page, limit }));
     }
-  }, [dispatch, userName, page]);
+  }, [dispatch, userName, page, limit]);
 
   return (
     <>
       <StyledMyAccount>
-        <h1>Wishlist</h1>
+        <StyledH1>Wishlist</StyledH1>
         <WishlistContainer>
           {" "}
           {userLikes.length > 0 ? (
@@ -60,14 +55,15 @@ Wishlist.propTypes = {
 
 export default Wishlist;
 
+const StyledH1 = styled.h1`
+  font-size: 3em;
+  text-align: center;
+  margin-bottom: 20px;
+`;
+
 const WishlistContainer = styled.div`
   display: flex;
   flex-direction: row;
-  margin: 10px;
   flex-wrap: wrap;
-
-  & .a {
-    widht: 60px;
-    height: 80px;
-  }
+  margin: auto 70px;
 `;

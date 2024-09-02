@@ -20,13 +20,13 @@ const createAd = createAsyncThunk(
 
 const getAds = createAsyncThunk(
   "ads/fetchAds",
-  async (params = { page: 1, id: "", filters: {} }, { rejectWithValue }) => {
-    const { page, id, filters } = params;
+  async (params = { id: "", filters: {} }, { rejectWithValue }) => {
+    const { id, filters } = params;
     let reqUrl = "";
     if (id) {
       reqUrl = reqUrl + `/${id}`;
     } else {
-      reqUrl = reqUrl + `/?page=${page}&limit=8`;
+      reqUrl = "?";
       for (const key in filters) {
         if (
           filters[key] !== undefined &&
@@ -35,13 +35,13 @@ const getAds = createAsyncThunk(
           filters[key] !== 0
         ) {
           reqUrl += `&${key}=${filters[key]}`;
-          console.log(reqUrl);
         }
       }
     }
 
     try {
       const response = await client.get(`${adsURL}${reqUrl}`);
+
       const result = response.ads || response.ad;
       return result;
     } catch (error) {

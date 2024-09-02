@@ -51,5 +51,14 @@
   "profile_zone_intro": "Aquí puedes ver y editar tu perfil público y tus datos privados.",
   "title_personal_details": "Estos son tus datos privados",
   "back": "Volver",
-  "edit_your_profile": "Editar mi perfil"
+  "edit_your_profile": "Editar mi perfil",
+  "my_profile": "Mi perfil",
+  "my_data": "Mis datos",
+  "sales": "Ventas",
+  "purchases": "Compras",
+  "products": "Productos",
+  "email_short": "Email",
+  "whishlist": "Tus deseos",
+  "reserved": "Reservas",
+  "chat": "Chat"
 }

@@ -1,42 +1,44 @@
 import TagsNav from "./TagsNav";
 import StyledContainer from "./StyledContainer";
+import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
 import { getLoggedUserName } from "../../store/selectors";
 import { useNavigate } from "react-router-dom";
 import P from "prop-types";
 
 const StyledMyAccount = ({ children }) => {
+  const { t } = useTranslation();
   const loggedUserName = useSelector(getLoggedUserName);
   const navigate = useNavigate();
   const sideBarElements = [
     {
-      text: "My Profile",
+      text: t("my_profile"),
       to: `/${loggedUserName}/info`,
     },
     {
-      text: "My Data",
+      text: t("my_data"),
       to: `/${loggedUserName}/info/mydata`,
     },
     {
-      text: "Sell",
+      text: t("sales"),
       to: `/product/?tags=lifestyle&sell=true`,
     },
     {
-      text: "Buy",
+      text: t("purchases"),
       onClick: () => navigate("/"),
     },
-    { text: "Products", onClick: () => navigate("/") },
-    { text: "Email", onClick: () => navigate("/") },
+    { text: t("products"), onClick: () => navigate("/") },
+    { text: t("email_short"), onClick: () => navigate("/") },
     {
-      text: "WishList",
+      text: t("whishlist"),
       to: `/${loggedUserName}/whishlist`,
     },
+    { text: t("chat"), to: `/${loggedUserName}/chat` },
+    { text: t("reserved"), onClick: () => navigate("/") },
     {
-      text: "Chat",
-      to: `/${loggedUserName}/chat`,
+      text: "Others",
+      to: `/${loggedUserName}/`,
     },
-    { text: "Reserved", onClick: () => navigate("/") },
-    { text: "Others", onClick: () => navigate("/") },
   ];
 
   return (

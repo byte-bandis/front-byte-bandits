@@ -15,6 +15,7 @@ import { getLoggedUserName } from "../../store/selectors";
 import { resetUI } from "../../store/uiSlice";
 import Confirmator from "./Confirmator";
 import { useState } from "react";
+import LanguageSwitcher from "./localization/LanguageSwitcher";
 
 const Header = () => {
   const location = useLocation();
@@ -88,7 +89,7 @@ const Header = () => {
   ];
 
   const filteredTagOptions = TAG_OPTIONS.filter(
-    (tag) => tag.text !== "All categories",
+    (tag) => tag.text !== "All categories"
   );
 
   return (
@@ -109,8 +110,17 @@ const Header = () => {
           </SearchContainer>
           {isAuthenticated ? (
             <>
-              <HeartLink to={"/myaccount"} size={30} className="heartHead" />
-              <EmailLink to={"/myaccount"} size={35} className="emailHead" />
+              <HeartLink
+                to={"/myaccount"}
+                size={30}
+                className="heartHead"
+              />
+              <EmailLink
+                to={"/myaccount"}
+                size={35}
+                className="emailHead"
+              />
+              <LanguageSwitcher flag />
               <DropdownLink
                 options={dropdownOptions}
                 className="myAccount"
@@ -123,7 +133,7 @@ const Header = () => {
                 onClick={handleSellButton}
                 className="sellButton"
                 $customMargin="0px 25px"
-                $customBackGroundColor="var(--accent-100)"
+                $customBackground="var(--accent-100)"
                 $CustomPadding="5px"
                 $customBorder="none"
                 $customwidth="130px"

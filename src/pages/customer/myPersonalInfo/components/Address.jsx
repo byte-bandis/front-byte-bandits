@@ -3,6 +3,7 @@ import { getLoggedUserName, getMyAddress } from "../../../../store/selectors";
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { trimDate } from "../../../../utils/dateTools";
+import { useTranslation } from "react-i18next";
 
 import { MailboxFlag } from "react-bootstrap-icons";
 
@@ -32,6 +33,7 @@ import IconWrapper from "../../../../components/shared/iconsComponents/IconWrapp
 
 const Address = () => {
   const dispatch = useDispatch();
+  const { t } = useTranslation();
   const loggedUsername = useSelector(getLoggedUserName);
   const myAddress = useSelector(getMyAddress);
   const { username } = useParams();
@@ -156,7 +158,7 @@ const Address = () => {
             noValidate
           >
             <StyledListItem $customHeaderFontSize="1.5rem">
-              <h3>Postal Address:</h3>
+              <h3>{t("postal_address")}</h3>
             </StyledListItem>
 
             <StyledContainer {...containerStyles}>

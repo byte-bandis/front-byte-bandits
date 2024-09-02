@@ -2,8 +2,8 @@ import styled from "styled-components";
 
 const RegularButton = styled.button`
   cursor: ${(props) => props.$customCursor || "pointer"};
-  background-color: ${(props) =>
-    props.$customBackGroundColor || "var(--bg-100)"};
+
+  background: ${(props) => props.$customBackground || "var(--bg-100)"};
   border: ${(props) => props.$customBorder || "1px solid var(--primary-200)"};
   border-radius: ${(props) => props.$customBorderRadius || "5px"};
   margin: ${(props) => props.$customMargin || "0"};

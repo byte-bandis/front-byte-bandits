@@ -24,7 +24,6 @@ const Account = () => {
         {<h1>{loggedUserName}, welcome to your private area</h1>}
         <Profile />
       </StyledMyAccount>
-      {/* <ProductList /> */}
     </>
   );
 };

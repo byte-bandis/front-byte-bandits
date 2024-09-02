@@ -31,6 +31,10 @@ const StyledMyAccount = ({ children }) => {
       text: "WishList",
       to: `/${loggedUserName}/whishlist`,
     },
+    {
+      text: "Chat",
+      to: `/${loggedUserName}/chat`,
+    },
     { text: "Reserved", onClick: () => navigate("/") },
     { text: "Others", onClick: () => navigate("/") },
   ];
@@ -48,11 +52,11 @@ const StyledMyAccount = ({ children }) => {
   );
 };
 
-export default StyledMyAccount;
-
 StyledMyAccount.propTypes = {
   children: P.node,
 };
+
+export default StyledMyAccount;
 
 // //Responsive
 // const StyledMyAccountContainer = styled.div`

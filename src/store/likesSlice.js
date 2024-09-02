@@ -3,9 +3,11 @@ import { createSlice } from "@reduxjs/toolkit";
 import { getLikes, getWishlist } from "./likesThunk";
 
 export const defaultadsState = {
-  adcrosslikes: {}, 
-  wishlist: [], 
-  loaded: false,  
+  adcrosslikes: {},
+  wishlist: [],
+  loaded: false,
+  page: 1,
+  filters: {},
 };
 const likesSlice = createSlice({
   name: "likesSlice",
@@ -16,7 +18,6 @@ const likesSlice = createSlice({
       state.wishlist = [];
       state.loaded = false;
     },
-    
   },
   extraReducers: (builder) => {
     builder
@@ -25,17 +26,21 @@ const likesSlice = createSlice({
       })
       .addCase(getLikes.fulfilled, (state, action) => {
         state.loaded = true;
-       const adId = action.payload.adId;
-       const count = action.payload.count;
-        
-        state.adcrosslikes = {...state.adcrosslikes, [adId] : count ?  count : count }
-        })
+        const adId = action.payload.adId;
+        const count = action.payload.count;
+
+        state.adcrosslikes = {
+          ...state.adcrosslikes,
+          [adId]: count ? count : count,
+        };
+      })
       .addCase(getWishlist.fulfilled, (state, action) => {
         state.loaded = true;
-        state.wishlist = action.payload.likes; 
+        console.log("Resposta do backend", action.payload);
+        state.wishlist = action.payload;
       });
   },
 });
 
 export default likesSlice.reducer;
-export const { increaseLikes, decreaseLikes,resetLikes } = likesSlice.actions;
+export const { increaseLikes, decreaseLikes, resetLikes } = likesSlice.actions;

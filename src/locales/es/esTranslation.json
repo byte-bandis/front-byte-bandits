@@ -1,3 +1,24 @@
 {
-  "postal_address": "Dirección postal"
+  "postal_address": "Dirección Postal",
+  "street": "Calle",
+  "your_street_name": "Nombre de tu calle",
+  "number": "Número",
+  "your_street_number": "Tu número de calle",
+  "flat": "Piso",
+  "your_flat": "Tu piso",
+  "door": "Puerta",
+  "your_door": "Tu puerta",
+  "zip_code": "Código Postal",
+  "your_zip_code": "Tu código postal",
+  "city": "Ciudad",
+  "your_city": "Tu ciudad",
+  "country": "País",
+  "your_country": "Tu país",
+  "select_your_country": "Selecciona tu país",
+  "save_your_data": "Guarda tus datos",
+  "back_to_saved_data": "Volver a tus datos guardados",
+  "confirm_save": "Confirmar guardado",
+  "cancel": "Cancelar",
+  "click_to_edit": "Haz clic para editar",
+  "last_update": "Última vez que actualizaste tus datos:"
 }

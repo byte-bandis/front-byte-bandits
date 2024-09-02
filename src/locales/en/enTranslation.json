@@ -1,3 +1,24 @@
 {
-  "postal_address": "Postal address"
+  "postal_address": "Postal Address",
+  "street": "Street",
+  "your_street_name": "Your street name here",
+  "number": "Number",
+  "your_street_number": "Your street number here",
+  "flat": "Flat",
+  "your_flat": "Your flat here",
+  "door": "Door",
+  "your_door": "Your door here",
+  "zip_code": "Zip Code",
+  "your_zip_code": "Your zip code here",
+  "city": "City",
+  "your_city": "Your city here",
+  "country": "Country",
+  "your_country": "Your country here",
+  "select_your_country": "Select your country",
+  "save_your_data": "Save your data",
+  "back_to_saved_data": "Back to your saved data",
+  "confirm_save": "Confirm save",
+  "cancel": "Cancel",
+  "click_to_edit": "Click to edit",
+  "last_update": "Last time you updated your data:"
 }

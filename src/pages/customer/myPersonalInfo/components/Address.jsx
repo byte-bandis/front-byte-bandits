@@ -33,7 +33,7 @@ import IconWrapper from "../../../../components/shared/iconsComponents/IconWrapp
 
 const Address = () => {
   const dispatch = useDispatch();
-  const { t } = useTranslation();
+  const { t } = useTranslation(); // Hook para las traducciones
   const loggedUsername = useSelector(getLoggedUserName);
   const myAddress = useSelector(getMyAddress);
   const { username } = useParams();
@@ -72,8 +72,8 @@ const Address = () => {
   }, [username, loggedUsername, dispatch]);
 
   useEffect(() => {
-    const countries = countriesDB.map((c) => c.name); // Extrae los nombres de los países
-    setCountryList(countries); // Guarda los países en el estado
+    const countries = countriesDB.map((c) => c.name);
+    setCountryList(countries);
   }, []);
 
   useEffect(() => {
@@ -163,7 +163,7 @@ const Address = () => {
 
             <StyledContainer {...containerStyles}>
               <StyledListItem {...listItemStyles}>
-                <label>Street: </label>
+                <label>{t("street")}: </label>
                 {!editMode ? (
                   <div>{myAddress.streetName}</div>
                 ) : (
@@ -172,14 +172,15 @@ const Address = () => {
                     name="streetName"
                     value={formData.streetName}
                     onChange={handleInputChange}
-                    placeholder="Your street name here"
+                    placeholder={t("your_street_name")}
                   />
                 )}
               </StyledListItem>
             </StyledContainer>
+
             <StyledContainer {...containerStyles}>
               <StyledListItem {...listItemStyles}>
-                <label>Number:</label>
+                <label>{t("number")}:</label>
                 {!editMode ? (
                   <div>{myAddress.streetNumber}</div>
                 ) : (
@@ -188,7 +189,7 @@ const Address = () => {
                     name="streetNumber"
                     value={formData.streetNumber}
                     onChange={handleInputChange}
-                    placeholder="Your street number here"
+                    placeholder={t("your_street_number")}
                   />
                 )}
               </StyledListItem>
@@ -196,7 +197,7 @@ const Address = () => {
 
             <StyledContainer {...containerStyles}>
               <StyledListItem {...listItemStyles}>
-                <label>Flat:</label>
+                <label>{t("flat")}:</label>
                 {!editMode ? (
                   <div>{myAddress.flat}</div>
                 ) : (
@@ -205,14 +206,15 @@ const Address = () => {
                     name="flat"
                     value={formData.flat}
                     onChange={handleInputChange}
-                    placeholder="Your flat here"
+                    placeholder={t("your_flat")}
                   />
                 )}
               </StyledListItem>
             </StyledContainer>
+
             <StyledContainer {...containerStyles}>
               <StyledListItem {...listItemStyles}>
-                <label>Door:</label>
+                <label>{t("door")}:</label>
                 {!editMode ? (
                   <div>{myAddress.door}</div>
                 ) : (
@@ -221,7 +223,7 @@ const Address = () => {
                     name="door"
                     value={formData.door}
                     onChange={handleInputChange}
-                    placeholder="Your door here"
+                    placeholder={t("your_door")}
                   />
                 )}
               </StyledListItem>
@@ -229,7 +231,7 @@ const Address = () => {
 
             <StyledContainer {...containerStyles}>
               <StyledListItem {...listItemStyles}>
-                <label>Zip Code:</label>
+                <label>{t("zip_code")}:</label>
                 {!editMode ? (
                   <div>{myAddress.postalCode}</div>
                 ) : (
@@ -238,14 +240,15 @@ const Address = () => {
                     name="postalCode"
                     value={formData.postalCode}
                     onChange={handleInputChange}
-                    placeholder="Your zip code here"
+                    placeholder={t("your_zip_code")}
                   />
                 )}
               </StyledListItem>
             </StyledContainer>
+
             <StyledContainer {...containerStyles}>
               <StyledListItem {...listItemStyles}>
-                <label>City:</label>
+                <label>{t("city")}:</label>
                 {!editMode ? (
                   <div>{myAddress.city}</div>
                 ) : (
@@ -254,14 +257,15 @@ const Address = () => {
                     name="city"
                     value={formData.city}
                     onChange={handleInputChange}
-                    placeholder="Your city here"
+                    placeholder={t("your_city")}
                   />
                 )}
               </StyledListItem>
             </StyledContainer>
+
             <StyledContainer {...containerStyles}>
               <StyledListItem {...listItemStyles}>
-                <label>Country:</label>
+                <label>{t("country")}:</label>
                 {!editMode ? (
                   <div>{myAddress.country}</div>
                 ) : (
@@ -269,13 +273,13 @@ const Address = () => {
                     name="country"
                     value={formData.country}
                     onChange={handleInputChange}
-                    placeholder="Your country here"
+                    placeholder={t("your_country")}
                   >
                     <option
                       value=""
                       disabled
                     >
-                      Select your country
+                      {t("select_your_country")}
                     </option>
                     {countryList.map((country) => (
                       <option
@@ -299,13 +303,13 @@ const Address = () => {
                       $customMargin="2rem 0 0 0"
                       onClick={handleConfirmProcess}
                     >
-                      Save your data
+                      {t("save_your_data")}
                     </RegularButton>
                     <RegularButton
                       $customMargin="2rem 0 0 0"
                       onClick={handleHideEditMode}
                     >
-                      Back to your saved data
+                      {t("back_to_saved_data")}
                     </RegularButton>
                   </>
                 )}
@@ -316,13 +320,13 @@ const Address = () => {
                       $customHoverBackgroundColor="var(--accent-100)"
                       $customMargin="2rem 0 0 0"
                     >
-                      Confirm save
+                      {t("confirm_save")}
                     </RegularButton>
                     <RegularButton
                       $customMargin="2rem 0 0 0"
                       onClick={handleCancelSubmit}
                     >
-                      Cancel
+                      {t("cancel")}
                     </RegularButton>
                   </>
                 )}
@@ -332,7 +336,7 @@ const Address = () => {
                 $customMargin="2rem 0 0 0"
                 onClick={handleShowEditMode}
               >
-                Click to edit
+                {t("click_to_edit")}
               </RegularButton>
             )}
           </form>
@@ -346,7 +350,7 @@ const Address = () => {
           {editMode && (
             <StyledContainer {...containerStyles}>
               <StyledListItem {...listItemStyles}>
-                <i>Last time you updated your data:</i>
+                <i>{t("last_update")}</i>
                 <div>
                   <i>{updateTime}</i>
                 </div>

@@ -50,8 +50,9 @@ const ProductView = () => {
     }, [myLikes, productId]);
 
     useEffect(() => {
-        const publicProfile = async () => {
-            await dispatch(getSinglePublicProfileWithThunk(owner.username));
+        const publicProfile =  () => {
+            if (owner){
+                 dispatch(getSinglePublicProfileWithThunk(owner.username));}
         };
         publicProfile();
     }, [owner, dispatch]);
@@ -77,7 +78,7 @@ const ProductView = () => {
     const handleDeleteConfirm = async () => {
         dispatch(deleteAd(productId));
     };
-
+    
     if (loadedAds) {
         const { adTitle, adBody, sell, price, photo, tags } = loadedAds;
         const image = photo ? `${photo}` : '../../assets/images/no-image.jpg';

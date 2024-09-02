@@ -1,4 +1,4 @@
-import Col from "react-bootstrap/Col";
+import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
 import {
@@ -10,9 +10,9 @@ import { getSinglePublicProfileWithThunk } from "../../store/profilesThunk";
 import ScreenPublicProfile from "./components/ScreenPublicProfile";
 import ProfileUpdaterForm from "./components/ProfileUpdaterForm";
 import StyledContainer from "../../components/shared/StyledContainer";
-import Button from "../product/components/Button";
-
+import { RegularButton } from "../../components/shared/buttons";
 const Profile = () => {
+  const { t } = useTranslation();
   const dispatch = useDispatch();
   const { username } = useParams();
   const loggedUserName = useSelector(getLoggedUserName);
@@ -44,31 +44,31 @@ const Profile = () => {
   };
 
   return (
-    <>
-      <Col>
-        {loadedPublicProfile && !showForm && (
-          <StyledContainer>
-            <ScreenPublicProfile
-              userPhoto={loadedPublicProfile.userPhoto}
-              headerPhoto={loadedPublicProfile.headerPhoto}
-              username={username}
-              origin={origin}
-              userDescription={loadedPublicProfile.userDescription}
-            />
-            {loggedUserName === username && (
-              <Button onClick={handleShowForm}>Edit your profile</Button>
-            )}
-          </StyledContainer>
-        )}
+    <StyledContainer>
+      {loadedPublicProfile && !showForm && (
+        <StyledContainer>
+          <ScreenPublicProfile
+            userPhoto={loadedPublicProfile.userPhoto}
+            headerPhoto={loadedPublicProfile.headerPhoto}
+            username={username}
+            origin={origin}
+            userDescription={loadedPublicProfile.userDescription}
+          />
+          {loggedUserName === username && (
+            <RegularButton onClick={handleShowForm}>
+              {t("edit_your_profile")}
+            </RegularButton>
+          )}
+        </StyledContainer>
+      )}
 
-        {showForm && (
-          <StyledContainer>
-            <ProfileUpdaterForm />
-            <Button onClick={handleShowForm}>Back</Button>
-          </StyledContainer>
-        )}
-      </Col>
-    </>
+      {showForm && (
+        <StyledContainer>
+          <ProfileUpdaterForm />
+          <RegularButton onClick={handleShowForm}>{t("back")}</RegularButton>
+        </StyledContainer>
+      )}
+    </StyledContainer>
   );
 };
 

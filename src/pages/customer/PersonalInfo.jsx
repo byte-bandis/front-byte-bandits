@@ -1,5 +1,5 @@
-// PersonalInfo.js
 import { useSelector } from "react-redux";
+import { useTranslation } from "react-i18next";
 import Address from "./myPersonalInfo/components/Address";
 import CreditCard from "./myPersonalInfo/components/PaymentMethod";
 import MyData from "./myPersonalInfo/components/UserData";
@@ -8,11 +8,12 @@ import FixedPositionAlert from "../../components/shared/alerts/FixedPositionAler
 import { getUIState } from "../../store/selectors";
 
 const PersonalInfo = () => {
+  const { t } = useTranslation();
   const uiState = useSelector(getUIState);
 
   return (
     <StyledContainer $customMarginTop="3rem">
-      <h1>These are your personal details</h1>
+      <h1>{t("title_personal_details")}</h1>
 
       {uiState === "error" && (
         <FixedPositionAlert

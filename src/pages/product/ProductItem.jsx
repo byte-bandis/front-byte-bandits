@@ -7,11 +7,18 @@ import { getLikes } from '../../store/likesThunk';
 import { useDispatch, useSelector } from 'react-redux';
 import { useEffect } from 'react';
 import '../../assets/images/no-image.jpg';
+import slugify from 'slugify';
+
 const ProductItem = ({ ad }) => {
+
     const { _id, adTitle, sell, price, photo, tags } = ad;
     const image = photo ? `${photo}` : '../../assets/images/no-image.jpg';
     const origin = import.meta.env.VITE_API_BASE_URL;
     const dispatch = useDispatch();
+    const slug = slugify(adTitle, {
+        replacement: '-',
+        lower: true,
+    })
     useEffect(() => {
         dispatch(getLikes(_id));
     }, [_id, dispatch]);
@@ -27,9 +34,9 @@ const ProductItem = ({ ad }) => {
             iLikeIt = true;
         }
     });
-
+  
     return (
-        <Link className='add' to={`/product/${_id}`}>
+        <Link className='add' to={`/product/${_id}/${slug}`}>
             <StyledSingleAd className='single-ad'>
                 <div className='heart'>
                     {iLikeIt ? (

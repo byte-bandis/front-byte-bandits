@@ -45,7 +45,7 @@ const ProductItem = ({ ad, $customTransform, $customMargin }) => {
             $customMargin={$customMargin}
             $customTransform={$customTransform}
         >
-            <Link className='add' to={`/product/${_id}`}>
+            <Link className='add' to={`/product/${_id}/${slug}`}>
                 <StyledSingleAd className='single-ad'>
                     <div className='heart'>
                         {iLikeIt ? (

@@ -8,6 +8,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useEffect } from 'react';
 import '../../assets/images/no-image.jpg';
 import slugify from 'slugify';
+
 const ProductItem = ({ ad, $customTransform, $customMargin }) => {
     const { _id, adTitle, sell, price, photo, tags } = ad;
 

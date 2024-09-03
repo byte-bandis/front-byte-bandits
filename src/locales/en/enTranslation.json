@@ -87,5 +87,14 @@
   "sell_buy": "Sell - Buy",
   "login_register": "Login or register",
   "your_private_data": "Your private data",
-  "confirm_logout": "logout"
+  "confirm_logout": "logout",
+  "change_password": "Change password",
+  "current_password_label": "Current password",
+  "current_password_input": "**********",
+  "current_password_placeholder": "Enter your current password",
+  "new_password_label": "New Password",
+  "new_password_input": "**********",
+  "new_password_placeholder": "Enter your new password",
+  "save_new_password": "Save new password",
+  "back_to_saved_password": "Back to saved password"
 }

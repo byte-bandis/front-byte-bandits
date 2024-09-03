@@ -113,13 +113,9 @@ const Header = () => {
           </SearchContainer>
           {isAuthenticated ? (
             <>
-              <HeartLink
-                to={"/myaccount"}
-                size={30}
-                className="heartHead"
-              />
+              <HeartLink to={"/myaccount"} size={30} className="heartHead" />
               <EmailLink
-                to={"/myaccount"}
+                to={`/${loggedUser}/chat`}
                 size={35}
                 className="emailHead"
               />
@@ -145,11 +141,7 @@ const Header = () => {
             </>
           ) : (
             <>
-              <LanguageSwitcher
-                $marginContainer="0 1rem 0 0"
-                $gap="5px"
-                flag
-              />
+              <LanguageSwitcher $marginContainer="0 1rem 0 0" $gap="5px" flag />
               <RegularButton
                 onClick={() =>
                   navigate("/login", { state: { from: location } })
@@ -182,10 +174,7 @@ const Header = () => {
           >
             {t("all_categories")}
           </DropdownLink>
-          <TagsNav
-            className="tagsNavegation"
-            options={filteredTagOptions}
-          />
+          <TagsNav className="tagsNavegation" options={filteredTagOptions} />
         </StyledTagsNavContainer>
       </HeaderStyledContainer>
     </>

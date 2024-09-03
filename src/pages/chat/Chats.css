@@ -8,22 +8,10 @@
   display: flex;
   flex-direction: column;
   width: 30%;
-  border-right: 1px solid #ccc;
+  border-right: 1px solid var(--bg-300);
   padding: 10px;
   overflow-y: auto;
   gap: 5px;
-}
-
-.chat-list-item {
-  padding: 10px;
-  cursor: pointer;
-}
-
-.chat-list-item.selected {
-  background-color: #f0f0f0;
-  font-weight: bold;
-  height: fit-content;
-  border-radius: 8px;
 }
 
 .chat-window {
@@ -39,7 +27,7 @@
 }
 
 .chat-list::-webkit-scrollbar-thumb {
-  background-color: #888;
+  background-color: var(--bg-300);
   border-radius: 10px;
 }
 

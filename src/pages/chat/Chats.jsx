@@ -6,6 +6,7 @@ import { getLoggedUserId } from "../../store/selectors";
 import { useSelector } from "react-redux";
 import "./Chats.css";
 import StyledMyAccount from "../../components/shared/StyledMyAccount";
+import ChatListItem from "./ChatListItem";
 
 const Chats = () => {
   const [chatList, setChatList] = useState([]);
@@ -61,23 +62,15 @@ const Chats = () => {
           {chatList.length === 0 ? (
             <p>No tienes chats aún.</p>
           ) : (
-            chatList.map(
-              (chat) =>
-                chat.product &&
-                chat.product._id && (
-                  <div
-                    key={chat.product._id}
-                    className={`chat-list-item ${
-                      chat.product._id === selectedChat?.product?._id
-                        ? "selected"
-                        : ""
-                    }`}
-                    onClick={() => setSelectedChat(chat)}
-                  >
-                    Chat sobre: {chat.product.adTitle}
-                  </div>
-                )
-            )
+            chatList.map((chat) => (
+              <ChatListItem
+                key={chat._id}
+                chat={chat}
+                isSelected={chat.product._id === selectedChat?.product?._id}
+                onClick={() => setSelectedChat(chat)}
+                loggedUserId={loggedUserId}
+              />
+            ))
           )}
         </div>
         <div className="chat-window">

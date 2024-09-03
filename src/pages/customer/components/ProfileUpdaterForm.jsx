@@ -26,7 +26,7 @@ import { returnSpecificProfile } from "../../../utils/returnSpecificProfile";
 const ProfileUpdaterForm = () => {
   const { t } = useTranslation();
   const loadedPublicProfile = useSelector(getSinglePublicProfile);
-  const { userPhoto, headerPhoto, userDescription } = loadedPublicProfile;
+  const { userDescription } = loadedPublicProfile;
   const dispatch = useDispatch();
   const { username } = useParams();
   const [inputUserPhoto, setInputUserPhoto] = useState(null);
@@ -236,7 +236,9 @@ const ProfileUpdaterForm = () => {
             matchedProfile &&
             matchedProfile.userDescription &&
             matchedProfile.userDescription.trim() !== ""
-              ? t("description_current", { userDescription })
+              ? t("description_current", {
+                  userDescription: matchedProfile.userDescription,
+                })
               : t("description_empty")
           }
           onChange={handleNewDescription}

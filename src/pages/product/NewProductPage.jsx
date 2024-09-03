@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate, useParams } from "react-router-dom";
 import { Form, Alert } from "react-bootstrap";
-import Button from "./components/Button";
+import RegularButton from "../../components/shared/buttons/RegularButton";
 import { createAd, getAds, updateAd } from "../../store/adsThunk";
 import {
   StyledForm,
@@ -12,7 +12,7 @@ import {
   TagsContainer,
 } from "./NewProductPageStyles";
 import { resetMessage, setMessage } from "../../store/uiSlice";
-import { getError, getUILoading, getAdsSelector } from "../../store/selectors";
+import { getError, getAdsSelector } from "../../store/selectors";
 import ImageUploader from "./components/ImageUploader";
 
 const TAG_OPTIONS = ["lifestyle", "mobile", "motor", "work", "others"];
@@ -30,7 +30,7 @@ const NewProductPage = ({ isEditMode = false }) => {
   const [inputImage, setInputImage] = useState(null);
   const [inputImagePreview, setInputImagePreview] = useState(null);
   const error = useSelector(getError);
-  const loading = useSelector(getUILoading);
+  const [loading, setLoading] = useState(false);
   const loadedAd = useSelector(getAdsSelector).find(
     (advert) => advert._id === productId
   );
@@ -70,6 +70,8 @@ const NewProductPage = ({ isEditMode = false }) => {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
+
+    setLoading(true);
 
     if (!inputName) {
       dispatch(
@@ -169,6 +171,8 @@ const NewProductPage = ({ isEditMode = false }) => {
       navigate(`/product/${response._id}`);
     } catch (errorMsg) {
       console.error("Failed to process product: ", errorMsg);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -185,11 +189,15 @@ const NewProductPage = ({ isEditMode = false }) => {
       const fetchAd = async () => {
         try {
           let fetchedAd = loadedAd;
-          if (!fetchedAd) {
-            const fetchedAds = await dispatch(
-              getAds({ id: productId })
-            ).unwrap();
-            fetchedAd = fetchedAds[0] || undefined;
+          try {
+            if (!fetchedAd) {
+              const fetchedAds = await dispatch(
+                getAds({ id: productId })
+              ).unwrap();
+              fetchedAd = fetchedAds[0] || undefined;
+            }
+          } catch (errorMsg) {
+            console.log("Failed to fetch product: ", errorMsg.message);
           }
           if (fetchedAd === undefined) {
             navigate("/404");
@@ -308,17 +316,29 @@ const NewProductPage = ({ isEditMode = false }) => {
           </Alert>
         )}
         {!loading ? (
-          <Button
+          <RegularButton
             type="submit"
             $customVerticalPadding="6px"
             $customwidth="100%"
+            $customBackground="var(--primary-200)"
+            $customBorder="none"
+            $customColor="var(--bg-100)"
+            $customHoverBackgroundColor="var(--bg-3)"
           >
             {isEditMode ? "Guardar Cambios" : "Crear Producto"}
-          </Button>
+          </RegularButton>
         ) : (
-          <Button $customVerticalPadding="6px" $customwidth="100%" disabled>
+          <RegularButton
+            $customVerticalPadding="6px"
+            $customwidth="100%"
+            $customBackground="var(--primary-200)"
+            $customBorder="none"
+            $customColor="var(--bg-100)"
+            $customHoverBackgroundColor="var(--bg-3)"
+            disabled
+          >
             {isEditMode ? "Guardando..." : "Creando..."}
-          </Button>
+          </RegularButton>
         )}
       </StyledForm>
     </div>

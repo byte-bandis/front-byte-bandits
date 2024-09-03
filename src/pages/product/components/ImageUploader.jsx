@@ -80,18 +80,12 @@ const ImageUploader = ({
           </ImagePreview>
         ) : (
           <CustomFileUpload>
-            <FileInput
-              type="file"
-              onChange={handleImageChange}
-            />
+            <FileInput type="file" onChange={handleImageChange} />
             <CameraFill size={30} />
             {dropAreaText}
           </CustomFileUpload>
         )}
       </DropZone>
-      {inputImagePreview && (
-        <RemoveBtn onClick={handleRemoveImage}>✕</RemoveBtn>
-      )}
     </DropZoneWrapper>
   );
 };

@@ -9,6 +9,8 @@ export const StyledForm = styled.form`
   padding: 1.5rem;
   box-shadow: 0 0.5rem 1rem var(--shadow-1);
   border-radius: 0.375rem;
+  background-color: var(--bg-200);
+  color: var(--text-200);
 `;
 
 export const StyledInputGroup = styled.div`

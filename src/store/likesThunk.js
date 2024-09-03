@@ -16,15 +16,14 @@ export const getLikes = createAsyncThunk(
     }
   },
 );
-
 export const getWishlist = createAsyncThunk(
   "ads/getWishlist",
-  async ({ username, page, limit }, { rejectWithValue }) => {
+  async (user , { rejectWithValue }) => {
+    const {page, limit} = user
     try {
-      const response = await client.get(
-        `/likes/${username}/wishlist?page=${page}&limit=${limit}`,
-      );
-
+      const response = await client.get(`/likes/wishlist/?page=${page}&limit=${limit}`);
+  
+      console.log(response)
       return response.likes;
     } catch (error) {
       return rejectWithValue({
@@ -32,5 +31,6 @@ export const getWishlist = createAsyncThunk(
         status: error.response?.status,
       });
     }
-  },
+  }
 );
+

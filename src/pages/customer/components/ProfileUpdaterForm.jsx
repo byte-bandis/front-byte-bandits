@@ -26,14 +26,13 @@ import { returnSpecificProfile } from "../../../utils/returnSpecificProfile";
 const ProfileUpdaterForm = () => {
   const { t } = useTranslation();
   const loadedPublicProfile = useSelector(getSinglePublicProfile);
-  const { userDescription } = loadedPublicProfile;
   const dispatch = useDispatch();
   const { username } = useParams();
   const [inputUserPhoto, setInputUserPhoto] = useState(null);
   const [inputUserPhotoPreview, setInputUserPhotoPreview] = useState(null);
   const [inputHeaderPhoto, setInputHeaderPhoto] = useState(null);
   const [inputHeaderPhotoPreview, setInputHeaderPhotoPreview] = useState(null);
-  const [newUserDescription, setNewUserDescription] = useState(userDescription);
+  const [newUserDescription, setNewUserDescription] = useState("");
   const loggedUserName = useSelector(getLoggedUserName);
   const loadedUI = useSelector(getUI);
   const [showError, setShowError] = useState(false);

@@ -50,7 +50,11 @@ const Profile = () => {
             headerPhoto={matchedProfile.headerPhoto}
             username={username}
             origin={origin}
-            userDescription={matchedProfile.userDescription}
+            userDescription={
+              matchedProfile.userDescription
+                ? matchedProfile.userDescription
+                : t("description_empty")
+            }
           />
           {loggedUserName === username && (
             <RegularButton onClick={handleShowForm}>

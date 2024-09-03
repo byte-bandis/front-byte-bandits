@@ -11,6 +11,7 @@ import {
   getError,
   getIsLogged,
   getLoggedUser,
+  getLoggedUserName,
   getUIMessage,
 } from "../../store/selectors";
 import { resetMessage } from "../../store/uiSlice";
@@ -23,6 +24,7 @@ const LoginPage = () => {
   const toRegister = "/register";
   const isError = useSelector(getError);
   const isLogged = useSelector(getIsLogged);
+  const loggedUserName = useSelector(getLoggedUserName);
   const message = useSelector(getUIMessage);
   const [inputEmail, setInputEmail] = useState("");
   const [inputPassword, setInputPassword] = useState("");
@@ -45,12 +47,26 @@ const LoginPage = () => {
     if (isLogged.authState) {
       resetForm();
       setShow(false);
-      const timer = setTimeout(() => {
+      const safeFrom = typeof from === "string" ? from : "/";
+
+      if (safeFrom.startsWith("/new") && loggedUserName) {
+        const redirectToNew = `/${loggedUserName}/new`;
+        navigate(redirectToNew, {
+          replace: true,
+          state: { from: redirectToNew },
+        });
+      } else {
         navigate(from, { replace: true });
-      }, 500);
-      return () => clearTimeout(timer);
+      }
     }
-  }, [isLogged.authState, loggedUser, dispatch, navigate, from]);
+  }, [
+    isLogged.authState,
+    loggedUser,
+    dispatch,
+    navigate,
+    from,
+    loggedUserName,
+  ]);
 
   const handleToRegister = () => {
     navigate(toRegister, { replace: true });

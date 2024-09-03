@@ -40,7 +40,10 @@ const Header = () => {
     if (isAuthenticated) {
       navigate(`${loggedUser}/new`);
     } else {
-      navigate("/login", { state: { from: location } });
+      navigate("/login", {
+        replace: true,
+        state: { from: `/new` },
+      });
     }
   };
 
@@ -134,9 +137,8 @@ const Header = () => {
                 className="sellButton"
                 $customMargin="0px 25px"
                 $customBackground="var(--accent-100)"
-                $CustomPadding="5px"
                 $customBorder="none"
-                $customwidth="130px"
+                $customColor="var(--bg-100)"
               >
                 {t("sell_buy")}
               </RegularButton>
@@ -152,16 +154,13 @@ const Header = () => {
                 onClick={() =>
                   navigate("/login", { state: { from: location } })
                 }
-                state={{ from: location }}
                 className="login"
                 $backgroundColor="var(--primary-200)"
               >
                 {t("login_register")}
               </RegularButton>
               <RegularButton
-                onClick={() =>
-                  navigate("/login", { state: { from: location } })
-                }
+                onClick={handleSellButton}
                 className="sellButton"
                 $customMargin="0px 25px"
                 $customBackground="var(--accent-100)"

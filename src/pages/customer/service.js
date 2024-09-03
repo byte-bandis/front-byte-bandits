@@ -60,12 +60,13 @@ export const updateSinglePublicProfile = async (userName, formData) => {
         "Content-Type": "multipart/form-data",
       },
     })
-    .then(({ updatedPublicProfile, message }) => {
-      const data = {
-        updatedPublicProfile,
+    .then(({ state, data, message }) => {
+      const response = {
+        state,
+        data,
         message,
       };
-      return data;
+      return response;
     });
 };
 /* export const deleteSinglePublicProfile = async (userName) => {

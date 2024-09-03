@@ -11,6 +11,7 @@ import ScreenPublicProfile from "./components/ScreenPublicProfile";
 import ProfileUpdaterForm from "./components/ProfileUpdaterForm";
 import StyledContainer from "../../components/shared/StyledContainer";
 import { RegularButton } from "../../components/shared/buttons";
+import { returnSpecificProfile } from "../../utils/returnSpecificProfile";
 const Profile = () => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
@@ -19,28 +20,16 @@ const Profile = () => {
   const loadedPublicProfile = useSelector(getSinglePublicProfile);
   const [showForm, setShowForm] = useState(false);
   const origin = import.meta.env.VITE_API_BASE_URL;
-  const returnSpecificProfile = (listOfProfiles) => {
-    return listOfProfiles.reduce((acc, item) => {
-      if (item.userName === username) {
-        acc = item;
-      }
-      return acc;
-    }, null);
-  };
 
-  const matchedProfile = returnSpecificProfile(loadedPublicProfile);
+  const matchedProfile = returnSpecificProfile(loadedPublicProfile, username);
   console.log("Esto es matched Profile: ", matchedProfile);
 
   useEffect(() => {
     const fetchProfile = async () => {
-      if (loggedUserName === username) {
-        await dispatch(getSinglePublicProfileWithThunk(loggedUserName));
-      } else {
-        await dispatch(getSinglePublicProfileWithThunk(username));
-      }
+      await dispatch(getSinglePublicProfileWithThunk(username));
     };
     fetchProfile();
-  }, [dispatch, loggedUserName, username]);
+  }, [dispatch, username]);
 
   useEffect(() => {
     if (loadedPublicProfile) {

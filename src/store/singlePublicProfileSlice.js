@@ -37,7 +37,7 @@ const singleProfileSlice = createSlice({
     builder.addCase(
       updateSinglePublicProfileWithThunk.fulfilled,
       (state, action) => {
-        state.data = [action.payload.updatedPublicProfile];
+        state.data = [action.payload.data];
       }
     );
     builder.addCase(deleteSinglePublicProfileWithThunk.fulfilled, (state) => {

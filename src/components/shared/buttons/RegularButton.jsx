@@ -24,10 +24,21 @@ const RegularButton = styled.button`
   background-color: ${(props) =>
     props.$customHoverBackgroundColor || "var(--primary-200)"};
   color: ${(props) => props.$customHoverColor || "var(--bg-100)"};
-  
-  
   }
-&:disabled {
+  
+  &:focus {
+  background: ${(props) =>
+    props.$customFocusBackground || "var(--primary-200)"};
+  color: ${(props) => props.$customFocusColor || "var(--bg-100)"};
+  }
+
+  &:active {
+  background: ${(props) =>
+    props.$customActiveBackground || "var(--primary-100)"};
+  color: ${(props) => props.$customActiveColor || "var(--bg-100)"};
+  }
+
+  &:disabled {
     cursor: not-allowed;
     opacity: 0.5;
     transform: scale(1);

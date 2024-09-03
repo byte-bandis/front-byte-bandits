@@ -30,12 +30,10 @@ const Header = () => {
 
   const handleLogout = () => {
     logout();
+    navigate("/");
     dispatch(resetLoggedUserInfo());
     dispatch(resetSinglePublicProfile());
     dispatch(resetUI());
-    setTimeout(() => {
-      navigate("/");
-    }, 1000);
   };
 
   const handleSellButton = () => {
@@ -145,6 +143,11 @@ const Header = () => {
             </>
           ) : (
             <>
+              <LanguageSwitcher
+                $marginContainer="0 1rem 0 0"
+                $gap="5px"
+                flag
+              />
               <RegularButton
                 onClick={() =>
                   navigate("/login", { state: { from: location } })
@@ -161,9 +164,9 @@ const Header = () => {
                 }
                 className="sellButton"
                 $customMargin="0px 25px"
-                $customBackGroundColor="var(--accent-100)"
-                $CustomPadding="5px"
+                $customBackground="var(--accent-100)"
                 $customBorder="none"
+                $customColor="var(--bg-100)"
               >
                 {t("sell_buy")}
               </RegularButton>

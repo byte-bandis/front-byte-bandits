@@ -11,15 +11,13 @@ import slugify from 'slugify';
 
 const ProductItem = ({ ad, $customTransform, $customMargin }) => {
     const { _id, adTitle, sell, price, photo, tags } = ad;
-
+    const origin = import.meta.env.VITE_API_BASE_URL;
+    console.log('photo', photo);
     const image = photo
-        ? photo.startsWith('http')
-            ? photo
-            : `${origin}public/images/${photo}`
+        ? photo
         : '../../assets/images/no-image.jpg';
 
-    const origin = import.meta.env.VITE_API_BASE_URL;
-
+    console.log(image)
     const dispatch = useDispatch();
     const slug = slugify(adTitle, {
         replacement: '-',
@@ -59,10 +57,10 @@ const ProductItem = ({ ad, $customTransform, $customMargin }) => {
                     </div>
 
                     <div className='img-container'>
-                        {photo ? (
+                        {photo  ? (
                             <img
                                 src={image}
-                                alt={'Imagen de' + adTitle}
+                                alt={'Imagen de ' + adTitle}
                                 crossOrigin={origin}
                             />
                         ) : (
@@ -70,7 +68,6 @@ const ProductItem = ({ ad, $customTransform, $customMargin }) => {
                                 className='noImg'
                                 src={image}
                                 alt='Articulo sin foto'
-                                crossOrigin={origin}
                             />
                         )}
                     </div>

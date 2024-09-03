@@ -70,7 +70,7 @@
   "city_length": "Solo puedes escribir hasta 30 caracteres",
   "name_length": "El nombre solo puede contener hasta 15 caracteres",
   "lastname_length": "El apellido solo puede contener hasta 15 caracteres",
-  "username_empty": "El apodo no puede estar vacío",
+  "username_empty": "El nick no puede estar vacío",
   "email_empty": "El correo electrónico no puede estar vacío",
   "email_format_invalid": "El formato del correo electrónico es inválido",
   "user_age_invalid": "El usuario debe tener entre 18 y 120 años.",
@@ -87,5 +87,14 @@
   "others": "Otros",
   "sell_buy": "Vender - Comprar",
   "login_register": "Iniciar sesión o registrarse",
-  "confirm_logout": "salir"
+  "confirm_logout": "salir",
+  "change_password": "Cambiar contraseña",
+  "current_password_label": "Contraseña actual",
+  "current_password_input": "**********",
+  "current_password_placeholder": "Introduce tu contraseña actual",
+  "new_password_label": "Nueva contraseña",
+  "new_password_input": "**********",
+  "new_password_placeholder": "Introduce tu nueva contraseña",
+  "save_new_password": "Guardar nueva contraseña",
+  "back_to_saved_password": "Volver a contraseña guardada"
 }

@@ -6,6 +6,7 @@ import MyData from "./myPersonalInfo/components/UserData";
 import StyledContainer from "../../components/shared/StyledContainer";
 import FixedPositionAlert from "../../components/shared/alerts/FixedPositionAlert";
 import { getUIState } from "../../store/selectors";
+import PasswordUpdater from "./myPersonalInfo/components/PasswordUpdater.jsx";
 
 const PersonalInfo = () => {
   const { t } = useTranslation();
@@ -32,6 +33,7 @@ const PersonalInfo = () => {
         <MyData />
         <Address />
         <CreditCard />
+        <PasswordUpdater />
       </StyledContainer>
     </StyledContainer>
   );

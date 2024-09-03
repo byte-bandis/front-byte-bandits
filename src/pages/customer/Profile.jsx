@@ -19,8 +19,17 @@ const Profile = () => {
   const loadedPublicProfile = useSelector(getSinglePublicProfile);
   const [showForm, setShowForm] = useState(false);
   const origin = import.meta.env.VITE_API_BASE_URL;
-  //const userPhotoDefault = import.meta.env.VITE_USER_PHOTO_URL;
-  //const userHeaderDefault = import.meta.env.VITE_USER_HEADER_PHOTO_URL;
+  const returnSpecificProfile = (listOfProfiles) => {
+    return listOfProfiles.reduce((acc, item) => {
+      if (item.userName === username) {
+        acc = item;
+      }
+      return acc;
+    }, null);
+  };
+
+  const matchedProfile = returnSpecificProfile(loadedPublicProfile);
+  console.log("Esto es matched Profile: ", matchedProfile);
 
   useEffect(() => {
     const fetchProfile = async () => {
@@ -45,14 +54,14 @@ const Profile = () => {
 
   return (
     <StyledContainer>
-      {loadedPublicProfile && !showForm && (
+      {loadedPublicProfile && matchedProfile && !showForm && (
         <StyledContainer>
           <ScreenPublicProfile
-            userPhoto={loadedPublicProfile.userPhoto}
-            headerPhoto={loadedPublicProfile.headerPhoto}
+            userPhoto={matchedProfile.userPhoto}
+            headerPhoto={matchedProfile.headerPhoto}
             username={username}
             origin={origin}
-            userDescription={loadedPublicProfile.userDescription}
+            userDescription={matchedProfile.userDescription}
           />
           {loggedUserName === username && (
             <RegularButton onClick={handleShowForm}>

@@ -4,13 +4,13 @@ import { RegularButton } from "../buttons";
 import { ButtonContainer } from "../buttons";
 import FlagSelector from "./FlagSelector";
 
-const LanguageSwitcher = ({ flag }) => {
+const LanguageSwitcher = ({ flag, ...props }) => {
   const handleLanguageChange = (lng) => {
     i18n.changeLanguage(lng);
   };
 
   return (
-    <ButtonContainer $gap="5%">
+    <ButtonContainer {...props}>
       <RegularButton
         onClick={() => handleLanguageChange("en")}
         $customBackground="transparent"

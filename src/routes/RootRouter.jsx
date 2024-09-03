@@ -16,15 +16,31 @@ import LayoutProfile from "../pages/customer/LayoutProfile";
 import PersonalInfo from "../pages/customer/PersonalInfo";
 import UserPublicInfo from "../pages/customer/UserPublicInfo";
 import Chats from "../pages/chat/Chats";
+import Safety from "../pages/customer/Safety.jsx";
 
 const RootRouter = () => {
   return (
     <Routes>
-      <Route path="/login" element={<LoginPage />} />
-      <Route path="/register" element={<RegisterPage />} />
-      <Route path="/terms-and-conditions" element={<TermsAndConditions />} />
-      <Route path="/privacy-policy" element={<PrivacyPolicy />} />
-      <Route path=":username" element={<Profile />} />
+      <Route
+        path="/login"
+        element={<LoginPage />}
+      />
+      <Route
+        path="/register"
+        element={<RegisterPage />}
+      />
+      <Route
+        path="/terms-and-conditions"
+        element={<TermsAndConditions />}
+      />
+      <Route
+        path="/privacy-policy"
+        element={<PrivacyPolicy />}
+      />
+      <Route
+        path=":username"
+        element={<Profile />}
+      />
 
       {/*Private routes*/}
       <Route
@@ -35,25 +51,71 @@ const RootRouter = () => {
           </RequireAuth>
         }
       >
-        <Route path="info" element={<LayoutProfile />}>
-          <Route index element={<UserPublicInfo />} />
-          <Route path="mydata" element={<PersonalInfo />} />
+        <Route
+          path="info"
+          element={<LayoutProfile />}
+        >
+          <Route
+            index
+            element={<UserPublicInfo />}
+          />
+          <Route
+            path="mydata"
+            element={<PersonalInfo />}
+          />
         </Route>
-        <Route path="edit/:productId" element={<NewProductPage isEditMode />} />
-        <Route path="new" element={<NewProductPage />} />
-        <Route path="whishlist" element={<Wishlist />} />
-        <Route path="delete-account" element={<DeleteAccount />} />
-        <Route path="chat" element={<Chats />} />
+        <Route
+          path="edit/:productId"
+          element={<NewProductPage isEditMode />}
+        />
+        <Route
+          path="new"
+          element={<NewProductPage />}
+        />
+        <Route
+          path="whishlist"
+          element={<Wishlist />}
+        />
+        <Route
+          path="delete-account"
+          element={<DeleteAccount />}
+        />
+        <Route
+          path="chat"
+          element={<Chats />}
+        />
+        <Route
+          path="safety"
+          element={<Safety />}
+        />
       </Route>
 
       {/*Public routes*/}
-      <Route path="/product" element={<Outlet />}>
-        <Route index element={<ProductList />} />
-        <Route path=":productId/*" element={<ProductView />} />
+      <Route
+        path="/product"
+        element={<Outlet />}
+      >
+        <Route
+          index
+          element={<ProductList />}
+        />
+        <Route
+          path=":productId/*"
+          element={<ProductView />}
+        />
       </Route>
-      <Route path="/404" element={<NotFound />} />
-      <Route path="*" element={<Navigate to="/404" />} />
-      <Route path="/" element={<ProductList />} />
+      <Route
+        path="/404"
+        element={<NotFound />}
+      />
+      <Route
+        path="*"
+        element={<Navigate to="/404" />}
+      />
+      <Route
+        path="/"
+        element={<ProductList />}
+      />
     </Routes>
   );
 };

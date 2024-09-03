@@ -21,11 +21,12 @@ import { resetUI } from "../../../store/uiSlice";
 import ProfileUserPhoto from "./ProfileUserPhoto";
 import HeaderProfilePhoto from "./HeaderProfilePhoto";
 import CustomCancelOption from "../../../components/shared/CustomCancelOption";
+import { returnSpecificProfile } from "../../../utils/returnSpecificProfile";
 
 const ProfileUpdaterForm = () => {
   const { t } = useTranslation();
   const loadedPublicProfile = useSelector(getSinglePublicProfile);
-  const { userPhoto, headerPhoto, userDescription } = loadedPublicProfile;
+  const { userDescription } = loadedPublicProfile;
   const dispatch = useDispatch();
   const { username } = useParams();
   const [inputUserPhoto, setInputUserPhoto] = useState(null);
@@ -45,6 +46,11 @@ const ProfileUpdaterForm = () => {
 
   const [cancelUserVisible, setCancelUserVisible] = useState(false);
   const [cancelHeaderVisible, setCancelHeaderVisible] = useState(false);
+
+  const matchedProfile = returnSpecificProfile(
+    loadedPublicProfile,
+    loggedUserName
+  );
 
   const handleNewDescription = (event) =>
     setNewUserDescription(event.target.value);
@@ -155,17 +161,19 @@ const ProfileUpdaterForm = () => {
               $customDropZoneShadow={"0px 4px 8px rgba(0, 0, 0, 0.2)"}
             />
           ) : (
-            <ProfileUserPhoto
-              src={userPhoto}
-              alt={`${username}'s profile picture`}
-              crossOrigin={origin}
-              $customborderradius="50%"
-              $customwidth="200px"
-              $customheight="200px"
-              $customobjectfit="cover"
-              $customZIndex="1"
-              onClick={handleEditUserPhoto}
-            />
+            matchedProfile && (
+              <ProfileUserPhoto
+                src={matchedProfile.userPhoto}
+                alt={`${username}'s profile picture`}
+                crossOrigin={origin}
+                $customborderradius="50%"
+                $customwidth="200px"
+                $customheight="200px"
+                $customobjectfit="cover"
+                $customZIndex="1"
+                onClick={handleEditUserPhoto}
+              />
+            )
           )}
           {cancelButton.cancelEditUserPhoto && (
             <CustomCancelOption
@@ -193,15 +201,17 @@ const ProfileUpdaterForm = () => {
               $customWrapperPosition={"relative"}
             />
           ) : (
-            <HeaderProfilePhoto
-              src={headerPhoto}
-              alt={`${username}'s header picture`}
-              crossOrigin={origin}
-              onClick={handleEditHeaderPhoto}
-              $customborder="none"
-              $customboxshadow="none"
-              $customcursor="pointer"
-            />
+            matchedProfile && (
+              <HeaderProfilePhoto
+                src={matchedProfile.headerPhoto}
+                alt={`${username}'s header picture`}
+                crossOrigin={origin}
+                onClick={handleEditHeaderPhoto}
+                $customborder="none"
+                $customboxshadow="none"
+                $customcursor="pointer"
+              />
+            )
           )}
           {cancelButton.cancelEditHeaderPhoto && (
             <CustomCancelOption
@@ -223,8 +233,12 @@ const ProfileUpdaterForm = () => {
         <StyledTextarea
           value={newUserDescription}
           placeholder={
-            userDescription && userDescription.trim() !== ""
-              ? t("description_current", { userDescription })
+            matchedProfile &&
+            matchedProfile.userDescription &&
+            matchedProfile.userDescription.trim() !== ""
+              ? t("description_current", {
+                  userDescription: matchedProfile.userDescription,
+                })
               : t("description_empty")
           }
           onChange={handleNewDescription}

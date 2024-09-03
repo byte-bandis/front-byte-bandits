@@ -11,6 +11,7 @@ import ScreenPublicProfile from "./components/ScreenPublicProfile";
 import ProfileUpdaterForm from "./components/ProfileUpdaterForm";
 import StyledContainer from "../../components/shared/StyledContainer";
 import { RegularButton } from "../../components/shared/buttons";
+import { returnSpecificProfile } from "../../utils/returnSpecificProfile";
 const Profile = () => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
@@ -19,19 +20,16 @@ const Profile = () => {
   const loadedPublicProfile = useSelector(getSinglePublicProfile);
   const [showForm, setShowForm] = useState(false);
   const origin = import.meta.env.VITE_API_BASE_URL;
-  //const userPhotoDefault = import.meta.env.VITE_USER_PHOTO_URL;
-  //const userHeaderDefault = import.meta.env.VITE_USER_HEADER_PHOTO_URL;
+
+  const matchedProfile = returnSpecificProfile(loadedPublicProfile, username);
+  console.log("Esto es matched Profile: ", matchedProfile);
 
   useEffect(() => {
     const fetchProfile = async () => {
-      if (loggedUserName === username) {
-        await dispatch(getSinglePublicProfileWithThunk(loggedUserName));
-      } else {
-        await dispatch(getSinglePublicProfileWithThunk(username));
-      }
+      await dispatch(getSinglePublicProfileWithThunk(username));
     };
     fetchProfile();
-  }, [dispatch, loggedUserName, username]);
+  }, [dispatch, username]);
 
   useEffect(() => {
     if (loadedPublicProfile) {
@@ -45,14 +43,14 @@ const Profile = () => {
 
   return (
     <StyledContainer>
-      {loadedPublicProfile && !showForm && (
+      {loadedPublicProfile && matchedProfile && !showForm && (
         <StyledContainer>
           <ScreenPublicProfile
-            userPhoto={loadedPublicProfile.userPhoto}
-            headerPhoto={loadedPublicProfile.headerPhoto}
+            userPhoto={matchedProfile.userPhoto}
+            headerPhoto={matchedProfile.headerPhoto}
             username={username}
             origin={origin}
-            userDescription={loadedPublicProfile.userDescription}
+            userDescription={matchedProfile.userDescription}
           />
           {loggedUserName === username && (
             <RegularButton onClick={handleShowForm}>

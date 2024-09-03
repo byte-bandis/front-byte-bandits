@@ -7,7 +7,7 @@ import {
 } from "./profilesThunk";
 
 export const singleProfileInitialState = {
-  data: {},
+  data: [],
 };
 
 const singleProfileSlice = createSlice({
@@ -25,19 +25,19 @@ const singleProfileSlice = createSlice({
     builder.addCase(
       getSinglePublicProfileWithThunk.fulfilled,
       (state, action) => {
-        state.data = action.payload.publicProfileLoaded;
+        state.data = [...state.data, action.payload.data];
       }
     );
     builder.addCase(
       createSinglePublicProfileWithThunk.fulfilled,
       (state, action) => {
-        state.data = action.payload.newPublicProfile;
+        state.data = [action.payload.data];
       }
     );
     builder.addCase(
       updateSinglePublicProfileWithThunk.fulfilled,
       (state, action) => {
-        state.data = action.payload.updatedPublicProfile;
+        state.data = [action.payload.data];
       }
     );
     builder.addCase(deleteSinglePublicProfileWithThunk.fulfilled, (state) => {

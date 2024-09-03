@@ -25,12 +25,13 @@ export const getPublicProfiles = async () => {
 
 export const getSinglePublicProfile = async (userName) => {
   const url = `${userURL}/${userName}`;
-  return client.get(url).then(({ publicProfileLoaded, message }) => {
-    const data = {
-      publicProfileLoaded,
+  return client.get(url).then(({ state, data, message }) => {
+    const response = {
+      state,
+      data,
       message,
     };
-    return data;
+    return response;
   });
 };
 
@@ -59,12 +60,13 @@ export const updateSinglePublicProfile = async (userName, formData) => {
         "Content-Type": "multipart/form-data",
       },
     })
-    .then(({ updatedPublicProfile, message }) => {
-      const data = {
-        updatedPublicProfile,
+    .then(({ state, data, message }) => {
+      const response = {
+        state,
+        data,
         message,
       };
-      return data;
+      return response;
     });
 };
 /* export const deleteSinglePublicProfile = async (userName) => {

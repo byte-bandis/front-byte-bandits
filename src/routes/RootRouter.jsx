@@ -49,7 +49,7 @@ const RootRouter = () => {
       {/*Public routes*/}
       <Route path="/product" element={<Outlet />}>
         <Route index element={<ProductList />} />
-        <Route path=":productId/:slug" element={<ProductView />} />
+        <Route path=":productId/*" element={<ProductView />} />
       </Route>
       <Route path="/404" element={<NotFound />} />
       <Route path="*" element={<Navigate to="/404" />} />

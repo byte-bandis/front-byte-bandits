@@ -18,7 +18,7 @@ const Wishlist = () => {
 
   useEffect(() => {
     if (userName) {
-      dispatch(getWishlist({ username: userName, page, limit }));
+      dispatch(getWishlist({ page, limit }));
     }
   }, [dispatch, userName, page, limit]);
 

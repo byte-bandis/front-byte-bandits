@@ -33,7 +33,7 @@ const ProductList = () => {
     dispatch(getAds({ id: "", filters: allFilters }));
 
     if (userid) {
-      dispatch(getWishlist(userid));
+      dispatch(getWishlist({userId: userid, page: 1, limit: 1000}));
     }
   }, [dispatch, page, limit, userid, filters]);
 

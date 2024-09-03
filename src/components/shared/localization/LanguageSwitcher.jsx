@@ -17,10 +17,14 @@ const LanguageSwitcher = ({ flag, ...props }) => {
         $customBorder="none"
         $customHoverBackgroundColor="none"
         $customHoverColor="var(--accent-200)"
+        $customFocusBackground="transparent"
+        $customActiveBackground="transparent"
         $customPadding="0"
+        {...props}
       >
         {flag ? (
           <FlagSelector
+            onClick={() => handleLanguageChange("en")}
             countryCode="GB"
             customWidth={"30px"}
             customHeight={"18px"}
@@ -35,10 +39,14 @@ const LanguageSwitcher = ({ flag, ...props }) => {
         $customBorder="none"
         $customHoverBackgroundColor="none"
         $customHoverColor="var(--accent-200)"
+        $customFocusBackground="transparent"
+        $customActiveBackground="transparent"
         $customVerticalPadding="0"
+        {...props}
       >
         {flag ? (
           <FlagSelector
+            onClick={() => handleLanguageChange("en")}
             countryCode="ES"
             customWidth={"30px"}
             customHeight={"18px"}
@@ -51,7 +59,7 @@ const LanguageSwitcher = ({ flag, ...props }) => {
   );
 };
 LanguageSwitcher.propTypes = {
-  flag: PropTypes.string,
+  flag: PropTypes.bool,
 };
 
 export default LanguageSwitcher;

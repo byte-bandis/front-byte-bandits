@@ -32,11 +32,18 @@ const ProductView = () => {
     );
     const myLikes = useSelector((state) => state.likesSlice.wishlist);
     const comments = useSelector((state) => state.commentsSlice.data);
-    const userphoto = useSelector(
-        (state) => state.singlePublicProfile.data.userPhoto
-    );
     const userid = useSelector((state) => state.authState.user.userId);
+    const usersData = useSelector(
+        (state) => state.singlePublicProfile.data
+    );
+    let userphoto;
 
+
+    
+    const userData = usersData.find(user => user.userName == owner.username)
+    if (userData){
+         userphoto =userData.userPhoto;
+    }
     useEffect(() => {
         dispatch(getComments(productId));
     }, [dispatch, productId]);

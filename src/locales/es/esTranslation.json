@@ -96,5 +96,7 @@
   "new_password_input": "**********",
   "new_password_placeholder": "Introduce tu nueva contraseña",
   "save_new_password": "Guardar nueva contraseña",
-  "back_to_saved_password": "Volver a contraseña guardada"
+  "back_to_saved_password": "Volver a contraseña guardada",
+  "safety": "Seguridad",
+  "safety_intro": "Aquí puedes cambiar tu contraseña y borrar tu cuenta."
 }

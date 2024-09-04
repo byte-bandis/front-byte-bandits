@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { trimDate } from "../../../../utils/dateTools";
 import { useTranslation } from "react-i18next";
-
+import Cookies from "js-cookie";
 import {
   getMyCreditCardWithThunk,
   updateMyCreditCardWithThunk,
@@ -35,7 +35,7 @@ const CreditCard = () => {
   const loggedUsername = useSelector(getLoggedUserName);
   const myCreditCard = useSelector(getMyPayment);
   const { username } = useParams();
-  const [creationDate, setCreationdate] = useState("000-00-00");
+  const [creationDate, setUpdateTime] = useState("000-00-00");
   const [editMode, setEditMode] = useState(false);
   const [confirmProcess, setConfirmProcess] = useState(false);
   const [formData, setFormData] = useState({
@@ -56,18 +56,23 @@ const CreditCard = () => {
     $customInputPadding: "0 0 0 .5rem",
   };
 
+  const languageCookieFormat = Cookies.get("formatLanguage") || "en";
+
   useEffect(() => {
     if (loggedUsername === username) {
       dispatch(getMyCreditCardWithThunk(username));
     }
-  }, [username, loggedUsername, dispatch]);
+  }, [username, loggedUsername, dispatch, myCreditCard]);
 
   useEffect(() => {
     if (myCreditCard.updatedAt) {
-      const trimmedDate = trimDate(myCreditCard.updatedAt, "ES");
-      setCreationdate(trimmedDate);
+      const trimmedDate = trimDate(
+        myCreditCard.updatedAt,
+        languageCookieFormat
+      );
+      setUpdateTime(trimmedDate);
     }
-  }, [myCreditCard]);
+  }, [myCreditCard, languageCookieFormat]);
 
   const handleShowEditMode = (event) => {
     event.preventDefault();

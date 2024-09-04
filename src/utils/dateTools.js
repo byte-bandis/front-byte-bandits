@@ -1,11 +1,11 @@
-export function trimDate(date = "0000-00-00", outputFormat = "EN") {
+export function trimDate(date = "0000-00-00", outputFormat = "en") {
   const trimmer = new RegExp("^\\d{4}-\\d{2}-\\d{2}");
   const trimmedDateEN = date.match(trimmer)[0];
   const [year, month, day] = trimmedDateEN.split("-");
   const trimmedDateES = `${day}-${month}-${year}`;
-  if (outputFormat === "EN") {
+  if (outputFormat === "en") {
     return trimmedDateEN;
-  } else if (outputFormat === "ES") {
+  } else if (outputFormat === "es") {
     return trimmedDateES;
   } else {
     return date;

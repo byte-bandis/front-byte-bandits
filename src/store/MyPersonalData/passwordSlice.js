@@ -3,7 +3,8 @@ import { updateMyPasswordWithThunk } from "./myPasswordThunk";
 
 export const defaultPasswordState = {
   data: {},
-  validationErrors: {},
+  state: "",
+  message: "",
 };
 
 const myPasswordSlice = createSlice({
@@ -14,18 +15,16 @@ const myPasswordSlice = createSlice({
       state.data = action.payload;
     },
     emptyMyPassword: (state) => {
-      state.data = defaultPasswordState;
-    },
-    setValidations: (state, action) => {
-      state.validationErrors = action.payload;
-    },
-    resetValidationErrors: (state) => {
-      state.validationErrors = {};
+      state.data = {};
+      state.state = "";
+      state.message = "";
     },
   },
   extraReducers: (builder) => {
     builder.addCase(updateMyPasswordWithThunk.fulfilled, (state, action) => {
-      state.data = action.payload;
+      state.data = action.payload.data;
+      state.state = action.payload.state;
+      state.message = action.payload.message;
     });
   },
 });

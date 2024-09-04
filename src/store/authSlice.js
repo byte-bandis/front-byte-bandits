@@ -7,6 +7,7 @@ const getDefaultAuthState = () => ({
   user: {
     userName: storage.get("userName"),
     userId: storage.get("userId"),
+    updatedAt: storage.get("updatedAt"),
   },
 });
 
@@ -28,6 +29,7 @@ export const authSlice = createSlice({
       state.authState = true;
       state.user.userName = action.payload.user.userName;
       state.user.userId = action.payload.user.userId;
+      state.user.updatedAt = action.payload.user.updatedAt;
     });
   },
 });

@@ -2,11 +2,12 @@ import P from "prop-types";
 import styled from "styled-components";
 
 const CustomAlert = ({ variant, children, onClose }) => {
+  const childrenArray = Array.isArray(children) ? children : [children];
   return (
     <AlertMessage variant={variant}>
       {onClose && <CloseButton onClick={onClose}>X</CloseButton>}
       <div>
-        {children.map((message, index) => (
+        {childrenArray.map((message, index) => (
           <span key={index}>
             {message}
             <br />
@@ -34,8 +35,8 @@ const AlertMessage = styled.div`
     props.variant === "success"
       ? "var(--success-2)"
       : props.variant === "error"
-        ? "var(--error-2)"
-        : "var(--bg-100)"};
+      ? "var(--error-2)"
+      : "var(--bg-100)"};
 `;
 
 const CloseButton = styled.button`

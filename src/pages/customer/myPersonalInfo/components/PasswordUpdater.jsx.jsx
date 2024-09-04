@@ -3,6 +3,8 @@ import {
   getLoggedUserId,
   getLoggedUserName,
   getLoggedUserUpdateTime,
+  getPassword,
+  getUI,
 } from "../../../../store/selectors";
 import { useTranslation } from "react-i18next";
 import { trimDate } from "../../../../utils/dateTools";
@@ -24,16 +26,21 @@ import { updateMyPasswordWithThunk } from "../../../../store/MyPersonalData/myPa
 import { useState } from "react";
 import { useEffect } from "react";
 import Cookies from "js-cookie";
+import CustomAlert from "../../../../components/shared/Alert";
+import { emptyMyPassword } from "../../../../store/MyPersonalData/passwordSlice";
 
 const PasswordUpdater = () => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const loggedUsername = useSelector(getLoggedUserName);
   const loggedUserId = useSelector(getLoggedUserId);
+  const isError = useSelector(getUI);
+  const isSuccess = useSelector(getPassword);
   const [updateTime, setUpdateTime] = useState("000-00-00");
-
   const [editMode, setEditMode] = useState(false);
   const [confirmProcess, setConfirmProcess] = useState(false);
+  const [showSuccess, setShowSuccess] = useState(false);
+  const [showError, setShowError] = useState(false);
   const [formData, setFormData] = useState({
     currentPassword: "",
     newPassword: "",
@@ -55,12 +62,35 @@ const PasswordUpdater = () => {
   };
 
   const languageCookieFormat = Cookies.get("formatLanguage") || "en";
+
   useEffect(() => {
     if (passwordDate) {
       const trimmedDate = trimDate(passwordDate, languageCookieFormat);
       setUpdateTime(trimmedDate);
     }
   }, [passwordDate, languageCookieFormat]);
+
+  useEffect(() => {
+    if (isSuccess.state === "success") {
+      setShowSuccess(true);
+    }
+
+    const timer = setTimeout(() => {
+      dispatch(emptyMyPassword());
+      setShowSuccess(false);
+    }, 2000);
+    return () => clearTimeout(timer);
+  }, [isSuccess.state, dispatch]);
+
+  useEffect(() => {
+    if (isError.state === "error") {
+      setShowError(true);
+    }
+    const timer = setTimeout(() => {
+      setShowError(false);
+    }, 3000);
+    return () => clearTimeout(timer);
+  }, [isError.state]);
 
   const handleShowEditMode = (event) => {
     event.preventDefault();
@@ -89,7 +119,6 @@ const PasswordUpdater = () => {
   const handleSubmit = (event) => {
     event.preventDefault();
     dispatch(updateMyPasswordWithThunk({ loggedUsername, formData }));
-
     setConfirmProcess(false);
     setEditMode(false);
     dispatch(resetMessage());
@@ -112,6 +141,18 @@ const PasswordUpdater = () => {
           </StyledListItem>
 
           <StyledContainer {...containerStyles}>
+            {showSuccess && (
+              <CustomAlert
+                variant="success"
+                dismissible
+              >
+                {isSuccess.message}
+              </CustomAlert>
+            )}
+            {showError && (
+              <CustomAlert variant="error">{isError.message}</CustomAlert>
+            )}
+
             <StyledListItem {...listItemStyles}>
               <label>{t("current_password_label")}</label>
               {!editMode ? (

@@ -15,10 +15,6 @@ const StyleContainer = styled.div`
   align-items: ${(props) => props.$customAlignItems || "center"};
   width: ${(props) => props.$customWidth || "100%"};
   margin: ${(props) => props.$customMargin || "0"};
-  margin-top: ${(props) => props.$customMarginTop || "0"};
-  margin-bottom: ${(props) => props.$customMarginBottom || "0"};
-  margin-right: ${(props) => props.$customMarginRight || "0"};
-  margin-left: ${(props) => props.$customMarginLeft || "0"};
   z-index: ${(props) => props.$customZIndex || "0"};
 `;
 

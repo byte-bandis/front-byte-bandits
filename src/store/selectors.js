@@ -12,6 +12,8 @@ export const getUILoading = (state) => state.ui.loading;
 export const getLoggedUser = (state) => state.authState.user;
 export const getLoggedUserName = (state) => state.authState.user.userName;
 export const getLoggedUserId = (state) => state.authState.user.userId;
+export const getLoggedUserUpdateTime = (state) =>
+  state.authState.user.updatedAt;
 export const getPublicProfiles = (state) => state.publicProfiles.data;
 export const getMyAccount = (state) => state.myAccount.data;
 export const getMyAddress = (state) => state.myAddress.data;
@@ -27,4 +29,7 @@ export const getSinglePublicProfileUserDescription = (state) =>
 export const getSinglePublicProfileOwner = (state) =>
   state.singlePublicProfile.data.userName;
 export const getAdsSelector = (state) => state.adsState.data;
-export const getUiIDState = (state) => state.uiID.errors;
+export const getPassword = (state) => state.password;
+export const getPasswordState = (state) => state.password.state;
+export const getPasswordMessage = (state) => state.password.message;
+export const getPasswordData = (state) => state.password.data.updatedAt;

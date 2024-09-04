@@ -5,7 +5,7 @@ import { useParams } from "react-router-dom";
 import moment from "moment";
 import { PersonCircle } from "react-bootstrap-icons";
 import { useTranslation } from "react-i18next";
-
+import Cookies from "js-cookie";
 import {
   StyledListContainer,
   StyledListItem,
@@ -27,6 +27,7 @@ import {
 } from "../../../../store/MyPersonalData/myDataSlice";
 import { resetMessage, setMessage } from "../../../../store/uiSlice";
 import IconWrapper from "../../../../components/shared/iconsComponents/IconWrapper";
+import { trimDate } from "../../../../utils/dateTools";
 
 const MyData = () => {
   const dispatch = useDispatch();
@@ -60,6 +61,8 @@ const MyData = () => {
     $customInputPadding: "0 0 0 .5rem",
   };
 
+  const languageCookieFormat = Cookies.get("formatLanguage") || "en";
+
   useEffect(() => {
     if (loggedUsername === username) {
       dispatch(getMyDataWithThunk(loggedUsername));
@@ -68,8 +71,8 @@ const MyData = () => {
 
   useEffect(() => {
     if (myData.updatedAt) {
-      const formattedDate = moment(myData.updatedAt).format("DD-MM-YYYY");
-      setUpdateTime(formattedDate);
+      const trimmedDate = trimDate(myData.updatedAt, languageCookieFormat);
+      setUpdateTime(trimmedDate);
     }
 
     setFormData({
@@ -82,7 +85,7 @@ const MyData = () => {
         ? moment(myData.birthdate).format("YYYY-MM-DD")
         : "",
     });
-  }, [myData]);
+  }, [myData, languageCookieFormat]);
 
   const handleShowEditMode = (event) => {
     event.preventDefault();

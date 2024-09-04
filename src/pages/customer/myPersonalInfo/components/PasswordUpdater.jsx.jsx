@@ -2,8 +2,10 @@ import { useDispatch, useSelector } from "react-redux";
 import {
   getLoggedUserId,
   getLoggedUserName,
+  getLoggedUserUpdateTime,
 } from "../../../../store/selectors";
 import { useTranslation } from "react-i18next";
+import { trimDate } from "../../../../utils/dateTools";
 
 import {
   StyledListContainer,
@@ -20,18 +22,23 @@ import { Key } from "react-bootstrap-icons";
 import IconWrapper from "../../../../components/shared/iconsComponents/IconWrapper";
 import { updateMyPasswordWithThunk } from "../../../../store/MyPersonalData/myPasswordThunk";
 import { useState } from "react";
+import { useEffect } from "react";
+import Cookies from "js-cookie";
 
 const PasswordUpdater = () => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const loggedUsername = useSelector(getLoggedUserName);
   const loggedUserId = useSelector(getLoggedUserId);
+  const [updateTime, setUpdateTime] = useState("000-00-00");
+
   const [editMode, setEditMode] = useState(false);
   const [confirmProcess, setConfirmProcess] = useState(false);
   const [formData, setFormData] = useState({
     currentPassword: "",
     newPassword: "",
   });
+  const passwordDate = useSelector(getLoggedUserUpdateTime);
 
   const containerStyles = {
     $customDisplay: "flex",
@@ -46,6 +53,14 @@ const PasswordUpdater = () => {
     $customLabelFontWeight: "bold",
     $customInputPadding: "0 0 0 .5rem",
   };
+
+  const languageCookieFormat = Cookies.get("formatLanguage") || "en";
+  useEffect(() => {
+    if (passwordDate) {
+      const trimmedDate = trimDate(passwordDate, languageCookieFormat);
+      setUpdateTime(trimmedDate);
+    }
+  }, [passwordDate, languageCookieFormat]);
 
   const handleShowEditMode = (event) => {
     event.preventDefault();
@@ -182,6 +197,16 @@ const PasswordUpdater = () => {
           top="10%"
           right="5%"
         />
+        {editMode && (
+          <StyledContainer {...containerStyles}>
+            <StyledListItem {...listItemStyles}>
+              <i>{t("last_update")}</i>
+              <div>
+                <i>{updateTime}</i>
+              </div>
+            </StyledListItem>
+          </StyledContainer>
+        )}
       </ul>
     </StyledListContainer>
   );

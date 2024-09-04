@@ -1,3 +1,4 @@
+import { setCookie } from "../../../lib/setCookies";
 import i18n from "i18next";
 import PropTypes from "prop-types";
 import { RegularButton } from "../buttons";
@@ -7,6 +8,7 @@ import FlagSelector from "./FlagSelector";
 const LanguageSwitcher = ({ flag, ...props }) => {
   const handleLanguageChange = (lng) => {
     i18n.changeLanguage(lng);
+    setCookie("formatLanguage", lng, 365);
   };
 
   return (

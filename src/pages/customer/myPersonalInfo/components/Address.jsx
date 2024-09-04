@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { trimDate } from "../../../../utils/dateTools";
 import { useTranslation } from "react-i18next";
-
+import Cookies from "js-cookie";
 import { MailboxFlag } from "react-bootstrap-icons";
 
 import {
@@ -65,6 +65,8 @@ const Address = () => {
     $customInputPadding: "0 0 0 .5rem",
   };
 
+  const languageCookieFormat = Cookies.get("formatLanguage") || "en";
+
   useEffect(() => {
     if (loggedUsername === username) {
       dispatch(getAddressWithThunk(username));
@@ -77,8 +79,8 @@ const Address = () => {
   }, []);
 
   useEffect(() => {
-    if (myAddress.createdAt) {
-      const trimmedDate = trimDate(myAddress.createdAt, "ES");
+    if (myAddress.updatedAt) {
+      const trimmedDate = trimDate(myAddress.updatedAt, languageCookieFormat);
       setUpdateTime(trimmedDate);
     }
 
@@ -91,7 +93,7 @@ const Address = () => {
       postalCode: myAddress.postalCode || "",
       city: myAddress.city || "",
     });
-  }, [myAddress]);
+  }, [myAddress, languageCookieFormat]);
 
   const handleShowEditMode = (event) => {
     event.preventDefault();

@@ -28,3 +28,7 @@ export const getSinglePublicProfileOwner = (state) =>
   state.singlePublicProfile.data.userName;
 export const getAdsSelector = (state) => state.adsState.data;
 export const getUiIDState = (state) => state.uiID.errors;
+
+export const selectWishlist = (state) => state.likesSlice.wishlist;
+export const selectPage = (state) => state.likeSlice.selectPage;
+export const selectFilters = (state) => state.likeSlice.filters;

@@ -1,33 +1,36 @@
 import Form from "react-bootstrap/Form";
-import PropTypes from "prop-types";
+import P from "prop-types";
 import styled from "styled-components";
 
-const SearchByName = ({
-  className,
-  children,
-  handleFilterAdsByName,
-  autoComplete,
-  ...rest
-}) => {
+const SearchByName = ({ value, onChange, onEnter }) => {
+  console.log("onEnter is", onEnter);
+  const handleKeyPress = (event) => {
+    console.log(event);
+    if (event.key === "Enter") {
+      onEnter(event);
+    } else {
+      console.error("onEnter porp is not working");
+    }
+  };
+
   return (
     <Container>
-      <Label htmlFor="name">{children}</Label>
       <Input
-        className={className}
         type="text"
-        onChange={handleFilterAdsByName}
-        autoComplete={autoComplete}
-        {...rest}
+        onChange={onChange}
+        value={value}
+        placeholder="Enter the product name"
+        onKeyPress={handleKeyPress}
       />
     </Container>
   );
 };
 
 SearchByName.propTypes = {
-  className: PropTypes.string,
-  children: PropTypes.node.isRequired,
-  handleFilterAdsByName: PropTypes.func,
-  autoComplete: PropTypes.string,
+  text: P.node.isRequired,
+  onChange: P.func,
+  value: P.string,
+  onEnter: P.func.isRequired,
 };
 
 export default SearchByName;
@@ -40,10 +43,6 @@ const Container = styled.div`
   background-color: ${(props) =>
     props.$CustomBackgroundColor || "var(--advert-1)"};
   border-radius: ${(props) => props.$CustomBorderRadius || "5px"};
-`;
-
-const Label = styled(Form.Label)`
-  color: ${(props) => props.$CustomColor || "var(--text-1)"};
 `;
 
 const Input = styled(Form.Control)`

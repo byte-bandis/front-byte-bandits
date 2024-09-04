@@ -1,61 +1,84 @@
-import Form from "react-bootstrap/Form";
-import TAG_OPTIONS from "../../utils/tags";
 import PropTypes from "prop-types";
 import styled from "styled-components";
+import TAG_OPTIONS from "../../utils/tags";
 
-const TagsOptionsSelector = ({ className, tags, handleTagChange }) => {
+const TagsOptionsSelector = ({ text, tags, handleTagChange }) => {
   const firstColumn = TAG_OPTIONS.slice(0, 3);
   const secondColumn = TAG_OPTIONS.slice(3);
 
   return (
-    <Form.Group className={className}>
-      <Form.Label>Tags:</Form.Label>
-      <TagsContainer>
+    <TagsContainer>
+      <Label>{text}</Label>
+      <TagColumns>
         <TagColumn>
           {firstColumn.map((tag) => (
-            <Form.Check
-              key={tag}
-              type="checkbox"
-              label={tag.charAt(0).toUpperCase() + tag.slice(1)}
-              value={tag}
-              checked={tags.includes(tag)}
-              onChange={() => handleTagChange(tag)}
-              id={tag}
-            />
+            <TagLabel key={tag}>
+              <TagInput
+                type="checkbox"
+                value={tag}
+                checked={tags.includes(tag)}
+                onChange={() => handleTagChange(tag)}
+                id={tag}
+              />
+              {tag.charAt(0).toUpperCase() + tag.slice(1)}
+            </TagLabel>
           ))}
         </TagColumn>
         <TagColumn>
           {secondColumn.map((tag) => (
-            <Form.Check
-              key={tag}
-              type="checkbox"
-              label={tag.charAt(0).toUpperCase() + tag.slice(1)}
-              value={tag}
-              checked={tags.includes(tag)}
-              onChange={() => handleTagChange(tag)}
-              id={tag}
-            />
+            <TagLabel key={tag}>
+              <TagInput
+                type="checkbox"
+                value={tag}
+                checked={tags.includes(tag)}
+                onChange={() => handleTagChange(tag)}
+                id={tag}
+              />
+              {tag.charAt(0).toUpperCase() + tag.slice(1)}
+            </TagLabel>
           ))}
         </TagColumn>
-      </TagsContainer>
-    </Form.Group>
+      </TagColumns>
+    </TagsContainer>
   );
 };
 
 TagsOptionsSelector.propTypes = {
-  className: PropTypes.string,
+  text: PropTypes.string,
   tags: PropTypes.arrayOf(PropTypes.string).isRequired,
   handleTagChange: PropTypes.func.isRequired,
 };
+
 export default TagsOptionsSelector;
 
 const TagsContainer = styled.div`
-  display: ${(props) => props.$CustomDisplay || "flex"};
-  flex-wrap: ${(props) => props.$CustomFlexWrap || "wrap"};
-  gap: ${(props) => props.$CustomGap || "10px"};
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+`;
+
+const TagColumns = styled.div`
+  display: flex;
+  gap: 10px;
 `;
 
 const TagColumn = styled.div`
-  flex: ${(props) => props.$CustomFlex || 1};
-  min-width: ${(props) => props.$CustomMinWidth || "150px"};
+  flex: 1;
+  min-width: 150px;
+`;
+
+const Label = styled.div`
+  font-weight: bold;
+  margin-bottom: 8px;
+`;
+
+const TagLabel = styled.label`
+  display: block;
+  cursor: pointer;
+  margin-bottom: 5px;
+`;
+
+const TagInput = styled.input`
+  margin-right: 8px;
+  cursor: pointer;
 `;

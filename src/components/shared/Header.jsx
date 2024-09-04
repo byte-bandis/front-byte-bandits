@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import Search from "../../pages/search/Search";
+import Search from "./Search";
 import { useTranslation } from "react-i18next";
 import { useLocation, useNavigate } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
@@ -17,16 +17,29 @@ import { resetUI } from "../../store/uiSlice";
 import Confirmator from "./Confirmator";
 import { useState } from "react";
 import LanguageSwitcher from "./localization/LanguageSwitcher";
+import useHeaderOptions from "./HeaderOptions";
 
 const Header = () => {
   const { t } = useTranslation();
   const location = useLocation();
   const isAuthenticated = useSelector((state) => state.authState.authState);
   const [showConfirmator, setShowConfirmator] = useState(false);
+  const [isSearching, setIsSearching] = useState(false);
+  const { dropdownOptions, TAG_OPTIONS, FILTERS_OPTIONS } = useHeaderOptions({
+    setShowConfirmator,
+  });
 
   const loggedUser = useSelector(getLoggedUserName);
   const navigate = useNavigate();
   const dispatch = useDispatch();
+
+  const handleSearching = () => {
+    setIsSearching(true);
+  };
+
+  const handleClearSearch = () => {
+    setIsSearching(false);
+  };
 
   const handleLogout = () => {
     logout();
@@ -47,52 +60,8 @@ const Header = () => {
     }
   };
 
-  const dropdownOptions = [
-    { text: t("user_zone"), to: `/${loggedUser}/info`, className: "UserZone" },
-    {
-      text: t("log_out"),
-      onClick: () => {
-        setShowConfirmator(true);
-      },
-      className: "Logout",
-    },
-  ];
-
-  const TAG_OPTIONS = [
-    {
-      onClick: () => navigate("/"),
-      className: "all",
-      text: t("all_categories"),
-    },
-    {
-      text: t("lifestyle"),
-      to: `/product/?tags=lifestyle&sell=true`,
-      className: "lifestyle",
-    },
-    {
-      text: t("mobile"),
-      to: "/product/?tags=mobile&sell=true",
-      className: "mobile",
-    },
-    {
-      text: t("motor"),
-      to: "/product/?tags=motor&sell=true",
-      className: "motor",
-    },
-    {
-      text: t("work"),
-      to: "/product/?tags=work&sell=true",
-      className: "work",
-    },
-    {
-      text: t("others"),
-      to: "/product/?tags=others&sell=true",
-      className: "others",
-    },
-  ];
-
-  const filteredTagOptions = TAG_OPTIONS.filter(
-    (tag) => tag.text !== t("all_categories")
+  const tagsOptions = TAG_OPTIONS.filter(
+    (tag) => tag.text !== t("all_categories"),
   );
 
   return (
@@ -109,20 +78,12 @@ const Header = () => {
         <StyledNav className="d-flex align-items-center w-100">
           <Logo />
           <SearchContainer>
-            <Search />
+            <Search onSearch={handleSearching} onClear={handleClearSearch} />
           </SearchContainer>
           {isAuthenticated ? (
             <>
-              <HeartLink
-                to={"/myaccount"}
-                size={30}
-                className="heartHead"
-              />
-              <EmailLink
-                to={"/myaccount"}
-                size={35}
-                className="emailHead"
-              />
+              <HeartLink to={"/myaccount"} size={30} className="heartHead" />
+              <EmailLink to={"/myaccount"} size={35} className="emailHead" />
               <LanguageSwitcher flag />
               <DropdownLink
                 options={dropdownOptions}
@@ -144,12 +105,9 @@ const Header = () => {
               </RegularButton>
             </>
           ) : (
+            //No authenticated
             <>
-              <LanguageSwitcher
-                $marginContainer="0 1rem 0 0"
-                $gap="5px"
-                flag
-              />
+              <LanguageSwitcher $marginContainer="0 1rem 0 0" $gap="5px" flag />
               <RegularButton
                 onClick={() =>
                   navigate("/login", { state: { from: location } })
@@ -182,10 +140,11 @@ const Header = () => {
           >
             {t("all_categories")}
           </DropdownLink>
-          <TagsNav
-            className="tagsNavegation"
-            options={filteredTagOptions}
-          />
+          {isSearching ? (
+            <TagsNav options={FILTERS_OPTIONS}></TagsNav>
+          ) : (
+            <TagsNav options={tagsOptions}></TagsNav>
+          )}
         </StyledTagsNavContainer>
       </HeaderStyledContainer>
     </>

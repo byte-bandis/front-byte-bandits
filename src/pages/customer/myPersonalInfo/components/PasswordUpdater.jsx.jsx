@@ -37,7 +37,7 @@ const PasswordUpdater = () => {
     $customDisplay: "flex",
     $customAlignItems: "flex-start",
     $customGap: "0",
-    $customMarginTop: "1rem",
+    $customMargin: "1rem 0 0 0",
   };
 
   const listItemStyles = {

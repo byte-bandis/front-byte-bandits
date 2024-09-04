@@ -6,14 +6,13 @@ import MyData from "./myPersonalInfo/components/UserData";
 import StyledContainer from "../../components/shared/StyledContainer";
 import FixedPositionAlert from "../../components/shared/alerts/FixedPositionAlert";
 import { getUIState } from "../../store/selectors";
-import PasswordUpdater from "./myPersonalInfo/components/PasswordUpdater.jsx";
 
 const PersonalInfo = () => {
   const { t } = useTranslation();
   const uiState = useSelector(getUIState);
 
   return (
-    <StyledContainer $customMarginTop="3rem">
+    <StyledContainer $customMargin="2rem 0 0 0">
       <h1>{t("title_personal_details")}</h1>
 
       {uiState === "error" && (
@@ -28,12 +27,10 @@ const PersonalInfo = () => {
         $customDisplay="flex"
         $customFlexDirection="column"
         $customAlignItems="left"
-        $customMarginTop="1rem"
       >
         <MyData />
         <Address />
         <CreditCard />
-        <PasswordUpdater />
       </StyledContainer>
     </StyledContainer>
   );

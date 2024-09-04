@@ -6,10 +6,7 @@ const Safety = () => {
   const { t } = useTranslation();
   return (
     <StyledMyAccount>
-      <StyledContainer
-        $customMarginTop="2rem"
-        $customMarginLeft="1rem"
-      >
+      <StyledContainer $customMargin="2rem 0 0 1rem">
         <h1>{t("safety")}</h1>
         <p>{t("safety_intro")}</p>
         <PasswordUpdater />

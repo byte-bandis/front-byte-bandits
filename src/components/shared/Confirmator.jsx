@@ -1,25 +1,39 @@
 import styled from "styled-components";
 import PropTypes from "prop-types";
 import { RegularButton } from "./buttons";
-import StyledContainer from "./StyledContainer";
+import { ButtonContainer } from "./buttons";
+import { useNavigate } from "react-router-dom";
 
-const Confirmator = ({ textValue, onConfirm, sethiden, hidden }) => {
+const Confirmator = ({
+  textValue,
+  onConfirm,
+  sethiden,
+  hidden,
+  goBack,
+  ...props
+}) => {
+  const navigate = useNavigate();
+  const getPageBack = -1;
   const handleAccept = () => {
     onConfirm();
     sethiden(false);
   };
-  const handleCancel = () => sethiden(false);
+  const handleCancel = () => {
+    if (goBack) {
+      sethiden(false);
+      navigate(getPageBack);
+    } else {
+      sethiden(false);
+    }
+  };
 
   return (
     hidden && (
-      <StyledConfirm>
+      <StyledConfirm {...props}>
         <div className="blurer"></div>
         <div className="confirmator">
           <h2>Are you sure you want to {textValue}</h2>
-          <StyledContainer
-            $customDisplay="flex"
-            $customFlexDirection="row"
-          >
+          <ButtonContainer $justifyContent="flex-start">
             <RegularButton
               $customBorder="1px solid var(--error-2)"
               $customBackground="var(--error-2)"
@@ -30,7 +44,7 @@ const Confirmator = ({ textValue, onConfirm, sethiden, hidden }) => {
               onClick={handleAccept}
               $customVerticalPadding=".3rem 1rem .3rem 1rem "
             >
-              Si
+              Yes
             </RegularButton>
             <RegularButton
               onClick={handleCancel}
@@ -38,7 +52,7 @@ const Confirmator = ({ textValue, onConfirm, sethiden, hidden }) => {
             >
               No
             </RegularButton>
-          </StyledContainer>
+          </ButtonContainer>
         </div>
       </StyledConfirm>
     )
@@ -51,6 +65,7 @@ Confirmator.propTypes = {
   onConfirm: PropTypes.func.isRequired,
   sethiden: PropTypes.func.isRequired,
   hidden: PropTypes.bool.isRequired,
+  goBack: PropTypes.bool,
 };
 const StyledConfirm = styled.div`
   .blurer {
@@ -74,9 +89,9 @@ const StyledConfirm = styled.div`
     transform: translate(-50%, -50%);
     z-index: 4;
     padding: 20px;
-    border: 2px solid var(--accent-100);
+    border: ${(props) => props.$customBorder || "2px solid var(--accent-100)"};
     border-radius: 10px;
-    background: var(--bg-200);
+    background: ${(props) => props.$customBackground || "var(--bg-200)"};
     position: absolute;
     z-index: 20;
     &[hidden] {

@@ -4,7 +4,7 @@ import LoginPage from "../pages/auth/LoginPage";
 import RegisterPage from "../pages/register/RegisterPage";
 import ProductList from "../pages/product/ProductList";
 import ProductView from "../pages/product/ProductView";
-import DeleteAccount from "../pages/customer/DeleteAccount";
+import DeleteMyAccount from "../pages/customer/DeleteMyAccount";
 import LayoutAccount from "../pages/customer/LayoutAccount";
 import Wishlist from "../pages/customer/Wishlist";
 import NewProductPage from "../pages/product/NewProductPage";
@@ -78,7 +78,7 @@ const RootRouter = () => {
         />
         <Route
           path="delete-account"
-          element={<DeleteAccount />}
+          element={<DeleteMyAccount />}
         />
         <Route
           path="chat"

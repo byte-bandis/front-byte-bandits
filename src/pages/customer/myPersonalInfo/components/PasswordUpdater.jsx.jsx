@@ -18,7 +18,7 @@ import {
   RegularButton,
   ButtonContainer,
 } from "../../../../components/shared/buttons";
-import { resetMessage } from "../../../../store/uiSlice";
+import { resetMessage, resetUI } from "../../../../store/uiSlice";
 
 import { Key } from "react-bootstrap-icons";
 import IconWrapper from "../../../../components/shared/iconsComponents/IconWrapper";
@@ -71,26 +71,28 @@ const PasswordUpdater = () => {
   }, [passwordDate, languageCookieFormat]);
 
   useEffect(() => {
-    if (isSuccess.state === "success") {
+    if (isSuccess.state === "success" && isSuccess.message.length > 0) {
       setShowSuccess(true);
     }
 
     const timer = setTimeout(() => {
       dispatch(emptyMyPassword());
       setShowSuccess(false);
+      dispatch(resetUI());
     }, 2000);
     return () => clearTimeout(timer);
-  }, [isSuccess.state, dispatch]);
+  }, [isSuccess.state, dispatch, isSuccess.message]);
 
   useEffect(() => {
-    if (isError.state === "error") {
+    if (isError.state === "error" && isError.message.length > 0) {
       setShowError(true);
     }
     const timer = setTimeout(() => {
       setShowError(false);
+      dispatch(resetUI());
     }, 3000);
     return () => clearTimeout(timer);
-  }, [isError.state]);
+  }, [isError.state, isError.message, dispatch]);
 
   const handleShowEditMode = (event) => {
     event.preventDefault();

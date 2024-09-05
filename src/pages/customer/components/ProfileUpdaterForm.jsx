@@ -3,7 +3,10 @@ import { useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { useTranslation } from "react-i18next";
 import ImageUploader from "../../product/components/ImageUploader";
-import { RegularButton } from "../../../components/shared/buttons";
+import {
+  ButtonContainer,
+  RegularButton,
+} from "../../../components/shared/buttons";
 import {
   getLoggedUserName,
   getSinglePublicProfile,
@@ -14,14 +17,11 @@ import {
   updateSinglePublicProfileWithThunk,
 } from "../../../store/profilesThunk";
 import StyledTextarea from "../../../components/shared/StyledTextArea";
-import StyledForm from "../../../components/shared/StyledForm";
-import PhotosContainer from "./PhotosContainer";
 import Alert from "react-bootstrap/Alert";
 import { resetUI } from "../../../store/uiSlice";
-import ProfileUserPhoto from "./ProfileUserPhoto";
-import HeaderProfilePhoto from "./HeaderProfilePhoto";
-import CustomCancelOption from "../../../components/shared/CustomCancelOption";
 import { returnSpecificProfile } from "../../../utils/returnSpecificProfile";
+import CustomPhoto from "../../../components/shared/CustomPhoto";
+import StyledContainer from "../../../components/shared/StyledContainer";
 
 const ProfileUpdaterForm = () => {
   const { t } = useTranslation();
@@ -140,112 +140,150 @@ const ProfileUpdaterForm = () => {
         </Alert>
       )}
       <h2>{t("click_to_edit")}</h2>
-      <StyledForm
-        onSubmit={handleSubmit}
-        $customAlignItems={"left"}
-        $customMaxWidth={"100%"}
+      <StyledContainer
+        $customBorder="1px dotted var(--primary-200)"
+        $customBackground="var(--primary-400)"
+        $customMargin="2rem 0 0 0"
       >
-        <PhotosContainer>
-          {editUserPhotoField ? (
-            <ImageUploader
-              inputImagePreview={inputUserPhotoPreview}
-              setInputImage={setInputUserPhoto}
-              setInputImagePreview={setInputUserPhotoPreview}
-              $customWidth={"200px"}
-              $customHeight={"200px"}
-              $customRadius={"50%"}
-              $customWrapperPosition={"absolute"}
-              $customWrapperTop={"-25px"}
-              $customWrapperZIndex={"1"}
-              $customDropZoneShadow={"0px 4px 8px rgba(0, 0, 0, 0.2)"}
-            />
-          ) : (
-            matchedProfile && (
-              <ProfileUserPhoto
-                src={matchedProfile.userPhoto}
-                alt={`${username}'s profile picture`}
-                crossOrigin={origin}
-                $customborderradius="50%"
-                $customwidth="200px"
-                $customheight="200px"
-                $customobjectfit="cover"
-                $customZIndex="1"
-                onClick={handleEditUserPhoto}
+        <form>
+          <StyledContainer
+            $customDisplay="flex"
+            $customFlexDirection="row"
+            $customMargin="2rem"
+            $customGap="2%"
+            $customAlignItems="baseline"
+          >
+            {editUserPhotoField ? (
+              <ImageUploader
+                inputImagePreview={inputUserPhotoPreview}
+                setInputImage={setInputUserPhoto}
+                setInputImagePreview={setInputUserPhotoPreview}
+                $customWidth={"200px"}
+                $customHeight={"200px"}
+                $customRadius={"50%"}
+                $customWrapperZIndex={"1"}
+                $customDropZoneShadow={"0px 4px 8px rgba(0, 0, 0, 0.2)"}
               />
-            )
-          )}
-          {cancelButton.cancelEditUserPhoto && (
-            <CustomCancelOption
-              $isVisible={cancelUserVisible}
-              onClick={handleCancelEditUserPhoto}
-              $customposition="absolute"
-              $customborder="none"
-              $customborderradius="8px"
-              $customZIndex="2"
-              $customboxshadow="none"
-              $customtransform="none"
-              $customtop="10%"
-              $customleft="25%"
+            ) : (
+              matchedProfile && (
+                <CustomPhoto
+                  src={matchedProfile.userPhoto}
+                  alt={`${username}'s profile picture`}
+                  crossOrigin={origin}
+                  $customborderradius="50%"
+                  $customwidth="200px"
+                  $customheight="200px"
+                  $customobjectfit="cover"
+                  onClick={handleEditUserPhoto}
+                  $customcursor="pointer"
+                />
+              )
+            )}
+            <RegularButton>Edit user photo</RegularButton>
+            <RegularButton variant="danger">Delete photo</RegularButton>
+            <RegularButton>Cancel edit</RegularButton>
+            <RegularButton
+              type="submit"
+              variant="attention"
             >
-              {t("cancel_edit_user_photo")}
-            </CustomCancelOption>
-          )}
-          {editHeaderPhotoField ? (
-            <ImageUploader
-              inputImagePreview={inputHeaderPhotoPreview}
-              setInputImage={setInputHeaderPhoto}
-              setInputImagePreview={setInputHeaderPhotoPreview}
-              $customWidth={"100%"}
-              $customHeight={"300px"}
-              $customWrapperPosition={"relative"}
-            />
-          ) : (
-            matchedProfile && (
-              <HeaderProfilePhoto
-                src={matchedProfile.headerPhoto}
-                alt={`${username}'s header picture`}
-                crossOrigin={origin}
-                onClick={handleEditHeaderPhoto}
-                $customborder="none"
-                $customboxshadow="none"
-                $customcursor="pointer"
+              Send user photo
+            </RegularButton>
+          </StyledContainer>
+        </form>
+        <form>
+          <StyledContainer
+            $customDisplay="flex"
+            $customFlexDirection="column"
+            $customMargin="2rem"
+            $customGap="5%"
+            $customJustifyContent="flex-start"
+            $customAlignItems="flex-start"
+          >
+            {editHeaderPhotoField ? (
+              <ImageUploader
+                inputImagePreview={inputHeaderPhotoPreview}
+                setInputImage={setInputHeaderPhoto}
+                setInputImagePreview={setInputHeaderPhotoPreview}
+                $customWidth={"100%"}
+                $customHeight={"300px"}
               />
-            )
-          )}
-          {cancelButton.cancelEditHeaderPhoto && (
-            <CustomCancelOption
-              $isVisible={cancelHeaderVisible}
-              onClick={handleCancelEditHeaderPhoto}
-              $customposition="absolute"
-              $customborder="none"
-              $customborderradius="8px"
-              $customZIndex="2"
-              $customboxshadow="none"
-              $customtransform="none"
-              $customtop="70%"
-              $customleft="70%"
+            ) : (
+              matchedProfile && (
+                <CustomPhoto
+                  src={matchedProfile.headerPhoto}
+                  alt={`${username}'s header picture`}
+                  crossOrigin={origin}
+                  onClick={handleEditHeaderPhoto}
+                  $customborder="none"
+                  $customwidth="80%"
+                  $customborderradius="8px"
+                  $customboxshadow="none"
+                  $customcursor="pointer"
+                />
+              )
+            )}
+            <ButtonContainer
+              $marginContainer="2rem 0 0 0"
+              $justifyContent="flex-start"
+              $alignItems="flex-start"
+              $gap="2%"
             >
-              {t("cancel_edit_header_photo")}
-            </CustomCancelOption>
-          )}
-        </PhotosContainer>
-        <StyledTextarea
-          value={newUserDescription}
-          placeholder={
-            matchedProfile &&
-            matchedProfile.userDescription &&
-            matchedProfile.userDescription.trim() !== ""
-              ? t("description_current", {
-                  userDescription: matchedProfile.userDescription,
-                })
-              : t("description_empty")
-          }
-          onChange={handleNewDescription}
-        />
-        {loggedUserName === username && (
+              <RegularButton>Edit header photo</RegularButton>
+              <RegularButton variant="danger">Delete photo</RegularButton>
+              <RegularButton>Cancel edit</RegularButton>
+              <RegularButton
+                type="submit"
+                variant="attention"
+              >
+                Send header photo
+              </RegularButton>
+            </ButtonContainer>
+          </StyledContainer>
+        </form>
+        <form>
+          <StyledContainer
+            $customDisplay="flex"
+            $customFlexDirection="column"
+            $customMargin="2rem"
+            $customGap="5%"
+            $customJustifyContent="flex-start"
+            $customAlignItems="flex-start"
+          >
+            <StyledTextarea
+              value={newUserDescription}
+              placeholder={
+                matchedProfile &&
+                matchedProfile.userDescription &&
+                matchedProfile.userDescription.trim() !== ""
+                  ? t("description_current", {
+                      userDescription: matchedProfile.userDescription,
+                    })
+                  : t("description_empty")
+              }
+              onChange={handleNewDescription}
+            />
+            <ButtonContainer
+              $marginContainer="2rem 0 0 0"
+              $justifyContent="flex-start"
+              $alignItems="flex-start"
+              $gap="2%"
+            >
+              <RegularButton>Edit description</RegularButton>
+              <RegularButton variant="danger">Delete description</RegularButton>
+              <RegularButton>Cancel edit</RegularButton>
+              <RegularButton
+                type="submit"
+                variant="attention"
+              >
+                Send description
+              </RegularButton>
+            </ButtonContainer>
+          </StyledContainer>
+        </form>
+        {/*         {loggedUserName === username && (
           <RegularButton type="submit">{t("send_data")}</RegularButton>
-        )}
-      </StyledForm>
+        )} */}
+      </StyledContainer>
     </>
   );
 };

@@ -15,6 +15,7 @@ import { useNavigate } from "react-router-dom";
 import CustomAlert from "../../components/shared/Alert.jsx";
 import { resetUI } from "../../store/uiSlice.js";
 import { resetLoggedUserInfo } from "../../store/authSlice.js";
+import { resetSinglePublicProfile } from "../../store/singlePublicProfileSlice.js";
 
 const Safety = () => {
   const { t } = useTranslation();
@@ -41,6 +42,7 @@ const Safety = () => {
         dispatch(resetUI());
         logout(reloadPage);
         dispatch(resetLoggedUserInfo());
+        dispatch(resetSinglePublicProfile());
       }, 3000);
       return () => clearTimeout(timer);
     } else {

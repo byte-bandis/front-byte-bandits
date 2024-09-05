@@ -20,7 +20,10 @@ const HeaderProfile = () => {
 
   return (
     <>
-      <ButtonContainer $justifyContent="flex-start">
+      <ButtonContainer
+        $justifyContent="flex-start"
+        $gap={"2%"}
+      >
         <RegularButton
           as={Link}
           to={`/${username}/info`}

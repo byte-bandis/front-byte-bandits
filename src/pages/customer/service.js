@@ -43,12 +43,13 @@ export const createSinglePublicProfile = async (userName, formData) => {
         "Content-Type": "multipart/form-data",
       },
     })
-    .then(({ newPublicProfile, message }) => {
-      const data = {
-        newPublicProfile,
+    .then(({ state, data, message }) => {
+      const response = {
+        state,
+        data,
         message,
       };
-      return data;
+      return response;
     });
 };
 
@@ -60,10 +61,11 @@ export const updateSinglePublicProfile = async (userName, formData) => {
         "Content-Type": "multipart/form-data",
       },
     })
-    .then(({ state, data, message }) => {
+    .then(({ state, data, message, assetUpdated }) => {
       const response = {
         state,
         data,
+        assetUpdated,
         message,
       };
       return response;

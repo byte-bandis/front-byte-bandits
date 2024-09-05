@@ -1,6 +1,7 @@
 import styled from "styled-components";
 import PropTypes from "prop-types";
-import Button from "../../pages/product/components/Button";
+import { RegularButton } from "./buttons";
+import StyledContainer from "./StyledContainer";
 
 const Confirmator = ({ textValue, onConfirm, sethiden, hidden }) => {
   const handleAccept = () => {
@@ -14,15 +15,30 @@ const Confirmator = ({ textValue, onConfirm, sethiden, hidden }) => {
       <StyledConfirm>
         <div className="blurer"></div>
         <div className="confirmator">
-          <h2>Seguro que desea {textValue}</h2>
-          <div className="buttonWrapper">
-            <Button onClick={handleAccept} $customheight="25px">
+          <h2>Are you sure you want to {textValue}</h2>
+          <StyledContainer
+            $customDisplay="flex"
+            $customFlexDirection="row"
+          >
+            <RegularButton
+              $customBorder="1px solid var(--error-2)"
+              $customBackground="var(--error-2)"
+              $customHoverColor="var(--text-100-d)"
+              $customHoverBackgroundColor="var(--error-1)"
+              $customFocusBackground="var(--error-1)"
+              $customActiveBackground="var(--error-2)"
+              onClick={handleAccept}
+              $customVerticalPadding=".3rem 1rem .3rem 1rem "
+            >
               Si
-            </Button>
-            <Button onClick={handleCancel} $customheight="25px">
+            </RegularButton>
+            <RegularButton
+              onClick={handleCancel}
+              $customVerticalPadding=".3rem 1rem .3rem 1rem "
+            >
               No
-            </Button>
-          </div>
+            </RegularButton>
+          </StyledContainer>
         </div>
       </StyledConfirm>
     )

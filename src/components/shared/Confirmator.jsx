@@ -3,6 +3,7 @@ import PropTypes from "prop-types";
 import { RegularButton } from "./buttons";
 import { ButtonContainer } from "./buttons";
 import { useNavigate } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 
 const Confirmator = ({
   textValue,
@@ -12,6 +13,7 @@ const Confirmator = ({
   goBack,
   ...props
 }) => {
+  const { t } = useTranslation();
   const navigate = useNavigate();
   const getPageBack = -1;
   const handleAccept = () => {
@@ -32,7 +34,9 @@ const Confirmator = ({
       <StyledConfirm {...props}>
         <div className="blurer"></div>
         <div className="confirmator">
-          <h2>Are you sure you want to {textValue}</h2>
+          <h2>
+            ¿{t("are_you_sure_you_want_to")} {textValue}?
+          </h2>
           <ButtonContainer $justifyContent="flex-start">
             <RegularButton
               $customBorder="1px solid var(--error-2)"
@@ -44,13 +48,13 @@ const Confirmator = ({
               onClick={handleAccept}
               $customVerticalPadding=".3rem 1rem .3rem 1rem "
             >
-              Yes
+              {t("yes")}
             </RegularButton>
             <RegularButton
               onClick={handleCancel}
               $customVerticalPadding=".3rem 1rem .3rem 1rem "
             >
-              No
+              {t("no")}
             </RegularButton>
           </ButtonContainer>
         </div>
@@ -69,13 +73,14 @@ Confirmator.propTypes = {
 };
 const StyledConfirm = styled.div`
   .blurer {
-    position: absolute;
-    left: 0;
+    position: ${(props) => props.$blurerPosition || "absolute"};
+    left: ${(props) => props.$blurerLeft || "0"};
+    top: ${(props) => props.$blurerTop || "0"};
     width: 100%;
     height: 100%;
     opacity: 0.8;
     backdrop-filter: blur(15px);
-    z-index: 3;
+    z-index: ${(props) => props.$blurerZindex || "3"};
     &[hidden] {
       display: none;
     }

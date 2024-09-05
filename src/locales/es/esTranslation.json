@@ -98,5 +98,9 @@
   "save_new_password": "Guardar nueva contraseña",
   "back_to_saved_password": "Volver a contraseña guardada",
   "safety": "Seguridad",
-  "safety_intro": "Aquí puedes cambiar tu contraseña y borrar tu cuenta."
+  "safety_intro": "Aquí puedes cambiar tu contraseña y borrar tu cuenta.",
+  "are_you_sure_you_want_to": "Seguro que quieres ",
+  "yes": "Sí",
+  "no": "No",
+  "delete_your_account": "borrar tu cuenta"
 }

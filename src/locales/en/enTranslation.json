@@ -98,5 +98,9 @@
   "save_new_password": "Save new password",
   "back_to_saved_password": "Back to saved password",
   "safety": "Safety",
-  "safety_intro": "Here you can change your password and delete your account."
+  "safety_intro": "Here you can change your password and delete your account.",
+  "are_you_sure_you_want_to": "Are you sure you want to ",
+  "yes": "Yes",
+  "no": "No",
+  "delete_your_account": "delete your account"
 }

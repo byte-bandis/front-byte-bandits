@@ -35,10 +35,14 @@ export const login = async (email, password, requestStorage) => {
     });
 };
 
-export const logout = () => {
+export const logout = (reloadPage) => {
   storage.remove("authToken");
   storage.remove("userName");
   storage.remove("userId");
   storage.remove("updatedAt");
   removeAuthorizationHeader();
+
+  if (reloadPage) {
+    window.location.href = "/";
+  }
 };

@@ -16,7 +16,7 @@ const ImageUploader = ({
   inputImagePreview,
   setInputImage,
   setInputImagePreview,
-  dropAreaText = "Drag and drop your image here or clic to upload from your computer",
+  dropAreaText = "Drag and drop your image here or click to upload from your computer",
   $customHeight,
   $customWidth,
   $customRadius,
@@ -25,6 +25,7 @@ const ImageUploader = ({
   $customWrapperPosition,
   $customDropZoneShadow,
   $customWrapperZIndex,
+  $showRemoveBtn = true,
 }) => {
   const handleDrop = (e) => {
     e.preventDefault();
@@ -54,6 +55,12 @@ const ImageUploader = ({
     setInputImagePreview("");
   };
 
+  const handleImageClick = () => {
+    if (!$showRemoveBtn) {
+      handleRemoveImage();
+    }
+  };
+
   return (
     <DropZoneWrapper
       $customWidth={$customWidth}
@@ -71,16 +78,22 @@ const ImageUploader = ({
       >
         {inputImagePreview ? (
           <ImagePreview>
-            <RemoveBtn onClick={handleRemoveImage}>✕</RemoveBtn>
+            {$showRemoveBtn && (
+              <RemoveBtn onClick={handleRemoveImage}>✕</RemoveBtn>
+            )}
             <ImagePreviewImg
               src={inputImagePreview}
               alt="Product Preview"
               crossOrigin={origin}
+              onClick={handleImageClick} // Si no hay botón de eliminación, la imagen puede eliminarse al hacer clic
             />
           </ImagePreview>
         ) : (
           <CustomFileUpload>
-            <FileInput type="file" onChange={handleImageChange} />
+            <FileInput
+              type="file"
+              onChange={handleImageChange}
+            />
             <CameraFill size={30} />
             {dropAreaText}
           </CustomFileUpload>
@@ -96,7 +109,6 @@ ImageUploader.propTypes = {
   setInputImage: PropTypes.func.isRequired,
   setInputImagePreview: PropTypes.func.isRequired,
   dropAreaText: PropTypes.string,
-  labelText: PropTypes.string,
   $customHeight: PropTypes.string,
   $customWidth: PropTypes.string,
   $customRadius: PropTypes.string,
@@ -105,6 +117,7 @@ ImageUploader.propTypes = {
   $customWrapperLeft: PropTypes.string,
   $customWrapperZIndex: PropTypes.string,
   $customDropZoneShadow: PropTypes.string,
+  $showRemoveBtn: PropTypes.bool,
 };
 
 export default ImageUploader;

@@ -3,7 +3,10 @@ import { useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { useTranslation } from "react-i18next";
 import ImageUploader from "../../product/components/ImageUploader";
-import { RegularButton } from "../../../components/shared/buttons";
+import {
+  ButtonContainer,
+  RegularButton,
+} from "../../../components/shared/buttons";
 import {
   getLoggedUserName,
   getSinglePublicProfile,
@@ -14,14 +17,13 @@ import {
   updateSinglePublicProfileWithThunk,
 } from "../../../store/profilesThunk";
 import StyledTextarea from "../../../components/shared/StyledTextArea";
-import StyledForm from "../../../components/shared/StyledForm";
-import PhotosContainer from "./PhotosContainer";
 import Alert from "react-bootstrap/Alert";
 import { resetUI } from "../../../store/uiSlice";
-import ProfileUserPhoto from "./ProfileUserPhoto";
-import HeaderProfilePhoto from "./HeaderProfilePhoto";
-import CustomCancelOption from "../../../components/shared/CustomCancelOption";
 import { returnSpecificProfile } from "../../../utils/returnSpecificProfile";
+import CustomPhoto from "../../../components/shared/CustomPhoto";
+import StyledContainer from "../../../components/shared/StyledContainer";
+import { ArrowLeftCircleFill } from "react-bootstrap-icons";
+import IconWrapper from "../../../components/shared/iconsComponents/IconWrapper";
 
 const ProfileUpdaterForm = () => {
   const { t } = useTranslation();
@@ -37,22 +39,41 @@ const ProfileUpdaterForm = () => {
   const loadedUI = useSelector(getUI);
   const [showError, setShowError] = useState(false);
   const [editUserPhotoField, setEditUserPhotoField] = useState(false);
+  const [userPhotoPreview, setUserPhotoPreview] = useState(null);
+  const [userHeaderPreview, setUserHeaderPreview] = useState(null);
   const [editHeaderPhotoField, setEditHeaderPhotoField] = useState(false);
+  const [requestDeleteUserPhoto, setRequestDeleteUserPhoto] = useState(false);
+  const [requestDeleteHeaderPhoto, setRequestDeleteHeaderPhoto] =
+    useState(false);
+  const [showDeletionUserFlag, setShowDeletionUserFlag] = useState(false);
+  const [showDeletionHeaderFlag, setShowDeletionHeaderFlag] = useState(false);
+  const [showDeletionDescriptionFlag, setShowDeletionDescriptionFlag] =
+    useState(false);
+  const [editDescription, setEditDescription] = useState(false);
+
   const [cancelButton, setCancelButton] = useState({
     cancelEditUserPhoto: false,
     cancelEditHeaderPhoto: false,
   });
-
-  const [cancelUserVisible, setCancelUserVisible] = useState(false);
-  const [cancelHeaderVisible, setCancelHeaderVisible] = useState(false);
 
   const matchedProfile = returnSpecificProfile(
     loadedPublicProfile,
     loggedUserName
   );
 
+  useEffect(() => {
+    if (matchedProfile) {
+      setNewUserDescription(matchedProfile.userDescription);
+    }
+  }, []);
+
   const handleNewDescription = (event) =>
     setNewUserDescription(event.target.value);
+
+  const handleEditDescriptionButtons = (event) => {
+    event.preventDefault();
+    setEditDescription(true);
+  };
 
   useEffect(() => {
     if (loadedUI.state === "error") {
@@ -70,22 +91,30 @@ const ProfileUpdaterForm = () => {
     dispatch(resetUI());
   };
 
-  const handleSubmit = async (event) => {
+  const handleCancelEditDescription = () => {
+    setNewUserDescription(matchedProfile ? matchedProfile.userDescription : "");
+    setEditDescription(false);
+    setShowDeletionDescriptionFlag(false);
+  };
+
+  const handleDeleteUserPhoto = (event) => {
     event.preventDefault();
-    const formData = new FormData();
+    setRequestDeleteUserPhoto(true);
+    setShowDeletionUserFlag(true);
+    setInputUserPhotoPreview(matchedProfile.userPhoto);
+  };
 
-    if (inputUserPhoto) {
-      formData.append("userPhoto", inputUserPhoto);
-    }
+  const handleDeleteHeaderPhoto = (event) => {
+    event.preventDefault();
+    setRequestDeleteHeaderPhoto(true);
+    setShowDeletionHeaderFlag(true);
+    setInputHeaderPhotoPreview(matchedProfile.headerPhoto);
+  };
 
-    if (inputHeaderPhoto) {
-      formData.append("headerPhoto", inputHeaderPhoto);
-    }
-
-    formData.append("userDescription", newUserDescription);
-
-    await dispatch(updateSinglePublicProfileWithThunk({ username, formData }));
-    await dispatch(getSinglePublicProfileWithThunk(username));
+  const handleDeleteDescription = (event) => {
+    event.preventDefault();
+    setNewUserDescription("");
+    setShowDeletionDescriptionFlag(true);
   };
 
   const handleEditUserPhoto = (event) => {
@@ -95,7 +124,6 @@ const ProfileUpdaterForm = () => {
       ...prevState,
       cancelEditUserPhoto: true,
     }));
-    setTimeout(() => setCancelUserVisible(true), 0);
   };
 
   const handleCancelEditUserPhoto = (event) => {
@@ -105,8 +133,42 @@ const ProfileUpdaterForm = () => {
       cancelEditUserPhoto: false,
     }));
     setEditUserPhotoField(false);
-    setCancelUserVisible(false);
+    setShowDeletionUserFlag(false);
+    setRequestDeleteUserPhoto(false);
+    setUserPhotoPreview(matchedProfile.usePhoto);
+    setInputUserPhotoPreview(null);
   };
+
+  useEffect(() => {
+    if (matchedProfile) {
+      if (!requestDeleteUserPhoto) {
+        setUserPhotoPreview(inputUserPhotoPreview);
+      } else {
+        setUserPhotoPreview(matchedProfile.userPhoto);
+      }
+
+      if (!requestDeleteHeaderPhoto) {
+        setUserHeaderPreview(inputHeaderPhotoPreview);
+      } else {
+        setUserHeaderPreview(matchedProfile.headerPhoto);
+      }
+
+      if (cancelButton.cancelEditUserPhoto) {
+        setUserPhotoPreview(inputUserPhotoPreview);
+      }
+      if (cancelButton.cancelEditHeaderPhoto) {
+        setUserHeaderPreview(inputHeaderPhotoPreview);
+      }
+    }
+  }, [
+    requestDeleteUserPhoto,
+    inputUserPhotoPreview,
+    matchedProfile,
+    requestDeleteHeaderPhoto,
+    userHeaderPreview,
+    inputHeaderPhotoPreview,
+    cancelButton,
+  ]);
 
   const handleEditHeaderPhoto = (event) => {
     event.preventDefault();
@@ -115,7 +177,6 @@ const ProfileUpdaterForm = () => {
       ...prevState,
       cancelEditHeaderPhoto: true,
     }));
-    setTimeout(() => setCancelHeaderVisible(true), 0);
   };
 
   const handleCancelEditHeaderPhoto = (event) => {
@@ -125,7 +186,44 @@ const ProfileUpdaterForm = () => {
       cancelEditHeaderPhoto: false,
     }));
     setEditHeaderPhotoField(false);
-    setCancelHeaderVisible(false);
+    setRequestDeleteHeaderPhoto(false);
+    setShowDeletionHeaderFlag(false);
+    setUserHeaderPreview(matchedProfile.headerPhoto);
+    setInputHeaderPhotoPreview(null);
+  };
+
+  useEffect(() => {
+    if (matchedProfile && userPhotoPreview !== matchedProfile.userPhoto) {
+      setShowDeletionUserFlag(false);
+      setRequestDeleteUserPhoto(false);
+    }
+  }, [userPhotoPreview, matchedProfile]);
+
+  useEffect(() => {
+    if (matchedProfile && userHeaderPreview !== matchedProfile.headerPhoto) {
+      setShowDeletionHeaderFlag(false);
+      setRequestDeleteHeaderPhoto(false);
+    }
+  }, [userHeaderPreview, matchedProfile]);
+
+  const handleSubmit = async (event) => {
+    event.preventDefault();
+    const formData = new FormData();
+
+    if (inputUserPhoto) {
+      formData.append("userPhoto", inputUserPhoto);
+      formData.append("deleteUserPhoto", requestDeleteUserPhoto);
+    }
+
+    if (inputHeaderPhoto) {
+      formData.append("headerPhoto", inputHeaderPhoto);
+      formData.append("deleteHeaderPhoto", requestDeleteHeaderPhoto);
+    }
+
+    formData.append("userDescription", newUserDescription);
+
+    await dispatch(updateSinglePublicProfileWithThunk({ username, formData }));
+    await dispatch(getSinglePublicProfileWithThunk(username));
   };
 
   return (
@@ -140,112 +238,351 @@ const ProfileUpdaterForm = () => {
         </Alert>
       )}
       <h2>{t("click_to_edit")}</h2>
-      <StyledForm
-        onSubmit={handleSubmit}
-        $customAlignItems={"left"}
-        $customMaxWidth={"100%"}
+      <StyledContainer
+        $customBorder="1px dotted var(--primary-200)"
+        $customBackground="var(--primary-400)"
+        $customMargin="2rem 0 0 0"
+        $customWidth="80%"
       >
-        <PhotosContainer>
-          {editUserPhotoField ? (
-            <ImageUploader
-              inputImagePreview={inputUserPhotoPreview}
-              setInputImage={setInputUserPhoto}
-              setInputImagePreview={setInputUserPhotoPreview}
-              $customWidth={"200px"}
-              $customHeight={"200px"}
-              $customRadius={"50%"}
-              $customWrapperPosition={"absolute"}
-              $customWrapperTop={"-25px"}
-              $customWrapperZIndex={"1"}
-              $customDropZoneShadow={"0px 4px 8px rgba(0, 0, 0, 0.2)"}
-            />
-          ) : (
-            matchedProfile && (
-              <ProfileUserPhoto
-                src={matchedProfile.userPhoto}
-                alt={`${username}'s profile picture`}
-                crossOrigin={origin}
-                $customborderradius="50%"
-                $customwidth="200px"
-                $customheight="200px"
-                $customobjectfit="cover"
-                $customZIndex="1"
-                onClick={handleEditUserPhoto}
-              />
-            )
-          )}
-          {cancelButton.cancelEditUserPhoto && (
-            <CustomCancelOption
-              $isVisible={cancelUserVisible}
-              onClick={handleCancelEditUserPhoto}
-              $customposition="absolute"
-              $customborder="none"
-              $customborderradius="8px"
-              $customZIndex="2"
-              $customboxshadow="none"
-              $customtransform="none"
-              $customtop="10%"
-              $customleft="25%"
+        <form onSubmit={handleSubmit}>
+          <StyledContainer
+            $customDisplay="flex"
+            $customFlexDirection="row"
+            $customMargin="2rem"
+            $customGap="2%"
+            $customAlignItems="flex-end"
+          >
+            {editUserPhotoField ? (
+              <StyledContainer
+                $customDisplay="flex"
+                $customFlexDirection="row"
+                $customAlignItems="flex-end"
+              >
+                <StyledContainer $customWidth="25%">
+                  <ImageUploader
+                    inputImagePreview={userPhotoPreview}
+                    setInputImage={setInputUserPhoto}
+                    setInputImagePreview={setInputUserPhotoPreview}
+                    $customWidth={"200px"}
+                    $customHeight={"200px"}
+                    $customRadius={"50%"}
+                    $customWrapperZIndex={"1"}
+                    $customDropZoneShadow={"0px 4px 8px rgba(0, 0, 0, 0.2)"}
+                    $showRemoveBtn={false}
+                  />
+                </StyledContainer>
+                <StyledContainer>
+                  {showDeletionUserFlag ? (
+                    <StyledContainer
+                      $customDisplay="flex"
+                      $customFlexDirection="row"
+                      $customGap="2%"
+                      $customMargin="0 0 2rem 0"
+                    >
+                      <IconWrapper
+                        IconComponent={ArrowLeftCircleFill}
+                        size="50px"
+                        color="var(--error-1)"
+                        top="0"
+                        right="0"
+                        style={{ position: "relative" }}
+                      />
+                      Photo marked for deletion
+                    </StyledContainer>
+                  ) : (
+                    <StyledContainer
+                      $customDisplay="flex"
+                      $customFlexDirection="row"
+                      $customGap="2%"
+                      $customMargin="0 0 2rem 0"
+                    >
+                      <IconWrapper
+                        IconComponent={ArrowLeftCircleFill}
+                        size="50px"
+                        color="var(--primary-200)"
+                        top="0"
+                        right="0"
+                        style={{ position: "relative" }}
+                      />
+                      {t("click_photo_to_edit")}
+                    </StyledContainer>
+                  )}
+                  <ButtonContainer
+                    $marginContainer="0 0 0 0"
+                    $justifyContent="flex-start"
+                    $gap="2%"
+                  >
+                    {editUserPhotoField && (
+                      <>
+                        <RegularButton onClick={handleCancelEditUserPhoto}>
+                          Cancel edit
+                        </RegularButton>
+                        <RegularButton
+                          variant="danger"
+                          onClick={handleDeleteUserPhoto}
+                        >
+                          Delete photo
+                        </RegularButton>
+                      </>
+                    )}
+                  </ButtonContainer>
+                </StyledContainer>
+              </StyledContainer>
+            ) : (
+              matchedProfile && (
+                <StyledContainer
+                  $customDisplay="flex"
+                  $customFlexDirection="row"
+                  $customAlignItems="center"
+                  $customGap="5%"
+                >
+                  <CustomPhoto
+                    src={matchedProfile.userPhoto}
+                    alt={`${username}'s profile picture`}
+                    crossOrigin={origin}
+                    $customborderradius="50%"
+                    $customwidth="200px"
+                    $customheight="200px"
+                    $customobjectfit="cover"
+                    onClick={handleEditUserPhoto}
+                    $customcursor="pointer"
+                  />
+                  <StyledContainer
+                    $customDisplay="flex"
+                    $customFlexDirection="row"
+                    $customGap="2%"
+                    $customAlignItems="center"
+                    $customWidth="50%"
+                  >
+                    <IconWrapper
+                      IconComponent={ArrowLeftCircleFill}
+                      size="50px"
+                      color="var(--primary-200)"
+                      top="0"
+                      right="0"
+                      style={{ position: "relative" }}
+                    />
+                    {t("click_photo_to_edit")}
+                  </StyledContainer>
+                </StyledContainer>
+              )
+            )}
+          </StyledContainer>
+
+          <StyledContainer
+            $customDisplay="flex"
+            $customFlexDirection="column"
+            $customMargin="2rem"
+            $customGap="5%"
+            $customJustifyContent="flex-start"
+            $customAlignItems="flex-start"
+          >
+            {editHeaderPhotoField ? (
+              <StyledContainer $customWidth="100%">
+                <StyledContainer
+                  $customWidth="100%"
+                  $customDisplay="flex"
+                  $customFlexDirection="row"
+                >
+                  <ImageUploader
+                    inputImagePreview={userHeaderPreview}
+                    setInputImage={setInputHeaderPhoto}
+                    setInputImagePreview={setInputHeaderPhotoPreview}
+                    $customWidth={"90%"}
+                    $customHeight={"400px"}
+                    $showRemoveBtn={false}
+                  />
+                  {showDeletionHeaderFlag ? (
+                    <StyledContainer
+                      $customDisplay="flex"
+                      $customFlexDirection="row"
+                      $customGap="2%"
+                      $customMargin="0 0 0 2rem"
+                      $customWidth="50%"
+                    >
+                      <IconWrapper
+                        IconComponent={ArrowLeftCircleFill}
+                        size="50px"
+                        color="var(--error-1)"
+                        top="0"
+                        right="0"
+                        style={{ position: "relative" }}
+                      />
+                      Photo marked for deletion
+                    </StyledContainer>
+                  ) : (
+                    <StyledContainer
+                      $customDisplay="flex"
+                      $customFlexDirection="row"
+                      $customGap="5%"
+                      $customMargin="0 0 0 2rem"
+                      $customWidth="50%"
+                    >
+                      <IconWrapper
+                        IconComponent={ArrowLeftCircleFill}
+                        size="50px"
+                        color="var(--primary-200)"
+                        top="0"
+                        right="0"
+                        style={{ position: "relative" }}
+                      />
+                      {t("click_photo_to_edit")}
+                    </StyledContainer>
+                  )}
+                </StyledContainer>
+                <ButtonContainer
+                  $marginContainer="2rem 0 0 0"
+                  $justifyContent="flex-start"
+                  $alignItems="flex-start"
+                  $gap="2%"
+                >
+                  <RegularButton onClick={handleCancelEditHeaderPhoto}>
+                    Cancel edit
+                  </RegularButton>
+                  <RegularButton
+                    variant="danger"
+                    onClick={handleDeleteHeaderPhoto}
+                  >
+                    Delete photo
+                  </RegularButton>
+                </ButtonContainer>
+              </StyledContainer>
+            ) : (
+              matchedProfile && (
+                <StyledContainer
+                  $customDisplay="flex"
+                  $customFlexDirection="row"
+                  $customWidth="90%"
+                >
+                  <CustomPhoto
+                    src={matchedProfile.headerPhoto}
+                    alt={`${username}'s header picture`}
+                    crossOrigin={origin}
+                    onClick={handleEditHeaderPhoto}
+                    $customborder="none"
+                    $customwidth="70%"
+                    $customborderradius="8px"
+                    $customboxshadow="none"
+                    $customcursor="pointer"
+                  />
+                  <StyledContainer
+                    $customDisplay="flex"
+                    $customFlexDirection="row"
+                    $customGap="5%"
+                    $customMargin="0 0 0 2rem"
+                  >
+                    <IconWrapper
+                      IconComponent={ArrowLeftCircleFill}
+                      size="50px"
+                      color="var(--primary-200)"
+                      top="0"
+                      right="0"
+                      style={{ position: "relative" }}
+                    />
+                    {t("click_photo_to_edit")}
+                  </StyledContainer>
+                </StyledContainer>
+              )
+            )}
+          </StyledContainer>
+
+          <StyledContainer
+            $customDisplay="flex"
+            $customFlexDirection="column"
+            $customMargin="2rem"
+            $customGap="5%"
+            $customJustifyContent="flex-start"
+            $customAlignItems="flex-start"
+          >
+            <StyledContainer
+              $customDisplay="flex"
+              $customFlexDirection="row"
+              $customWidth="90%"
+              $customGap="5%"
             >
-              {t("cancel_edit_user_photo")}
-            </CustomCancelOption>
-          )}
-          {editHeaderPhotoField ? (
-            <ImageUploader
-              inputImagePreview={inputHeaderPhotoPreview}
-              setInputImage={setInputHeaderPhoto}
-              setInputImagePreview={setInputHeaderPhotoPreview}
-              $customWidth={"100%"}
-              $customHeight={"300px"}
-              $customWrapperPosition={"relative"}
-            />
-          ) : (
-            matchedProfile && (
-              <HeaderProfilePhoto
-                src={matchedProfile.headerPhoto}
-                alt={`${username}'s header picture`}
-                crossOrigin={origin}
-                onClick={handleEditHeaderPhoto}
-                $customborder="none"
-                $customboxshadow="none"
-                $customcursor="pointer"
+              <StyledTextarea
+                $customWidth="100%"
+                value={newUserDescription}
+                placeholder={
+                  matchedProfile &&
+                  matchedProfile.userDescription &&
+                  matchedProfile.userDescription.trim() !== ""
+                    ? t("description_current", {
+                        userDescription: matchedProfile.userDescription,
+                      })
+                    : t("description_empty")
+                }
+                onChange={handleNewDescription}
+                onClick={handleEditDescriptionButtons}
               />
-            )
-          )}
-          {cancelButton.cancelEditHeaderPhoto && (
-            <CustomCancelOption
-              $isVisible={cancelHeaderVisible}
-              onClick={handleCancelEditHeaderPhoto}
-              $customposition="absolute"
-              $customborder="none"
-              $customborderradius="8px"
-              $customZIndex="2"
-              $customboxshadow="none"
-              $customtransform="none"
-              $customtop="70%"
-              $customleft="70%"
-            >
-              {t("cancel_edit_header_photo")}
-            </CustomCancelOption>
-          )}
-        </PhotosContainer>
-        <StyledTextarea
-          value={newUserDescription}
-          placeholder={
-            matchedProfile &&
-            matchedProfile.userDescription &&
-            matchedProfile.userDescription.trim() !== ""
-              ? t("description_current", {
-                  userDescription: matchedProfile.userDescription,
-                })
-              : t("description_empty")
-          }
-          onChange={handleNewDescription}
-        />
+              {!showDeletionDescriptionFlag ? (
+                <StyledContainer
+                  $customDisplay="flex"
+                  $customFlexDirection="row"
+                  $customGap="2%"
+                  $customWidth="60%"
+                >
+                  <IconWrapper
+                    IconComponent={ArrowLeftCircleFill}
+                    size="50px"
+                    color="var(--primary-200)"
+                    top="0"
+                    right="0"
+                    style={{ position: "relative" }}
+                  />
+                  {t("click_to_edit")}
+                </StyledContainer>
+              ) : (
+                <StyledContainer
+                  $customDisplay="flex"
+                  $customFlexDirection="row"
+                  $customGap="2%"
+                  $customWidth="60%"
+                >
+                  <IconWrapper
+                    IconComponent={ArrowLeftCircleFill}
+                    size="50px"
+                    color="var(--error-2)"
+                    top="0"
+                    right="0"
+                    style={{ position: "relative" }}
+                  />
+                  Description will be deleted
+                </StyledContainer>
+              )}
+            </StyledContainer>
+
+            {editDescription && (
+              <ButtonContainer
+                $marginContainer="2rem 0 0 0"
+                $justifyContent="flex-start"
+                $alignItems="flex-start"
+                $gap="2%"
+              >
+                <RegularButton onClick={handleCancelEditDescription}>
+                  Cancel edit
+                </RegularButton>
+                <RegularButton
+                  onClick={handleDeleteDescription}
+                  variant="danger"
+                >
+                  Delete description
+                </RegularButton>
+              </ButtonContainer>
+            )}
+          </StyledContainer>
+        </form>
         {loggedUserName === username && (
-          <RegularButton type="submit">{t("send_data")}</RegularButton>
+          <RegularButton
+            variant="attention"
+            $customMargin="2rem"
+            type="submit"
+            onClick={handleSubmit}
+          >
+            {t("send_data")}
+          </RegularButton>
         )}
-      </StyledForm>
+      </StyledContainer>
     </>
   );
 };

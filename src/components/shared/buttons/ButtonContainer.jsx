@@ -4,7 +4,7 @@ import PropTypes from "prop-types";
 const ButtonContainer = styled.div`
   display: flex;
   background: ${(props) => props.$backgrounContainer || "transparent"};
-  width: ${(props) => props.$widthContainer || "100"};
+  width: ${(props) => props.$widthContainer || "100%"};
   margin: ${(props) => props.$marginContainer || "0"};
   flex-direction: ${(props) => props.$flexDirection || "row"};
   justify-content: ${(props) => props.$justifyContent || "center"};

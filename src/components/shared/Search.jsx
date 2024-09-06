@@ -1,30 +1,20 @@
 import { useState, useEffect } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import P from "prop-types";
-import Form from "react-bootstrap/Form";
 import RegularButton from "./buttons/RegularButton";
-import SwitchOptionSelect from "./SwitchOptionSelect";
-import TagsOptionsSelect from "./TagsOptionsSelect";
 import { useDispatch } from "react-redux";
-import PriceRangeSelect from "./PriceRangeSelect";
 import SearchByName from "./SearchByName";
 import { getAds } from "../../store/adsThunk";
 import { setFilters } from "../../store/adsSlice";
-import StyledSelect from "./StyledSelect";
+import styled from "styled-components";
 
 const Search = ({ maxPrice, minPrice, onSearch, onClear }) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const location = useLocation();
-
+  const urlParams = new URLSearchParams(window.location.search);
+  const adTitleParam = urlParams.get("adTitle");
   const [adTitle, setAdTitle] = useState("");
-  const [tags, setTags] = useState([]);
-  const [sell, setSell] = useState(true);
-  const [price, setPrice] = useState({
-    minPrice: minPrice || 0,
-    maxPrice: maxPrice || 0,
-  });
-  const [order, setOrder] = useState("");
 
   useEffect(() => {
     const searchParams = new URLSearchParams(location.search);
@@ -45,50 +35,11 @@ const Search = ({ maxPrice, minPrice, onSearch, onClear }) => {
     }
   };
 
-  const handleSwitchChange = () => {
-    setSell((prevSell) => !prevSell);
-  };
-
-  const handlePriceChange = (minPrice, maxPrice) => {
-    setPrice({
-      minPrice: minPrice !== undefined ? minPrice : 0,
-      maxPrice: maxPrice !== undefined ? maxPrice : 0,
-    });
-  };
-
-  const handleTagChange = (tag) => {
-    setTags((prevTags) =>
-      prevTags.includes(tag)
-        ? prevTags.filter((t) => t !== tag)
-        : [...prevTags, tag],
-    );
-  };
-
-  const handleOrder = (event) => {
-    setOrder(event.target.value);
-  };
-
-  const orderOptions = [
-    {
-      value: "date",
-      label: "date",
-    },
-    {
-      value: "price",
-      label: "price",
-    },
-    { value: "name", label: "name" },
-  ];
-
   const handleSearch = (event) => {
     if (event) event.preventDefault();
 
     const filters = {
       adTitle,
-      tags: tags.join(","),
-      sell,
-      minPrice: price.minPrice,
-      maxPrice: price.maxPrice,
     };
 
     const queryParams = new URLSearchParams();
@@ -116,7 +67,6 @@ const Search = ({ maxPrice, minPrice, onSearch, onClear }) => {
   };
 
   const handleClear = () => {
-    setAdTitle("");
     setTags([]);
     setSell(false);
     setPrice({
@@ -132,12 +82,13 @@ const Search = ({ maxPrice, minPrice, onSearch, onClear }) => {
 
   return (
     <>
-      <div>
+      <SearchContainer>
         {" "}
         <SearchByName
           onChange={handleFilterAdsByName}
           value={adTitle}
           onEnter={handleSearch}
+          customWidth="220%"
         />
         {adTitle && (
           <RegularButton
@@ -147,14 +98,14 @@ const Search = ({ maxPrice, minPrice, onSearch, onClear }) => {
             $customHoverBackgroundColor="var(--accent-200)"
             $customHoverColor="white"
             $customBorder="none"
-            $customMargin="0 0 0 10px"
+            $customMargin="19px 40px 0 -90px"
           >
             X
           </RegularButton>
         )}
-      </div>
+      </SearchContainer>
 
-      <SwitchOptionSelect sell={sell} handleSwitchChange={handleSwitchChange}>
+      {/* <SwitchOptionSelect sell={sell} handleSwitchChange={handleSwitchChange}>
         Status:
       </SwitchOptionSelect>
 
@@ -178,7 +129,7 @@ const Search = ({ maxPrice, minPrice, onSearch, onClear }) => {
         text="Order by: "
         handleOrder={handleOrder}
         ariaLabel="default selection"
-      />
+      /> */}
     </>
   );
 };
@@ -191,3 +142,8 @@ Search.propTypes = {
 };
 
 export default Search;
+
+const SearchContainer = styled.div`
+  display: flex;
+  justify-content: space-between;
+`;

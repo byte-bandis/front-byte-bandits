@@ -1,15 +1,10 @@
-import Form from "react-bootstrap/Form";
 import P from "prop-types";
 import styled from "styled-components";
 
-const SearchByName = ({ value, onChange, onEnter }) => {
-  console.log("onEnter is", onEnter);
+const SearchByName = ({ value, onChange, onEnter, customWidth }) => {
   const handleKeyPress = (event) => {
-    console.log(event);
     if (event.key === "Enter") {
       onEnter(event);
-    } else {
-      console.error("onEnter porp is not working");
     }
   };
 
@@ -19,38 +14,42 @@ const SearchByName = ({ value, onChange, onEnter }) => {
         type="text"
         onChange={onChange}
         value={value}
-        placeholder="Enter the product name"
+        placeholder="Enter the product name + Enter"
         onKeyPress={handleKeyPress}
+        customWidth={customWidth}
       />
     </Container>
   );
 };
 
 SearchByName.propTypes = {
-  text: P.node.isRequired,
+  text: P.string,
   onChange: P.func,
   value: P.string,
   onEnter: P.func.isRequired,
+  customWidth: P.string,
 };
 
 export default SearchByName;
 
 const Container = styled.div`
-  display: ${(props) => props.$CustomDisplay || "flex"};
-  flex-direction: ${(props) => props.$CustomFlexDirection || "column"};
-  gap: ${(props) => props.$CustomGap || "10px"};
-  padding: ${(props) => props.$CustomPadding || "15px"};
+  display: ${(props) => props.customDisplay || "flex"};
+  flex-direction: ${(props) => props.customFlexDirection || "column"};
+  gap: ${(props) => props.customGap || "10px"};
+  padding: ${(props) => props.customPadding || "15px"};
   background-color: ${(props) =>
-    props.$CustomBackgroundColor || "var(--advert-1)"};
-  border-radius: ${(props) => props.$CustomBorderRadius || "5px"};
+    props.customBackgroundColor || "var(--advert-1)"};
+  border-radius: ${(props) => props.customBorderRadius || "5px"};
 `;
 
-const Input = styled(Form.Control)`
-  border: ${(props) => props.$CustomBorder || "1px solid var(--border-1)"};
-  border-radius: ${(props) => props.$CustomBorderRadius || "5px"};
-  padding: ${(props) => props.$CustomPadding || "8px"};
+const Input = styled.input`
+  border: ${(props) => props.customBorder || "1px solid var(--border-1)"};
+  border-radius: ${(props) => props.customBorderRadius || "5px"};
+  padding: ${(props) => props.customPadding || "8px"};
+  width: ${(props) => props.customWidth || "auto"};
 
   &:focus {
-    border-color: ${(props) => props.$CustomBorderColor || "var(--border-1)"};
+    border-color: ${(props) => props.customBorderColor || "var(--border-1)"};
+    outline: none;
   }
 `;

@@ -39,7 +39,7 @@ const SelectWrapper = styled.div`
 const Label = styled.label`
   color: ${(props) => props.$CustomColor || "var(--text-1)"};
   display: block;
-  margin-bottom: 4px; /* Añadido para espaciar un poco entre el label y el select */
+  margin-bottom: 4px;
 `;
 
 const Select = styled.select`

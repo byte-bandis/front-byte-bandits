@@ -17,7 +17,7 @@ import { resetUI } from "../../store/uiSlice";
 import Confirmator from "./Confirmator";
 import { useState } from "react";
 import LanguageSwitcher from "./localization/LanguageSwitcher";
-import useHeaderOptions from "./HeaderOptions";
+import FilterHeaderOptions from "./FilterHeaderOptions";
 
 const Header = () => {
   const { t } = useTranslation();
@@ -25,9 +25,6 @@ const Header = () => {
   const isAuthenticated = useSelector((state) => state.authState.authState);
   const [showConfirmator, setShowConfirmator] = useState(false);
   const [isSearching, setIsSearching] = useState(false);
-  const { dropdownOptions, TAG_OPTIONS, FILTERS_OPTIONS } = useHeaderOptions({
-    setShowConfirmator,
-  });
 
   const loggedUser = useSelector(getLoggedUserName);
   const navigate = useNavigate();
@@ -59,6 +56,45 @@ const Header = () => {
       });
     }
   };
+
+  const dropdownOptions = [
+    { text: t("user_zone"), to: `/${loggedUser}/info`, className: "UserZone" },
+    {
+      text: t("log_out"),
+      onClick: () => {
+        setShowConfirmator(true);
+      },
+      className: "Logout",
+    },
+  ];
+
+  const TAG_OPTIONS = [
+    {
+      onClick: () => navigate("/"),
+      className: "all",
+      text: t("all_categories"),
+    },
+    {
+      text: t("lifestyle"),
+      to: `/product/?tags=lifestyle&sell=true`,
+    },
+    {
+      text: t("mobile"),
+      to: "/product/?tags=mobile&sell=true",
+    },
+    {
+      text: t("motor"),
+      to: "/product/?tags=motor&sell=true",
+    },
+    {
+      text: t("work"),
+      to: "/product/?tags=work&sell=true",
+    },
+    {
+      text: t("others"),
+      to: "/product/?tags=others&sell=true",
+    },
+  ];
 
   const tagsOptions = TAG_OPTIONS.filter(
     (tag) => tag.text !== t("all_categories"),
@@ -141,7 +177,7 @@ const Header = () => {
             {t("all_categories")}
           </DropdownLink>
           {isSearching ? (
-            <TagsNav options={FILTERS_OPTIONS}></TagsNav>
+            <FilterHeaderOptions />
           ) : (
             <TagsNav options={tagsOptions}></TagsNav>
           )}
@@ -175,7 +211,7 @@ const StyledNav = styled.nav`
 `;
 
 const SearchContainer = styled.div`
-  flex-grow: ${(props) => props.$CustomFlexGrow || 1};
+  flex-grow: ${(props) => props.$CustomFlexGrow || 0.7};
   margin: ${(props) => props.$CustomMargin || "0 15px"};
 `;
 

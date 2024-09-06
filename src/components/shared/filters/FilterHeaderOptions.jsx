@@ -77,14 +77,17 @@ const FilterHeaderOptions = ({ minValue, maxValue, min, max }) => {
     queryParams.delete("sort");
 
     if (selectedOrderPrice !== null)
-      queryParams.set("sort", selectedOrderPrice);
-    if (selectedOrderName !== null) queryParams.set("sort", selectedOrderName);
-    if (selectedOrderDate !== null) queryParams.set("sort", selectedOrderDate);
+      queryParams.append("sort", selectedOrderPrice);
+    if (selectedOrderName !== null)
+      queryParams.append("sort", selectedOrderName);
+    if (selectedOrderDate !== null)
+      queryParams.append("sort", selectedOrderDate);
 
     queryParams.delete("tags");
 
     tags.forEach((tag) => queryParams.append("tags", tag));
 
+    // Añadir los filtros restantes
     Object.keys(filters).forEach((key) => {
       const value = filters[key];
       if (value !== null && value !== undefined && value !== "") {
@@ -94,6 +97,7 @@ const FilterHeaderOptions = ({ minValue, maxValue, min, max }) => {
       }
     });
 
+    // Actualizar la URL con los nuevos parámetros
     navigate({
       pathname: "/",
       search: `?${queryParams.toString()}`,
@@ -205,8 +209,8 @@ const FilterHeaderOptions = ({ minValue, maxValue, min, max }) => {
         <OptionsSelector
           options={[
             { value: null, label: t("None") },
-            { value: "createdAt", label: t("Newest ads") },
-            { value: "-createdAt", label: t("Oldest ads") },
+            { value: "-createdAt", label: t("Newest ads") },
+            { value: "createdAt", label: t("Oldest ads") },
           ]}
           selectedTags={[selectedOrderDate]}
           handleTagChange={handleSortChange(setSelectedOrderDate)}

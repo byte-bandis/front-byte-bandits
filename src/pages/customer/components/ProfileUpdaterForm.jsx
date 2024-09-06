@@ -45,22 +45,33 @@ const ProfileUpdaterForm = () => {
     useState(false);
   const [showDeletionUserFlag, setShowDeletionUserFlag] = useState(false);
   const [showDeletionHeaderFlag, setShowDeletionHeaderFlag] = useState(false);
+  const [showDeletionDescriptionFlag, setShowDeletionDescriptionFlag] =
+    useState(false);
+  const [editDescription, setEditDescription] = useState(false);
 
   const setCancelButton = () => ({
     cancelEditUserPhoto: false,
     cancelEditHeaderPhoto: false,
   });
 
-  const [cancelUserVisible, setCancelUserVisible] = useState(false);
-  const [cancelHeaderVisible, setCancelHeaderVisible] = useState(false);
-
   const matchedProfile = returnSpecificProfile(
     loadedPublicProfile,
     loggedUserName
   );
 
+  useEffect(() => {
+    if (matchedProfile) {
+      setNewUserDescription(matchedProfile.userDescription);
+    }
+  }, []);
+
   const handleNewDescription = (event) =>
     setNewUserDescription(event.target.value);
+
+  const handleEditDescriptionButtons = (event) => {
+    event.preventDefault();
+    setEditDescription(true);
+  };
 
   useEffect(() => {
     if (loadedUI.state === "error") {
@@ -78,22 +89,10 @@ const ProfileUpdaterForm = () => {
     dispatch(resetUI());
   };
 
-  const handleSubmit = async (event) => {
-    event.preventDefault();
-    const formData = new FormData();
-
-    if (inputUserPhoto) {
-      formData.append("userPhoto", inputUserPhoto);
-    }
-
-    if (inputHeaderPhoto) {
-      formData.append("headerPhoto", inputHeaderPhoto);
-    }
-
-    formData.append("userDescription", newUserDescription);
-
-    await dispatch(updateSinglePublicProfileWithThunk({ username, formData }));
-    await dispatch(getSinglePublicProfileWithThunk(username));
+  const handleCancelEditDescription = () => {
+    setNewUserDescription(matchedProfile ? matchedProfile.userDescription : "");
+    setEditDescription(false);
+    setShowDeletionDescriptionFlag(false);
   };
 
   const handleDeleteUserPhoto = (event) => {
@@ -108,6 +107,12 @@ const ProfileUpdaterForm = () => {
     setShowDeletionHeaderFlag(!showDeletionHeaderFlag);
   };
 
+  const handleDeleteDescription = (event) => {
+    event.preventDefault();
+    setNewUserDescription("");
+    setShowDeletionDescriptionFlag(true);
+  };
+
   const handleEditUserPhoto = (event) => {
     event.preventDefault();
     setEditUserPhotoField(true);
@@ -115,7 +120,6 @@ const ProfileUpdaterForm = () => {
       ...prevState,
       cancelEditUserPhoto: true,
     }));
-    setTimeout(() => setCancelUserVisible(true), 0);
   };
 
   const handleCancelEditUserPhoto = (event) => {
@@ -125,7 +129,6 @@ const ProfileUpdaterForm = () => {
       cancelEditUserPhoto: false,
     }));
     setEditUserPhotoField(false);
-    setCancelUserVisible(false);
     setShowDeletionUserFlag(false);
   };
 
@@ -136,7 +139,6 @@ const ProfileUpdaterForm = () => {
       ...prevState,
       cancelEditHeaderPhoto: true,
     }));
-    setTimeout(() => setCancelHeaderVisible(true), 0);
   };
 
   const handleCancelEditHeaderPhoto = (event) => {
@@ -146,7 +148,26 @@ const ProfileUpdaterForm = () => {
       cancelEditHeaderPhoto: false,
     }));
     setEditHeaderPhotoField(false);
-    setCancelHeaderVisible(false);
+  };
+
+  const handleSubmit = async (event) => {
+    event.preventDefault();
+    const formData = new FormData();
+
+    if (inputUserPhoto) {
+      formData.append("userPhoto", inputUserPhoto);
+      formData.append("deleteUserPhoto", requestDeleteUserPhoto);
+    }
+
+    if (inputHeaderPhoto) {
+      formData.append("headerPhoto", inputHeaderPhoto);
+      formData.append("deleteHeaderPhoto", requestDeleteHeaderPhoto);
+    }
+
+    formData.append("userDescription", newUserDescription);
+
+    await dispatch(updateSinglePublicProfileWithThunk({ username, formData }));
+    await dispatch(getSinglePublicProfileWithThunk(username));
   };
 
   return (
@@ -167,7 +188,7 @@ const ProfileUpdaterForm = () => {
         $customMargin="2rem 0 0 0"
         $customWidth="80%"
       >
-        <form>
+        <form onSubmit={handleSubmit}>
           <StyledContainer
             $customDisplay="flex"
             $customFlexDirection="row"
@@ -217,7 +238,7 @@ const ProfileUpdaterForm = () => {
                     $justifyContent="flex-start"
                     $gap="2%"
                   >
-                    {cancelUserVisible && (
+                    {editUserPhotoField && (
                       <>
                         <RegularButton onClick={handleCancelEditUserPhoto}>
                           Cancel edit
@@ -263,6 +284,7 @@ const ProfileUpdaterForm = () => {
                     $customFlexDirection="row"
                     $customGap="2%"
                     $customAlignItems="center"
+                    $customWidth="50%"
                   >
                     <IconWrapper
                       IconComponent={ArrowLeftCircleFill}
@@ -279,7 +301,7 @@ const ProfileUpdaterForm = () => {
             )}
           </StyledContainer>
         </form>
-        <form>
+        <form onSubmit={handleSubmit}>
           <StyledContainer
             $customDisplay="flex"
             $customFlexDirection="column"
@@ -372,7 +394,7 @@ const ProfileUpdaterForm = () => {
                     <IconWrapper
                       IconComponent={ArrowLeftCircleFill}
                       size="50px"
-                      color="var(--primary-100)"
+                      color="var(--primary-200)"
                       top="0"
                       right="0"
                       style={{ position: "relative" }}
@@ -384,7 +406,7 @@ const ProfileUpdaterForm = () => {
             )}
           </StyledContainer>
         </form>
-        <form>
+        <form onSubmit={handleSubmit}>
           <StyledContainer
             $customDisplay="flex"
             $customFlexDirection="column"
@@ -393,34 +415,88 @@ const ProfileUpdaterForm = () => {
             $customJustifyContent="flex-start"
             $customAlignItems="flex-start"
           >
-            <StyledTextarea
-              value={newUserDescription}
-              placeholder={
-                matchedProfile &&
-                matchedProfile.userDescription &&
-                matchedProfile.userDescription.trim() !== ""
-                  ? t("description_current", {
-                      userDescription: matchedProfile.userDescription,
-                    })
-                  : t("description_empty")
-              }
-              onChange={handleNewDescription}
-            />
-            <ButtonContainer
-              $marginContainer="2rem 0 0 0"
-              $justifyContent="flex-start"
-              $alignItems="flex-start"
-              $gap="2%"
+            <StyledContainer
+              $customDisplay="flex"
+              $customFlexDirection="row"
+              $customWidth="90%"
+              $customGap="5%"
             >
-              <RegularButton>Cancel edit</RegularButton>
-              <RegularButton variant="danger">Delete description</RegularButton>
-              <RegularButton
-                type="submit"
-                variant="attention"
+              <StyledTextarea
+                $customWidth="100%"
+                value={newUserDescription}
+                placeholder={
+                  matchedProfile &&
+                  matchedProfile.userDescription &&
+                  matchedProfile.userDescription.trim() !== ""
+                    ? t("description_current", {
+                        userDescription: matchedProfile.userDescription,
+                      })
+                    : t("description_empty")
+                }
+                onChange={handleNewDescription}
+                onClick={handleEditDescriptionButtons}
+              />
+              {!showDeletionDescriptionFlag ? (
+                <StyledContainer
+                  $customDisplay="flex"
+                  $customFlexDirection="row"
+                  $customGap="2%"
+                  $customWidth="60%"
+                >
+                  <IconWrapper
+                    IconComponent={ArrowLeftCircleFill}
+                    size="50px"
+                    color="var(--primary-200)"
+                    top="0"
+                    right="0"
+                    style={{ position: "relative" }}
+                  />
+                  {t("click_to_edit")}
+                </StyledContainer>
+              ) : (
+                <StyledContainer
+                  $customDisplay="flex"
+                  $customFlexDirection="row"
+                  $customGap="2%"
+                  $customWidth="60%"
+                >
+                  <IconWrapper
+                    IconComponent={ArrowLeftCircleFill}
+                    size="50px"
+                    color="var(--error-2)"
+                    top="0"
+                    right="0"
+                    style={{ position: "relative" }}
+                  />
+                  Description will be deleted
+                </StyledContainer>
+              )}
+            </StyledContainer>
+
+            {editDescription && (
+              <ButtonContainer
+                $marginContainer="2rem 0 0 0"
+                $justifyContent="flex-start"
+                $alignItems="flex-start"
+                $gap="2%"
               >
-                Send description
-              </RegularButton>
-            </ButtonContainer>
+                <RegularButton onClick={handleCancelEditDescription}>
+                  Cancel edit
+                </RegularButton>
+                <RegularButton
+                  onClick={handleDeleteDescription}
+                  variant="danger"
+                >
+                  Delete description
+                </RegularButton>
+                <RegularButton
+                  type="submit"
+                  variant="attention"
+                >
+                  Send description
+                </RegularButton>
+              </ButtonContainer>
+            )}
           </StyledContainer>
         </form>
         {/*         {loggedUserName === username && (

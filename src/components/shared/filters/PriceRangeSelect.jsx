@@ -45,7 +45,7 @@ const Container = styled.div`
   gap: ${(props) => props.$CustomGap || "10px"};
   padding: ${(props) => props.$CustomPadding || "15px"};
   background-color: ${(props) =>
-    props.$CustomBackgroundColor || "var(--advert-1)"};
+    props.$CustomBackgroundColor || "var(--background-200)"};
   border-radius: ${(props) => props.$CustomBorderRadius || "5px"};
 `;
 

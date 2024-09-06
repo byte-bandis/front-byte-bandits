@@ -1,8 +1,7 @@
 import P from "prop-types";
 import styled from "styled-components";
 
-const TagsOptionsSelector = ({
-  text,
+const OptionsSelector = ({
   options,
   selectedTags = [],
   handleTagChange,
@@ -11,8 +10,6 @@ const TagsOptionsSelector = ({
 }) => {
   return (
     <TagsContainer>
-      <Label>{text}</Label>
-
       <TagColumn>
         {options.map((option) => {
           if (optionType === "object" && option.value !== undefined) {
@@ -27,7 +24,7 @@ const TagsOptionsSelector = ({
                   checked={isChecked}
                   onChange={() => handleTagChange(option.value)}
                   id={option.value || "none"}
-                  name={text}
+                  name={option.Label}
                 />
                 {option.label.charAt(0).toUpperCase() + option.label.slice(1)}
               </TagLabel>
@@ -40,7 +37,7 @@ const TagsOptionsSelector = ({
   );
 };
 
-TagsOptionsSelector.propTypes = {
+OptionsSelector.propTypes = {
   text: P.string.isRequired,
   options: P.array.isRequired,
   selectedTags: P.array,
@@ -49,15 +46,13 @@ TagsOptionsSelector.propTypes = {
   optionType: P.string,
 };
 
-export default TagsOptionsSelector;
+export default OptionsSelector;
 
 const TagsContainer = styled.div`
   display: flex;
   flex-direction: column;
-`;
-
-const Label = styled.label`
-  font-weight: bold;
+  background-color: var(--background-200);
+  padding: 5px 5px;
 `;
 
 const TagColumn = styled.div`

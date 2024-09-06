@@ -1,15 +1,16 @@
-import DropdownStyled from "./DropdownStyled";
+import DropdownStyled from "../DropdownStyled";
 import PriceRangeSelect from "./PriceRangeSelect";
 import { useState, useEffect } from "react";
 import styled from "styled-components";
-import TagsOptionsSelector from "./TagsOptionsSelect";
+import OptionsSelector from "./OptionsSelector";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { getAds } from "../../store/adsThunk";
-import { setFilters } from "../../store/adsSlice";
+import { getAds } from "../../../store/adsThunk";
+import { setFilters } from "../../../store/adsSlice";
 import P from "prop-types";
-import { RegularButton } from "./buttons";
+import { RegularButton } from "../buttons";
 import { useTranslation } from "react-i18next";
+import { setPage } from "../../../store/adsSlice";
 
 const FilterHeaderOptions = ({ minValue, maxValue, min, max }) => {
   const { t } = useTranslation();
@@ -113,6 +114,7 @@ const FilterHeaderOptions = ({ minValue, maxValue, min, max }) => {
     setSelectedOrderPrice(null);
     setSelectedOrderName(null);
     setSelectedOrderDate(null);
+    dispatch(setPage(1));
 
     const queryParams = new URLSearchParams(window.location.search);
 
@@ -127,7 +129,7 @@ const FilterHeaderOptions = ({ minValue, maxValue, min, max }) => {
       search: `?${queryParams.toString()}`,
       replace: true,
     });
-
+    dispatch(setPage(1));
     dispatch(setFilters({}));
   };
 
@@ -142,8 +144,7 @@ const FilterHeaderOptions = ({ minValue, maxValue, min, max }) => {
   return (
     <StyledContainer>
       <DropdownStyled label={t("Sell")}>
-        <TagsOptionsSelector
-          text={t("Select Sell")}
+        <OptionsSelector
           options={[
             { value: null, label: t("All") },
             { value: "false", label: t("Buy") },
@@ -166,8 +167,7 @@ const FilterHeaderOptions = ({ minValue, maxValue, min, max }) => {
       </DropdownStyled>
 
       <DropdownStyled label={t("Tags")}>
-        <TagsOptionsSelector
-          text={t("Select Tags")}
+        <OptionsSelector
           options={TAG_OPTIONS}
           selectedTags={tags}
           handleTagChange={handleTagChange}
@@ -175,10 +175,8 @@ const FilterHeaderOptions = ({ minValue, maxValue, min, max }) => {
         />
       </DropdownStyled>
 
-      {/* Opciones de ordenación */}
       <DropdownStyled label={t("Price Order")}>
-        <TagsOptionsSelector
-          text={t("Select Price Order")}
+        <OptionsSelector
           options={[
             { value: null, label: t("None") },
             { value: "price", label: t("Lowest price") },
@@ -191,8 +189,7 @@ const FilterHeaderOptions = ({ minValue, maxValue, min, max }) => {
       </DropdownStyled>
 
       <DropdownStyled label={t("Name Order")}>
-        <TagsOptionsSelector
-          text={t("Select Name Order")}
+        <OptionsSelector
           options={[
             { value: null, label: t("None") },
             { value: "adTitle", label: t("A-Z") },
@@ -205,8 +202,7 @@ const FilterHeaderOptions = ({ minValue, maxValue, min, max }) => {
       </DropdownStyled>
 
       <DropdownStyled label={t("Date Order")}>
-        <TagsOptionsSelector
-          text={t("Select Date Order")}
+        <OptionsSelector
           options={[
             { value: null, label: t("None") },
             { value: "createdAt", label: t("Newest ads") },
@@ -218,7 +214,13 @@ const FilterHeaderOptions = ({ minValue, maxValue, min, max }) => {
         />
       </DropdownStyled>
 
-      <RegularButton onClick={handleClear}>Clear</RegularButton>
+      <RegularButton
+        $customBackground="var(--accent-100)"
+        $customHoverBackgroundColor="var(--accent-200)"
+        onClick={handleClear}
+      >
+        Clear
+      </RegularButton>
       <RegularButton onClick={handleSearch}>Search</RegularButton>
     </StyledContainer>
   );
@@ -235,5 +237,5 @@ export default FilterHeaderOptions;
 
 const StyledContainer = styled.div`
   display: flex;
-  gap: 50px;
+  gap: 30px;
 `;

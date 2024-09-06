@@ -1,7 +1,7 @@
 import P from "prop-types";
 import styled from "styled-components";
 
-const SearchByName = ({ value, onChange, onEnter, customWidth }) => {
+const SearchByName = ({ value, onChange, onEnter, $CustomWidth }) => {
   const handleKeyPress = (event) => {
     if (event.key === "Enter") {
       onEnter(event);
@@ -16,7 +16,7 @@ const SearchByName = ({ value, onChange, onEnter, customWidth }) => {
         value={value}
         placeholder="Enter the product name + Enter"
         onKeyPress={handleKeyPress}
-        customWidth={customWidth}
+        $CustomWidth={$CustomWidth}
       />
     </Container>
   );
@@ -27,7 +27,7 @@ SearchByName.propTypes = {
   onChange: P.func,
   value: P.string,
   onEnter: P.func.isRequired,
-  customWidth: P.string,
+  $CustomWidth: P.string,
 };
 
 export default SearchByName;
@@ -46,7 +46,7 @@ const Input = styled.input`
   border: ${(props) => props.customBorder || "1px solid var(--border-1)"};
   border-radius: ${(props) => props.customBorderRadius || "5px"};
   padding: ${(props) => props.customPadding || "8px"};
-  width: ${(props) => props.customWidth || "auto"};
+  width: ${(props) => props.$CustomWidth || "auto"};
 
   &:focus {
     border-color: ${(props) => props.customBorderColor || "var(--border-1)"};

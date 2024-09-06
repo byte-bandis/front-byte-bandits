@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import Search from "./Search";
+import SearchByadTitle from "./filters/SearchByadTitle";
 import { useTranslation } from "react-i18next";
 import { useLocation, useNavigate } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
@@ -17,7 +17,7 @@ import { resetUI } from "../../store/uiSlice";
 import Confirmator from "./Confirmator";
 import { useState, useEffect } from "react";
 import LanguageSwitcher from "./localization/LanguageSwitcher";
-import FilterHeaderOptions from "./FilterHeaderOptions";
+import FilterHeaderOptions from "./filters/FilterHeaderOptions";
 
 const Header = () => {
   const { t } = useTranslation();
@@ -122,7 +122,10 @@ const Header = () => {
         <StyledNav className="d-flex align-items-center w-100">
           <Logo />
           <SearchContainer>
-            <Search onSearch={handleSearching} onClear={handleClearSearch} />
+            <SearchByadTitle
+              onSearch={handleSearching}
+              onClear={handleClearSearch}
+            />
           </SearchContainer>
           {isAuthenticated ? (
             <>

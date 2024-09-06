@@ -26,11 +26,13 @@ export default DropdownStyled;
 const DropdownContainer = styled.div`
   position: relative;
   display: inline-block;
+  border: 1px solid var(--text-200);
 `;
 
 const DropdownHeader = styled.div`
-  background-color: #f1f1f1;
-  padding: 20px;
+  background-color: var(--background-100);
+
+  padding: 8px 20px;
   cursor: pointer;
 `;
 
@@ -41,4 +43,5 @@ const DropdownBody = styled.div`
   box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
   z-index: 1;
   margin-top: 5px;
+  width: 120px;
 `;

@@ -1,14 +1,14 @@
 import { useState, useEffect } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import P from "prop-types";
-import RegularButton from "./buttons/RegularButton";
+import RegularButton from "../buttons/RegularButton";
 import { useDispatch } from "react-redux";
 import SearchByName from "./SearchByName";
-import { getAds } from "../../store/adsThunk";
-import { setFilters } from "../../store/adsSlice";
+import { getAds } from "../../../store/adsThunk";
+import { setFilters } from "../../../store/adsSlice";
 import styled from "styled-components";
 
-const Search = ({ onSearch, onClear }) => {
+const SearchByadTitle = ({ onSearch, onClear }) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const location = useLocation();
@@ -17,7 +17,7 @@ const Search = ({ onSearch, onClear }) => {
 
   useEffect(() => {
     const searchParams = new URLSearchParams(location.search);
-    const adTitleParams = searchParams.get("adTitle");
+    const adTitleParams = searchParams.get("adTitle") || "";
     setAdTitle(adTitleParams);
 
     const filters = {};
@@ -70,8 +70,7 @@ const Search = ({ onSearch, onClear }) => {
   };
 
   const handleClear = () => {
-    setAdTitle("");
-
+    setAdTitle();
     navigate("/");
     dispatch(setFilters({}));
     dispatch(getAds());
@@ -86,7 +85,7 @@ const Search = ({ onSearch, onClear }) => {
           onChange={handleFilterAdsByName}
           value={adTitle}
           onEnter={handleSearch}
-          customWidth="220%"
+          $CustomWidth="220%"
         />
         {adTitle && (
           <RegularButton
@@ -106,14 +105,14 @@ const Search = ({ onSearch, onClear }) => {
   );
 };
 
-Search.propTypes = {
+SearchByadTitle.propTypes = {
   minPrice: P.number,
   maxPrice: P.number,
   onSearch: P.func.isRequired,
   onClear: P.func.isRequired,
 };
 
-export default Search;
+export default SearchByadTitle;
 
 const SearchContainer = styled.div`
   display: flex;

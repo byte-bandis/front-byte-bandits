@@ -39,6 +39,8 @@ const ProfileUpdaterForm = () => {
   const loadedUI = useSelector(getUI);
   const [showError, setShowError] = useState(false);
   const [editUserPhotoField, setEditUserPhotoField] = useState(false);
+  const [userPhotoPreview, setUserPhotoPreview] = useState(null);
+  const [userHeaderPreview, setUserHeaderPreview] = useState(null);
   const [editHeaderPhotoField, setEditHeaderPhotoField] = useState(false);
   const [requestDeleteUserPhoto, setRequestDeleteUserPhoto] = useState(false);
   const [requestDeleteHeaderPhoto, setRequestDeleteHeaderPhoto] =
@@ -49,7 +51,7 @@ const ProfileUpdaterForm = () => {
     useState(false);
   const [editDescription, setEditDescription] = useState(false);
 
-  const setCancelButton = () => ({
+  const [cancelButton, setCancelButton] = useState({
     cancelEditUserPhoto: false,
     cancelEditHeaderPhoto: false,
   });
@@ -130,7 +132,41 @@ const ProfileUpdaterForm = () => {
     }));
     setEditUserPhotoField(false);
     setShowDeletionUserFlag(false);
+    setRequestDeleteUserPhoto(false);
+    setUserPhotoPreview(matchedProfile.usePhoto);
+    setInputUserPhotoPreview(null);
   };
+
+  useEffect(() => {
+    if (matchedProfile) {
+      if (!requestDeleteUserPhoto) {
+        setUserPhotoPreview(inputUserPhotoPreview);
+      } else {
+        setUserPhotoPreview(matchedProfile.userPhoto);
+      }
+
+      if (!requestDeleteHeaderPhoto) {
+        setUserHeaderPreview(inputHeaderPhotoPreview);
+      } else {
+        setUserHeaderPreview(matchedProfile.headerPhoto);
+      }
+
+      if (cancelButton.cancelEditUserPhoto) {
+        setUserPhotoPreview(inputUserPhotoPreview);
+      }
+      if (cancelButton.cancelEditHeaderPhoto) {
+        setUserHeaderPreview(inputHeaderPhotoPreview);
+      }
+    }
+  }, [
+    requestDeleteUserPhoto,
+    inputUserPhotoPreview,
+    matchedProfile,
+    requestDeleteHeaderPhoto,
+    userHeaderPreview,
+    inputHeaderPhotoPreview,
+    cancelButton,
+  ]);
 
   const handleEditHeaderPhoto = (event) => {
     event.preventDefault();
@@ -148,6 +184,9 @@ const ProfileUpdaterForm = () => {
       cancelEditHeaderPhoto: false,
     }));
     setEditHeaderPhotoField(false);
+    setRequestDeleteHeaderPhoto(false);
+    setUserHeaderPreview(matchedProfile.headerPhoto);
+    setInputHeaderPhotoPreview(null);
   };
 
   const handleSubmit = async (event) => {
@@ -204,7 +243,7 @@ const ProfileUpdaterForm = () => {
               >
                 <StyledContainer $customWidth="25%">
                   <ImageUploader
-                    inputImagePreview={inputUserPhotoPreview}
+                    inputImagePreview={userPhotoPreview}
                     setInputImage={setInputUserPhoto}
                     setInputImagePreview={setInputUserPhotoPreview}
                     $customWidth={"200px"}
@@ -212,6 +251,7 @@ const ProfileUpdaterForm = () => {
                     $customRadius={"50%"}
                     $customWrapperZIndex={"1"}
                     $customDropZoneShadow={"0px 4px 8px rgba(0, 0, 0, 0.2)"}
+                    $showRemoveBtn={false}
                   />
                 </StyledContainer>
                 <StyledContainer>
@@ -251,12 +291,6 @@ const ProfileUpdaterForm = () => {
                         </RegularButton>
                       </>
                     )}
-                    <RegularButton
-                      type="submit"
-                      variant="attention"
-                    >
-                      Send user photo
-                    </RegularButton>
                   </ButtonContainer>
                 </StyledContainer>
               </StyledContainer>
@@ -300,8 +334,7 @@ const ProfileUpdaterForm = () => {
               )
             )}
           </StyledContainer>
-        </form>
-        <form onSubmit={handleSubmit}>
+
           <StyledContainer
             $customDisplay="flex"
             $customFlexDirection="column"
@@ -318,11 +351,12 @@ const ProfileUpdaterForm = () => {
                   $customFlexDirection="row"
                 >
                   <ImageUploader
-                    inputImagePreview={inputHeaderPhotoPreview}
+                    inputImagePreview={userHeaderPreview}
                     setInputImage={setInputHeaderPhoto}
                     setInputImagePreview={setInputHeaderPhotoPreview}
                     $customWidth={"60%"}
                     $customHeight={"400px"}
+                    $showRemoveBtn={false}
                   />
                   {showDeletionHeaderFlag && (
                     <StyledContainer
@@ -358,12 +392,6 @@ const ProfileUpdaterForm = () => {
                     onClick={handleDeleteHeaderPhoto}
                   >
                     Delete photo
-                  </RegularButton>
-                  <RegularButton
-                    type="submit"
-                    variant="attention"
-                  >
-                    Send header photo
                   </RegularButton>
                 </ButtonContainer>
               </StyledContainer>
@@ -405,8 +433,7 @@ const ProfileUpdaterForm = () => {
               )
             )}
           </StyledContainer>
-        </form>
-        <form onSubmit={handleSubmit}>
+
           <StyledContainer
             $customDisplay="flex"
             $customFlexDirection="column"
@@ -489,19 +516,18 @@ const ProfileUpdaterForm = () => {
                 >
                   Delete description
                 </RegularButton>
-                <RegularButton
-                  type="submit"
-                  variant="attention"
-                >
-                  Send description
-                </RegularButton>
               </ButtonContainer>
             )}
           </StyledContainer>
         </form>
-        {/*         {loggedUserName === username && (
-          <RegularButton type="submit">{t("send_data")}</RegularButton>
-        )} */}
+        {loggedUserName === username && (
+          <RegularButton
+            type="submit"
+            onClick={handleSubmit}
+          >
+            {t("send_data")}
+          </RegularButton>
+        )}
       </StyledContainer>
     </>
   );

@@ -101,12 +101,14 @@ const ProfileUpdaterForm = () => {
     event.preventDefault();
     setRequestDeleteUserPhoto(!requestDeleteUserPhoto);
     setShowDeletionUserFlag(!showDeletionUserFlag);
+    setInputUserPhotoPreview(matchedProfile.userPhoto);
   };
 
   const handleDeleteHeaderPhoto = (event) => {
     event.preventDefault();
     setRequestDeleteHeaderPhoto(!requestDeleteHeaderPhoto);
     setShowDeletionHeaderFlag(!showDeletionHeaderFlag);
+    setInputHeaderPhotoPreview(matchedProfile.headerPhoto);
   };
 
   const handleDeleteDescription = (event) => {

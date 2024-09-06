@@ -8,16 +8,18 @@ import { getAds } from "../../store/adsThunk";
 import { setFilters } from "../../store/adsSlice";
 import styled from "styled-components";
 
-const Search = ({ maxPrice, minPrice, onSearch, onClear }) => {
+const Search = ({ onSearch, onClear }) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const location = useLocation();
-  const urlParams = new URLSearchParams(window.location.search);
-  const adTitleParam = urlParams.get("adTitle");
+
   const [adTitle, setAdTitle] = useState("");
 
   useEffect(() => {
     const searchParams = new URLSearchParams(location.search);
+    const adTitleParams = searchParams.get("adTitle");
+    setAdTitle(adTitleParams);
+
     const filters = {};
 
     for (let [key, value] of searchParams.entries()) {
@@ -27,6 +29,7 @@ const Search = ({ maxPrice, minPrice, onSearch, onClear }) => {
     dispatch(setFilters(filters));
     dispatch(getAds({ page: 1, filters }));
   }, [location.search, dispatch]);
+
   const handleFilterAdsByName = (event) => {
     console.log("handleFilterAdsByName called with: ", event.target.value);
     setAdTitle(event.target.value);
@@ -67,13 +70,8 @@ const Search = ({ maxPrice, minPrice, onSearch, onClear }) => {
   };
 
   const handleClear = () => {
-    setTags([]);
-    setSell(false);
-    setPrice({
-      minPrice: minPrice || 0,
-      maxPrice: maxPrice || 0,
-    });
-    setOrder("");
+    setAdTitle("");
+
     navigate("/");
     dispatch(setFilters({}));
     dispatch(getAds());
@@ -104,32 +102,6 @@ const Search = ({ maxPrice, minPrice, onSearch, onClear }) => {
           </RegularButton>
         )}
       </SearchContainer>
-
-      {/* <SwitchOptionSelect sell={sell} handleSwitchChange={handleSwitchChange}>
-        Status:
-      </SwitchOptionSelect>
-
-      <Form.Label>Price:</Form.Label>
-      <PriceRangeSelect
-        min={minPrice}
-        max={maxPrice}
-        onPriceChange={handlePriceChange}
-        minValue={price.minPrice}
-        maxValue={price.maxPrice}
-      />
-
-      <TagsOptionsSelect
-        text="Tags:"
-        tags={tags}
-        handleTagChange={handleTagChange}
-        value={tags}
-      />
-      <StyledSelect
-        options={orderOptions}
-        text="Order by: "
-        handleOrder={handleOrder}
-        ariaLabel="default selection"
-      /> */}
     </>
   );
 };

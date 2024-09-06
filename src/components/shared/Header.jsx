@@ -15,7 +15,7 @@ import TagsNav from "./TagsNav";
 import { getLoggedUserName } from "../../store/selectors";
 import { resetUI } from "../../store/uiSlice";
 import Confirmator from "./Confirmator";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import LanguageSwitcher from "./localization/LanguageSwitcher";
 import FilterHeaderOptions from "./FilterHeaderOptions";
 
@@ -29,6 +29,14 @@ const Header = () => {
   const loggedUser = useSelector(getLoggedUserName);
   const navigate = useNavigate();
   const dispatch = useDispatch();
+
+  useEffect(() => {
+    const urlParams = new URLSearchParams(window.location.search);
+    const adTitleUrlParmas = urlParams.get("adTitle");
+    if (adTitleUrlParmas) {
+      setIsSearching(true);
+    }
+  }, [location.search]);
 
   const handleSearching = () => {
     setIsSearching(true);

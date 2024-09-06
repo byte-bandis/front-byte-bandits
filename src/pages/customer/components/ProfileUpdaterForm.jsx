@@ -187,9 +187,24 @@ const ProfileUpdaterForm = () => {
     }));
     setEditHeaderPhotoField(false);
     setRequestDeleteHeaderPhoto(false);
+    setShowDeletionHeaderFlag(false);
     setUserHeaderPreview(matchedProfile.headerPhoto);
     setInputHeaderPhotoPreview(null);
   };
+
+  useEffect(() => {
+    if (userPhotoPreview !== matchedProfile.userPhoto) {
+      setShowDeletionUserFlag(false);
+      setRequestDeleteUserPhoto(false);
+    }
+  }, [userPhotoPreview, matchedProfile.userPhoto]);
+
+  useEffect(() => {
+    if (userHeaderPreview !== matchedProfile.headerPhoto) {
+      setShowDeletionHeaderFlag(false);
+      setRequestDeleteHeaderPhoto(false);
+    }
+  }, [userHeaderPreview, matchedProfile.headerPhoto]);
 
   const handleSubmit = async (event) => {
     event.preventDefault();

@@ -87,7 +87,6 @@ const FilterHeaderOptions = ({ minValue, maxValue, min, max }) => {
 
     tags.forEach((tag) => queryParams.append("tags", tag));
 
-    // Añadir los filtros restantes
     Object.keys(filters).forEach((key) => {
       const value = filters[key];
       if (value !== null && value !== undefined && value !== "") {
@@ -97,7 +96,6 @@ const FilterHeaderOptions = ({ minValue, maxValue, min, max }) => {
       }
     });
 
-    // Actualizar la URL con los nuevos parámetros
     navigate({
       pathname: "/",
       search: `?${queryParams.toString()}`,

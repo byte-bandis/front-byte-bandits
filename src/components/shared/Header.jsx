@@ -32,10 +32,9 @@ const Header = () => {
 
   useEffect(() => {
     const urlParams = new URLSearchParams(window.location.search);
-    const adTitleUrlParmas = urlParams.get("adTitle");
-    if (adTitleUrlParmas) {
-      setIsSearching(true);
-    }
+    const adTitleUrlParams = urlParams.get("adTitle");
+
+    setIsSearching(!!adTitleUrlParams);
   }, [location.search]);
 
   const handleSearching = () => {

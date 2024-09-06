@@ -99,15 +99,15 @@ const ProfileUpdaterForm = () => {
 
   const handleDeleteUserPhoto = (event) => {
     event.preventDefault();
-    setRequestDeleteUserPhoto(!requestDeleteUserPhoto);
-    setShowDeletionUserFlag(!showDeletionUserFlag);
+    setRequestDeleteUserPhoto(true);
+    setShowDeletionUserFlag(true);
     setInputUserPhotoPreview(matchedProfile.userPhoto);
   };
 
   const handleDeleteHeaderPhoto = (event) => {
     event.preventDefault();
-    setRequestDeleteHeaderPhoto(!requestDeleteHeaderPhoto);
-    setShowDeletionHeaderFlag(!showDeletionHeaderFlag);
+    setRequestDeleteHeaderPhoto(true);
+    setShowDeletionHeaderFlag(true);
     setInputHeaderPhotoPreview(matchedProfile.headerPhoto);
   };
 
@@ -193,18 +193,18 @@ const ProfileUpdaterForm = () => {
   };
 
   useEffect(() => {
-    if (userPhotoPreview !== matchedProfile.userPhoto) {
+    if (matchedProfile && userPhotoPreview !== matchedProfile.userPhoto) {
       setShowDeletionUserFlag(false);
       setRequestDeleteUserPhoto(false);
     }
-  }, [userPhotoPreview, matchedProfile.userPhoto]);
+  }, [userPhotoPreview, matchedProfile]);
 
   useEffect(() => {
-    if (userHeaderPreview !== matchedProfile.headerPhoto) {
+    if (matchedProfile && userHeaderPreview !== matchedProfile.headerPhoto) {
       setShowDeletionHeaderFlag(false);
       setRequestDeleteHeaderPhoto(false);
     }
-  }, [userHeaderPreview, matchedProfile.headerPhoto]);
+  }, [userHeaderPreview, matchedProfile]);
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -272,7 +272,7 @@ const ProfileUpdaterForm = () => {
                   />
                 </StyledContainer>
                 <StyledContainer>
-                  {showDeletionUserFlag && (
+                  {showDeletionUserFlag ? (
                     <StyledContainer
                       $customDisplay="flex"
                       $customFlexDirection="row"
@@ -288,6 +288,23 @@ const ProfileUpdaterForm = () => {
                         style={{ position: "relative" }}
                       />
                       Photo marked for deletion
+                    </StyledContainer>
+                  ) : (
+                    <StyledContainer
+                      $customDisplay="flex"
+                      $customFlexDirection="row"
+                      $customGap="2%"
+                      $customMargin="0 0 2rem 0"
+                    >
+                      <IconWrapper
+                        IconComponent={ArrowLeftCircleFill}
+                        size="50px"
+                        color="var(--primary-200)"
+                        top="0"
+                        right="0"
+                        style={{ position: "relative" }}
+                      />
+                      {t("click_photo_to_edit")}
                     </StyledContainer>
                   )}
                   <ButtonContainer
@@ -371,11 +388,11 @@ const ProfileUpdaterForm = () => {
                     inputImagePreview={userHeaderPreview}
                     setInputImage={setInputHeaderPhoto}
                     setInputImagePreview={setInputHeaderPhotoPreview}
-                    $customWidth={"60%"}
+                    $customWidth={"90%"}
                     $customHeight={"400px"}
                     $showRemoveBtn={false}
                   />
-                  {showDeletionHeaderFlag && (
+                  {showDeletionHeaderFlag ? (
                     <StyledContainer
                       $customDisplay="flex"
                       $customFlexDirection="row"
@@ -392,6 +409,24 @@ const ProfileUpdaterForm = () => {
                         style={{ position: "relative" }}
                       />
                       Photo marked for deletion
+                    </StyledContainer>
+                  ) : (
+                    <StyledContainer
+                      $customDisplay="flex"
+                      $customFlexDirection="row"
+                      $customGap="5%"
+                      $customMargin="0 0 0 2rem"
+                      $customWidth="50%"
+                    >
+                      <IconWrapper
+                        IconComponent={ArrowLeftCircleFill}
+                        size="50px"
+                        color="var(--primary-200)"
+                        top="0"
+                        right="0"
+                        style={{ position: "relative" }}
+                      />
+                      {t("click_photo_to_edit")}
                     </StyledContainer>
                   )}
                 </StyledContainer>
@@ -539,6 +574,8 @@ const ProfileUpdaterForm = () => {
         </form>
         {loggedUserName === username && (
           <RegularButton
+            variant="attention"
+            $customMargin="2rem"
             type="submit"
             onClick={handleSubmit}
           >

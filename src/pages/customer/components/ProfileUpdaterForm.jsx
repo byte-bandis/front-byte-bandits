@@ -224,7 +224,7 @@ const ProfileUpdaterForm = () => {
 
     console.log("Esto es formData: ");
     for (let [key, value] of formData.entries()) {
-      console.log(`${key}:`, value);
+      console.log(`${key}:`, typeof value);
     }
 
     await dispatch(updateSinglePublicProfileWithThunk({ username, formData }));

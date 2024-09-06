@@ -65,7 +65,7 @@ const ProfileUpdaterForm = () => {
     if (matchedProfile) {
       setNewUserDescription(matchedProfile.userDescription);
     }
-  }, []);
+  }, [matchedProfile]);
 
   const handleNewDescription = (event) =>
     setNewUserDescription(event.target.value);
@@ -212,15 +212,20 @@ const ProfileUpdaterForm = () => {
 
     if (inputUserPhoto) {
       formData.append("userPhoto", inputUserPhoto);
-      formData.append("deleteUserPhoto", requestDeleteUserPhoto);
     }
+    formData.append("deleteUserPhoto", requestDeleteUserPhoto);
 
     if (inputHeaderPhoto) {
       formData.append("headerPhoto", inputHeaderPhoto);
-      formData.append("deleteHeaderPhoto", requestDeleteHeaderPhoto);
     }
+    formData.append("deleteHeaderPhoto", requestDeleteHeaderPhoto);
 
     formData.append("userDescription", newUserDescription);
+
+    console.log("Esto es formData: ");
+    for (let [key, value] of formData.entries()) {
+      console.log(`${key}:`, value);
+    }
 
     await dispatch(updateSinglePublicProfileWithThunk({ username, formData }));
     await dispatch(getSinglePublicProfileWithThunk(username));

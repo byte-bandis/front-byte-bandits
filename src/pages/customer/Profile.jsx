@@ -22,7 +22,6 @@ const Profile = () => {
   const origin = import.meta.env.VITE_API_BASE_URL;
 
   const matchedProfile = returnSpecificProfile(loadedPublicProfile, username);
-  console.log("Esto es matched Profile: ", matchedProfile);
 
   useEffect(() => {
     const fetchProfile = async () => {

@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import Search from "../../pages/search/Search";
+import SearchByadTitle from "./filters/SearchByadTitle";
 import { useTranslation } from "react-i18next";
 import { useLocation, useNavigate } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
@@ -15,18 +15,36 @@ import TagsNav from "./TagsNav";
 import { getLoggedUserName } from "../../store/selectors";
 import { resetUI } from "../../store/uiSlice";
 import Confirmator from "./Confirmator";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import LanguageSwitcher from "./localization/LanguageSwitcher";
+import FilterHeaderOptions from "./filters/FilterHeaderOptions";
 
 const Header = () => {
   const { t } = useTranslation();
   const location = useLocation();
   const isAuthenticated = useSelector((state) => state.authState.authState);
   const [showConfirmator, setShowConfirmator] = useState(false);
+  const [isSearching, setIsSearching] = useState(false);
 
   const loggedUser = useSelector(getLoggedUserName);
   const navigate = useNavigate();
   const dispatch = useDispatch();
+
+  useEffect(() => {
+    const urlParams = new URLSearchParams(window.location.search);
+    const adTitleUrlParmas = urlParams.get("adTitle");
+    if (adTitleUrlParmas) {
+      setIsSearching(true);
+    }
+  }, [location.search]);
+
+  const handleSearching = () => {
+    setIsSearching(true);
+  };
+
+  const handleClearSearch = () => {
+    setIsSearching(false);
+  };
 
   const handleLogout = () => {
     logout();
@@ -67,32 +85,27 @@ const Header = () => {
     {
       text: t("lifestyle"),
       to: `/product/?tags=lifestyle&sell=true`,
-      className: "lifestyle",
     },
     {
       text: t("mobile"),
       to: "/product/?tags=mobile&sell=true",
-      className: "mobile",
     },
     {
       text: t("motor"),
       to: "/product/?tags=motor&sell=true",
-      className: "motor",
     },
     {
       text: t("work"),
       to: "/product/?tags=work&sell=true",
-      className: "work",
     },
     {
       text: t("others"),
       to: "/product/?tags=others&sell=true",
-      className: "others",
     },
   ];
 
-  const filteredTagOptions = TAG_OPTIONS.filter(
-    (tag) => tag.text !== t("all_categories")
+  const tagsOptions = TAG_OPTIONS.filter(
+    (tag) => tag.text !== t("all_categories"),
   );
 
   return (
@@ -109,7 +122,10 @@ const Header = () => {
         <StyledNav className="d-flex align-items-center w-100">
           <Logo />
           <SearchContainer>
-            <Search />
+            <SearchByadTitle
+              onSearch={handleSearching}
+              onClear={handleClearSearch}
+            />
           </SearchContainer>
           {isAuthenticated ? (
             <>
@@ -140,6 +156,7 @@ const Header = () => {
               </RegularButton>
             </>
           ) : (
+            //No authenticated
             <>
               <LanguageSwitcher $marginContainer="0 1rem 0 0" $gap="5px" flag />
               <RegularButton
@@ -174,7 +191,11 @@ const Header = () => {
           >
             {t("all_categories")}
           </DropdownLink>
-          <TagsNav className="tagsNavegation" options={filteredTagOptions} />
+          {isSearching ? (
+            <FilterHeaderOptions />
+          ) : (
+            <TagsNav options={tagsOptions}></TagsNav>
+          )}
         </StyledTagsNavContainer>
       </HeaderStyledContainer>
     </>
@@ -205,7 +226,7 @@ const StyledNav = styled.nav`
 `;
 
 const SearchContainer = styled.div`
-  flex-grow: ${(props) => props.$CustomFlexGrow || 1};
+  flex-grow: ${(props) => props.$CustomFlexGrow || 0.7};
   margin: ${(props) => props.$CustomMargin || "0 15px"};
 `;
 

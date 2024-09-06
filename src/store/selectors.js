@@ -29,7 +29,11 @@ export const getSinglePublicProfileUserDescription = (state) =>
 export const getSinglePublicProfileOwner = (state) =>
   state.singlePublicProfile.data.userName;
 export const getAdsSelector = (state) => state.adsState.data;
+export const getUiIDState = (state) => state.uiID.errors;
 export const getPassword = (state) => state.password;
 export const getPasswordState = (state) => state.password.state;
 export const getPasswordMessage = (state) => state.password.message;
 export const getPasswordData = (state) => state.password.data.updatedAt;
+export const selectWishlist = (state) => state.likesSlice.wishlist;
+export const selectPage = (state) => state.likeSlice.selectPage;
+export const selectFilters = (state) => state.likeSlice.filters;

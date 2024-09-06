@@ -165,6 +165,7 @@ const ProfileUpdaterForm = () => {
         $customBorder="1px dotted var(--primary-200)"
         $customBackground="var(--primary-400)"
         $customMargin="2rem 0 0 0"
+        $customWidth="80%"
       >
         <form>
           <StyledContainer
@@ -271,7 +272,7 @@ const ProfileUpdaterForm = () => {
                       right="0"
                       style={{ position: "relative" }}
                     />
-                    Click on the photo to edit
+                    {t("click_photo_to_edit")}
                   </StyledContainer>
                 </StyledContainer>
               )
@@ -298,8 +299,8 @@ const ProfileUpdaterForm = () => {
                     inputImagePreview={inputHeaderPhotoPreview}
                     setInputImage={setInputHeaderPhoto}
                     setInputImagePreview={setInputHeaderPhotoPreview}
-                    $customWidth={"70%"}
-                    $customHeight={"300px"}
+                    $customWidth={"60%"}
+                    $customHeight={"400px"}
                   />
                   {showDeletionHeaderFlag && (
                     <StyledContainer
@@ -327,14 +328,14 @@ const ProfileUpdaterForm = () => {
                   $alignItems="flex-start"
                   $gap="2%"
                 >
+                  <RegularButton onClick={handleCancelEditHeaderPhoto}>
+                    Cancel edit
+                  </RegularButton>
                   <RegularButton
                     variant="danger"
                     onClick={handleDeleteHeaderPhoto}
                   >
                     Delete photo
-                  </RegularButton>
-                  <RegularButton onClick={handleCancelEditHeaderPhoto}>
-                    Cancel edit
                   </RegularButton>
                   <RegularButton
                     type="submit"
@@ -346,17 +347,39 @@ const ProfileUpdaterForm = () => {
               </StyledContainer>
             ) : (
               matchedProfile && (
-                <CustomPhoto
-                  src={matchedProfile.headerPhoto}
-                  alt={`${username}'s header picture`}
-                  crossOrigin={origin}
-                  onClick={handleEditHeaderPhoto}
-                  $customborder="none"
-                  $customwidth="80%"
-                  $customborderradius="8px"
-                  $customboxshadow="none"
-                  $customcursor="pointer"
-                />
+                <StyledContainer
+                  $customDisplay="flex"
+                  $customFlexDirection="row"
+                  $customWidth="90%"
+                >
+                  <CustomPhoto
+                    src={matchedProfile.headerPhoto}
+                    alt={`${username}'s header picture`}
+                    crossOrigin={origin}
+                    onClick={handleEditHeaderPhoto}
+                    $customborder="none"
+                    $customwidth="70%"
+                    $customborderradius="8px"
+                    $customboxshadow="none"
+                    $customcursor="pointer"
+                  />
+                  <StyledContainer
+                    $customDisplay="flex"
+                    $customFlexDirection="row"
+                    $customGap="5%"
+                    $customMargin="0 0 0 2rem"
+                  >
+                    <IconWrapper
+                      IconComponent={ArrowLeftCircleFill}
+                      size="50px"
+                      color="var(--primary-100)"
+                      top="0"
+                      right="0"
+                      style={{ position: "relative" }}
+                    />
+                    {t("click_photo_to_edit")}
+                  </StyledContainer>
+                </StyledContainer>
               )
             )}
           </StyledContainer>
@@ -389,9 +412,8 @@ const ProfileUpdaterForm = () => {
               $alignItems="flex-start"
               $gap="2%"
             >
-              <RegularButton>Edit description</RegularButton>
-              <RegularButton variant="danger">Delete description</RegularButton>
               <RegularButton>Cancel edit</RegularButton>
+              <RegularButton variant="danger">Delete description</RegularButton>
               <RegularButton
                 type="submit"
                 variant="attention"

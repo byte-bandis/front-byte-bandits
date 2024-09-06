@@ -10,12 +10,13 @@ const RegularButton = styled.button`
   font-size: ${(props) => props.$customfontsize || "16px"};
   height: fit-content;
   width: ${(props) => props.$customwidth || "fit-content"};
+  font-weight: ${(props) => props.$customFontWeight || "bold"};
   transition: ${(props) =>
     props.$customTransition || "background-color .3s ease, color .3s ease"};
 
   /* Default or other variants styles */
   background-color: ${(props) => props.$customBackground || "var(--bg-100)"};
-  color: ${(props) => props.$customColor || "var(--text-100)"};
+  color: ${(props) => props.$customColor || "var(--primary-300)"};
   border: ${(props) => props.$customBorder || "1px solid var(--primary-200)"};
 
   &:hover {
@@ -73,8 +74,9 @@ const RegularButton = styled.button`
     props.variant === "attention" &&
     `
     background-color: var(--accent-100);
-    border: none;
-    color: var(--bg-100);
+    border: 1px solid var(--accent-100);
+    color: var(--text-100);
+    
 
     &:hover {
       background-color: var(--accent-200);

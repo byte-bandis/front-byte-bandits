@@ -26,7 +26,7 @@ const Chats = () => {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    const fetchProductChat = async () => {
+    const checkProduct = async () => {
       if (productId && loggedUserId) {
         let fetchedAd = loadedAd;
         try {
@@ -47,44 +47,47 @@ const Chats = () => {
       }
     };
 
-    fetchProductChat();
-  }, []);
+    checkProduct();
+  }, [productId, loggedUserId]);
 
   useEffect(() => {
     const fetchChats = async () => {
       if (loggedUserId) {
-        let chats = [];
-        if (productId) {
-          if (
-            loadedAd &&
-            chatList.filter((chat) => chat.product._id === productId).length ===
-              0
-          ) {
-            const newChat = {
-              product: {
-                _id: productId,
-                photo: loadedAd.photo,
-                adTitle: loadedAd.adTitle,
-              },
-              buyer: { _id: loggedUserId },
-              messages: [],
-              seller: {
-                _id: loadedAd.user._id,
-                name: loadedAd.user.name,
-                lastname: loadedAd.user.lastname,
-              },
-              _id: "new",
-            };
-            chats = [newChat];
+        try {
+          const response = await client.get(`/chat`);
+          const existingChats = response.chats;
+
+          let chats = [];
+          if (productId) {
             setSelectedChat({
               product: { _id: productId },
               buyer: { _id: loggedUserId },
             });
+
+            if (loadedAd) {
+              const chatAlreadyExists = existingChats.some(
+                (chat) => chat.product._id === productId
+              );
+              if (!chatAlreadyExists) {
+                const newChat = {
+                  product: {
+                    _id: productId,
+                    photo: loadedAd.photo,
+                    adTitle: loadedAd.adTitle,
+                  },
+                  buyer: { _id: loggedUserId },
+                  messages: [],
+                  seller: {
+                    _id: loadedAd.user._id,
+                    name: loadedAd.user.name,
+                    lastname: loadedAd.user.lastname,
+                  },
+                  _id: "new",
+                };
+                chats = [newChat];
+              }
+            }
           }
-        }
-        try {
-          const response = await client.get(`/chat`);
-          const existingChats = response.chats;
 
           setChatList([...chats, ...existingChats]);
         } catch (error) {
@@ -94,7 +97,7 @@ const Chats = () => {
     };
 
     fetchChats();
-  }, [loadedAd]);
+  }, [loadedAd, loggedUserId, productId]);
 
   return (
     <StyledMyAccount>

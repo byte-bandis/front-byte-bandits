@@ -57,39 +57,42 @@ const Chats = () => {
           const response = await client.get(`/chat`);
           const existingChats = response.chats;
 
-          let chats = [];
           if (productId) {
             setSelectedChat({
               product: { _id: productId },
               buyer: { _id: loggedUserId },
             });
-
-            if (loadedAd) {
-              const chatAlreadyExists = existingChats.some(
-                (chat) => chat.product._id === productId
-              );
-              if (!chatAlreadyExists) {
-                const newChat = {
-                  product: {
-                    _id: productId,
-                    photo: loadedAd.photo,
-                    adTitle: loadedAd.adTitle,
-                  },
-                  buyer: { _id: loggedUserId },
-                  messages: [],
-                  seller: {
-                    _id: loadedAd.user._id,
-                    name: loadedAd.user.name,
-                    lastname: loadedAd.user.lastname,
-                  },
-                  _id: "new",
-                };
-                chats = [newChat];
-              }
-            }
           }
 
-          setChatList([...chats, ...existingChats]);
+          if (
+            productId &&
+            loadedAd &&
+            !existingChats.some((chat) => chat.product._id === productId)
+          ) {
+            const newChat = {
+              product: {
+                _id: productId,
+                photo: loadedAd.photo,
+                adTitle: loadedAd.adTitle,
+              },
+              buyer: { _id: loggedUserId },
+              messages: [],
+              seller: {
+                _id: loadedAd.user._id,
+                name: loadedAd.user.name,
+                lastname: loadedAd.user.lastname,
+              },
+              _id: "new",
+            };
+            setChatList([newChat, ...existingChats]);
+          }
+
+          if (
+            !productId ||
+            existingChats.some((chat) => chat.product._id === productId)
+          ) {
+            setChatList(existingChats);
+          }
         } catch (error) {
           console.error("Error al obtener la lista de chats:", error);
         }

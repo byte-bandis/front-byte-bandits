@@ -134,5 +134,25 @@
     "register_new_user": "Registrar usuario",
     "forgot_password": "¿Contraseña olvidada?",
     "sign_in": "Inicia sesión"
-  }
+  },
+  "name1": "Nombre",
+  "introduce_your_product": "Introduce tu producto",
+  "edit_your_product": "Edita tu producto",
+  "product_name": "Nombre del producto",
+  "description": "Descripción",
+  "product_description": "Descripción del producto",
+  "price": "Precio",
+  "transaction_type": "Tipo de transacción",
+  "tags": "Etiquetas",
+  "photo": "Foto",
+  "save_changes": "Guardar cambios",
+  "create_product": "Crear producto",
+  "saving": "Guardando",
+  "creating": "Creando",
+  "enter_product_name": "Introduce el nombre del producto",
+  "enter_product_description": "Introduce la descripción del producto",
+  "enter_valid_product_price": "Introduce un precio válido",
+  "select_transaction_type": "Selecciona el tipo de transacción",
+  "select_at_least_one_tag": "Selecciona al menos una etiqueta",
+  "drag_and_drop_your_image_here_or_click_to_upload_from_your_computer": "Arrastra y suelta tu imagen aquí o haz clic para subirla desde tu ordenador"
 }

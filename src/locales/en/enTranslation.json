@@ -135,5 +135,25 @@
     "register_new_user": "Register new user",
     "forgot_password": "Forgot password?",
     "sign_in": "Sign In"
-  }
+  },
+  "name1": "Name",
+  "introduce_your_product": "Introduce your product",
+  "edit_your_product": "Edit your product",
+  "product_name": "Product name",
+  "description": "Description",
+  "product_description": "Product description",
+  "price": "Price",
+  "transaction_type": "Transaction type",
+  "tags": "Tags",
+  "photo": "Photo",
+  "save_changes": "Save changes",
+  "create_product": "Create product",
+  "saving": "Saving",
+  "creating": "Creating",
+  "enter_product_name": "Enter product name",
+  "enter_product_description": "Enter product description",
+  "enter_valid_product_price": "Enter valid product price",
+  "select_transaction_type": "Select transaction type",
+  "select_at_least_one_tag": "Select at least one tag",
+  "drag_and_drop_your_image_here_or_click_to_upload_from_your_computer": "Drag and drop your image here or click to upload from your computer"
 }

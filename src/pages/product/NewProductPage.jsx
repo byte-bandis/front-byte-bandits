@@ -14,6 +14,7 @@ import {
 import { resetMessage, setMessage } from "../../store/uiSlice";
 import { getError, getAdsSelector } from "../../store/selectors";
 import ImageUploader from "./components/ImageUploader";
+import { useTranslation } from "react-i18next";
 
 const TAG_OPTIONS = ["lifestyle", "mobile", "motor", "work", "others"];
 
@@ -21,6 +22,7 @@ const NewProductPage = ({ isEditMode = false }) => {
   const { productId } = useParams();
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const { t } = useTranslation();
 
   const [inputName, setInputName] = useState("");
   const [inputDescription, setInputDescription] = useState("");
@@ -71,12 +73,10 @@ const NewProductPage = ({ isEditMode = false }) => {
   const handleSubmit = async (event) => {
     event.preventDefault();
 
-    setLoading(true);
-
     if (!inputName) {
       dispatch(
         setMessage({
-          payload: "Introduce un nombre para tu producto.",
+          payload: t("enter_product_name"),
           type: "error",
         })
       );
@@ -86,7 +86,7 @@ const NewProductPage = ({ isEditMode = false }) => {
     if (!inputDescription) {
       dispatch(
         setMessage({
-          payload: "Introduce una descripción para tu producto.",
+          payload: t("enter_product_description"),
           type: "error",
         })
       );
@@ -96,7 +96,7 @@ const NewProductPage = ({ isEditMode = false }) => {
     if (inputPrice === "0.00" || !inputPrice) {
       dispatch(
         setMessage({
-          payload: "Introduce un precio válido para tu producto.",
+          payload: t("enter_valid_product_price"),
           type: "error",
         })
       );
@@ -106,7 +106,7 @@ const NewProductPage = ({ isEditMode = false }) => {
     if (!inputTransactionType) {
       dispatch(
         setMessage({
-          payload: "Selecciona un tipo de transacción.",
+          payload: t("select_transaction_type"),
           type: "error",
         })
       );
@@ -116,12 +116,14 @@ const NewProductPage = ({ isEditMode = false }) => {
     if (selectedTags.length === 0) {
       dispatch(
         setMessage({
-          payload: "Selecciona al menos un tag.",
+          payload: t("select_at_least_one_tag"),
           type: "error",
         })
       );
       return;
     }
+
+    setLoading(true);
 
     await (async () => {
       return new Promise((resolve) => setTimeout(resolve, 1000));
@@ -185,6 +187,19 @@ const NewProductPage = ({ isEditMode = false }) => {
   }, []);
 
   useEffect(() => {
+    if (error) clearError();
+    if (!isEditMode) {
+      setInputName("");
+      setInputDescription("");
+      setInputPrice("");
+      setInputTransactionType(null);
+      setSelectedTags([]);
+      setInputImage(null);
+      setInputImagePreview(null);
+    }
+  }, [isEditMode]);
+
+  useEffect(() => {
     if (isEditMode && productId) {
       const fetchAd = async () => {
         try {
@@ -197,10 +212,11 @@ const NewProductPage = ({ isEditMode = false }) => {
               fetchedAd = fetchedAds[0] || undefined;
             }
           } catch (errorMsg) {
-            console.log("Failed to fetch product: ", errorMsg.message);
+            console.error("Failed to fetch product: ", errorMsg.message);
           }
           if (fetchedAd === undefined) {
             navigate("/404");
+            return;
           }
           if (fetchedAd !== undefined) {
             setInputName(fetchedAd.adTitle);
@@ -228,29 +244,29 @@ const NewProductPage = ({ isEditMode = false }) => {
     <div className="my-4 mx-auto">
       <StyledForm onSubmit={handleSubmit}>
         <h4 className="mb-2 text-center">
-          {isEditMode ? "Edita tu producto" : "Introduce tu producto"}
+          {isEditMode ? t("edit_your_product") : t("introduce_your_product")}
         </h4>
         <StyledInputGroup>
-          <StyledLabel>Nombre</StyledLabel>
+          <StyledLabel>{t("name1")}</StyledLabel>
           <StyledInput
             type="text"
             value={inputName}
-            placeholder="Nombre del producto"
+            placeholder={t("product_name")}
             onChange={handleInputNameChange}
           />
         </StyledInputGroup>
         <StyledInputGroup>
-          <StyledLabel>Descripción</StyledLabel>
+          <StyledLabel>{t("description")}</StyledLabel>
           <StyledInput
             as="textarea"
             rows={3}
             value={inputDescription}
-            placeholder="Descripción del producto"
+            placeholder={t("product_description")}
             onChange={handleInputDescriptionChange}
           />
         </StyledInputGroup>
         <StyledInputGroup>
-          <StyledLabel>Precio</StyledLabel>
+          <StyledLabel>{t("price")}</StyledLabel>
           <StyledInput
             type="number"
             step="0.01"
@@ -261,7 +277,7 @@ const NewProductPage = ({ isEditMode = false }) => {
           />
         </StyledInputGroup>
         <StyledInputGroup>
-          <StyledLabel>Tipo de transacción</StyledLabel>
+          <StyledLabel>{t("transaction_type")}</StyledLabel>
           <Form.Check
             type="radio"
             label="Venta"
@@ -282,13 +298,13 @@ const NewProductPage = ({ isEditMode = false }) => {
           />
         </StyledInputGroup>
         <StyledInputGroup>
-          <StyledLabel>Tags</StyledLabel>
+          <StyledLabel>{t("tags")}</StyledLabel>
           <TagsContainer>
             {TAG_OPTIONS.map((tag) => (
               <Form.Check
                 key={tag}
                 type="checkbox"
-                label={tag.charAt(0).toUpperCase() + tag.slice(1)}
+                label={t(tag).charAt(0).toUpperCase() + t(tag).slice(1)}
                 value={tag}
                 checked={selectedTags.includes(tag)}
                 onChange={() => handleTagChange(tag)}
@@ -298,9 +314,12 @@ const NewProductPage = ({ isEditMode = false }) => {
           </TagsContainer>
         </StyledInputGroup>
         <StyledInputGroup>
-          <StyledLabel>Foto</StyledLabel>
+          <StyledLabel>{t("photo")}</StyledLabel>
           <ImageUploader
             inputImagePreview={inputImagePreview}
+            dropAreaText={t(
+              "drag_and_drop_your_image_here_or_click_to_upload_from_your_computer"
+            )}
             setInputImage={setInputImage}
             setInputImagePreview={setInputImagePreview}
           />
@@ -325,7 +344,7 @@ const NewProductPage = ({ isEditMode = false }) => {
             $customColor="var(--bg-100)"
             $customHoverBackgroundColor="var(--bg-3)"
           >
-            {isEditMode ? "Guardar Cambios" : "Crear Producto"}
+            {isEditMode ? t("save_changes") : t("create_product")}
           </RegularButton>
         ) : (
           <RegularButton
@@ -337,7 +356,7 @@ const NewProductPage = ({ isEditMode = false }) => {
             $customHoverBackgroundColor="var(--bg-3)"
             disabled
           >
-            {isEditMode ? "Guardando..." : "Creando..."}
+            {(isEditMode ? t("saving") : t("creating")) + "..."}
           </RegularButton>
         )}
       </StyledForm>

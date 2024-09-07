@@ -229,11 +229,7 @@ const ProfileUpdaterForm = () => {
   return (
     <>
       {showError && (
-        <Alert
-          variant="danger"
-          onClose={handleAlertClose}
-          dismissible
-        >
+        <Alert variant="danger" onClose={handleAlertClose} dismissible>
           {loadedUI.message}
         </Alert>
       )}
@@ -263,6 +259,9 @@ const ProfileUpdaterForm = () => {
                     inputImagePreview={userPhotoPreview}
                     setInputImage={setInputUserPhoto}
                     setInputImagePreview={setInputUserPhotoPreview}
+                    dropAreaText={t(
+                      "drag_and_drop_your_image_here_or_click_to_upload_from_your_computer"
+                    )}
                     $customWidth={"200px"}
                     $customHeight={"200px"}
                     $customRadius={"50%"}
@@ -388,6 +387,9 @@ const ProfileUpdaterForm = () => {
                     inputImagePreview={userHeaderPreview}
                     setInputImage={setInputHeaderPhoto}
                     setInputImagePreview={setInputHeaderPhotoPreview}
+                    dropAreaText={t(
+                      "drag_and_drop_your_image_here_or_click_to_upload_from_your_computer"
+                    )}
                     $customWidth={"90%"}
                     $customHeight={"400px"}
                     $showRemoveBtn={false}

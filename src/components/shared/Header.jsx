@@ -33,8 +33,9 @@ const Header = () => {
   useEffect(() => {
     const urlParams = new URLSearchParams(window.location.search);
     const adTitleUrlParams = urlParams.get("adTitle");
+    const tagsUrlParams = urlParams.get("tags");
 
-    setIsSearching(!!adTitleUrlParams);
+    setIsSearching(!!adTitleUrlParams || !!tagsUrlParams);
   }, [location.search]);
 
   const handleSearching = () => {
@@ -83,23 +84,23 @@ const Header = () => {
     },
     {
       text: t("lifestyle"),
-      to: `/product/?tags=lifestyle&sell=true`,
+      to: `/product/?tags=lifestyle`,
     },
     {
       text: t("mobile"),
-      to: "/product/?tags=mobile&sell=true",
+      to: "/product/?tags=mobile",
     },
     {
       text: t("motor"),
-      to: "/product/?tags=motor&sell=true",
+      to: "/product/?tags=motor",
     },
     {
       text: t("work"),
-      to: "/product/?tags=work&sell=true",
+      to: "/product/?tags=work",
     },
     {
       text: t("others"),
-      to: "/product/?tags=others&sell=true",
+      to: "/product/?tags=others",
     },
   ];
 

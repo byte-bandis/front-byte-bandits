@@ -15,6 +15,7 @@ import { resetMessage, setMessage } from "../../store/uiSlice";
 import { getError, getAdsSelector } from "../../store/selectors";
 import ImageUploader from "./components/ImageUploader";
 import { useTranslation } from "react-i18next";
+import StyledContainer from "../../components/shared/StyledContainer";
 
 const TAG_OPTIONS = ["lifestyle", "mobile", "motor", "work", "others"];
 
@@ -241,7 +242,10 @@ const NewProductPage = ({ isEditMode = false }) => {
   }, [isEditMode, productId]);
 
   return (
-    <div className="my-4 mx-auto">
+    <StyledContainer
+      className="mx-auto py-5"
+      $customBackground="rgba(3, 88, 75, 0.6)"
+    >
       <StyledForm onSubmit={handleSubmit}>
         <h4 className="mb-2 text-center">
           {isEditMode ? t("edit_your_product") : t("introduce_your_product")}
@@ -339,10 +343,10 @@ const NewProductPage = ({ isEditMode = false }) => {
             type="submit"
             $customVerticalPadding="6px"
             $customwidth="100%"
-            $customBackground="var(--primary-200)"
+            $customBackground="var(--accent-100)"
             $customBorder="none"
             $customColor="var(--bg-100)"
-            $customHoverBackgroundColor="var(--bg-3)"
+            $customHoverBackgroundColor="var(--accent-200)"
           >
             {isEditMode ? t("save_changes") : t("create_product")}
           </RegularButton>
@@ -350,17 +354,17 @@ const NewProductPage = ({ isEditMode = false }) => {
           <RegularButton
             $customVerticalPadding="6px"
             $customwidth="100%"
-            $customBackground="var(--primary-200)"
+            $customBackground="var(--accent-100)"
             $customBorder="none"
             $customColor="var(--bg-100)"
-            $customHoverBackgroundColor="var(--bg-3)"
+            $customHoverBackgroundColor="var(--accent-200)"
             disabled
           >
             {(isEditMode ? t("saving") : t("creating")) + "..."}
           </RegularButton>
         )}
       </StyledForm>
-    </div>
+    </StyledContainer>
   );
 };
 

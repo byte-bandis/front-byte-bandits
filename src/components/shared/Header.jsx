@@ -159,9 +159,7 @@ const Header = () => {
                 onClick={handleSellButton}
                 className="sellButton"
                 $customMargin="0px 25px"
-                $customBackground="var(--accent-100)"
-                $customBorder="none"
-                $customColor="var(--bg-100)"
+                $variant="attention"
               >
                 {t("sell_buy")}
               </RegularButton>
@@ -187,9 +185,7 @@ const Header = () => {
                 onClick={handleSellButton}
                 className="sellButton"
                 $customMargin="0px 25px"
-                $customBackground="var(--accent-100)"
-                $customBorder="none"
-                $customColor="var(--bg-100)"
+                $variant="attention"
               >
                 {t("sell_buy")}
               </RegularButton>

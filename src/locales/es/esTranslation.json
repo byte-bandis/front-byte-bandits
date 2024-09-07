@@ -103,5 +103,24 @@
   "yes": "Sí",
   "no": "No",
   "delete_your_account": "borrar tu cuenta",
-  "click_photo_to_edit": "Haz clic en la foto para editar"
+  "click_photo_to_edit": "Haz clic en la foto para editar",
+  "photo_marked_deletion": "Se borrará esta foto",
+  "delete_photo": "Borrar foto",
+  "cancel_edit": "Cancelar edición",
+  "description_will_be_deleted": "La descripción se borrará",
+  "delete_description": "Borrar descripción",
+  "not_found": "No se ha encontrado el recurso solicitado",
+  "profile_owner": "Perfil público de {{username}}",
+  "footer": {
+    "rightsReserved": "Todos los derechos reservados.",
+    "aboutUs": "Sobre nosotros",
+    "contact": "Contacto",
+    "privacyPolicy": "Política de privacidad",
+    "termsOfService": "Términos del servicio",
+    "social": {
+      "twitter": "Twitter",
+      "facebook": "Facebook",
+      "instagram": "Instagram"
+    }
+  }
 }

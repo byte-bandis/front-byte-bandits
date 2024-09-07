@@ -230,7 +230,7 @@ const ProfileUpdaterForm = () => {
     <>
       {showError && (
         <Alert
-          variant="danger"
+          $variant="danger"
           onClose={handleAlertClose}
           dismissible
         >
@@ -277,7 +277,7 @@ const ProfileUpdaterForm = () => {
                       $customDisplay="flex"
                       $customFlexDirection="row"
                       $customGap="2%"
-                      $customMargin="0 0 2rem 0"
+                      $customMargin="0 0 2rem 2rem"
                     >
                       <IconWrapper
                         IconComponent={ArrowLeftCircleFill}
@@ -287,14 +287,14 @@ const ProfileUpdaterForm = () => {
                         right="0"
                         style={{ position: "relative" }}
                       />
-                      Photo marked for deletion
+                      {t("photo_marked_deletion")}
                     </StyledContainer>
                   ) : (
                     <StyledContainer
                       $customDisplay="flex"
                       $customFlexDirection="row"
                       $customGap="2%"
-                      $customMargin="0 0 2rem 0"
+                      $customMargin="0 0 2rem 2rem"
                     >
                       <IconWrapper
                         IconComponent={ArrowLeftCircleFill}
@@ -315,13 +315,13 @@ const ProfileUpdaterForm = () => {
                     {editUserPhotoField && (
                       <>
                         <RegularButton onClick={handleCancelEditUserPhoto}>
-                          Cancel edit
+                          {t("cancel_edit")}
                         </RegularButton>
                         <RegularButton
-                          variant="danger"
+                          $variant="danger"
                           onClick={handleDeleteUserPhoto}
                         >
-                          Delete photo
+                          {t("delete_photo")}
                         </RegularButton>
                       </>
                     )}
@@ -408,7 +408,7 @@ const ProfileUpdaterForm = () => {
                         right="0"
                         style={{ position: "relative" }}
                       />
-                      Photo marked for deletion
+                      {t("photo_marked_deletion")}
                     </StyledContainer>
                   ) : (
                     <StyledContainer
@@ -437,13 +437,13 @@ const ProfileUpdaterForm = () => {
                   $gap="2%"
                 >
                   <RegularButton onClick={handleCancelEditHeaderPhoto}>
-                    Cancel edit
+                    {t("cancel_edit")}
                   </RegularButton>
                   <RegularButton
-                    variant="danger"
+                    $variant="danger"
                     onClick={handleDeleteHeaderPhoto}
                   >
-                    Delete photo
+                    {t("delete_photo")}
                   </RegularButton>
                 </ButtonContainer>
               </StyledContainer>
@@ -547,7 +547,7 @@ const ProfileUpdaterForm = () => {
                     right="0"
                     style={{ position: "relative" }}
                   />
-                  Description will be deleted
+                  {t("description_will_be_deleted")}
                 </StyledContainer>
               )}
             </StyledContainer>
@@ -560,13 +560,13 @@ const ProfileUpdaterForm = () => {
                 $gap="2%"
               >
                 <RegularButton onClick={handleCancelEditDescription}>
-                  Cancel edit
+                  {t("cancel_edit")}
                 </RegularButton>
                 <RegularButton
                   onClick={handleDeleteDescription}
-                  variant="danger"
+                  $variant="danger"
                 >
-                  Delete description
+                  {t("delete_description")}
                 </RegularButton>
               </ButtonContainer>
             )}
@@ -574,7 +574,7 @@ const ProfileUpdaterForm = () => {
         </form>
         {loggedUserName === username && (
           <RegularButton
-            variant="attention"
+            $variant="attention"
             $customMargin="2rem"
             type="submit"
             onClick={handleSubmit}

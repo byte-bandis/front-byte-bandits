@@ -103,17 +103,29 @@ const Header = () => {
           onConfirm={handleLogout}
           sethiden={() => setShowConfirmator(false)}
           hidden={showConfirmator}
+          $blurerBackgroundColor="var(--primary-200)"
+          $blurerHeight="150%"
+          $customBorder="1px solid var(--primary-300)"
+          $customBackground="var(--bg-100)"
         />
       )}
       <HeaderStyledContainer>
         <StyledNav className="d-flex align-items-center w-100">
-          <Logo />
+          <Logo
+            $CustomWidth="20%"
+            $customImageWidth="45%"
+            $customImageHeight="45%"
+          />
           <SearchContainer>
             <Search />
           </SearchContainer>
           {isAuthenticated ? (
             <>
-              <HeartLink to={"/myaccount"} size={30} className="heartHead" />
+              <HeartLink
+                to={"/myaccount"}
+                size={30}
+                className="heartHead"
+              />
               <EmailLink
                 to={`/${loggedUser}/chat`}
                 size={35}
@@ -141,7 +153,11 @@ const Header = () => {
             </>
           ) : (
             <>
-              <LanguageSwitcher $marginContainer="0 1rem 0 0" $gap="5px" flag />
+              <LanguageSwitcher
+                $marginContainer="0 1rem 0 0"
+                $gap="5px"
+                flag
+              />
               <RegularButton
                 onClick={() =>
                   navigate("/login", { state: { from: location } })
@@ -174,7 +190,10 @@ const Header = () => {
           >
             {t("all_categories")}
           </DropdownLink>
-          <TagsNav className="tagsNavegation" options={filteredTagOptions} />
+          <TagsNav
+            className="tagsNavegation"
+            options={filteredTagOptions}
+          />
         </StyledTagsNavContainer>
       </HeaderStyledContainer>
     </>

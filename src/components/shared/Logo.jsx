@@ -1,18 +1,39 @@
 import { Link } from "react-router-dom";
-import logo from "../../assets/images/ICraftYou.png";
+import logoLight from "../../assets/images/IcraftYouLogoLight.png";
+import logoDark from "../../assets/images/IcraftYouLogoDark.png";
+import PropTypes from "prop-types";
 
 import styled from "styled-components";
 
-const Logo = () => {
+const Logo = ({
+  $dark,
+  $CustomWidth,
+  $customImageWidth,
+  $customImageHeight,
+}) => {
   return (
     <>
-      <StyledLogo>
+      <StyledLogo
+        $CustomWidth={$CustomWidth}
+        $customImageWidth={$customImageWidth}
+        $customImageHeight={$customImageHeight}
+      >
         <Link to="/">
-          <img src={logo} className="logo" />
+          <img
+            src={$dark ? logoDark : logoLight}
+            className="logo"
+          />
         </Link>
       </StyledLogo>
     </>
   );
+};
+
+Logo.propTypes = {
+  $dark: PropTypes.bool,
+  $CustomWidth: PropTypes.string,
+  $customImageWidth: PropTypes.string,
+  $customImageHeight: PropTypes.string,
 };
 
 export default Logo;
@@ -22,8 +43,8 @@ const StyledLogo = styled.div`
   height: ${(props) => props.$CustomHeight || "auto"};
 
   img.logo {
-    width: 100%;
-    height: 100%;
+    width: ${(props) => props.$customImageWidth || "100%"};
+    height: ${(props) => props.$customImageHeight || "100%"};
     object-fit: contain;
   }
 `;

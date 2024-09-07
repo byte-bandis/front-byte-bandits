@@ -103,5 +103,24 @@
   "yes": "Yes",
   "no": "No",
   "delete_your_account": "delete your account",
-  "click_photo_to_edit": "Click on the phto to edit"
+  "click_photo_to_edit": "Click on the phto to edit",
+  "photo_marked_deletion": "This photo will be deleted",
+  "delete_photo": "Delete photo",
+  "cancel_edit": "Cancel edit",
+  "description_will_be_deleted": "Description will be deleted",
+  "delete_description": "Delete description",
+  "not_found": "Could not find the requested resource",
+  "profile_owner": "{{username}}'s public profile",
+  "footer": {
+    "rightsReserved": "All rights reserved.",
+    "aboutUs": "About Us",
+    "contact": "Contact",
+    "privacyPolicy": "Privacy Policy",
+    "termsOfService": "Terms of Service",
+    "social": {
+      "twitter": "Twitter",
+      "facebook": "Facebook",
+      "instagram": "Instagram"
+    }
+  }
 }

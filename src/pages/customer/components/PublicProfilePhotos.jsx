@@ -2,20 +2,8 @@ import PropTypes from "prop-types";
 import PhotosContainer from "./PhotosContainer";
 import HeaderProfilePhoto from "./HeaderProfilePhoto";
 import ProfileUserPhoto from "./ProfileUserPhoto";
-import { useState } from "react";
-import UsernameOverlay from "./UsernameOverlay";
 
 const PublicProfilePhotos = ({ userPhoto, headerPhoto, username, origin }) => {
-  const [showUsername, setShowUsername] = useState(false);
-
-  const handleUserPhotoInteraction = () => {
-    setShowUsername(!showUsername);
-  };
-
-  const handleUserPhotoClick = () => {
-    alert(`Someone wants to talk with ${username}`);
-  };
-
   return (
     <PhotosContainer>
       {headerPhoto && (
@@ -37,12 +25,9 @@ const PublicProfilePhotos = ({ userPhoto, headerPhoto, username, origin }) => {
           $customwidth="200px"
           $customheight="200px"
           $customobjectfit="cover"
-          onMouseEnter={handleUserPhotoInteraction}
-          onMouseLeave={handleUserPhotoInteraction}
-          onClick={handleUserPhotoClick}
+          $customtransform="none"
         />
       )}
-      {showUsername && <UsernameOverlay>Talk to {username}?</UsernameOverlay>}
     </PhotosContainer>
   );
 };

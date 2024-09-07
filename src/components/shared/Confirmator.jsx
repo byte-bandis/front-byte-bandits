@@ -76,10 +76,12 @@ const StyledConfirm = styled.div`
     position: ${(props) => props.$blurerPosition || "absolute"};
     left: ${(props) => props.$blurerLeft || "0"};
     top: ${(props) => props.$blurerTop || "0"};
-    width: 100%;
-    height: 100%;
-    opacity: 0.8;
-    backdrop-filter: blur(15px);
+    width: ${(props) => props.$blurerWidth || "100%"};
+    height: ${(props) => props.$blurerHeight || "100%"};
+    opacity: ${(props) => props.$blurerOpacity || "0.6"};
+    backdrop-filter: ${(props) => props.$blurerBackDropFilter || "blur(15px)"};
+    background-color: ${(props) =>
+      props.$blurerBackgroundColor || "transparent"};
     z-index: ${(props) => props.$blurerZindex || "3"};
     &[hidden] {
       display: none;

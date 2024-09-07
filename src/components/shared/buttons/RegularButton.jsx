@@ -10,11 +10,11 @@ const RegularButton = styled.button`
   font-size: ${(props) => props.$customfontsize || "16px"};
   height: fit-content;
   width: ${(props) => props.$customwidth || "fit-content"};
-  font-weight: ${(props) => props.$customFontWeight || "bold"};
+  font-weight: ${(props) => props.$customFontWeight || "500"};
   transition: ${(props) =>
     props.$customTransition || "background-color .3s ease, color .3s ease"};
 
-  /* Default or other variants styles */
+  /* Default or other $variants styles */
   background-color: ${(props) => props.$customBackground || "var(--bg-100)"};
   color: ${(props) => props.$customColor || "var(--primary-300)"};
   border: ${(props) => props.$customBorder || "1px solid var(--primary-200)"};
@@ -47,9 +47,9 @@ const RegularButton = styled.button`
       props.$customDisabledBorder || "1px solid var(--bg-200)"};
   }
 
-  /* Danger variant */
+  /* Danger $variant */
   ${(props) =>
-    props.variant === "danger" &&
+    props.$variant === "danger" &&
     `
     background-color: var(--error-2);
     border: 1px solid var(--error-2);
@@ -69,9 +69,9 @@ const RegularButton = styled.button`
     }
   `}
 
-  /* Attention variant */
+  /* Attention $variant */
   ${(props) =>
-    props.variant === "attention" &&
+    props.$variant === "attention" &&
     `
     background-color: var(--accent-100);
     border: 1px solid var(--accent-100);

@@ -37,6 +37,7 @@ const AlertMessage = styled.div`
       : props.variant === "error"
       ? "var(--error-2)"
       : "var(--bg-100)"};
+  width: ${(props) => props.$customWidth || "70%"};
 `;
 
 const CloseButton = styled.button`

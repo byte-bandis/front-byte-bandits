@@ -23,7 +23,7 @@ const ScreenPublicProfile = ({
         headerPhoto={headerPhoto}
         username={username}
         origin={origin}
-        onUserPhotoClick={onUserPhotoClick} // Pasamos el prop al componente hijo
+        onUserPhotoClick={onUserPhotoClick}
       />
       {userDescription && (
         <DescriptionContainer>{userDescription}</DescriptionContainer>

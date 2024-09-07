@@ -104,7 +104,7 @@ const Header = () => {
   ];
 
   const tagsOptions = TAG_OPTIONS.filter(
-    (tag) => tag.text !== t("all_categories"),
+    (tag) => tag.text !== t("all_categories")
   );
 
   return (
@@ -115,11 +115,19 @@ const Header = () => {
           onConfirm={handleLogout}
           sethiden={() => setShowConfirmator(false)}
           hidden={showConfirmator}
+          $blurerBackgroundColor="var(--primary-200)"
+          $blurerHeight="150%"
+          $customBorder="1px solid var(--primary-300)"
+          $customBackground="var(--bg-100)"
         />
       )}
       <HeaderStyledContainer>
         <StyledNav className="d-flex align-items-center w-100">
-          <Logo />
+          <Logo
+            $CustomWidth="20%"
+            $customImageWidth="45%"
+            $customImageHeight="45%"
+          />
           <SearchContainer>
             <SearchByadTitle
               onSearch={handleSearching}
@@ -128,7 +136,11 @@ const Header = () => {
           </SearchContainer>
           {isAuthenticated ? (
             <>
-              <HeartLink to={"/myaccount"} size={30} className="heartHead" />
+              <HeartLink
+                to={"/myaccount"}
+                size={30}
+                className="heartHead"
+              />
               <EmailLink
                 to={`/${loggedUser}/chat`}
                 size={35}
@@ -157,7 +169,11 @@ const Header = () => {
           ) : (
             //No authenticated
             <>
-              <LanguageSwitcher $marginContainer="0 1rem 0 0" $gap="5px" flag />
+              <LanguageSwitcher
+                $marginContainer="0 1rem 0 0"
+                $gap="5px"
+                flag
+              />
               <RegularButton
                 onClick={() =>
                   navigate("/login", { state: { from: location } })

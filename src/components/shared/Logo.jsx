@@ -22,6 +22,7 @@ const Logo = ({
           <img
             src={$dark ? logoDark : logoLight}
             className="logo"
+            alt="Byte Bandits logo"
           />
         </Link>
       </StyledLogo>

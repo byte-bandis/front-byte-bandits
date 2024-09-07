@@ -3,7 +3,6 @@ import { loginWithThunk } from "../../store/loginThunk";
 import "./login.css";
 import CustomAlert from "../../components/shared/Alert";
 import { RegularButton } from "../../components/shared/buttons";
-import logoImage from "../../assets/images/IcraftYouLogoLight.png";
 import Logo from "../../components/shared/Logo";
 import { useDispatch, useSelector } from "react-redux";
 import { useLocation, useNavigate } from "react-router-dom";
@@ -104,14 +103,11 @@ const LoginPage = () => {
       <form
         className="sign-in__form"
         onSubmit={handleSubmit}
+        noValidate
       >
         {/* Header */}
         <StyledContainer $customDisplay="flex">
-          <Logo
-            src={logoImage}
-            alt="Byte Bandits logo"
-            $CustomWidth="30%"
-          />
+          <Logo $CustomWidth="30%" />
           <StyledContainer
             $customDisplay="flex"
             $customJustifyContent="center"
@@ -126,6 +122,7 @@ const LoginPage = () => {
             variant="error"
             onClose={handleCloseErrorAlert}
             dismissible
+            $customWidth="100%"
           >
             {message}
           </CustomAlert>

@@ -1,10 +1,13 @@
 import P from "prop-types";
 import styled from "styled-components";
 
-const CustomAlert = ({ variant, children, onClose }) => {
+const CustomAlert = ({ variant, children, onClose, ...props }) => {
   const childrenArray = Array.isArray(children) ? children : [children];
   return (
-    <AlertMessage variant={variant}>
+    <AlertMessage
+      variant={variant}
+      {...props}
+    >
       {onClose && <CloseButton onClick={onClose}>X</CloseButton>}
       <div>
         {childrenArray.map((message, index) => (

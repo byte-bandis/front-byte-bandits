@@ -85,7 +85,7 @@
   "motor": "Motor",
   "work": "Trabajo",
   "others": "Otros",
-  "sell_buy": "Vender - Comprar",
+  "sell": "Vender",
   "login_register": "Iniciar sesión o registrarse",
   "confirm_logout": "salir",
   "change_password": "Cambiar contraseña",

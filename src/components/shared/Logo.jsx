@@ -19,10 +19,7 @@ const Logo = ({
         $customImageHeight={$customImageHeight}
       >
         <Link to="/">
-          <img
-            src={$dark ? logoDark : logoLight}
-            className="logo"
-          />
+          <img src={$dark ? logoDark : logoLight} className="logo" />
         </Link>
       </StyledLogo>
     </>
@@ -41,6 +38,7 @@ export default Logo;
 const StyledLogo = styled.div`
   width: ${(props) => props.$CustomWidth || "70px"};
   height: ${(props) => props.$CustomHeight || "auto"};
+  text-align: ${(props) => props.$CustomTextAlign || "center"};
 
   img.logo {
     width: ${(props) => props.$customImageWidth || "100%"};

@@ -84,7 +84,7 @@
   "motor": "Motor",
   "work": "Work",
   "others": "Others",
-  "sell_buy": "Sell - Buy",
+  "sell": "Sell ",
   "login_register": "Login or register",
   "your_private_data": "Your private data",
   "confirm_logout": "logout",

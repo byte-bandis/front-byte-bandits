@@ -105,7 +105,7 @@ const Header = () => {
   ];
 
   const tagsOptions = TAG_OPTIONS.filter(
-    (tag) => tag.text !== t("all_categories")
+    (tag) => tag.text !== t("all_categories"),
   );
 
   return (
@@ -122,14 +122,14 @@ const Header = () => {
           $customBackground="var(--bg-100)"
         />
       )}
-      <HeaderStyledContainer>
-        <StyledNav className="d-flex align-items-center w-100">
+      <HeaderStyledContainer $CustomMarginTop="-10px">
+        <StyledNav>
           <Logo
-            $CustomWidth="20%"
+            $CustomWidth="100%"
             $customImageWidth="45%"
             $customImageHeight="45%"
           />
-          <SearchContainer>
+          <SearchContainer $CustomWidth="300%">
             <SearchByadTitle
               onSearch={handleSearching}
               onClear={handleClearSearch}
@@ -137,11 +137,7 @@ const Header = () => {
           </SearchContainer>
           {isAuthenticated ? (
             <>
-              <HeartLink
-                to={"/myaccount"}
-                size={30}
-                className="heartHead"
-              />
+              <HeartLink to={"/myaccount"} size={30} className="heartHead" />
               <EmailLink
                 to={`/${loggedUser}/chat`}
                 size={35}
@@ -161,18 +157,15 @@ const Header = () => {
                 className="sellButton"
                 $customMargin="0px 25px"
                 $variant="attention"
+                $customVerticalPadding="5px 50px"
               >
-                {t("sell_buy")}
+                {t("sell")}
               </RegularButton>
             </>
           ) : (
             //No authenticated
             <>
-              <LanguageSwitcher
-                $marginContainer="0 1rem 0 0"
-                $gap="5px"
-                flag
-              />
+              <LanguageSwitcher $marginContainer="0 1rem 0 0" $gap="5px" flag />
               <RegularButton
                 onClick={() =>
                   navigate("/login", { state: { from: location } })
@@ -188,7 +181,7 @@ const Header = () => {
                 $customMargin="0px 25px"
                 $variant="attention"
               >
-                {t("sell_buy")}
+                {t("sell")}
               </RegularButton>
             </>
           )}
@@ -229,17 +222,19 @@ const HeaderStyledContainer = styled.div`
   z-index: ${(props) => props.$CustomZIndex || 2000};
   background-color: ${(props) =>
     props.$customBackGroundColor || "var(--bg-100)"};
+  margin-top: ${(props) => props.$CustomMarginTop || 0};
 `;
 
 const StyledNav = styled.nav`
   display: ${(props) => props.$CustomDisplay || "flex"};
   align-items: ${(props) => props.$CustomAlignItems || "center"};
-  width: ${(props) => props.$CustomWidth || "100%"};
+  width: ${(props) => props.$CustomWidth || "95%"};
 `;
 
 const SearchContainer = styled.div`
   flex-grow: ${(props) => props.$CustomFlexGrow || 0.7};
   margin: ${(props) => props.$CustomMargin || "0 15px"};
+  width: ${(props) => props.$CustomWidth || "auto"};
 `;
 
 const StyledTagsNavContainer = styled.div`

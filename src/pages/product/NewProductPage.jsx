@@ -212,10 +212,11 @@ const NewProductPage = ({ isEditMode = false }) => {
               fetchedAd = fetchedAds[0] || undefined;
             }
           } catch (errorMsg) {
-            console.log("Failed to fetch product: ", errorMsg.message);
+            console.error("Failed to fetch product: ", errorMsg.message);
           }
           if (fetchedAd === undefined) {
             navigate("/404");
+            return;
           }
           if (fetchedAd !== undefined) {
             setInputName(fetchedAd.adTitle);

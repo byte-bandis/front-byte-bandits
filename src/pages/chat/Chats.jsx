@@ -7,53 +7,94 @@ import { useSelector } from "react-redux";
 import "./Chats.css";
 import StyledMyAccount from "../../components/shared/StyledMyAccount";
 import ChatListItem from "./ChatListItem";
+import { getAdsSelector } from "../../store/selectors";
+import { useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { getAds } from "../../store/adsThunk";
 
 const Chats = () => {
   const [chatList, setChatList] = useState([]);
   const [selectedChat, setSelectedChat] = useState(null);
   const loggedUserId = useSelector(getLoggedUserId);
   const location = useLocation();
+  const productId =
+    new URLSearchParams(location.search).get("productId") || undefined;
+  const loadedAd = useSelector(getAdsSelector).find(
+    (advert) => advert._id === productId
+  );
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
 
-  // Obtener el productId de la URL
   useEffect(() => {
-    const params = new URLSearchParams(location.search);
-    const productId = params.get("productId");
+    const fetchProductChat = async () => {
+      if (productId && loggedUserId) {
+        let fetchedAd = loadedAd;
+        try {
+          if (!fetchedAd) {
+            const fetchedAds = await dispatch(
+              getAds({ id: productId })
+            ).unwrap();
+            fetchedAd = fetchedAds[0] || undefined;
+          }
+        } catch (errorMsg) {
+          console.error("Failed to fetch product: ", errorMsg.message);
+        }
 
-    if (productId) {
-      // Si hay un productId en la URL, buscar si ya existe un chat para ese producto
-      setSelectedChat({
-        product: { _id: productId },
-        buyer: { _id: loggedUserId },
-      });
-    }
-  }, [location.search, loggedUserId]);
+        if (fetchedAd === undefined || fetchedAd.user._id === loggedUserId) {
+          navigate("/404");
+          return;
+        }
+      }
+    };
 
-  // Cargar la lista de chats del usuario actual
+    fetchProductChat();
+  }, []);
+
   useEffect(() => {
-    if (loggedUserId) {
-      const fetchChats = async () => {
+    const fetchChats = async () => {
+      if (loggedUserId) {
+        let chats = [];
+        if (productId) {
+          if (
+            loadedAd &&
+            chatList.filter((chat) => chat.product._id === productId).length ===
+              0
+          ) {
+            const newChat = {
+              product: {
+                _id: productId,
+                photo: loadedAd.photo,
+                adTitle: loadedAd.adTitle,
+              },
+              buyer: { _id: loggedUserId },
+              messages: [],
+              seller: {
+                _id: loadedAd.user._id,
+                name: loadedAd.user.name,
+                lastname: loadedAd.user.lastname,
+              },
+              _id: "new",
+            };
+            chats = [newChat];
+            setSelectedChat({
+              product: { _id: productId },
+              buyer: { _id: loggedUserId },
+            });
+          }
+        }
         try {
           const response = await client.get(`/chat`);
-          const chats = response.chats;
-          setChatList(chats);
+          const existingChats = response.chats;
 
-          // Seleccionar el chat correspondiente al productId si existe
-          if (selectedChat?.product?._id) {
-            const existingChat = chats.find(
-              (c) => c.product._id === selectedChat.product._id
-            );
-            if (existingChat) {
-              setSelectedChat(existingChat);
-            }
-          }
+          setChatList([...chats, ...existingChats]);
         } catch (error) {
           console.error("Error al obtener la lista de chats:", error);
         }
-      };
+      }
+    };
 
-      fetchChats();
-    }
-  }, [loggedUserId, selectedChat?.product?._id]);
+    fetchChats();
+  }, [loadedAd]);
 
   return (
     <StyledMyAccount>

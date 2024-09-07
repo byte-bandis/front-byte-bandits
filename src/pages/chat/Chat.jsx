@@ -5,6 +5,10 @@ import { client } from "../../api/client";
 import { getLoggedUserId } from "../../store/selectors";
 import { useSelector } from "react-redux";
 import { Check2All, Send } from "react-bootstrap-icons";
+import { getError } from "../../store/selectors";
+
+import { useDispatch } from "react-redux";
+import { resetMessage } from "../../store/uiSlice";
 
 const socket = io(import.meta.env.VITE_API_BASE_URL.replace("api/", ""), {
   transports: ["websocket"],
@@ -21,6 +25,8 @@ const Chat = ({ productId, buyerId }) => {
   const [messages, setMessages] = useState([]);
   const loggedUserId = useSelector(getLoggedUserId);
   const messageContainerRef = useRef(null);
+  const error = useSelector(getError);
+  const dispatch = useDispatch();
 
   useEffect(() => {
     const checkChatExists = async () => {
@@ -37,6 +43,9 @@ const Chat = ({ productId, buyerId }) => {
             chatId: existingChatId,
             userId: loggedUserId,
           });
+        } else {
+          setMessages([]);
+          setChatId(null);
         }
       } catch (error) {
         console.error("Error al verificar la existencia del chat:", error);
@@ -44,7 +53,7 @@ const Chat = ({ productId, buyerId }) => {
     };
 
     checkChatExists();
-  }, [productId, buyerId, loggedUserId]);
+  }, [productId, buyerId]);
 
   // Suscribirse a los eventos del chat después de que `chatId` esté disponible
   useEffect(() => {
@@ -86,6 +95,14 @@ const Chat = ({ productId, buyerId }) => {
       };
     }
   }, [chatId]);
+
+  const clearError = () => {
+    dispatch(resetMessage());
+  };
+
+  useEffect(() => {
+    if (error) clearError();
+  }, []);
 
   useEffect(() => {
     if (messageContainerRef.current) {

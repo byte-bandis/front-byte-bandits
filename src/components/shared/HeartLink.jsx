@@ -34,7 +34,7 @@ HeartLink.propTypes = {
 export default HeartLink;
 
 const StyledHeartLink = styled(Link)`
-  margin-right: ${(props) => props.$CustomMarginRight || "30px"};
+  margin: ${(props) => props.$CustomMargin || "0px 30px 0px 20px"};
   color: ${(props) => props.$CustomColor || "var(--primary-200)"};
   transition: ${(props) => props.$CustomTransition || "color 0.3s ease"};
 

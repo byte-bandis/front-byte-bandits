@@ -1,4 +1,4 @@
-import { Envelope } from "react-bootstrap-icons";
+import { Envelope, EnvelopeFill } from "react-bootstrap-icons";
 import PropTypes from "prop-types";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
@@ -26,7 +26,7 @@ export default EmailLink;
 
 const StyledEmailLink = styled(Link)`
   margin-right: ${(props) => props.$CustomMarginRight || "30px"};
-  color: ${(props) => props.$CustomColor || "blue"};
+  color: ${(props) => props.$CustomColor || "var(--primary-200)"};
   transition: ${(props) => props.$CustomTransition || "color 0.3s ease"};
 
   .envelope-icon:hover {

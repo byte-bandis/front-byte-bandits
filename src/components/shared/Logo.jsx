@@ -42,6 +42,7 @@ export default Logo;
 const StyledLogo = styled.div`
   width: ${(props) => props.$CustomWidth || "70px"};
   height: ${(props) => props.$CustomHeight || "auto"};
+  text-align: ${(props) => props.$CustomTextAlign || "center"};
 
   img.logo {
     width: ${(props) => props.$customImageWidth || "100%"};

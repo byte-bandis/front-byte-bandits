@@ -80,14 +80,6 @@ const RegisterPage = () => {
     }
   }, [uiState, dispatch, email, password, rememberMe, navigate]);
 
-  useEffect(() => {
-    return () => {
-      dispatch(resetForm());
-      dispatch(resetMessage());
-      dispatch(resetValidationErrors());
-    };
-  }, [dispatch]);
-
   const handleChange = (event) => {
     const { name, value, type, checked } = event.target;
     setFormData((prevFormData) => ({
@@ -115,6 +107,14 @@ const RegisterPage = () => {
 
     await dispatch(registerAsync(formData));
   };
+
+  useEffect(() => {
+    return () => {
+      dispatch(resetForm());
+      dispatch(resetMessage());
+      dispatch(resetValidationErrors());
+    };
+  }, [dispatch]);
 
   return (
     <Register className="RegisterForm">

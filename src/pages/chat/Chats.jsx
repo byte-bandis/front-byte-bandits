@@ -26,7 +26,7 @@ const Chats = () => {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    const fetchProductChat = async () => {
+    const checkProduct = async () => {
       if (productId && loggedUserId) {
         let fetchedAd = loadedAd;
         try {
@@ -47,18 +47,27 @@ const Chats = () => {
       }
     };
 
-    fetchProductChat();
-  }, []);
+    checkProduct();
+  }, [productId, loggedUserId]);
 
   useEffect(() => {
     const fetchChats = async () => {
       if (loggedUserId) {
-        let chats = [];
-        if (productId) {
+        try {
+          const response = await client.get(`/chat`);
+          const existingChats = response.chats;
+
+          if (productId) {
+            setSelectedChat({
+              product: { _id: productId },
+              buyer: { _id: loggedUserId },
+            });
+          }
+
           if (
+            productId &&
             loadedAd &&
-            chatList.filter((chat) => chat.product._id === productId).length ===
-              0
+            !existingChats.some((chat) => chat.product._id === productId)
           ) {
             const newChat = {
               product: {
@@ -75,18 +84,15 @@ const Chats = () => {
               },
               _id: "new",
             };
-            chats = [newChat];
-            setSelectedChat({
-              product: { _id: productId },
-              buyer: { _id: loggedUserId },
-            });
+            setChatList([newChat, ...existingChats]);
           }
-        }
-        try {
-          const response = await client.get(`/chat`);
-          const existingChats = response.chats;
 
-          setChatList([...chats, ...existingChats]);
+          if (
+            !productId ||
+            existingChats.some((chat) => chat.product._id === productId)
+          ) {
+            setChatList(existingChats);
+          }
         } catch (error) {
           console.error("Error al obtener la lista de chats:", error);
         }
@@ -94,7 +100,7 @@ const Chats = () => {
     };
 
     fetchChats();
-  }, [loadedAd]);
+  }, [loadedAd, loggedUserId, productId]);
 
   return (
     <StyledMyAccount>

@@ -41,7 +41,7 @@ const RegularButton = styled.button`
     opacity: 0.5;
     transform: scale(1);
     background-color: ${(props) =>
-      props.$customDisableBackGroundColor || "var(--bg-200)"};
+      props.$customDisableBackGroundColor || "var(--primary-200)"};
     color: ${(props) => props.$customDisabledColor || "var(--text-100)"};
     border: ${(props) =>
       props.$customDisabledBorder || "1px solid var(--bg-200)"};

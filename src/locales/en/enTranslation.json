@@ -122,5 +122,18 @@
       "facebook": "Facebook",
       "instagram": "Instagram"
     }
+  },
+
+  "login": {
+    "email": "Email",
+    "email_placeholder": "Enter your email",
+    "password": "Password",
+    "password_placeholder": "Enter your password",
+    "remember_me": "Remember me",
+    "logIn": "Log In",
+    "loggingIn": "Logging In...",
+    "register_new_user": "Register new user",
+    "forgot_password": "Forgot password?",
+    "sign_in": "Sign In"
   }
 }

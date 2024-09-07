@@ -92,7 +92,7 @@ const Profile = () => {
           />
           {loggedUserName === username && (
             <RegularButton
-              $customMargin="2rem 0 2rem 0"
+              $customMargin="2rem 0 2rem 1rem"
               onClick={handleShowForm}
             >
               {t("edit_your_profile")}

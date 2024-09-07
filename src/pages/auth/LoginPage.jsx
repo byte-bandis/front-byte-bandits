@@ -1,10 +1,10 @@
 import { useEffect, useState } from "react";
-import { Form, Button, Alert } from "react-bootstrap";
 import { loginWithThunk } from "../../store/loginThunk";
-//import { resetError } from "../../store/errorSlice";
 import "./login.css";
-
-import Logo from "../../assets/images/logo.svg";
+import CustomAlert from "../../components/shared/Alert";
+import { RegularButton } from "../../components/shared/buttons";
+import logoImage from "../../assets/images/IcraftYouLogoLight.png";
+import Logo from "../../components/shared/Logo";
 import { useDispatch, useSelector } from "react-redux";
 import { useLocation, useNavigate } from "react-router-dom";
 import {
@@ -14,9 +14,12 @@ import {
   getLoggedUserName,
   getUIMessage,
 } from "../../store/selectors";
-import { resetMessage } from "../../store/uiSlice";
+import { resetUI } from "../../store/uiSlice";
+import StyledContainer from "../../components/shared/StyledContainer";
+import { useTranslation } from "react-i18next";
 
 const LoginPage = () => {
+  const { t } = useTranslation();
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const location = useLocation();
@@ -88,7 +91,7 @@ const LoginPage = () => {
   };
 
   const handleCloseErrorAlert = () => {
-    dispatch(resetMessage());
+    dispatch(resetUI());
     setShow(false);
   };
   const handlePassword = () => {};
@@ -98,106 +101,104 @@ const LoginPage = () => {
       {/* Overlay */}
       <div className="sign-in__backdrop"></div>
       {/* Form */}
-      <Form
-        className="shadow p-4 bg-white rounded"
+      <form
+        className="sign-in__form"
         onSubmit={handleSubmit}
       >
         {/* Header */}
-        <img
-          className="img-thumbnail mx-auto d-block mb-2"
-          src={Logo}
-          alt="logo"
-        />
-        <div className="h4 mb-2 text-center">Sign In</div>
+        <StyledContainer $customDisplay="flex">
+          <Logo
+            src={logoImage}
+            alt="Byte Bandits logo"
+            $CustomWidth="30%"
+          />
+          <StyledContainer
+            $customDisplay="flex"
+            $customJustifyContent="center"
+            $customMargin="1rem"
+          >
+            <h4>{t("login.sign_in")}</h4>
+          </StyledContainer>
+        </StyledContainer>
         {/* Alert */}
-        {show ? (
-          <Alert
-            className="mb-2"
-            variant="danger"
+        {show && (
+          <CustomAlert
+            variant="error"
             onClose={handleCloseErrorAlert}
             dismissible
           >
             {message}
-          </Alert>
-        ) : (
-          <div />
+          </CustomAlert>
         )}
-        <Form.Group
-          className="mb-2"
-          controlId="email"
+        <StyledContainer
+          $customMargin
+          className="form-group"
         >
-          <Form.Label>Email</Form.Label>
-          <Form.Control
+          <label htmlFor="email">{t("login.email")}</label>
+          <input
             type="text"
+            id="email"
             value={inputEmail}
-            placeholder="Email"
+            placeholder={t("login.email_placeholder")}
             onChange={(e) => setInputEmail(e.target.value)}
             required
           />
-        </Form.Group>
-        <Form.Group
-          className="mb-2"
-          controlId="password"
-        >
-          <Form.Label>Password</Form.Label>
-          <Form.Control
+        </StyledContainer>
+        <StyledContainer className="form-group">
+          <label htmlFor="password">{t("login.password")}</label>
+          <input
             type="password"
+            id="password"
             value={inputPassword}
-            placeholder="Password"
+            placeholder={t("login.password_placeholder")}
             onChange={(e) => setInputPassword(e.target.value)}
             required
           />
-        </Form.Group>
-        <Form.Group
-          className="mb-2"
-          controlId="checkbox"
+        </StyledContainer>
+        <StyledContainer
+          $customDisplay="flex"
+          $customFlexDirection="row"
+          $customJustifyContent="flex-start"
+          $customGap="2%"
+          $customMargin="1rem 0 0 0"
         >
-          <Form.Check
+          <input
             type="checkbox"
-            label="Remember me"
             checked={checkboxStatus}
             onChange={handleCheckboxChange}
           />
-        </Form.Group>
-        {!isLogged.loading ? (
-          <Button
-            className="w-100"
-            variant="primary"
-            type="submit"
-          >
-            Log In
-          </Button>
-        ) : (
-          <Button
-            className="w-100"
-            variant="primary"
-            type="submit"
-            disabled
-          >
-            Logging In...
-          </Button>
-        )}
-        <div className="d-flex justify-content-between">
-          <Button
-            className="text-muted px-0"
-            variant="link"
+          <label>{t("login.remember_me")}</label>
+        </StyledContainer>
+        <RegularButton
+          $customMargin="2rem 0 2rem 0"
+          $customwidth="100%"
+          $variant="attention"
+          type="submit"
+          disabled={isLogged.loading}
+        >
+          {isLogged.loading ? t("login.loggingIn") : t("login.logIn")}
+        </RegularButton>
+        <StyledContainer
+          className="form-links"
+          $customDisplay="flex"
+          $customFlexDirection="row"
+          $customWidth="100%"
+          $customJustifyContent="space-between"
+        >
+          <button
+            className="form-link"
             onClick={handleToRegister}
           >
-            Register new user
-          </Button>
-          <Button
-            className="text-muted px-0"
-            variant="link"
+            {t("login.register_new_user")}
+          </button>
+          <button
+            className="form-link"
             onClick={handlePassword}
           >
-            Forgot password?
-          </Button>
-        </div>
-      </Form>
-      {/* Footer */}
-      <div className="w-100 mb-2 position-absolute bottom-0 start-50 translate-middle-x text-white text-center">
-        Made by Byte-Bandits | &copy;2024
-      </div>
+            {t("login.forgot_password")}
+          </button>
+        </StyledContainer>
+      </form>
     </div>
   );
 };

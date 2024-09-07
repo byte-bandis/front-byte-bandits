@@ -16,20 +16,74 @@
 }
 
 .sign-in__backdrop {
-  /* position        : absolute;
-    inset           : 0;
-    background-color: rgba(0, 0, 0, 0.3); */
+  position: absolute;
+  inset: 0;
+  opacity: 0.6;
+  background-color: var(--primary-300);
 }
 
-.sign-in__wrapper form {
+.sign-in__form {
   width: 24rem;
   max-width: 90%;
   z-index: 1;
   animation: showSignInForm 1s;
+  padding: 1rem 2rem 1rem 2rem;
+  color: var(--primary-300);
+  font-weight: 600;
+  background: white;
+  border-radius: 8px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
 
-.sign-in__wrapper form img {
+.sign-in__form img {
   width: 4rem;
+}
+
+.form-group {
+  margin-bottom: 1rem;
+}
+
+.form-group label {
+  display: block;
+  margin-bottom: 0.5rem;
+}
+
+.form-group input[type="text"],
+.form-group input[type="password"] {
+  width: 100%;
+  padding: 0.5rem;
+  border: 1px dotted var(--primary-300);
+  border-radius: 4px;
+}
+
+.form-button {
+  width: 100%;
+  padding: 0.5rem;
+  border: none;
+  border-radius: 4px;
+  background-color: var(--primary-500);
+  color: white;
+  cursor: pointer;
+  font-size: 1rem;
+}
+
+.form-button:disabled {
+  background-color: var(--primary-300);
+}
+
+.form-links {
+  display: flex;
+  flex-direction: "row";
+  justify-content: space-between;
+  margin-top: 1rem;
+}
+
+.form-link {
+  background: none;
+  border: none;
+  color: var(--primary-300);
+  cursor: pointer;
+  font-size: 0.875rem;
 }
 
 @keyframes showSignInForm {

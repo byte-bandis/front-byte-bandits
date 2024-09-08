@@ -74,7 +74,8 @@ export default DropdownLink;
 const DropdownContainer = styled.div`
   position: ${(props) => props.$CustomPosition || "relative"};
   display: ${(props) => props.$CustomDisplay || "inline-block"};
-  padding: ${(props) => props.$CustomPadding || "5px"};
+  padding: ${(props) => props.$CustomPadding || "0"};
+  gap: ${(props) => props.$CustomGap || "0"};
 `;
 
 const DropdownToggle = styled.button`
@@ -86,7 +87,7 @@ const DropdownToggle = styled.button`
   border: ${(props) => props.$CustomBorder || "none"};
   border-radius: ${(props) => props.$CustomBorderRadius || "5px"};
   width: ${(props) => props.$CustomWidth || "125px"};
-  margin: ${(props) => props.$CustomMagin || "10px"};
+  margin: ${(props) => props.$CustomMagin || "0"};
 
   &:hover {
     background-color: ${(props) =>

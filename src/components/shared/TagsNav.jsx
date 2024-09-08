@@ -38,7 +38,7 @@ const StyledNav = styled(Nav).attrs((props) => ({
   width: ${(props) => props.$CustomWidth || "80%"};
   flex-wrap: ${(props) => props.$CustomFlexWrap || "nowrap"};
   gap: ${(props) => props.$CustomGap || "10px"};
-  padding: ${(props) => props.$CustomPadding || "15px"};
+  padding: ${(props) => props.$CustomPadding || "0"};
   background-color: ${(props) =>
     props.$CustomBackgroundColor || "var(--advert-1)"};
   border-radius: ${(props) => props.$CustomBorderRadius || "5px"};

@@ -12,7 +12,7 @@ const LanguageSwitcher = ({ flag, ...props }) => {
   };
 
   return (
-    <ButtonContainer {...props}>
+    <ButtonContainer {...props} $widthContainer= "auto">
       <RegularButton
         onClick={() => handleLanguageChange("en")}
         $customBackground="transparent"

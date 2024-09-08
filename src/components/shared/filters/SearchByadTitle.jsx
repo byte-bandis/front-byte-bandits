@@ -79,13 +79,13 @@ const SearchByadTitle = ({ onSearch, onClear }) => {
 
   return (
     <>
-      <SearchContainer>
+      <SearchContainer className="">
         {" "}
         <SearchByName
           onChange={handleFilterAdsByName}
           value={adTitle}
           onEnter={handleSearch}
-          $CustomWidth="400px"
+          $CustomWidth="100%"
         />
         {adTitle && (
           <RegularButton
@@ -117,5 +117,5 @@ export default SearchByadTitle;
 const SearchContainer = styled.div`
   display: flex;
   justify-content: space-between;
-  width: ${(props) => props.$CustomWidth || "200px"};
+  width: ${(props) => props.$CustomWidth || "100%"};
 `;

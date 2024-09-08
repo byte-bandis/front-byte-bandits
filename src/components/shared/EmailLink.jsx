@@ -25,7 +25,7 @@ EmailLink.propTypes = {
 export default EmailLink;
 
 const StyledEmailLink = styled(Link)`
-  margin-right: ${(props) => props.$CustomMarginRight || "30px"};
+  margin-right: ${(props) => props.$CustomMarginRight || "0px"};
   color: ${(props) => props.$CustomColor || "var(--primary-200)"};
   transition: ${(props) => props.$CustomTransition || "color 0.3s ease"};
 

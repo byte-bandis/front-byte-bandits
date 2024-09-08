@@ -36,10 +36,11 @@ const Container = styled.div`
   display: ${(props) => props.customDisplay || "flex"};
   flex-direction: ${(props) => props.customFlexDirection || "column"};
   gap: ${(props) => props.customGap || "10px"};
-  padding: ${(props) => props.customPadding || "15px"};
+  padding: ${(props) => props.customPadding || "0"};
   background-color: ${(props) =>
     props.customBackgroundColor || "var(--advert-1)"};
   border-radius: ${(props) => props.customBorderRadius || "5px"};
+  width: ${(props) => props.$CustomWidth || "100%"};
 `;
 
 const Input = styled.input`

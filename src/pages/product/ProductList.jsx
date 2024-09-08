@@ -81,6 +81,9 @@ const StyledAdList = styled.div`
   margin: auto;
   display: grid;
   justify-content: center;
+  justify-items: center;
+
+
   gap: 10px;
   grid-template-columns: repeat(4, 235px);
   padding-top: 0px;

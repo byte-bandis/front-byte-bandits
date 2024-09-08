@@ -5,7 +5,7 @@ import ReplaceHeaderSpace from "../shared/ReplaceHeaderSpace";
 
 const Layout = ({ children }) => {
   return (
-    <div className="layout" style={{ display: "flex", flexDirection: "column", alignItems: "center" }}>
+    <div className="layout" >
       <ReplaceHeaderSpace></ReplaceHeaderSpace>
       <Header />
       {children}

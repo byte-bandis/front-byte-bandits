@@ -328,7 +328,7 @@ const StyledAdvertPage = styled.div`
             border-radius: 3px;
             color: var(--tag-2);
             height: fit-content;
-            background: var(--tag-1);
+            background: var(--accent-100);
         }
     }
 `;

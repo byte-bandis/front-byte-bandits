@@ -106,8 +106,8 @@ const StyledSingleAd = styled.div`
   display: flex;
   flex-direction: ${(props) => props.$customFlexDirection || "column"};
   overflow: hidden;
-  width: ${(props) => props.$customWidth || "240px"};
-  max-height: ${(props) => props.$customMaxHeight || "340px"};
+  width: ${(props) => props.$customWidth || "200px"};
+  max-height: ${(props) => props.$customMaxHeight || "300px"};
   gap: ${(props) => props.$customGap || "4px"};
   transition: 0.09s;
   border-radius: 10px;
@@ -179,7 +179,7 @@ const StyledSingleAd = styled.div`
     border-radius: 10px;
     color: var(--tag-2);
     height: fit-content;
-    background: var(--tag-1);
+    background: var(--accent-100);
     gap: 4px;
 
     & .pill-text {
@@ -198,7 +198,7 @@ const StyledSingleAd = styled.div`
   }
   & .sell {
     color: var(--botton-2);
-    background: var(--botton-1);
+    background: var(--primary-300);
   }
   &:hover {
     transform: translate(0, -5px);

@@ -79,6 +79,7 @@ const Chat = ({ socket, productId, buyerId }) => {
         socket.off("chatHistory");
         socket.off("newMessage");
         socket.off("messagesRead");
+        socket.emit("leaveChat", { chatId });
       };
     }
   }, [chatId]);

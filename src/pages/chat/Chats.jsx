@@ -11,8 +11,7 @@ import { getAdsSelector } from "../../store/selectors";
 import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { getAds } from "../../store/adsThunk";
-import storage from "../../utils/storage";
-import io from "socket.io-client";
+import socket from "../../utils/socket";
 
 const Chats = () => {
   const [chatList, setChatList] = useState([]);
@@ -27,35 +26,26 @@ const Chats = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
-  useEffect(() => {
+  /*useEffect(() => {
     if (!loggedUserId) return;
 
-    const socket = io(import.meta.env.VITE_API_BASE_URL.replace("api/", ""), {
-      transports: ["websocket"],
-      path:
-        import.meta.env.VITE_USER_NODE_ENV !== "production"
-          ? "/socket.io"
-          : "/api/socket.io",
-      query: {
-        token: storage.get("authToken"),
-      },
-      withCredentials: true,
-    });
-
     socket.emit("connectUser", loggedUserId);
+    console.log("Connected to socket");
 
     socket.on("messagesRead", () => {
-      // Implement logic to handle 'messagesRead'
+      fetchChats();
+      console.log("Messages read");
     });
 
     socket.on("newMessage", () => {
-      // Implement logic to handle 'newMessage'
+      fetchChats();
+      console.log("New message");
     });
 
     return () => {
       socket.disconnect();
     };
-  }, [loggedUserId]);
+  }, [loggedUserId]);*/
 
   useEffect(() => {
     const checkProduct = async () => {
@@ -83,56 +73,56 @@ const Chats = () => {
   }, [productId, loggedUserId]);
 
   useEffect(() => {
-    const fetchChats = async () => {
-      if (!loggedUserId) return;
-
-      try {
-        const response = await client.get(`/chat`);
-        const existingChats = response.chats || [];
-
-        if (productId) {
-          setSelectedChat({
-            product: { _id: productId },
-            buyer: { _id: loggedUserId },
-          });
-        }
-
-        if (
-          productId &&
-          loadedAd &&
-          !existingChats.some((chat) => chat.product._id === productId)
-        ) {
-          const newChat = {
-            product: {
-              _id: productId,
-              photo: loadedAd.photo,
-              adTitle: loadedAd.adTitle,
-            },
-            buyer: { _id: loggedUserId },
-            messages: [],
-            seller: {
-              _id: loadedAd.user._id,
-              name: loadedAd.user.name,
-              lastname: loadedAd.user.lastname,
-            },
-            _id: "new",
-          };
-          setChatList([newChat, ...existingChats]);
-        }
-
-        if (
-          !productId ||
-          existingChats.some((chat) => chat.product._id === productId)
-        ) {
-          setChatList(existingChats);
-        }
-      } catch (error) {
-        console.error("Error al obtener la lista de chats:", error);
-      }
-    };
-
     fetchChats();
   }, [loadedAd, loggedUserId, productId]);
+
+  const fetchChats = async () => {
+    if (!loggedUserId) return;
+
+    try {
+      const response = await client.get(`/chat`);
+      const existingChats = response.chats || [];
+
+      if (productId) {
+        setSelectedChat({
+          product: { _id: productId },
+          buyer: { _id: loggedUserId },
+        });
+      }
+
+      if (
+        productId &&
+        loadedAd &&
+        !existingChats.some((chat) => chat.product._id === productId)
+      ) {
+        const newChat = {
+          product: {
+            _id: productId,
+            photo: loadedAd.photo,
+            adTitle: loadedAd.adTitle,
+          },
+          buyer: { _id: loggedUserId },
+          messages: [],
+          seller: {
+            _id: loadedAd.user._id,
+            name: loadedAd.user.name,
+            lastname: loadedAd.user.lastname,
+          },
+          _id: "new",
+        };
+        setChatList([newChat, ...existingChats]);
+      }
+
+      if (
+        !productId ||
+        existingChats.some((chat) => chat.product._id === productId)
+      ) {
+        setChatList(existingChats);
+      }
+    } catch (error) {
+      console.error("Error al obtener la lista de chats:", error);
+    }
+  };
 
   return (
     <StyledMyAccount>
@@ -155,7 +145,6 @@ const Chats = () => {
         <div className="chat-window">
           {selectedChat && selectedChat.product?._id ? (
             <Chat
-              socket={socket}
               productId={selectedChat.product._id}
               buyerId={selectedChat.buyer._id}
             />

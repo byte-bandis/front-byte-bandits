@@ -5,11 +5,11 @@ import { getLoggedUserId } from "../../store/selectors";
 import { useSelector } from "react-redux";
 import { Check2All, Send } from "react-bootstrap-icons";
 import { getError } from "../../store/selectors";
-
 import { useDispatch } from "react-redux";
 import { resetMessage } from "../../store/uiSlice";
+import socket from "../../utils/socket";
 
-const Chat = ({ socket, productId, buyerId }) => {
+const Chat = ({ productId, buyerId }) => {
   const [chatId, setChatId] = useState(null);
   const [message, setMessage] = useState("");
   const [messages, setMessages] = useState([]);

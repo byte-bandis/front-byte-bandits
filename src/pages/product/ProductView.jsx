@@ -5,13 +5,14 @@ import { useEffect, useState } from 'react';
 import { deleteAd, getAds } from '../../store/adsThunk';
 import styled from 'styled-components';
 import Button from './components/Button';
-import { Heart, HeartFill } from 'react-bootstrap-icons';
+import { Heart, HeartFill, ChatFill, BrushFill } from 'react-bootstrap-icons';
 import { setLike } from '../../utils/setLike';
 import CommentItem from './components/CommentItem';
 import CommentForm from './components/CommentForm';
 import { getComments } from '../../store/commentsThunk';
 import Confirmator from '../../components/shared/Confirmator';
 import { getSinglePublicProfileWithThunk } from '../../store/profilesThunk';
+import { RegularButton } from '../../components/shared/buttons';
 
 const ProductView = () => {
     const origin = import.meta.env.VITE_API_BASE_URL;
@@ -36,6 +37,7 @@ const ProductView = () => {
     const usersData = useSelector(
         (state) => state.singlePublicProfile.data
     );
+    const username = useSelector((state) => state.authState.user.userName);
     let userphoto;
 
 
@@ -114,6 +116,34 @@ const ProductView = () => {
                         />
                     )}
 
+                    {authUser === owner._id ? (
+                        <RegularButton
+                            className='edit-chat-button'
+                            onClick={() => {
+                                navigate(`/${username}/edit/${productId}`);
+                            }
+                          }
+                            $customBackground='var(--primary-200)'
+                            $customColor='var(--bg-100)'
+                        >
+                           <BrushFill />  Editar 
+                        </RegularButton>
+                    ) : (
+                      <RegularButton
+                        className='edit-chat-button'
+                          onClick={() => {
+                              navigate(`/${username}/chat?productId=${productId}`);
+                          }
+                        }
+                          $customBackground='var(--primary-200)'
+                          $customColor='var(--bg-100)'
+
+                      >
+                          <ChatFill /> Chat
+                      </RegularButton>
+                    )
+                    }
+                    
                     {adTitle && (
                         <>
                             <div className='advert-img-container'>
@@ -249,6 +279,15 @@ const StyledAdvertPage = styled.div`
     }
     & .heartbutton {
         cursor: pointer;
+    }
+    & .edit-chat-button {
+        position: absolute;
+        top: 30px;
+        right: 30px;
+        z-index: 10;
+        display: flex;
+        align-items: center;
+        gap: 5px;
     }
     & h2,
     h1,

@@ -49,7 +49,6 @@ const LoginPage = () => {
     dispatch(resetUI());
     setShow(false);
   };
-  const handlePassword = () => {};
 
   return (
     <div className={"sign-in__wrapper"}>
@@ -69,7 +68,7 @@ const LoginPage = () => {
             $customJustifyContent="center"
             $customMargin="1rem"
           >
-            <h4>{t("login.sign_in")}</h4>
+            <h4>{t("login.restore_password_title")}</h4>
           </StyledContainer>
         </StyledContainer>
         {/* Alert */}
@@ -84,6 +83,17 @@ const LoginPage = () => {
           </CustomAlert>
         )}
         <StyledContainer
+          className="info"
+          $customDisplay="flex"
+          $customFlexDirection="row"
+          $customJustifyContent="flex-start"
+          $customGap="2%"
+          $customMargin="1rem 0 0 0"
+        >
+          <p>{t("login.insert_email_for_password_reminder")}</p>
+        </StyledContainer>
+
+        <StyledContainer
           $customMargin
           className="form-group"
         >
@@ -97,60 +107,16 @@ const LoginPage = () => {
             required
           />
         </StyledContainer>
-        <StyledContainer className="form-group">
-          <label htmlFor="password">{t("login.password")}</label>
-          <input
-            type="password"
-            id="password"
-            value={inputPassword}
-            placeholder={t("login.password_placeholder")}
-            onChange={(e) => setInputPassword(e.target.value)}
-            required
-          />
-        </StyledContainer>
-        <StyledContainer
-          $customDisplay="flex"
-          $customFlexDirection="row"
-          $customJustifyContent="flex-start"
-          $customGap="2%"
-          $customMargin="1rem 0 0 0"
-        >
-          <input
-            type="checkbox"
-            checked={checkboxStatus}
-            onChange={handleCheckboxChange}
-          />
-          <label>{t("login.remember_me")}</label>
-        </StyledContainer>
+
         <RegularButton
           $customMargin="2rem 0 2rem 0"
           $customwidth="100%"
           $variant="attention"
+          $customVerticalPadding=".6rem"
           type="submit"
-          disabled={isLogged.loading}
         >
-          {isLogged.loading ? t("login.loggingIn") : t("login.logIn")}
+          {t("send")}
         </RegularButton>
-        <StyledContainer
-          className="form-links"
-          $customDisplay="flex"
-          $customFlexDirection="row"
-          $customWidth="100%"
-          $customJustifyContent="space-between"
-        >
-          <button
-            className="form-link"
-            onClick={handleToLogin}
-          >
-            {t("login.register_new_user")}
-          </button>
-          <button
-            className="form-link"
-            onClick={handlePassword}
-          >
-            {t("login.forgot_password")}
-          </button>
-        </StyledContainer>
       </form>
     </div>
   );

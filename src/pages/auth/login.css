@@ -35,6 +35,10 @@
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
 
+.sign-in__form .info {
+  font-weight: 400;
+}
+
 .sign-in__form img {
   width: 4rem;
 }

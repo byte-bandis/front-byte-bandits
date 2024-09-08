@@ -16,7 +16,8 @@ import LayoutProfile from "../pages/customer/LayoutProfile";
 import PersonalInfo from "../pages/customer/PersonalInfo";
 import UserPublicInfo from "../pages/customer/UserPublicInfo";
 import Chats from "../pages/chat/Chats";
-import Safety from "../pages/customer/Safety.jsx";
+import Safety from "../pages/customer/Safety";
+import GetPassWordEmail from "../pages/auth/GetPasswordEmail";
 
 const RootRouter = () => {
   return (
@@ -40,6 +41,10 @@ const RootRouter = () => {
       <Route
         path=":username"
         element={<Profile />}
+      />
+      <Route
+        path="/password-reminder"
+        element={<GetPassWordEmail />}
       />
 
       {/*Private routes*/}

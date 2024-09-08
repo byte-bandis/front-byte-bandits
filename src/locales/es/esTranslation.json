@@ -79,7 +79,7 @@
   "credit_card_digits_only": "El número de tarjeta de crédito debe contener solo dígitos",
   "user_zone": "Mi zona",
   "log_out": "Desconectar",
-  "all_categories": "Todas las categorías",
+  "all_categories": "Todo",
   "lifestyle": "Estilo de vida",
   "mobile": "Móvil",
   "motor": "Motor",
@@ -111,6 +111,7 @@
   "delete_description": "Borrar descripción",
   "not_found": "No se ha encontrado el recurso solicitado",
   "profile_owner": "Perfil público de {{username}}",
+  "send": "Enviar",
   "footer": {
     "rightsReserved": "Todos los derechos reservados.",
     "aboutUs": "Sobre nosotros",
@@ -133,7 +134,9 @@
     "loggingIn": "Iniciando sesión...",
     "register_new_user": "Registrar usuario",
     "forgot_password": "¿Contraseña olvidada?",
-    "sign_in": "Inicia sesión"
+    "sign_in": "Inicia sesión",
+    "restore_password_title": "Recuperar contraseña",
+    "insert_email_for_password_reminder": "Escribe aquí el email con el que registraste tu cuenta. Te enviaremos un enlace para restablecer tu contraseña."
   },
   "name1": "Nombre",
   "introduce_your_product": "Introduce tu producto",

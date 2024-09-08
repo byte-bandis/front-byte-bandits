@@ -170,6 +170,7 @@ const LoginPage = () => {
           $customMargin="2rem 0 2rem 0"
           $customwidth="100%"
           $variant="attention"
+          $customVerticalPadding=".6rem"
           type="submit"
           disabled={isLogged.loading}
         >

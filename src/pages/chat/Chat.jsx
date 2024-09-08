@@ -1,5 +1,4 @@
 import React, { useEffect, useState, useRef } from "react";
-import io from "socket.io-client";
 import "./Chat.css";
 import { client } from "../../api/client";
 import { getLoggedUserId } from "../../store/selectors";
@@ -10,16 +9,7 @@ import { getError } from "../../store/selectors";
 import { useDispatch } from "react-redux";
 import { resetMessage } from "../../store/uiSlice";
 
-const socket = io(import.meta.env.VITE_API_BASE_URL.replace("api/", ""), {
-  transports: ["websocket"],
-  path:
-    import.meta.env.VITE_USER_NODE_ENV !== "production"
-      ? "/socket.io"
-      : "/api/socket.io",
-  withCredentials: true,
-});
-
-const Chat = ({ productId, buyerId }) => {
+const Chat = ({ socket, productId, buyerId }) => {
   const [chatId, setChatId] = useState(null);
   const [message, setMessage] = useState("");
   const [messages, setMessages] = useState([]);
@@ -41,7 +31,6 @@ const Chat = ({ productId, buyerId }) => {
           // Unirse al chat existente
           socket.emit("joinChat", {
             chatId: existingChatId,
-            userId: loggedUserId,
           });
         } else {
           setMessages([]);
@@ -71,7 +60,6 @@ const Chat = ({ productId, buyerId }) => {
         if (newMessage.user._id !== loggedUserId) {
           socket.emit("readMessage", {
             chatId,
-            userId: loggedUserId,
           });
         }
       });
@@ -129,7 +117,6 @@ const Chat = ({ productId, buyerId }) => {
           // Unirse al nuevo chat
           socket.emit("joinChat", {
             chatId: currentChatId,
-            userId: loggedUserId,
           });
         }
 

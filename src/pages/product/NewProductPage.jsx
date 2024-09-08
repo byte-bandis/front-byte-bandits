@@ -245,6 +245,7 @@ const NewProductPage = ({ isEditMode = false }) => {
     <StyledContainer
       className="mx-auto py-5"
       $customBackground="rgba(3, 88, 75, 0.6)"
+      $customBorderRadius="0"
     >
       <StyledForm onSubmit={handleSubmit}>
         <h4 className="mb-2 text-center">

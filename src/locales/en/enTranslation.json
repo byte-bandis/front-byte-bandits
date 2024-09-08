@@ -137,7 +137,12 @@
     "forgot_password": "Forgot password?",
     "sign_in": "Sign In",
     "restore_password_title": "Restore password",
-    "insert_email_for_password_reminder": "Please, insert here your account's email. We will send you a link to restore your forgotten password."
+    "insert_email_for_password_reminder": "Please, insert here your account's email. We will send you a link to restore your forgotten password.",
+    "info_insert_new_password": "Insert a new password for your registered account",
+    "insert_new_password": "New password",
+    "write_new_password": "Insert your new password",
+    "confirm_new_password": "Confirm password",
+    "write_confirm_new_password": "Write your new password again"
   },
   "name1": "Name",
   "introduce_your_product": "Introduce your product",

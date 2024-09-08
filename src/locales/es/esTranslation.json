@@ -136,7 +136,12 @@
     "forgot_password": "¿Contraseña olvidada?",
     "sign_in": "Inicia sesión",
     "restore_password_title": "Recuperar contraseña",
-    "insert_email_for_password_reminder": "Escribe aquí el email con el que registraste tu cuenta. Te enviaremos un enlace para restablecer tu contraseña."
+    "insert_email_for_password_reminder": "Escribe aquí el email con el que registraste tu cuenta. Te enviaremos un enlace para restablecer tu contraseña.",
+    "info_insert_new_password": "Escribe una contraseña nueva para tu cuenta.",
+    "insert_new_password": "Nueva contraseña",
+    "write_new_password": "Escribe tu nueva contraseña",
+    "confirm_new_password": "Confirmar contraseña",
+    "write_confirm_new_password": "Escribe tu nueva contraseña de nuevo"
   },
   "name1": "Nombre",
   "introduce_your_product": "Introduce tu producto",

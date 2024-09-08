@@ -17,7 +17,8 @@ import PersonalInfo from "../pages/customer/PersonalInfo";
 import UserPublicInfo from "../pages/customer/UserPublicInfo";
 import Chats from "../pages/chat/Chats";
 import Safety from "../pages/customer/Safety";
-import GetPassWordEmail from "../pages/auth/GetPasswordEmail";
+import SetRestorePasswordEmail from "../pages/auth/GetPasswordEmail";
+import RestorePassword from "../pages/auth/RestorePassword";
 
 const RootRouter = () => {
   return (
@@ -44,7 +45,11 @@ const RootRouter = () => {
       />
       <Route
         path="/password-reminder"
-        element={<GetPassWordEmail />}
+        element={<SetRestorePasswordEmail />}
+      />
+      <Route
+        path="/restore-password"
+        element={<RestorePassword />}
       />
 
       {/*Private routes*/}

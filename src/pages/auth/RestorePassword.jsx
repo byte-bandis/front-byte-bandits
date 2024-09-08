@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { loginWithThunk as requestForgottenPassword } from "../../store/loginThunk";
+import { loginWithThunk as sendNewPassword } from "../../store/loginThunk";
 import "./login.css";
 import CustomAlert from "../../components/shared/Alert";
 import { RegularButton } from "../../components/shared/buttons";
@@ -11,7 +11,7 @@ import { resetUI } from "../../store/uiSlice";
 import StyledContainer from "../../components/shared/StyledContainer";
 import { useTranslation } from "react-i18next";
 
-const SetRestorePasswordEmail = () => {
+const RestorePassword = () => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -20,10 +20,11 @@ const SetRestorePasswordEmail = () => {
   const toLogin = "/login";
   const isError = useSelector(getError);
   const message = useSelector(getUIMessage);
-  const [inputEmail, setInputEmail] = useState("");
+  const [inputNewPassword, setInputNewPassword] = useState("");
+  const [inputConfirmPassword, setInputConfirmPassword] = useState("");
   const [show, setShow] = useState(false);
   const resetForm = () => {
-    setInputEmail("");
+    setInputNewPassword("");
   };
 
   useEffect(() => {
@@ -39,8 +40,9 @@ const SetRestorePasswordEmail = () => {
   const handleSubmit = async (event) => {
     event.preventDefault();
     await dispatch(
-      requestForgottenPassword({
-        email: inputEmail,
+      sendNewPassword({
+        password: inputNewPassword,
+        confirmPassword: inputConfirmPassword,
       })
     );
   };
@@ -90,20 +92,36 @@ const SetRestorePasswordEmail = () => {
           $customGap="2%"
           $customMargin="1rem 0 0 0"
         >
-          <p>{t("login.insert_email_for_password_reminder")}</p>
+          <p>{t("login.info_insert_new_password")}</p>
         </StyledContainer>
 
         <StyledContainer
           $customMargin
           className="form-group"
         >
-          <label htmlFor="email">{t("login.email")}</label>
+          <label htmlFor="password">{t("login.insert_new_password")}</label>
           <input
-            type="text"
-            id="email"
-            value={inputEmail}
-            placeholder={t("login.email_placeholder")}
-            onChange={(e) => setInputEmail(e.target.value)}
+            type="password"
+            id="password"
+            value={inputNewPassword}
+            onChange={(e) => setInputNewPassword(e.target.value)}
+            placeholder={t("login.write_new_password")}
+            required
+          />
+        </StyledContainer>
+        <StyledContainer
+          $customMargin
+          className="form-group"
+        >
+          <label htmlFor="confirmPassword">
+            {t("login.confirm_new_password")}
+          </label>
+          <input
+            type="password"
+            id="confirmPassword"
+            value={inputConfirmPassword}
+            onChange={(e) => setInputConfirmPassword(e.target.value)}
+            placeholder={t("login.write_confirm_new_password")}
             required
           />
         </StyledContainer>
@@ -122,4 +140,4 @@ const SetRestorePasswordEmail = () => {
   );
 };
 
-export default SetRestorePasswordEmail;
+export default RestorePassword;

@@ -15,13 +15,13 @@ const ChatListItem = ({ chat, isSelected, onClick, loggedUserId }) => {
       onClick={onClick}
     >
       <img
-        src={product.photo}
-        alt={product.adTitle}
+        src={product?.photo}
+        alt={product?.adTitle}
         className="product-photo"
         crossOrigin="http://localhost:4000/"
       />
       <div className="chat-info">
-        <h3 className="product-title">{product.adTitle}</h3>
+        <h3 className="product-title">{product?.adTitle}</h3>
         <p className="counterpart-name">
           {loggedUserId === buyer._id ? "Vendedor" : "Comprador"}:
           {" " + counterpart.name + " " + counterpart.lastname}

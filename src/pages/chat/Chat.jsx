@@ -77,8 +77,8 @@ const Chat = ({ socket, productId, buyerId }) => {
       // Limpiar las suscripciones cuando el componente se desmonte o `chatId` cambie
       return () => {
         socket.off("chatHistory");
-        /* socket.off("newMessage");
-        socket.off("messagesRead");*/
+        socket.off("newMessage");
+        socket.off("messagesRead");
       };
     }
   }, [chatId]);

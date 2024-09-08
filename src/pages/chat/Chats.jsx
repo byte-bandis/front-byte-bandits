@@ -32,19 +32,17 @@ const Chats = () => {
     socket.emit("connectUser");
     console.log("Connected to socket");
 
-    socket.on("messagesRead", () => {
+    socket.on("userMessagesRead", () => {
       fetchChats();
-      console.log("Messages read");
     });
 
-    socket.on("newMessage", () => {
+    socket.on("userNewMessage", () => {
       fetchChats();
-      console.log("New message");
     });
 
     return () => {
-      socket.off("messagesRead");
-      socket.off("newMessage");
+      socket.off("userMessagesRead");
+      socket.off("userNewMessage");
     };
   }, [loggedUserId]);
 
@@ -75,6 +73,12 @@ const Chats = () => {
 
   useEffect(() => {
     fetchChats();
+    if (productId && !selectedChat) {
+      setSelectedChat({
+        product: { _id: productId },
+        buyer: { _id: loggedUserId },
+      });
+    }
   }, [loadedAd, loggedUserId, productId]);
 
   const fetchChats = async () => {
@@ -83,13 +87,6 @@ const Chats = () => {
     try {
       const response = await client.get(`/chat`);
       const existingChats = response.chats || [];
-
-      if (productId) {
-        setSelectedChat({
-          product: { _id: productId },
-          buyer: { _id: loggedUserId },
-        });
-      }
 
       if (
         productId &&

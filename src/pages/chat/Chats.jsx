@@ -43,6 +43,7 @@ const Chats = () => {
     return () => {
       socket.off("userMessagesRead");
       socket.off("userNewMessage");
+      socket.emit("disconnectUser");
     };
   }, [loggedUserId]);
 

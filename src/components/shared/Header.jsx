@@ -105,7 +105,7 @@ const Header = () => {
   ];
 
   const tagsOptions = TAG_OPTIONS.filter(
-    (tag) => tag.text !== t("all_categories"),
+    (tag) => tag.text !== t("all_categories")
   );
 
   return (
@@ -122,7 +122,7 @@ const Header = () => {
           $customBackground="var(--bg-100)"
         />
       )}
-      <HeaderStyledContainer $CustomMarginTop="-10px">
+      <HeaderStyledContainer>
         <StyledNav>
           <Logo
             $CustomWidth="100%"
@@ -137,7 +137,11 @@ const Header = () => {
           </SearchContainer>
           {isAuthenticated ? (
             <>
-              <HeartLink to={"/myaccount"} size={30} className="heartHead" />
+              <HeartLink
+                to={"/myaccount"}
+                size={30}
+                className="heartHead"
+              />
               <EmailLink
                 to={`/${loggedUser}/chat`}
                 size={35}
@@ -165,7 +169,11 @@ const Header = () => {
           ) : (
             //No authenticated
             <>
-              <LanguageSwitcher $marginContainer="0 1rem 0 0" $gap="5px" flag />
+              <LanguageSwitcher
+                $marginContainer="0 1rem 0 0"
+                $gap="5px"
+                flag
+              />
               <RegularButton
                 onClick={() =>
                   navigate("/login", { state: { from: location } })
@@ -211,10 +219,10 @@ export default Header;
 
 const HeaderStyledContainer = styled.div`
   position: ${(props) => props.$CustomPosition || "fixed"};
-  top: ${(props) => props.$CustomTop || 0};
-  left: ${(props) => props.$CustomLeft || 0};
-  right: ${(props) => props.$CustomRight || 0};
-  padding: ${(props) => props.$CustomPadding || "0 15px"};
+  top: ${(props) => props.$CustomTop || "0"};
+  left: ${(props) => props.$CustomLeft || "0"};
+  right: ${(props) => props.$CustomRight || "0"};
+  padding: ${(props) => props.$CustomPadding || "1rem"};
   display: ${(props) => props.$CustomDisplay || "flex"};
   justify-content: ${(props) => props.$CustomJustifyContent || "space-between"};
   align-items: ${(props) => props.$CustomAlignItems || "center"};
@@ -222,7 +230,7 @@ const HeaderStyledContainer = styled.div`
   z-index: ${(props) => props.$CustomZIndex || 2000};
   background-color: ${(props) =>
     props.$customBackGroundColor || "var(--bg-100)"};
-  margin-top: ${(props) => props.$CustomMarginTop || 0};
+  margin: ${(props) => props.$CustomMarginHeader || "0"};
 `;
 
 const StyledNav = styled.nav`
@@ -239,15 +247,17 @@ const SearchContainer = styled.div`
 
 const StyledTagsNavContainer = styled.div`
   position: ${(props) => props.$CustomPosition || "fixed"};
-  top: ${(props) => props.$CustomTop || "60px"};
-  left: ${(props) => props.$CustomLeft || 0};
-  right: ${(props) => props.$CustomRight || 0};
+  border-bottom: 1px dotted var(--primary-200);
+  top: ${(props) => props.$CustomTop || "120px"};
+  left: ${(props) => props.$CustomLeft || "0"};
+  right: ${(props) => props.$CustomRight || "0"};
   display: ${(props) => props.$CustomDisplay || "flex"};
   justify-content: ${(props) => props.$CustomJustifyContent || "flex-start"};
   align-items: ${(props) => props.$CustomAlignItems || "center"};
   width: ${(props) => props.$CustomWidth || "100%"};
   background-color: ${(props) =>
     props.$customBackGroundColor || "var(--bg-100)"};
+
   .allCategories {
     margin-right: ${(props) => props.$CustomMarginRight || "20px"};
   }

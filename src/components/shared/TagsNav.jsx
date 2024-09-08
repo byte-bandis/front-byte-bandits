@@ -7,8 +7,16 @@ const TagsNav = ({ options, ...rest }) => {
   return (
     <StyledNav {...rest}>
       {options.map((option, index) => (
-        <StyledNavItem as="li" key={index}>
-          <StyledNavLink as={Link} to={option.to}>
+        <StyledNavItem
+          as="li"
+          key={index}
+        >
+          <StyledNavLink
+            as={Link}
+            to={option.to}
+            $CustomBackgroundColor="transparent"
+            $CustomColor="var(--primary-300)"
+          >
             {option.text}
           </StyledNavLink>
         </StyledNavItem>
@@ -24,7 +32,7 @@ TagsNav.propTypes = {
       to: PropTypes.string,
       text: PropTypes.string.isRequired,
       className: PropTypes.string,
-    }),
+    })
   ).isRequired,
 };
 
@@ -61,11 +69,14 @@ const StyledNavLink = styled(Nav.Link).attrs((props) => ({
   color: ${(props) => props.$CustomColor || "var(--text-100)"};
   background-color: ${(props) =>
     props.$CustomBackgroundColor || "var(--bg-300)"};
+  border: ${(props) => props.$CustomBorder || "1px solid var(--primary-200)"};
   border-radius: ${(props) => props.$CustomBorderRadius || "5px"};
   text-align: center;
   text-decoration: none;
 
   &:hover {
+    background-color: ${(props) =>
+      props.$CustomHoverBackgroundColor || "var(--primary-200)"};
     color: ${(props) => props.$CustomHoverColor || "var(--bg-100)"};
   }
 `;

@@ -60,7 +60,10 @@ const ProductList = () => {
           <p className="no-ad">No hay resultados</p>
         )}
         {error && (
-          <ErrorMessage className="loginPage-error" onClick={resetError}>
+          <ErrorMessage
+            className="loginPage-error"
+            onClick={resetError}
+          >
             <h3>{error.toUpperCase()}</h3>
           </ErrorMessage>
         )}
@@ -78,7 +81,7 @@ ProductList.propTypes = {
   }),
 };
 const StyledAdList = styled.div`
-  margin: auto;
+  margin: 12% auto;
   display: grid;
   justify-content: center;
   gap: 10px;

@@ -128,9 +128,10 @@ const Header = () => {
       )}
 
       <HeaderStyledContainer
-        $CustomMargin=" 10px auto"
-        $CustomPadding="0px"
-        $CustomWidth="80%"
+        $CustomMargin=" 0 auto"
+        $CustomPadding="1rem 1rem"
+        $CustomWidth="100%"
+        $CustomBorderBottom="1px dotted var(--primary-100)"
       >
         <Logo
           $CustomWidth="10%"
@@ -252,6 +253,8 @@ const HeaderStyledContainer = styled.div`
   right: ${(props) => props.$CustomRight || 0};
   padding: ${(props) => props.$CustomPadding || "0"};
   display: ${(props) => props.$CustomDisplay || "flex"};
+  border: ${(props) => props.$CustomBorder || "none"};
+  border-bottom: ${(props) => props.$CustomBorderBottom || "none"};
   justify-content: ${(props) => props.$CustomJustifyContent || "space-between"};
   align-items: ${(props) => props.$CustomAlignItems || "center"};
   width: ${(props) => props.$CustomWidth || "auto"};

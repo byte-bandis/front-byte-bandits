@@ -40,17 +40,20 @@ const Container = styled.div`
   background-color: ${(props) =>
     props.customBackgroundColor || "var(--advert-1)"};
   border-radius: ${(props) => props.customBorderRadius || "5px"};
+
   width: ${(props) => props.$CustomWidth || "100%"};
 `;
 
 const Input = styled.input`
-  border: ${(props) => props.customBorder || "1px solid var(--border-1)"};
+  border: ${(props) => props.customBorder || "1px dotted var(--primary-200)"};
+  background: ${(props) => props.customBackground || "var(--bg-100)"};
   border-radius: ${(props) => props.customBorderRadius || "5px"};
   padding: ${(props) => props.customPadding || "8px"};
   width: ${(props) => props.$CustomWidth || "auto"};
 
   &:focus {
-    border-color: ${(props) => props.customBorderColor || "var(--border-1)"};
+    border-color: ${(props) =>
+      props.customBorderColor || "3px solid var(--primary-300)"};
     outline: none;
   }
 `;

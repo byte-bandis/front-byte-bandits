@@ -48,7 +48,7 @@ const StyledNav = styled(Nav).attrs((props) => ({
   gap: ${(props) => props.$CustomGap || "10px"};
   padding: ${(props) => props.$CustomPadding || "0"};
   background-color: ${(props) =>
-    props.$CustomBackgroundColor || "var(--advert-1)"};
+    props.$CustomBackgroundColor || "var(--bg-100)"};
   border-radius: ${(props) => props.$CustomBorderRadius || "5px"};
   list-style: none;
 `;

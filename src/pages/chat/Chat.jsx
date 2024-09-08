@@ -7,9 +7,8 @@ import { Check2All, Send } from "react-bootstrap-icons";
 import { getError } from "../../store/selectors";
 import { useDispatch } from "react-redux";
 import { resetMessage } from "../../store/uiSlice";
-import socket from "../../utils/socket";
 
-const Chat = ({ productId, buyerId }) => {
+const Chat = ({ socket, productId, buyerId }) => {
   const [chatId, setChatId] = useState(null);
   const [message, setMessage] = useState("");
   const [messages, setMessages] = useState([]);
@@ -78,8 +77,8 @@ const Chat = ({ productId, buyerId }) => {
       // Limpiar las suscripciones cuando el componente se desmonte o `chatId` cambie
       return () => {
         socket.off("chatHistory");
-        socket.off("newMessage");
-        socket.off("messagesRead");
+        /* socket.off("newMessage");
+        socket.off("messagesRead");*/
       };
     }
   }, [chatId]);
@@ -126,6 +125,7 @@ const Chat = ({ productId, buyerId }) => {
           content: message,
         };
 
+        console.log("Enviando mensaje:", newMessage);
         // Enviar el mensaje
         socket.emit("sendMessage", newMessage);
 

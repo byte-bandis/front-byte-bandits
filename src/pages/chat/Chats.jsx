@@ -26,10 +26,10 @@ const Chats = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
-  /*useEffect(() => {
+  useEffect(() => {
     if (!loggedUserId) return;
 
-    socket.emit("connectUser", loggedUserId);
+    socket.emit("connectUser");
     console.log("Connected to socket");
 
     socket.on("messagesRead", () => {
@@ -43,9 +43,10 @@ const Chats = () => {
     });
 
     return () => {
-      socket.disconnect();
+      socket.off("messagesRead");
+      socket.off("newMessage");
     };
-  }, [loggedUserId]);*/
+  }, [loggedUserId]);
 
   useEffect(() => {
     const checkProduct = async () => {
@@ -145,6 +146,7 @@ const Chats = () => {
         <div className="chat-window">
           {selectedChat && selectedChat.product?._id ? (
             <Chat
+              socket={socket}
               productId={selectedChat.product._id}
               buyerId={selectedChat.buyer._id}
             />

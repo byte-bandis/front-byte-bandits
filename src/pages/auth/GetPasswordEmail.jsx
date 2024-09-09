@@ -1,11 +1,10 @@
 import { useEffect, useState } from "react";
-import { loginWithThunk as requestForgottenPassword } from "../../store/loginThunk";
 import "./login.css";
 import CustomAlert from "../../components/shared/Alert";
 import { RegularButton } from "../../components/shared/buttons";
 import Logo from "../../components/shared/Logo";
 import { useDispatch, useSelector } from "react-redux";
-import { useLocation, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { getError, getUIMessage } from "../../store/selectors";
 import { resetUI } from "../../store/uiSlice";
 import StyledContainer from "../../components/shared/StyledContainer";
@@ -32,8 +31,15 @@ const SetRestorePasswordEmail = () => {
   useEffect(() => {
     if (isError) {
       setShow(true);
+      setShowSuccess(false);
     }
   }, [isError]);
+
+  useEffect(() => {
+    if (showSuccess) {
+      setShow(false);
+    }
+  }, [showSuccess]);
 
   const handleToLogin = () => {
     resetForm();
@@ -72,9 +78,8 @@ const SetRestorePasswordEmail = () => {
           <IconWrapper
             IconComponent={XCircle}
             size="30px"
-            color="var(--primary-200)"
             top="1%"
-            right="1%"
+            right="-5%"
             onClick={handleToLogin}
             cursor="pointer"
           />
@@ -92,7 +97,6 @@ const SetRestorePasswordEmail = () => {
           <CustomAlert
             variant="error"
             onClose={handleCloseErrorAlert}
-            dismissible
             $customWidth="100%"
           >
             {message}

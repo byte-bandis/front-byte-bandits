@@ -4,10 +4,7 @@ import styled from "styled-components";
 const CustomAlert = ({ variant, children, onClose, ...props }) => {
   const childrenArray = Array.isArray(children) ? children : [children];
   return (
-    <AlertMessage
-      variant={variant}
-      {...props}
-    >
+    <AlertMessage variant={variant} {...props}>
       {onClose && <CloseButton onClick={onClose}>X</CloseButton>}
       <div>
         {childrenArray.map((message, index) => (
@@ -36,11 +33,12 @@ const AlertMessage = styled.div`
   border-radius: ${(props) => props.$CustomBorderRadius || "4px"};
   background-color: ${(props) =>
     props.variant === "success"
-      ? "var(--success-2)"
+      ? "var(--primary-100)"
       : props.variant === "error"
-      ? "var(--error-2)"
-      : "var(--bg-100)"};
+        ? "var(--error-2)"
+        : "var(--bg-100)"};
   width: ${(props) => props.$customWidth || "70%"};
+  color: ${(props) => props.$customColor || "var(--text-100)"};
 `;
 
 const CloseButton = styled.button`

@@ -1,6 +1,7 @@
 import { client } from "../../../api/client";
 
 const userURL = "/user";
+const nodemailerURL = "/nodemailer";
 
 export const updateMyPassword = async (username, formData) => {
   const url = `${userURL}/${username}/password`;
@@ -19,7 +20,22 @@ export const validateEmailForRestorePassword = async (email, type) => {
     email,
     type,
   };
-  return client.post("nodemailer", credentials).then((response) => {
+
+  return client.post(nodemailerURL, credentials).then((response) => {
+    const result = {
+      state: response.state,
+      message: response.message,
+    };
+    return result;
+  });
+};
+
+export const sendMyRestoredPassword = async (token, formData) => {
+  const url = `${nodemailerURL}/reset-password/${token}`;
+  console.log("Este es el token en el service de restore pass: ", token);
+  console.log("Y esta es la URL que mando: ", url);
+
+  return client.put(url, formData).then((response) => {
     const result = {
       state: response.state,
       message: response.message,

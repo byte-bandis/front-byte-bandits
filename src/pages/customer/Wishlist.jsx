@@ -6,6 +6,7 @@ import styled from "styled-components";
 import P from "prop-types";
 import { useSelector, useDispatch } from "react-redux";
 import { useEffect } from "react";
+import { setPage } from "../../store/adsSlice";
 
 const Wishlist = () => {
   const dispatch = useDispatch();
@@ -17,8 +18,9 @@ const Wishlist = () => {
   const limit = searchParams.get("limit");
 
   useEffect(() => {
+    dispatch(setPage(1));
     if (userName) {
-      dispatch(getWishlist({ page, limit }));
+      dispatch(getWishlist({ page: 1, limit }));
     }
   }, [dispatch, userName, page, limit]);
 

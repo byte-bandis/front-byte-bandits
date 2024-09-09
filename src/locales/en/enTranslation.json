@@ -142,7 +142,9 @@
     "insert_new_password": "New password",
     "write_new_password": "Insert your new password",
     "confirm_new_password": "Confirm password",
-    "write_confirm_new_password": "Write your new password again"
+    "write_confirm_new_password": "Write your new password again",
+    "succes_sending_email_to_restore_password": "We have received your request. You will get an email with instructions to restore your password.",
+    "back_to_login": "Back to sign in"
   },
   "name1": "Name",
   "introduce_your_product": "Introduce your product",

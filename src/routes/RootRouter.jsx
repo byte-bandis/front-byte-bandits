@@ -48,7 +48,7 @@ const RootRouter = () => {
         element={<SetRestorePasswordEmail />}
       />
       <Route
-        path="/restore-password"
+        path="/reset-password/:token"
         element={<RestorePassword />}
       />
 

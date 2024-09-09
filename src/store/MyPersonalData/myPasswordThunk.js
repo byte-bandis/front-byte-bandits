@@ -12,3 +12,18 @@ export const updateMyPasswordWithThunk = createAsyncThunk(
     }
   }
 );
+
+export const validateEmailForRestorePasswordThunk = createAsyncThunk(
+  "password/restore",
+  async ({ email, type }, { rejectWithValue }) => {
+    try {
+      const response = await password.validateEmailForRestorePassword(
+        email,
+        type
+      );
+      return response;
+    } catch (error) {
+      return rejectWithValue(error.message);
+    }
+  }
+);

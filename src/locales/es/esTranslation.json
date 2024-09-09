@@ -141,7 +141,9 @@
     "insert_new_password": "Nueva contraseña",
     "write_new_password": "Escribe tu nueva contraseña",
     "confirm_new_password": "Confirmar contraseña",
-    "write_confirm_new_password": "Escribe tu nueva contraseña de nuevo"
+    "write_confirm_new_password": "Escribe tu nueva contraseña de nuevo",
+    "succes_sending_email_to_restore_password": "Hemos recibido tu solicitud para restablecer tu contraseña. Recibirás un email con instrucciones para finalizar el proceso de recuperación tu cuenta.",
+    "back_to_login": "Iniciar sesión"
   },
   "name1": "Nombre",
   "introduce_your_product": "Introduce tu producto",

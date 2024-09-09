@@ -5,6 +5,12 @@ export const getError = (state) => {
   }
   return null;
 };
+export const getSuccess = (state) => {
+  if (state.ui.state === "success") {
+    return state.ui.message;
+  }
+  return null;
+};
 export const getUI = (state) => state.ui;
 export const getUIMessage = (state) => state.ui.message;
 export const getUIState = (state) => state.ui.state;

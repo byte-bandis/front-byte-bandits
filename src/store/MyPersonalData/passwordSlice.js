@@ -1,5 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
 import {
+  sendMyRestoredPasswordThunk,
   updateMyPasswordWithThunk,
   validateEmailForRestorePasswordThunk,
 } from "./myPasswordThunk";
@@ -36,6 +37,11 @@ const myPasswordSlice = createSlice({
         state.message = action.payload.message;
       }
     );
+
+    builder.addCase(sendMyRestoredPasswordThunk.fulfilled, (state, action) => {
+      state.state = action.payload.state;
+      state.message = action.payload.message;
+    });
   },
 });
 

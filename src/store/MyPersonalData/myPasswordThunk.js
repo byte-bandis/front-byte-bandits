@@ -14,13 +14,25 @@ export const updateMyPasswordWithThunk = createAsyncThunk(
 );
 
 export const validateEmailForRestorePasswordThunk = createAsyncThunk(
-  "password/restore",
+  "restorePassword/validateEmail",
   async ({ email, type }, { rejectWithValue }) => {
     try {
       const response = await password.validateEmailForRestorePassword(
         email,
         type
       );
+      return response;
+    } catch (error) {
+      return rejectWithValue(error.message);
+    }
+  }
+);
+
+export const sendMyRestoredPasswordThunk = createAsyncThunk(
+  "restorePassword/restore",
+  async ({ token, formData }, { rejectWithValue }) => {
+    try {
+      const response = await password.sendMyRestoredPassword(token, formData);
       return response;
     } catch (error) {
       return rejectWithValue(error.message);

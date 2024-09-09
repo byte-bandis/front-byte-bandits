@@ -38,7 +38,7 @@ const ProductItem = ({ ad, $customTransform, $customMargin }) => {
       $customTransform={$customTransform}
     >
       <Link className="add" to={`/product/${_id}/${slug}`}>
-        <StyledSingleAd className="single-ad">
+        <StyledSingleAd className= {`single-ad ${sell ? "" : "buyitem"}`}>
           <div className="heart">
             {iLikeIt ? <HeartFill color="red" /> : <Heart color="red" />}
           </div>
@@ -61,7 +61,7 @@ const ProductItem = ({ ad, $customTransform, $customMargin }) => {
           <div className="textcontainer">
             <strong className="">{price} €</strong>
             <p className="item">{adTitle}</p>
-            <p className="pill sell">{sell ? "Venta" : "Compra"}</p>
+            <p className={`pill sell ${sell ? "" : "buy"}`}>{sell ? "Venta" : "Compra"}</p>
             <div className="tags-container">
               {tags.map((tag, index) => (
                 <div key={index} className="pill">
@@ -102,18 +102,21 @@ ProductItem.propTypes = {
 
 export default ProductItem;
 const StyledSingleAd = styled.div`
-  box-shadow: 0px 0px 9px 4px var(--shadow-1);
+  box-shadow: 0px 0px 1px 1px var(--shadow-1);
   display: flex;
   flex-direction: ${(props) => props.$customFlexDirection || "column"};
   overflow: hidden;
-  width: ${(props) => props.$customWidth || "200px"};
-  max-height: ${(props) => props.$customMaxHeight || "300px"};
+  width: ${(props) => props.$customWidth || "100%"};
+  max-height: ${(props) => props.$customMaxHeight || "340px"};
   gap: ${(props) => props.$customGap || "4px"};
   transition: 0.09s;
   border-radius: 10px;
   padding-bottom: 10px;
   position: relative;
-
+&.buyitem {
+    color: var(--botton-2);
+    background: var( --primary-100);
+  }
   background: var(--bg-200);
   & .heart {
     position: absolute;
@@ -197,8 +200,12 @@ const StyledSingleAd = styled.div`
     gap: 4px;
   }
   & .sell {
-    color: var(--botton-2);
-    background: var(--primary-300);
+    color: var(--bg-100);
+    background: var( --primary-200);
+  }
+  & .buy {
+    color: var(--bg-100);
+    background: var( --primary-300);
   }
   &:hover {
     transform: translate(0, -5px);
@@ -208,4 +215,6 @@ const StyledSingleAd = styled.div`
 const ReducirContainer = styled.div`
   margin: ${(props) => props.$customMargin || "0px"};
   transform: ${(props) => props.$customTransform || "scale(1.0)"};
+
+  width: 100%;
 `;

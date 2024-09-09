@@ -9,6 +9,7 @@ const CustomForm = ({
   submitButtonText = "Submit",
   isLoading = false,
   disableSubmit = false,
+  buttonStyles = {},
   ...rest
 }) => {
   return (
@@ -17,7 +18,11 @@ const CustomForm = ({
         <StyledLegend>{children}</StyledLegend>
 
         <ButtonContainer>
-          <RegularButton $type="submit" $disabled={disableSubmit || isLoading}>
+          <RegularButton
+            $type="submit"
+            $disabled={disableSubmit || isLoading}
+            {...buttonStyles}
+          >
             {isLoading ? "Submitting..." : submitButtonText}
           </RegularButton>
         </ButtonContainer>
@@ -35,6 +40,7 @@ CustomForm.propTypes = {
   submitButtonText: P.string,
   isLoading: P.bool,
   disableSubmit: P.bool,
+  buttonStyles: P.object,
 };
 
 const StyledForm = styled.div`
@@ -42,6 +48,12 @@ const StyledForm = styled.div`
   flex-direction: ${(props) => props.$CustomFlexDirection || "column"};
   justify-content: ${(props) => props.$CustomJustifyContent || "center"};
   align-items: ${(props) => props.$CustomAlignItems || "center"};
+  background-color: ${(props) => props.$CustomBackgroundColor || "white"};
+  margin-top: ${(props) => props.$CustomMarginTop || "0px"};
+  border-radius: ${(props) => props.$CustomBorderRadius || "0px"};
+  margin-bottom: ${(props) => props.$CustomMarginBottom || "0px"};
+  font-size: ${(props) => props.$CustomFontSize || "1rem"};
+  padding: ${(props) => props.$CustomPadding || "0px"};
 `;
 
 const StyledLegend = styled.div`

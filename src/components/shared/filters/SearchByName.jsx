@@ -43,13 +43,13 @@ const Container = styled.div`
 `;
 
 const Input = styled.input`
-  border: ${(props) => props.customBorder || "1px solid var(--border-1)"};
+  border: ${(props) => props.customBorder || "1px solid var(--primary-200)"};
   border-radius: ${(props) => props.customBorderRadius || "5px"};
   padding: ${(props) => props.customPadding || "8px"};
   width: ${(props) => props.$CustomWidth || "auto"};
 
   &:focus {
-    border-color: ${(props) => props.customBorderColor || "var(--border-1)"};
+    border-color: ${(props) => props.customBorderColor || "var(--primary-200)"};
     outline: none;
   }
 `;

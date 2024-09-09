@@ -17,10 +17,14 @@ import { loginWithThunk } from "../../store/loginThunk";
 import CustomForm from "../../components/shared/Form";
 import CustomAlert from "../../components/shared/Alert";
 import styled from "styled-components";
+import StyledContainer from "../../components/shared/StyledContainer";
+import "./RegisterPage.css";
+import { useTranslation } from "react-i18next";
 
 const RegisterPage = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const { t } = useTranslation();
 
   const [formData, setFormData] = useState({
     username: "",
@@ -40,6 +44,7 @@ const RegisterPage = () => {
   const { loading } = useSelector((state) => state.register);
   const [disableSubmit, setDisableSubmit] = useState(true);
   const [rememberMe, setRememberMeStatus] = useState(false);
+  console.log("disableSubmit", disableSubmit);
 
   const handleRememberMeStatus = (event) => {
     setRememberMeStatus(event.target.checked);
@@ -65,7 +70,7 @@ const RegisterPage = () => {
   } = formData;
 
   useEffect(() => {
-    if (uiState === "success") {
+    if (uiState === "success" && email && password) {
       const timer = setTimeout(() => {
         dispatch(
           loginWithThunk({
@@ -92,6 +97,8 @@ const RegisterPage = () => {
   const handleSubmit = async (event) => {
     event.preventDefault();
 
+    if (disableSubmit) return;
+
     const errors = validate({
       password,
       passwordConfirmation,
@@ -116,25 +123,39 @@ const RegisterPage = () => {
     };
   }, [dispatch]);
 
+  const buttonStyles = {
+    $customBackground: "var(--accent-100)",
+    $customColor: "var(--text-100)",
+    $customHoverBackgroundColor: "var(--accent-200)",
+    $customDisabledColor: "gray",
+    $customDisableBackGroundColor: "lightgray",
+    $customVerticalPadding: "5px 15px",
+  };
+
   return (
     <Register className="RegisterForm">
       <CustomForm
         className="registerForm"
         onSubmit={handleSubmit}
-        submitButtonText="Register"
+        submitButtonText={t("Register")}
         isLoading={loading}
         disableSubmit={disableSubmit}
+        buttonStyles={buttonStyles}
         $alertMessage={uiMessage}
         $alertVariant={uiState === "error" ? "error" : "success"}
         $onAlertClose={() => {
           dispatch(resetMessage());
           dispatch(resetValidationErrors());
         }}
+        $CustomBorderRadius="15px"
+        $CustomMarginTop="40px"
+        $CustomMarginBottom="20px"
+        $CustomFontSize="0.8rem"
+        $CustomPadding="20px 10px"
       >
         <Logo />
 
-        <div className="register">Register</div>
-
+        <h4 className="register">{t("Register")} </h4>
         {uiMessageArray.length > 0 && (
           <CustomAlert
             variant={uiState === "error" ? "error" : "success"}
@@ -148,64 +169,92 @@ const RegisterPage = () => {
         )}
 
         <FormContainer>
-          <CustomLabel htmlFor="username">Username:</CustomLabel>
-          <CustomInput
-            type="text"
-            name="username"
-            id="username"
-            value={username}
-            onChange={handleChange}
-            placeholder="Username"
-            required
-          />
+          <StyledContainer
+            $customDisplay="flex"
+            $customAlignItems="start"
+            $customMargin="1rem"
+            $customGap="0px"
+          >
+            <StyledLabel htmlFor="username">{t("Username")}:</StyledLabel>
+            <StyledInput
+              type="text"
+              name="username"
+              id="username"
+              value={username}
+              onChange={handleChange}
+              placeholder={t("Username")}
+              required
+            />
+          </StyledContainer>
+          <StyledContainer
+            $customDisplay="flex"
+            $customAlignItems="start"
+            $customMargin="1rem"
+          >
+            <StyledLabel htmlFor="email">{t("Email")}:</StyledLabel>
+            <StyledInput
+              type="email"
+              name="email"
+              id="email"
+              value={email}
+              onChange={handleChange}
+              placeholder={t("Email")}
+              required
+            />
+          </StyledContainer>
+          <StyledContainer
+            $customDisplay="flex"
+            $customAlignItems="start"
+            $customMargin="1rem"
+          >
+            <StyledLabel htmlFor="password">{t("Password")}:</StyledLabel>
+            <StyledInput
+              type="password"
+              name="password"
+              id="password"
+              value={password}
+              onChange={handleChange}
+              placeholder={t("Password")}
+              required
+            />
+          </StyledContainer>
 
-          <CustomLabel htmlFor="email">Email:</CustomLabel>
-          <CustomInput
-            type="email"
-            name="email"
-            id="email"
-            value={email}
-            onChange={handleChange}
-            placeholder="Email"
-            required
-          />
+          <StyledContainer
+            $customDisplay="flex"
+            $customAlignItems="start"
+            $customMargin="1rem"
+          >
+            <StyledLabel htmlFor="passwordConfirmation">
+              {t("Repeat Password")}:
+            </StyledLabel>
+            <StyledInput
+              type="password"
+              name="passwordConfirmation"
+              id="passwordConfirmation"
+              value={passwordConfirmation}
+              onChange={handleChange}
+              placeholder={t("Repeat Password")}
+              required
+            />
+          </StyledContainer>
 
-          <CustomLabel htmlFor="password">Password:</CustomLabel>
-          <CustomInput
-            type="password"
-            name="password"
-            id="password"
-            value={password}
-            onChange={handleChange}
-            placeholder="Password"
-            required
-          />
-
-          <CustomLabel htmlFor="passwordConfirmation">
-            Repeat Password:
-          </CustomLabel>
-          <CustomInput
-            type="password"
-            name="passwordConfirmation"
-            id="passwordConfirmation"
-            value={passwordConfirmation}
-            onChange={handleChange}
-            placeholder="Repeat password"
-            required
-          />
-
-          <CustomLabel htmlFor="birthdate">Birthdate:</CustomLabel>
-          <CustomInput
-            type="date"
-            name="birthdate"
-            id="birthdate"
-            value={birthdate}
-            onChange={handleChange}
-            required
-          />
-
+          <StyledContainer
+            $customDisplay="flex"
+            $customAlignItems="start"
+            $customMargin="1rem"
+          >
+            <StyledLabel htmlFor="birthdate">{t("Birthdate:")}</StyledLabel>
+            <StyledInput
+              type="date"
+              name="birthdate"
+              id="birthdate"
+              value={birthdate}
+              onChange={handleChange}
+              required
+            />
+          </StyledContainer>
           <CheckedContainers>
-            <CustomInputChecked
+            <input
               type="checkbox"
               name="acceptTerms"
               id="acceptTerms"
@@ -213,36 +262,36 @@ const RegisterPage = () => {
               onChange={handleChange}
               required
             />
-            <CustomLabel htmlFor="acceptTerms">
-              By creating an account, you agree to our &nbsp;
+            <label htmlFor="acceptTerms">
+              {t("By creating an account, you agree to our")}&nbsp;
               <a
                 href="/terms-and-conditions"
                 target="_blank"
                 rel="noopener noreferrer"
               >
-                terms and conditions
+                {t("terms and conditions")};
               </a>
-              . Read our &nbsp;
+              . {t("Read our")}&nbsp;
               <a
                 href="/privacy-policy"
                 target="_blank"
                 rel="noopener noreferrer"
               >
-                privacy and cookies policy &nbsp;
+                {t("privacy and cookies policy")}&nbsp;
               </a>
-              to find out how we collect and use your personal data.
-            </CustomLabel>
+              {t("to find out how we collect and use your personal data.")}
+            </label>
           </CheckedContainers>
 
           <CheckedContainers>
-            <CustomInputChecked
+            <input
               type="checkbox"
               name="rememberMe"
               id="rememberMe"
               checked={rememberMe}
               onChange={handleRememberMeStatus}
             />
-            <CustomLabel htmlFor="rememberMe">Remember me</CustomLabel>
+            <label htmlFor="rememberMe">{t("Remember me")}</label>
           </CheckedContainers>
         </FormContainer>
       </CustomForm>
@@ -257,17 +306,17 @@ const Register = styled.div`
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  background-color: var(--bg-100);
+  background-color: var(--primary-200);
+  color: var(--primary-300);
   .button {
     margin: 0 100px;
   }
 `;
 
 const FormContainer = styled.div`
-  width: 400px;
-  padding: 2rem;
+  width: 500px;
+  margin: 0rem 2rem;
   border-radius: 5px;
-  background-color: var(--bg-200);
   box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
 `;
 
@@ -276,28 +325,14 @@ const CheckedContainers = styled.div`
   gap: 5px;
 `;
 
-const CustomLabel = styled.label`
-  display: block;
-  margin-bottom: 5px;
-  font-size: 0.8rem;
-  color: var(--text-100);
+const StyledLabel = styled.label`
+  border-radius: 4px;
+  font-weight: bold;
 `;
 
-const CustomInput = styled.input`
-  display: block;
-  width: 100%;
-  padding: 10px;
-  border: 1px solid var(--border-1);
-  border-radius: 3px;
-  font-size: 1rem;
-  margin-bottom: 15px;
-`;
-
-const CustomInputChecked = styled.input`
-  display: block;
-  padding: 0px;
-  border: 1px solid var(--border-1);
-  border-radius: 3px;
-  font-size: 1rem;
-  margin-bottom: 15px;
+const StyledInput = styled.input`
+  width: 80%;
+  padding: 0.5rem;
+  border: 1px dotted var(--primary-300);
+  border-radius: 4px;
 `;

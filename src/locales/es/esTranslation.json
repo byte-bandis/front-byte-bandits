@@ -164,5 +164,17 @@
   "enter_valid_product_price": "Introduce un precio válido",
   "select_transaction_type": "Selecciona el tipo de transacción",
   "select_at_least_one_tag": "Selecciona al menos una etiqueta",
-  "drag_and_drop_your_image_here_or_click_to_upload_from_your_computer": "Arrastra y suelta tu imagen aquí o haz clic para subirla desde tu ordenador"
+  "drag_and_drop_your_image_here_or_click_to_upload_from_your_computer": "Arrastra y suelta tu imagen aquí o haz clic para subirla desde tu ordenador",
+  "Register": "Registrarse",
+  "Username": "Nombre de usuario",
+  "Email": "Correo electrónico",
+  "Password": "Contraseña",
+  "Repeat Password": "Repetir contraseña",
+  "Birthdate": "Fecha de nacimiento",
+  "By creating an account, you agree to our": "Al crear una cuenta, aceptas nuestros",
+  "terms and conditions": "términos y condiciones",
+  "Read our": "Lee nuestra",
+  "privacy and cookies policy": "política de privacidad y cookies",
+  "to find out how we collect and use your personal data.": "para saber cómo recopilamos y utilizamos tus datos personales.",
+  "Remember me": "Recordarme"
 }

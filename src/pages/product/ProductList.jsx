@@ -80,12 +80,12 @@ ProductList.propTypes = {
 const StyledAdList = styled.div`
   margin: auto;
   display: grid;
-  justify-content: center;
+justify-content: space-between;
   justify-items: center;
+  width: 80%;
 
-
-  gap: 10px;
-  grid-template-columns: repeat(4, 235px);
+  gap: 30px;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
   padding-top: 0px;
 
   &:has(.no-ad[noad]) {

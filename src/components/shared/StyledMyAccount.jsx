@@ -48,6 +48,7 @@ const StyledMyAccount = ({ children }) => {
         $FlexDirection="column"
         $CustomWidth="13.5%"
         $CustomGap="20px"
+        $CustomMargin="1rem"
       ></TagsNav>
       <StyledContainer>{children}</StyledContainer>
     </>

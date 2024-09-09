@@ -93,7 +93,10 @@ const LoginPage = () => {
     dispatch(resetUI());
     setShow(false);
   };
-  const handlePassword = () => {};
+  const handlePassword = (event) => {
+    event.preventDefault();
+    navigate("/password-reminder");
+  };
 
   return (
     <div className={`sign-in__wrapper ${isLogged.authState ? "hidden" : ""}`}>

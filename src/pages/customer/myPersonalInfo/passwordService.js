@@ -13,3 +13,17 @@ export const updateMyPassword = async (username, formData) => {
     return result;
   });
 };
+
+export const validateEmailForRestorePassword = async (email, type) => {
+  const credentials = {
+    email,
+    type,
+  };
+  return client.post("nodemailer", credentials).then((response) => {
+    const result = {
+      state: response.state,
+      message: response.message,
+    };
+    return result;
+  });
+};

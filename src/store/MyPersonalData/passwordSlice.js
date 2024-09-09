@@ -1,5 +1,8 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { updateMyPasswordWithThunk } from "./myPasswordThunk";
+import {
+  updateMyPasswordWithThunk,
+  validateEmailForRestorePasswordThunk,
+} from "./myPasswordThunk";
 
 export const defaultPasswordState = {
   data: {},
@@ -26,6 +29,13 @@ const myPasswordSlice = createSlice({
       state.state = action.payload.state;
       state.message = action.payload.message;
     });
+    builder.addCase(
+      validateEmailForRestorePasswordThunk.fulfilled,
+      (state, action) => {
+        state.state = action.payload.state;
+        state.message = action.payload.message;
+      }
+    );
   },
 });
 

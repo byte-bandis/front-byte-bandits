@@ -1,55 +1,85 @@
 import { useEffect, useState } from "react";
-import { loginWithThunk as sendNewPassword } from "../../store/loginThunk";
 import "./login.css";
 import CustomAlert from "../../components/shared/Alert";
 import { RegularButton } from "../../components/shared/buttons";
 import Logo from "../../components/shared/Logo";
 import { useDispatch, useSelector } from "react-redux";
-import { useLocation, useNavigate } from "react-router-dom";
-import { getError, getUIMessage } from "../../store/selectors";
+import { useNavigate, useParams } from "react-router-dom";
+import { getError, getSuccess } from "../../store/selectors";
 import { resetUI } from "../../store/uiSlice";
 import StyledContainer from "../../components/shared/StyledContainer";
 import { useTranslation } from "react-i18next";
+import IconWrapper from "../../components/shared/iconsComponents/IconWrapper";
+import { XCircle } from "react-bootstrap-icons";
+import { sendMyRestoredPasswordThunk } from "../../store/MyPersonalData/myPasswordThunk";
 
 const RestorePassword = () => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const location = useLocation();
-  const from = location.state?.from || "/";
   const toLogin = "/login";
   const isError = useSelector(getError);
-  const message = useSelector(getUIMessage);
+  const isSuccess = useSelector(getSuccess);
   const [inputNewPassword, setInputNewPassword] = useState("");
   const [inputConfirmPassword, setInputConfirmPassword] = useState("");
-  const [show, setShow] = useState(false);
+  const [showError, setShowError] = useState(false);
+  const [showSuccess, setShowSuccess] = useState(false);
+  const [formData, setFormData] = useState({
+    newPassword: "",
+    confirmPassword: "",
+  });
+
+  useEffect(() => {
+    setFormData({
+      newPassword: inputNewPassword,
+      confirmPassword: inputConfirmPassword,
+    });
+  }, [inputNewPassword, inputConfirmPassword]);
+
+  const { token } = useParams();
   const resetForm = () => {
     setInputNewPassword("");
+    setInputConfirmPassword("");
   };
 
   useEffect(() => {
     if (isError) {
-      setShow(true);
+      setShowError(true);
+      setShowSuccess(false);
     }
   }, [isError]);
 
+  useEffect(() => {
+    if (isSuccess) {
+      setShowSuccess(true);
+      setShowError(false);
+      const timer = setTimeout(() => {
+        navigate(toLogin);
+      }, 2000);
+      return () => clearTimeout(timer);
+    }
+  }, [isSuccess, navigate]);
+
   const handleToLogin = () => {
-    navigate(toLogin, { replace: true });
+    resetForm();
+    dispatch(resetUI());
+    navigate(toLogin);
   };
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-    await dispatch(
-      sendNewPassword({
-        password: inputNewPassword,
-        confirmPassword: inputConfirmPassword,
-      })
-    );
+    dispatch(resetUI());
+    dispatch(sendMyRestoredPasswordThunk({ token, formData }));
+    resetForm();
   };
 
   const handleCloseErrorAlert = () => {
     dispatch(resetUI());
-    setShow(false);
+    setShowError(false);
+  };
+  const handleCloseSuccessAlert = () => {
+    dispatch(resetUI());
+    setShowSuccess(false);
   };
 
   return (
@@ -64,6 +94,14 @@ const RestorePassword = () => {
       >
         {/* Header */}
         <StyledContainer $customDisplay="flex">
+          <IconWrapper
+            IconComponent={XCircle}
+            size="30px"
+            top="1%"
+            right="-5%"
+            onClick={handleToLogin}
+            cursor="pointer"
+          />
           <Logo $CustomWidth="30%" />
           <StyledContainer
             $customDisplay="flex"
@@ -74,14 +112,23 @@ const RestorePassword = () => {
           </StyledContainer>
         </StyledContainer>
         {/* Alert */}
-        {show && (
+        {showError && (
           <CustomAlert
             variant="error"
             onClose={handleCloseErrorAlert}
-            dismissible
             $customWidth="100%"
           >
-            {message}
+            {isError}
+          </CustomAlert>
+        )}
+
+        {showSuccess && (
+          <CustomAlert
+            variant="success"
+            onClose={handleCloseSuccessAlert}
+            $customWidth="100%"
+          >
+            {isSuccess}
           </CustomAlert>
         )}
         <StyledContainer
@@ -99,10 +146,10 @@ const RestorePassword = () => {
           $customMargin
           className="form-group"
         >
-          <label htmlFor="password">{t("login.insert_new_password")}</label>
+          <label htmlFor="newPassword">{t("login.insert_new_password")}</label>
           <input
             type="password"
-            id="password"
+            id="newPassword"
             value={inputNewPassword}
             onChange={(e) => setInputNewPassword(e.target.value)}
             placeholder={t("login.write_new_password")}

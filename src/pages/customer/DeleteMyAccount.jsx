@@ -6,6 +6,7 @@ import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { deleteUserWithThunk } from "../../store/userThunk.js";
 import {
+  getLoading,
   getLoggedUserName,
   getUIMessage,
   getUIState,
@@ -16,6 +17,7 @@ import CustomAlert from "../../components/shared/Alert.jsx";
 import { resetUI } from "../../store/uiSlice.js";
 import { resetLoggedUserInfo } from "../../store/authSlice.js";
 import { resetSinglePublicProfile } from "../../store/singlePublicProfileSlice.js";
+import CustomPulseLoader from "../../components/shared/spinners/CustomPulseLoader.jsx";
 
 const Safety = () => {
   const { t } = useTranslation();
@@ -28,7 +30,7 @@ const Safety = () => {
   const deletionMessageType = useSelector(getUIState);
   const goBack = -1;
   const reloadPage = true;
-
+  const isLoading = useSelector(getLoading);
   const handleHideConfirmator = () => {
     setShowConfirmator(false);
   };
@@ -65,17 +67,24 @@ const Safety = () => {
             {deletionMessage}
           </CustomAlert>
         )}
-        <Confirmator
-          hidden={showConfirmator}
-          textValue={t("delete_your_account")}
-          onConfirm={fireDeletion}
-          sethiden={handleHideConfirmator}
-          $customBackground="var(--bg-100)"
-          $customBorder="2px solid var(--error-2)"
-          $blurerPosition="fixed"
-          $blurerBackgroundColor="var(--primary-200)"
-          goBack
-        />
+        {isLoading ? (
+          <CustomPulseLoader
+            loading={isLoading}
+            $customHeight="200px"
+          />
+        ) : (
+          <Confirmator
+            hidden={showConfirmator}
+            textValue={t("delete_your_account")}
+            onConfirm={fireDeletion}
+            sethiden={handleHideConfirmator}
+            $customBackground="var(--bg-100)"
+            $customBorder="2px solid var(--error-2)"
+            $blurerPosition="fixed"
+            $blurerBackgroundColor="var(--primary-200)"
+            goBack
+          />
+        )}
       </StyledContainer>
     </StyledMyAccount>
   );

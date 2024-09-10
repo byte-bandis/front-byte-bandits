@@ -39,8 +39,8 @@ const Safety = () => {
     if (deletionMessageType === "success") {
       const timer = setTimeout(() => {
         setShowDeletionResult(false);
-        dispatch(resetUI());
         logout(reloadPage);
+        dispatch(resetUI());
         dispatch(resetLoggedUserInfo());
         dispatch(resetSinglePublicProfile());
       }, 3000);
@@ -73,6 +73,7 @@ const Safety = () => {
           $customBackground="var(--bg-100)"
           $customBorder="2px solid var(--error-2)"
           $blurerPosition="fixed"
+          $blurerBackgroundColor="var(--primary-200)"
           goBack
         />
       </StyledContainer>

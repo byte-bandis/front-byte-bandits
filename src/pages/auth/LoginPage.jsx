@@ -17,6 +17,8 @@ import {
 import { resetUI } from "../../store/uiSlice";
 import StyledContainer from "../../components/shared/StyledContainer";
 import { useTranslation } from "react-i18next";
+import IconWrapper from "../../components/shared/iconsComponents/IconWrapper";
+import { XCircle } from "react-bootstrap-icons";
 import CustomPulseLoader from "../../components/shared/spinners/CustomPulseLoader";
 
 const LoginPage = () => {
@@ -77,6 +79,10 @@ const LoginPage = () => {
     navigate(toRegister, { replace: true });
   };
 
+  const handleToFrom = () => {
+    navigate(from, { replace: true });
+  };
+
   const handleCheckboxChange = (event) => {
     setCheckboxStatus(event.target.checked);
   };
@@ -97,6 +103,7 @@ const LoginPage = () => {
     dispatch(resetUI());
     setShow(false);
   };
+
   const handlePassword = (event) => {
     event.preventDefault();
     navigate("/password-reminder");
@@ -113,6 +120,16 @@ const LoginPage = () => {
         noValidate
       >
         {/* Header */}
+        <StyledContainer $customDisplay="flex">
+          <IconWrapper
+            IconComponent={XCircle}
+            size="30px"
+            top="1%"
+            right="-5%"
+            onClick={handleToFrom}
+            cursor="pointer"
+          />
+        </StyledContainer>
         <StyledContainer $customDisplay="flex">
           <Logo $CustomWidth="30%" />
           <StyledContainer
@@ -135,7 +152,8 @@ const LoginPage = () => {
             {message}
           </CustomAlert>
         )}
-        {!isLoading && (
+
+        {!isLoading ? (
           <>
             <StyledContainer
               $customMargin
@@ -207,6 +225,8 @@ const LoginPage = () => {
               </button>
             </StyledContainer>
           </>
+        ) : (
+          <CustomPulseLoader />
         )}
       </form>
     </div>

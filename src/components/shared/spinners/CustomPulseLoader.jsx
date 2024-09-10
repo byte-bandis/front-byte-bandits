@@ -6,12 +6,11 @@ const CustomPulseLoader = (isLoading) => {
     <StyledContainer
       $customDisplay="flex"
       $customJustifyContent="center"
-      $customMargin="1rem"
     >
       <PulseLoader
         color={"var(--primary-200)"}
         loading={isLoading}
-        size={25}
+        size={15}
       />
     </StyledContainer>
   );

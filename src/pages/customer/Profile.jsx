@@ -2,6 +2,7 @@ import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate, useParams } from "react-router-dom";
 import {
+  getLoading,
   getLoggedUserName,
   getSinglePublicProfile,
   getUI,
@@ -15,10 +16,12 @@ import { RegularButton } from "../../components/shared/buttons";
 import { returnSpecificProfile } from "../../utils/returnSpecificProfile";
 import { resetUI } from "../../store/uiSlice";
 import CustomAlert from "../../components/shared/Alert";
+import CustomPulseLoader from "../../components/shared/spinners/CustomPulseLoader";
 
 const Profile = () => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
+  const isLoading = useSelector(getLoading);
   const { username } = useParams();
   const loggedUserName = useSelector(getLoggedUserName);
   const loadedPublicProfile = useSelector(getSinglePublicProfile);
@@ -62,6 +65,15 @@ const Profile = () => {
 
   return (
     <StyledContainer>
+      {isLoading && (
+        <StyledContainer
+          $customDisplay="flex"
+          $customHeight="200px"
+          $customJustifyContent="center"
+        >
+          <CustomPulseLoader loading={isLoading} />
+        </StyledContainer>
+      )}
       {!currentUrl.endsWith(`${username}/info`) && (
         <StyledContainer $customMargin="15% 0 0 5%">
           <h2>{t("profile_owner", { username })}</h2>
@@ -77,7 +89,7 @@ const Profile = () => {
           </CustomAlert>
         </StyledContainer>
       )}
-      {loadedPublicProfile && matchedProfile && !showForm && (
+      {!isLoading && loadedPublicProfile && matchedProfile && !showForm && (
         <StyledContainer $customWidth="90%">
           <ScreenPublicProfile
             userPhoto={matchedProfile.userPhoto}

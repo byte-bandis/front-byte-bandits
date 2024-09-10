@@ -66,13 +66,10 @@ const Profile = () => {
   return (
     <StyledContainer>
       {isLoading && (
-        <StyledContainer
-          $customDisplay="flex"
-          $customHeight="200px"
-          $customJustifyContent="center"
-        >
-          <CustomPulseLoader loading={isLoading} />
-        </StyledContainer>
+        <CustomPulseLoader
+          loading={isLoading}
+          $customHeight="500px"
+        />
       )}
       {!currentUrl.endsWith(`${username}/info`) && (
         <StyledContainer $customMargin="15% 0 0 5%">

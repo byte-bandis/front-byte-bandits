@@ -161,13 +161,10 @@ const Address = () => {
     <>
       <StyledListContainer $customWidth="80%">
         {isLoading && (
-          <StyledContainer
-            $customDisplay="flex"
+          <CustomPulseLoader
+            loading={isLoading}
             $customHeight="200px"
-            $customJustifyContent="center"
-          >
-            <CustomPulseLoader loading={isLoading} />
-          </StyledContainer>
+          />
         )}
         <ul key={myAddress._id}>
           {!isLoading && (

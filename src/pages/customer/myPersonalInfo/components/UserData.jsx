@@ -5,7 +5,7 @@ import {
   getMyData,
 } from "../../../../store/selectors";
 import { useEffect, useState } from "react";
-import { useNavigate, useParams } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import moment from "moment";
 import { PersonCircle } from "react-bootstrap-icons";
 import { useTranslation } from "react-i18next";
@@ -29,7 +29,7 @@ import {
   resetValidationErrors,
   setValidations,
 } from "../../../../store/MyPersonalData/myDataSlice";
-import { resetMessage, resetUI, setMessage } from "../../../../store/uiSlice";
+import { resetUI, setMessage } from "../../../../store/uiSlice";
 import IconWrapper from "../../../../components/shared/iconsComponents/IconWrapper";
 import { trimDate } from "../../../../utils/dateTools";
 import CustomPulseLoader from "../../../../components/shared/spinners/CustomPulseLoader";
@@ -41,7 +41,6 @@ const MyData = () => {
   const { t } = useTranslation();
   const loggedUsername = useSelector(getLoggedUserName);
   const myData = useSelector(getMyData);
-  const { username } = useParams();
   const [updateTime, setUpdateTime] = useState("000-00-00");
   const [editMode, setEditMode] = useState(false);
   const [confirmProcess, setConfirmProcess] = useState(false);
@@ -153,13 +152,10 @@ const MyData = () => {
     <>
       <StyledListContainer $customWidth="80%">
         {isLoading && (
-          <StyledContainer
-            $customDisplay="flex"
+          <CustomPulseLoader
+            loading={isLoading}
             $customHeight="200px"
-            $customJustifyContent="center"
-          >
-            <CustomPulseLoader loading={isLoading} />
-          </StyledContainer>
+          />
         )}
         <ul key={myData._id}>
           {!isLoading && (

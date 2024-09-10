@@ -26,16 +26,11 @@ const Safety = () => {
         $customFlexDirection="row"
       >
         <RegularButton
-          $customBorder="1px solid var(--error-2)"
-          $customBackground="var(--error-2)"
-          $customHoverColor="var(--text-100-d)"
-          $customHoverBackgroundColor="var(--error-1)"
-          $customFocusBackground="var(--error-1)"
-          $customActiveBackground="var(--error-2)"
+          $variant="danger"
           as={Link}
           to={`/${loggedUserName}/delete-account`}
         >
-          Delete my account
+          {t("delete_my_account")}
         </RegularButton>
       </StyledContainer>
     </StyledMyAccount>

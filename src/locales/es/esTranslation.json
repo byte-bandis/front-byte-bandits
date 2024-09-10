@@ -145,6 +145,7 @@
     "succes_sending_email_to_restore_password": "Hemos recibido tu solicitud para restablecer tu contraseña. Recibirás un email con instrucciones para finalizar el proceso de recuperación tu cuenta.",
     "back_to_login": "Iniciar sesión"
   },
+  "delete_my_account": "Borrar mi cuenta",
   "name1": "Nombre",
   "introduce_your_product": "Introduce tu producto",
   "edit_your_product": "Edita tu producto",

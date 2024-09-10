@@ -146,6 +146,7 @@
     "succes_sending_email_to_restore_password": "We have received your request. You will get an email with instructions to restore your password.",
     "back_to_login": "Back to sign in"
   },
+  "delete_my_account": "Delete my account",
   "name1": "Name",
   "introduce_your_product": "Introduce your product",
   "edit_your_product": "Edit your product",

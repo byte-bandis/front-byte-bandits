@@ -11,6 +11,12 @@ export const getSuccess = (state) => {
   }
   return null;
 };
+export const getLoading = (state) => {
+  if (state.ui.loading) {
+    return state.ui.loading;
+  }
+  return false;
+};
 export const getUI = (state) => state.ui;
 export const getUIMessage = (state) => state.ui.message;
 export const getUIState = (state) => state.ui.state;

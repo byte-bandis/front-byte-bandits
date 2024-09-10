@@ -62,7 +62,7 @@ const CreditCard = () => {
     if (loggedUsername === username) {
       dispatch(getMyCreditCardWithThunk(username));
     }
-  }, [username, loggedUsername, dispatch, myCreditCard]);
+  }, [username, loggedUsername, dispatch]);
 
   useEffect(() => {
     if (myCreditCard.updatedAt) {
@@ -117,6 +117,7 @@ const CreditCard = () => {
     dispatch(
       updateMyCreditCardWithThunk({ username, formData: formattedData })
     );
+    dispatch(getMyCreditCardWithThunk(loggedUsername));
     setConfirmProcess(false);
     setEditMode(false);
     dispatch(resetMessage());

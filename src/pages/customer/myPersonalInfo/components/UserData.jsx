@@ -1,7 +1,11 @@
 import { useDispatch, useSelector } from "react-redux";
-import { getLoggedUserName, getMyData } from "../../../../store/selectors";
+import {
+  getLoading,
+  getLoggedUserName,
+  getMyData,
+} from "../../../../store/selectors";
 import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import moment from "moment";
 import { PersonCircle } from "react-bootstrap-icons";
 import { useTranslation } from "react-i18next";
@@ -25,12 +29,15 @@ import {
   resetValidationErrors,
   setValidations,
 } from "../../../../store/MyPersonalData/myDataSlice";
-import { resetMessage, setMessage } from "../../../../store/uiSlice";
+import { resetMessage, resetUI, setMessage } from "../../../../store/uiSlice";
 import IconWrapper from "../../../../components/shared/iconsComponents/IconWrapper";
 import { trimDate } from "../../../../utils/dateTools";
+import CustomPulseLoader from "../../../../components/shared/spinners/CustomPulseLoader";
+import { updateUserName } from "../../../../store/authSlice";
 
 const MyData = () => {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const { t } = useTranslation();
   const loggedUsername = useSelector(getLoggedUserName);
   const myData = useSelector(getMyData);
@@ -60,14 +67,13 @@ const MyData = () => {
     $customLabelFontWeight: "bold",
     $customInputPadding: "0 0 0 .5rem",
   };
+  const isLoading = useSelector(getLoading);
 
   const languageCookieFormat = Cookies.get("formatLanguage") || "en";
 
   useEffect(() => {
-    if (loggedUsername === username) {
-      dispatch(getMyDataWithThunk(loggedUsername));
-    }
-  }, [username, loggedUsername, dispatch]);
+    dispatch(getMyDataWithThunk(loggedUsername));
+  }, [loggedUsername, dispatch]);
 
   useEffect(() => {
     if (myData.updatedAt) {
@@ -129,11 +135,13 @@ const MyData = () => {
       return;
     }
 
-    dispatch(updateMyDataWithThunk({ username, formData }));
+    dispatch(updateMyDataWithThunk({ username: loggedUsername, formData }));
     setConfirmProcess(false);
     setEditMode(false);
     dispatch(resetValidationErrors());
-    dispatch(resetMessage());
+    dispatch(updateUserName(formData.username));
+    navigate(`/${formData.username}/info/mydata`);
+    dispatch(resetUI());
   };
 
   const handleCancelSubmit = () => {
@@ -144,164 +152,175 @@ const MyData = () => {
   return (
     <>
       <StyledListContainer $customWidth="80%">
-        <ul key={myData._id}>
-          <form
-            onSubmit={handleSubmit}
-            noValidate
+        {isLoading && (
+          <StyledContainer
+            $customDisplay="flex"
+            $customHeight="200px"
+            $customJustifyContent="center"
           >
-            <StyledListItem $customHeaderFontSize="1.5rem">
-              <h3>{t("yourData")}</h3>
-            </StyledListItem>
-
-            <StyledContainer {...containerStyles}>
-              <StyledListItem {...listItemStyles}>
-                <label>{t("nickname")}</label>
-                {!editMode ? (
-                  <div>{myData.username}</div>
-                ) : (
-                  <input
-                    type="text"
-                    name="username"
-                    value={formData.username}
-                    onChange={handleInputChange}
-                    placeholder={t("nickname_placeholder")}
-                  />
-                )}
+            <CustomPulseLoader loading={isLoading} />
+          </StyledContainer>
+        )}
+        <ul key={myData._id}>
+          {!isLoading && (
+            <form
+              onSubmit={handleSubmit}
+              noValidate
+            >
+              <StyledListItem $customHeaderFontSize="1.5rem">
+                <h3>{t("yourData")}</h3>
               </StyledListItem>
-            </StyledContainer>
-            <StyledContainer {...containerStyles}>
-              <StyledContainer
-                $customDisplay="flex"
-                $customFlexDirection="row"
-                $customGap="40px"
-              >
+
+              <StyledContainer {...containerStyles}>
                 <StyledListItem {...listItemStyles}>
-                  <label>{t("name")}</label>
+                  <label>{t("nickname")}</label>
                   {!editMode ? (
-                    <div>{myData.name}</div>
+                    <div>{myData.username}</div>
                   ) : (
                     <input
                       type="text"
-                      name="name"
-                      value={formData.name}
+                      name="username"
+                      value={formData.username}
                       onChange={handleInputChange}
-                      placeholder={t("name_placeholder")}
-                    />
-                  )}
-                </StyledListItem>
-                <StyledListItem {...listItemStyles}>
-                  <label>{t("lastname")}</label>
-                  {!editMode ? (
-                    <div>{myData.lastname}</div>
-                  ) : (
-                    <input
-                      type="text"
-                      name="lastname"
-                      value={formData.lastname}
-                      onChange={handleInputChange}
-                      placeholder={t("lastname_placeholder")}
+                      placeholder={t("nickname_placeholder")}
                     />
                   )}
                 </StyledListItem>
               </StyledContainer>
-            </StyledContainer>
-            <StyledContainer {...containerStyles}>
-              <StyledListItem {...listItemStyles}>
-                <label>{t("email")}</label>
-                {!editMode ? (
-                  <div>{myData.email}</div>
-                ) : (
-                  <input
-                    type="text"
-                    name="email"
-                    value={formData.email}
-                    onChange={handleInputChange}
-                    placeholder={t("email_placeholder")}
-                  />
-                )}
-              </StyledListItem>
-            </StyledContainer>
+              <StyledContainer {...containerStyles}>
+                <StyledContainer
+                  $customDisplay="flex"
+                  $customFlexDirection="row"
+                  $customGap="40px"
+                >
+                  <StyledListItem {...listItemStyles}>
+                    <label>{t("name")}</label>
+                    {!editMode ? (
+                      <div>{myData.name}</div>
+                    ) : (
+                      <input
+                        type="text"
+                        name="name"
+                        value={formData.name}
+                        onChange={handleInputChange}
+                        placeholder={t("name_placeholder")}
+                      />
+                    )}
+                  </StyledListItem>
+                  <StyledListItem {...listItemStyles}>
+                    <label>{t("lastname")}</label>
+                    {!editMode ? (
+                      <div>{myData.lastname}</div>
+                    ) : (
+                      <input
+                        type="text"
+                        name="lastname"
+                        value={formData.lastname}
+                        onChange={handleInputChange}
+                        placeholder={t("lastname_placeholder")}
+                      />
+                    )}
+                  </StyledListItem>
+                </StyledContainer>
+              </StyledContainer>
+              <StyledContainer {...containerStyles}>
+                <StyledListItem {...listItemStyles}>
+                  <label>{t("email")}</label>
+                  {!editMode ? (
+                    <div>{myData.email}</div>
+                  ) : (
+                    <input
+                      type="text"
+                      name="email"
+                      value={formData.email}
+                      onChange={handleInputChange}
+                      placeholder={t("email_placeholder")}
+                    />
+                  )}
+                </StyledListItem>
+              </StyledContainer>
 
-            <StyledContainer {...containerStyles}>
-              <StyledListItem {...listItemStyles}>
-                <label>{t("phone")}</label>
-                {!editMode ? (
-                  <div>{myData.mobilePhoneNumber}</div>
-                ) : (
-                  <input
-                    type="text"
-                    name="mobilePhoneNumber"
-                    value={formData.mobilePhoneNumber}
-                    onChange={handleInputChange}
-                    placeholder={t("phone_placeholder")}
-                  />
-                )}
-              </StyledListItem>
-            </StyledContainer>
+              <StyledContainer {...containerStyles}>
+                <StyledListItem {...listItemStyles}>
+                  <label>{t("phone")}</label>
+                  {!editMode ? (
+                    <div>{myData.mobilePhoneNumber}</div>
+                  ) : (
+                    <input
+                      type="text"
+                      name="mobilePhoneNumber"
+                      value={formData.mobilePhoneNumber}
+                      onChange={handleInputChange}
+                      placeholder={t("phone_placeholder")}
+                    />
+                  )}
+                </StyledListItem>
+              </StyledContainer>
 
-            <StyledContainer {...containerStyles}>
-              <StyledListItem {...listItemStyles}>
-                <label>{t("birthdate")}</label>
-                {!editMode ? (
-                  <div>{moment(myData.birthdate).format("DD-MM-YYYY")}</div>
-                ) : (
-                  <input
-                    type="date"
-                    name="birthdate"
-                    value={formData.birthdate}
-                    onChange={handleInputChange}
-                    placeholder={t("birthdate_placeholder")}
-                  />
-                )}
-              </StyledListItem>
-            </StyledContainer>
+              <StyledContainer {...containerStyles}>
+                <StyledListItem {...listItemStyles}>
+                  <label>{t("birthdate")}</label>
+                  {!editMode ? (
+                    <div>{moment(myData.birthdate).format("DD-MM-YYYY")}</div>
+                  ) : (
+                    <input
+                      type="date"
+                      name="birthdate"
+                      value={formData.birthdate}
+                      onChange={handleInputChange}
+                      placeholder={t("birthdate_placeholder")}
+                    />
+                  )}
+                </StyledListItem>
+              </StyledContainer>
 
-            {editMode ? (
-              <ButtonContainer $justifyContent="flex-start">
-                {!confirmProcess && (
-                  <>
-                    <RegularButton
-                      $customHoverBackgroundColor="var(--accent-100)"
-                      $customMargin="2rem 0 0 0"
-                      onClick={handleConfirmProcess}
-                    >
-                      {t("save_your_data")}
-                    </RegularButton>
-                    <RegularButton
-                      $customMargin="2rem 0 0 0"
-                      onClick={handleHideEditMode}
-                    >
-                      {t("back_to_saved_data")}
-                    </RegularButton>
-                  </>
-                )}
-                {confirmProcess && (
-                  <>
-                    <RegularButton
-                      type="submit"
-                      $customHoverBackgroundColor="var(--accent-100)"
-                      $customMargin="2rem 0 0 0"
-                    >
-                      {t("confirm_save")}
-                    </RegularButton>
-                    <RegularButton
-                      $customMargin="2rem 0 0 0"
-                      onClick={handleCancelSubmit}
-                    >
-                      {t("cancel")}
-                    </RegularButton>
-                  </>
-                )}
-              </ButtonContainer>
-            ) : (
-              <RegularButton
-                $customMargin="2rem 0 0 0"
-                onClick={handleShowEditMode}
-              >
-                {t("click_to_edit")}
-              </RegularButton>
-            )}
-          </form>
+              {editMode ? (
+                <ButtonContainer $justifyContent="flex-start">
+                  {!confirmProcess && (
+                    <>
+                      <RegularButton
+                        $customHoverBackgroundColor="var(--accent-100)"
+                        $customMargin="2rem 0 0 0"
+                        onClick={handleConfirmProcess}
+                      >
+                        {t("save_your_data")}
+                      </RegularButton>
+                      <RegularButton
+                        $customMargin="2rem 0 0 0"
+                        onClick={handleHideEditMode}
+                      >
+                        {t("back_to_saved_data")}
+                      </RegularButton>
+                    </>
+                  )}
+                  {confirmProcess && (
+                    <>
+                      <RegularButton
+                        type="submit"
+                        $customHoverBackgroundColor="var(--accent-100)"
+                        $customMargin="2rem 0 0 0"
+                      >
+                        {t("confirm_save")}
+                      </RegularButton>
+                      <RegularButton
+                        $customMargin="2rem 0 0 0"
+                        onClick={handleCancelSubmit}
+                      >
+                        {t("cancel")}
+                      </RegularButton>
+                    </>
+                  )}
+                </ButtonContainer>
+              ) : (
+                <RegularButton
+                  $customMargin="2rem 0 0 0"
+                  onClick={handleShowEditMode}
+                >
+                  {t("click_to_edit")}
+                </RegularButton>
+              )}
+            </form>
+          )}
           <IconWrapper
             IconComponent={PersonCircle}
             size="75px"

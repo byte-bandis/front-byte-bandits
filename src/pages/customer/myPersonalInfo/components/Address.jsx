@@ -1,5 +1,9 @@
 import { useDispatch, useSelector } from "react-redux";
-import { getLoggedUserName, getMyAddress } from "../../../../store/selectors";
+import {
+  getLoading,
+  getLoggedUserName,
+  getMyAddress,
+} from "../../../../store/selectors";
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { trimDate } from "../../../../utils/dateTools";
@@ -30,6 +34,7 @@ import { resetMessage, setMessage } from "../../../../store/uiSlice";
 import { resetValidationErrors } from "../../../../store/MyPersonalData/paymentSlice";
 import countriesDB from "../../../../utils/countriesDB.json";
 import IconWrapper from "../../../../components/shared/iconsComponents/IconWrapper";
+import CustomPulseLoader from "../../../../components/shared/spinners/CustomPulseLoader";
 
 const Address = () => {
   const dispatch = useDispatch();
@@ -64,6 +69,7 @@ const Address = () => {
     $customLabelFontWeight: "bold",
     $customInputPadding: "0 0 0 .5rem",
   };
+  const isLoading = useSelector(getLoading);
 
   const languageCookieFormat = Cookies.get("formatLanguage") || "en";
 
@@ -154,194 +160,205 @@ const Address = () => {
   return (
     <>
       <StyledListContainer $customWidth="80%">
-        <ul key={myAddress._id}>
-          <form
-            onSubmit={handleSubmit}
-            noValidate
+        {isLoading && (
+          <StyledContainer
+            $customDisplay="flex"
+            $customHeight="200px"
+            $customJustifyContent="center"
           >
-            <StyledListItem $customHeaderFontSize="1.5rem">
-              <h3>{t("postal_address")}</h3>
-            </StyledListItem>
-
-            <StyledContainer {...containerStyles}>
-              <StyledListItem {...listItemStyles}>
-                <label>{t("street")}: </label>
-                {!editMode ? (
-                  <div>{myAddress.streetName}</div>
-                ) : (
-                  <input
-                    type="text"
-                    name="streetName"
-                    value={formData.streetName}
-                    onChange={handleInputChange}
-                    placeholder={t("your_street_name")}
-                  />
-                )}
+            <CustomPulseLoader loading={isLoading} />
+          </StyledContainer>
+        )}
+        <ul key={myAddress._id}>
+          {!isLoading && (
+            <form
+              onSubmit={handleSubmit}
+              noValidate
+            >
+              <StyledListItem $customHeaderFontSize="1.5rem">
+                <h3>{t("postal_address")}</h3>
               </StyledListItem>
-            </StyledContainer>
 
-            <StyledContainer {...containerStyles}>
-              <StyledListItem {...listItemStyles}>
-                <label>{t("number")}:</label>
-                {!editMode ? (
-                  <div>{myAddress.streetNumber}</div>
-                ) : (
-                  <input
-                    type="text"
-                    name="streetNumber"
-                    value={formData.streetNumber}
-                    onChange={handleInputChange}
-                    placeholder={t("your_street_number")}
-                  />
-                )}
-              </StyledListItem>
-            </StyledContainer>
+              <StyledContainer {...containerStyles}>
+                <StyledListItem {...listItemStyles}>
+                  <label>{t("street")}: </label>
+                  {!editMode ? (
+                    <div>{myAddress.streetName}</div>
+                  ) : (
+                    <input
+                      type="text"
+                      name="streetName"
+                      value={formData.streetName}
+                      onChange={handleInputChange}
+                      placeholder={t("your_street_name")}
+                    />
+                  )}
+                </StyledListItem>
+              </StyledContainer>
 
-            <StyledContainer {...containerStyles}>
-              <StyledListItem {...listItemStyles}>
-                <label>{t("flat")}:</label>
-                {!editMode ? (
-                  <div>{myAddress.flat}</div>
-                ) : (
-                  <input
-                    type="text"
-                    name="flat"
-                    value={formData.flat}
-                    onChange={handleInputChange}
-                    placeholder={t("your_flat")}
-                  />
-                )}
-              </StyledListItem>
-            </StyledContainer>
+              <StyledContainer {...containerStyles}>
+                <StyledListItem {...listItemStyles}>
+                  <label>{t("number")}:</label>
+                  {!editMode ? (
+                    <div>{myAddress.streetNumber}</div>
+                  ) : (
+                    <input
+                      type="text"
+                      name="streetNumber"
+                      value={formData.streetNumber}
+                      onChange={handleInputChange}
+                      placeholder={t("your_street_number")}
+                    />
+                  )}
+                </StyledListItem>
+              </StyledContainer>
 
-            <StyledContainer {...containerStyles}>
-              <StyledListItem {...listItemStyles}>
-                <label>{t("door")}:</label>
-                {!editMode ? (
-                  <div>{myAddress.door}</div>
-                ) : (
-                  <input
-                    type="text"
-                    name="door"
-                    value={formData.door}
-                    onChange={handleInputChange}
-                    placeholder={t("your_door")}
-                  />
-                )}
-              </StyledListItem>
-            </StyledContainer>
+              <StyledContainer {...containerStyles}>
+                <StyledListItem {...listItemStyles}>
+                  <label>{t("flat")}:</label>
+                  {!editMode ? (
+                    <div>{myAddress.flat}</div>
+                  ) : (
+                    <input
+                      type="text"
+                      name="flat"
+                      value={formData.flat}
+                      onChange={handleInputChange}
+                      placeholder={t("your_flat")}
+                    />
+                  )}
+                </StyledListItem>
+              </StyledContainer>
 
-            <StyledContainer {...containerStyles}>
-              <StyledListItem {...listItemStyles}>
-                <label>{t("zip_code")}:</label>
-                {!editMode ? (
-                  <div>{myAddress.postalCode}</div>
-                ) : (
-                  <input
-                    type="text"
-                    name="postalCode"
-                    value={formData.postalCode}
-                    onChange={handleInputChange}
-                    placeholder={t("your_zip_code")}
-                  />
-                )}
-              </StyledListItem>
-            </StyledContainer>
+              <StyledContainer {...containerStyles}>
+                <StyledListItem {...listItemStyles}>
+                  <label>{t("door")}:</label>
+                  {!editMode ? (
+                    <div>{myAddress.door}</div>
+                  ) : (
+                    <input
+                      type="text"
+                      name="door"
+                      value={formData.door}
+                      onChange={handleInputChange}
+                      placeholder={t("your_door")}
+                    />
+                  )}
+                </StyledListItem>
+              </StyledContainer>
 
-            <StyledContainer {...containerStyles}>
-              <StyledListItem {...listItemStyles}>
-                <label>{t("city")}:</label>
-                {!editMode ? (
-                  <div>{myAddress.city}</div>
-                ) : (
-                  <input
-                    type="text"
-                    name="city"
-                    value={formData.city}
-                    onChange={handleInputChange}
-                    placeholder={t("your_city")}
-                  />
-                )}
-              </StyledListItem>
-            </StyledContainer>
+              <StyledContainer {...containerStyles}>
+                <StyledListItem {...listItemStyles}>
+                  <label>{t("zip_code")}:</label>
+                  {!editMode ? (
+                    <div>{myAddress.postalCode}</div>
+                  ) : (
+                    <input
+                      type="text"
+                      name="postalCode"
+                      value={formData.postalCode}
+                      onChange={handleInputChange}
+                      placeholder={t("your_zip_code")}
+                    />
+                  )}
+                </StyledListItem>
+              </StyledContainer>
 
-            <StyledContainer {...containerStyles}>
-              <StyledListItem {...listItemStyles}>
-                <label>{t("country")}:</label>
-                {!editMode ? (
-                  <div>{myAddress.country}</div>
-                ) : (
-                  <select
-                    name="country"
-                    value={formData.country}
-                    onChange={handleInputChange}
-                    placeholder={t("your_country")}
-                  >
-                    <option
-                      value=""
-                      disabled
+              <StyledContainer {...containerStyles}>
+                <StyledListItem {...listItemStyles}>
+                  <label>{t("city")}:</label>
+                  {!editMode ? (
+                    <div>{myAddress.city}</div>
+                  ) : (
+                    <input
+                      type="text"
+                      name="city"
+                      value={formData.city}
+                      onChange={handleInputChange}
+                      placeholder={t("your_city")}
+                    />
+                  )}
+                </StyledListItem>
+              </StyledContainer>
+
+              <StyledContainer {...containerStyles}>
+                <StyledListItem {...listItemStyles}>
+                  <label>{t("country")}:</label>
+                  {!editMode ? (
+                    <div>{myAddress.country}</div>
+                  ) : (
+                    <select
+                      name="country"
+                      value={formData.country}
+                      onChange={handleInputChange}
+                      placeholder={t("your_country")}
                     >
-                      {t("select_your_country")}
-                    </option>
-                    {countryList.map((country) => (
                       <option
-                        key={country}
-                        value={country}
+                        value=""
+                        disabled
                       >
-                        {country}
+                        {t("select_your_country")}
                       </option>
-                    ))}
-                  </select>
-                )}
-              </StyledListItem>
-            </StyledContainer>
+                      {countryList.map((country) => (
+                        <option
+                          key={country}
+                          value={country}
+                        >
+                          {country}
+                        </option>
+                      ))}
+                    </select>
+                  )}
+                </StyledListItem>
+              </StyledContainer>
 
-            {editMode ? (
-              <ButtonContainer $justifyContent="flex-start">
-                {!confirmProcess && (
-                  <>
-                    <RegularButton
-                      $customHoverBackgroundColor="var(--accent-100)"
-                      $customMargin="2rem 0 0 0"
-                      onClick={handleConfirmProcess}
-                    >
-                      {t("save_your_data")}
-                    </RegularButton>
-                    <RegularButton
-                      $customMargin="2rem 0 0 0"
-                      onClick={handleHideEditMode}
-                    >
-                      {t("back_to_saved_data")}
-                    </RegularButton>
-                  </>
-                )}
-                {confirmProcess && (
-                  <>
-                    <RegularButton
-                      type="submit"
-                      $customHoverBackgroundColor="var(--accent-100)"
-                      $customMargin="2rem 0 0 0"
-                    >
-                      {t("confirm_save")}
-                    </RegularButton>
-                    <RegularButton
-                      $customMargin="2rem 0 0 0"
-                      onClick={handleCancelSubmit}
-                    >
-                      {t("cancel")}
-                    </RegularButton>
-                  </>
-                )}
-              </ButtonContainer>
-            ) : (
-              <RegularButton
-                $customMargin="2rem 0 0 0"
-                onClick={handleShowEditMode}
-              >
-                {t("click_to_edit")}
-              </RegularButton>
-            )}
-          </form>
+              {editMode ? (
+                <ButtonContainer $justifyContent="flex-start">
+                  {!confirmProcess && (
+                    <>
+                      <RegularButton
+                        $customHoverBackgroundColor="var(--accent-100)"
+                        $customMargin="2rem 0 0 0"
+                        onClick={handleConfirmProcess}
+                      >
+                        {t("save_your_data")}
+                      </RegularButton>
+                      <RegularButton
+                        $customMargin="2rem 0 0 0"
+                        onClick={handleHideEditMode}
+                      >
+                        {t("back_to_saved_data")}
+                      </RegularButton>
+                    </>
+                  )}
+                  {confirmProcess && (
+                    <>
+                      <RegularButton
+                        type="submit"
+                        $customHoverBackgroundColor="var(--accent-100)"
+                        $customMargin="2rem 0 0 0"
+                      >
+                        {t("confirm_save")}
+                      </RegularButton>
+                      <RegularButton
+                        $customMargin="2rem 0 0 0"
+                        onClick={handleCancelSubmit}
+                      >
+                        {t("cancel")}
+                      </RegularButton>
+                    </>
+                  )}
+                </ButtonContainer>
+              ) : (
+                <RegularButton
+                  $customMargin="2rem 0 0 0"
+                  onClick={handleShowEditMode}
+                >
+                  {t("click_to_edit")}
+                </RegularButton>
+              )}
+            </form>
+          )}
           <IconWrapper
             IconComponent={MailboxFlag}
             size="75px"

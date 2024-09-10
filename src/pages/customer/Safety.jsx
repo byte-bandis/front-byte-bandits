@@ -4,19 +4,28 @@ import StyledMyAccount from "../../components/shared/StyledMyAccount";
 import PasswordUpdater from "./myPersonalInfo/components/PasswordUpdater.jsx";
 import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
-import { getLoggedUserName } from "../../store/selectors.js";
+import { getLoading, getLoggedUserName } from "../../store/selectors.js";
 import { Link } from "react-router-dom";
+import CustomPulseLoader from "../../components/shared/spinners/CustomPulseLoader.jsx";
 
 const Safety = () => {
   const { t } = useTranslation();
   const loggedUserName = useSelector(getLoggedUserName);
+  const isLoading = useSelector(getLoading);
 
   return (
     <StyledMyAccount>
       <StyledContainer $customMargin="2rem 0 0 1rem">
         <h1>{t("safety")}</h1>
         <p>{t("safety_intro")}</p>
-        <PasswordUpdater />
+        {isLoading ? (
+          <CustomPulseLoader
+            loading={isLoading}
+            $customHeight="200px"
+          />
+        ) : (
+          <PasswordUpdater />
+        )}
       </StyledContainer>
       <StyledContainer
         $customWidth="80%"
@@ -26,16 +35,11 @@ const Safety = () => {
         $customFlexDirection="row"
       >
         <RegularButton
-          $customBorder="1px solid var(--error-2)"
-          $customBackground="var(--error-2)"
-          $customHoverColor="var(--text-100-d)"
-          $customHoverBackgroundColor="var(--error-1)"
-          $customFocusBackground="var(--error-1)"
-          $customActiveBackground="var(--error-2)"
+          $variant="danger"
           as={Link}
           to={`/${loggedUserName}/delete-account`}
         >
-          Delete my account
+          {t("delete_my_account")}
         </RegularButton>
       </StyledContainer>
     </StyledMyAccount>

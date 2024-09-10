@@ -42,7 +42,7 @@ export const logout = (reloadPage) => {
   storage.remove("updatedAt");
   removeAuthorizationHeader();
 
-  if (reloadPage) {
+  if (reloadPage || reloadPage === "true") {
     window.location.href = "/";
   }
 };

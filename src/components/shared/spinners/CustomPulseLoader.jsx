@@ -1,11 +1,13 @@
 import PulseLoader from "react-spinners/PulseLoader";
 import StyledContainer from "../StyledContainer";
+import PropTypes from "prop-types";
 
-const CustomPulseLoader = (isLoading) => {
+const CustomPulseLoader = ({ isLoading, ...props }) => {
   return (
     <StyledContainer
       $customDisplay="flex"
       $customJustifyContent="center"
+      {...props}
     >
       <PulseLoader
         color={"var(--primary-200)"}
@@ -15,4 +17,9 @@ const CustomPulseLoader = (isLoading) => {
     </StyledContainer>
   );
 };
+
+CustomPulseLoader.propTypes = {
+  isLoading: PropTypes.bool.isRequired,
+};
+
 export default CustomPulseLoader;

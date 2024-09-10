@@ -1,5 +1,9 @@
 import { useDispatch, useSelector } from "react-redux";
-import { getLoggedUserName, getMyPayment } from "../../../../store/selectors";
+import {
+  getLoading,
+  getLoggedUserName,
+  getMyPayment,
+} from "../../../../store/selectors";
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { trimDate } from "../../../../utils/dateTools";
@@ -28,6 +32,7 @@ import {
 } from "../../../../store/MyPersonalData/paymentSlice";
 import { CreditCard2Back } from "react-bootstrap-icons";
 import IconWrapper from "../../../../components/shared/iconsComponents/IconWrapper";
+import CustomPulseLoader from "../../../../components/shared/spinners/CustomPulseLoader";
 
 const CreditCard = () => {
   const { t } = useTranslation();
@@ -55,6 +60,8 @@ const CreditCard = () => {
     $customLabelFontWeight: "bold",
     $customInputPadding: "0 0 0 .5rem",
   };
+
+  const isLoading = useSelector(getLoading);
 
   const languageCookieFormat = Cookies.get("formatLanguage") || "en";
 
@@ -132,79 +139,87 @@ const CreditCard = () => {
 
   return (
     <StyledListContainer $customWidth="80%">
+      {isLoading && (
+        <CustomPulseLoader
+          loading={isLoading}
+          $customHeight="200px"
+        />
+      )}
       <ul key={myCreditCard._id}>
-        <form
-          onSubmit={handleSubmit}
-          noValidate
-        >
-          <StyledListItem $customHeaderFontSize="1.5rem">
-            <h3>{t("credit_card")}</h3>
-          </StyledListItem>
-
-          <StyledContainer {...containerStyles}>
-            <StyledListItem {...listItemStyles}>
-              <label>{t("credit_card_label")}</label>
-              {!editMode ? (
-                <div>{myCreditCard.creditCard}</div>
-              ) : (
-                <input
-                  type="text"
-                  name="creditCard"
-                  value={formData.creditCard}
-                  onChange={handleInputChange}
-                  placeholder={t("credit_card_placeholder")}
-                  maxLength={18}
-                />
-              )}
+        {!isLoading && (
+          <form
+            onSubmit={handleSubmit}
+            noValidate
+          >
+            <StyledListItem $customHeaderFontSize="1.5rem">
+              <h3>{t("credit_card")}</h3>
             </StyledListItem>
-          </StyledContainer>
 
-          {editMode ? (
-            <ButtonContainer $justifyContent="flex-start">
-              {!confirmProcess && (
-                <>
-                  <RegularButton
-                    $customHoverBackgroundColor="var(--accent-100)"
-                    $customMargin="2rem 0 0 0"
-                    onClick={handleConfirmProcess}
-                  >
-                    {t("save_card_number")}
-                  </RegularButton>
-                  <RegularButton
-                    $customMargin="2rem 0 0 0"
-                    onClick={handleHideEditMode}
-                  >
-                    {t("back_to_saved_card")}
-                  </RegularButton>
-                </>
-              )}
-              {confirmProcess && (
-                <>
-                  <RegularButton
-                    type="submit"
-                    $customHoverBackgroundColor="var(--accent-100)"
-                    $customMargin="2rem 0 0 0"
-                  >
-                    {t("confirm_save")}
-                  </RegularButton>
-                  <RegularButton
-                    $customMargin="2rem 0 0 0"
-                    onClick={handleCancelSubmit}
-                  >
-                    {t("cancel")}
-                  </RegularButton>
-                </>
-              )}
-            </ButtonContainer>
-          ) : (
-            <RegularButton
-              $customMargin="2rem 0 0 0"
-              onClick={handleShowEditMode}
-            >
-              {t("click_to_edit")}
-            </RegularButton>
-          )}
-        </form>
+            <StyledContainer {...containerStyles}>
+              <StyledListItem {...listItemStyles}>
+                <label>{t("credit_card_label")}</label>
+                {!editMode ? (
+                  <div>{myCreditCard.creditCard}</div>
+                ) : (
+                  <input
+                    type="text"
+                    name="creditCard"
+                    value={formData.creditCard}
+                    onChange={handleInputChange}
+                    placeholder={t("credit_card_placeholder")}
+                    maxLength={18}
+                  />
+                )}
+              </StyledListItem>
+            </StyledContainer>
+
+            {editMode ? (
+              <ButtonContainer $justifyContent="flex-start">
+                {!confirmProcess && (
+                  <>
+                    <RegularButton
+                      $customHoverBackgroundColor="var(--accent-100)"
+                      $customMargin="2rem 0 0 0"
+                      onClick={handleConfirmProcess}
+                    >
+                      {t("save_card_number")}
+                    </RegularButton>
+                    <RegularButton
+                      $customMargin="2rem 0 0 0"
+                      onClick={handleHideEditMode}
+                    >
+                      {t("back_to_saved_card")}
+                    </RegularButton>
+                  </>
+                )}
+                {confirmProcess && (
+                  <>
+                    <RegularButton
+                      type="submit"
+                      $customHoverBackgroundColor="var(--accent-100)"
+                      $customMargin="2rem 0 0 0"
+                    >
+                      {t("confirm_save")}
+                    </RegularButton>
+                    <RegularButton
+                      $customMargin="2rem 0 0 0"
+                      onClick={handleCancelSubmit}
+                    >
+                      {t("cancel")}
+                    </RegularButton>
+                  </>
+                )}
+              </ButtonContainer>
+            ) : (
+              <RegularButton
+                $customMargin="2rem 0 0 0"
+                onClick={handleShowEditMode}
+              >
+                {t("click_to_edit")}
+              </RegularButton>
+            )}
+          </form>
+        )}
         <IconWrapper
           IconComponent={CreditCard2Back}
           size="75px"

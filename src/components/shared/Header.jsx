@@ -109,7 +109,7 @@ const Header = () => {
   ];
 
   const tagsOptions = TAG_OPTIONS.filter(
-    (tag) => tag.text !== t("all_categories")
+    (tag) => tag.text !== t("all_categories"),
   );
 
   return (
@@ -195,10 +195,7 @@ const Header = () => {
             ) : (
               //No authenticated
               <>
-                <LanguageSwitcher
-                  $gap="5px"
-                  flag
-                />
+                <LanguageSwitcher $gap="5px" flag />
                 <RegularButton
                   onClick={() =>
                     navigate("/login", {

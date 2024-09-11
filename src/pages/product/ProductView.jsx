@@ -13,6 +13,9 @@ import { getComments } from "../../store/commentsThunk";
 import Confirmator from "../../components/shared/Confirmator";
 import { getSinglePublicProfileWithThunk } from "../../store/profilesThunk";
 import { RegularButton } from "../../components/shared/buttons";
+import { createTransaction } from "../../store/transactionsThunk";
+import CustomAlert from "../../components/shared/Alert";
+import BuyButton from "./components/BuyButton";
 
 const ProductView = () => {
   const origin = import.meta.env.VITE_API_BASE_URL;
@@ -29,7 +32,7 @@ const ProductView = () => {
 
   const authUser = useSelector((state) => state.authState.user.userId);
   const loadedAds = useSelector((state) => state.adsState.data).find(
-    (onead) => onead._id === productId
+    (onead) => onead._id === productId,
   );
   const myLikes = useSelector((state) => state.likesSlice.wishlist);
   const comments = useSelector((state) => state.commentsSlice.data);
@@ -85,6 +88,9 @@ const ProductView = () => {
     dispatch(deleteAd(productId));
   };
 
+  const handleBuy = (productId, userid) => {
+    dispatch(createTransaction({ adId: productId, userid }));
+  };
   if (loadedAds) {
     const { adTitle, adBody, sell, price, photo, tags } = loadedAds;
     const image = photo ? `${photo}` : "../../assets/images/no-image.jpg";
@@ -137,6 +143,20 @@ const ProductView = () => {
             </RegularButton>
           )}
 
+          <BuyButton ownerId={owner._id} />
+          {/* {authUser !== owner._id ? (
+            <RegularButton
+              onClick={() => handleBuy(productId, userid)}
+              className="buy-button"
+              $customBackground="var(--primary-200)"
+              $customColor="var(--bg-100)"
+            >
+              Buy
+            </RegularButton>
+          ) : (
+            "nada"
+          )}
+        <CustomAlert></CustomAlert> */}
           {adTitle && (
             <>
               <div className="advert-img-container">
@@ -154,10 +174,7 @@ const ProductView = () => {
                   />
                 )}
               </div>
-              <Link
-                className="userBlock"
-                to={`/${owner.username}`}
-              >
+              <Link className="userBlock" to={`/${owner.username}`}>
                 <img
                   className="userPhoto"
                   src={userphoto}
@@ -173,10 +190,7 @@ const ProductView = () => {
               </div>
               <div className="advert-tags-container">
                 {tags.map((tag, index) => (
-                  <div
-                    key={index}
-                    className="advert-tagLink"
-                  >
+                  <div key={index} className="advert-tagLink">
                     {tag}
                   </div>
                 ))}
@@ -209,10 +223,7 @@ const ProductView = () => {
                 <div className="advert-comments-box">
                   <h3>Comentarios</h3>
                   {comments.map((comment) => (
-                    <CommentItem
-                      key={comment._id}
-                      comment={comment}
-                    />
+                    <CommentItem key={comment._id} comment={comment} />
                   ))}
                 </div>
               )}
@@ -282,6 +293,16 @@ const StyledAdvertPage = styled.div`
     display: flex;
     align-items: center;
     gap: 5px;
+  }
+  & .buy-button {
+    position: absolute;
+    top: 450px;
+    right: 260px;
+    z-index: 10;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    padding: 5px 45px;
   }
   & h2,
   h1,

@@ -9,7 +9,7 @@ import { getWishlist } from "../../store/likesThunk";
 import ErrorMessage from "./components/ErrorMessage";
 import { resetMessage } from "../../store/uiSlice";
 
-const ProductList = () => {
+const ProductList = ({ $customMargin }) => {
   const dispatch = useDispatch();
   const page = useSelector((state) => state.adsState.page);
   const userid = useSelector((state) => state.authState.user.userId);
@@ -54,6 +54,7 @@ const ProductList = () => {
               createdAt={ad.createdAt}
               updatedAt={ad.updatedAt}
               tags={ad.tags || []}
+              $customMargin={$customMargin}
             />
           ))
         ) : (
@@ -79,11 +80,12 @@ ProductList.propTypes = {
     buysell: propTypes.oneOf(["all", "sell", "buy"]),
     price: propTypes.number,
   }),
+  $customMargin: propTypes.string,
 };
 const StyledAdList = styled.div`
-  margin: 12% auto;
+  margin: ${(props) => props.$customMargin || "12% auto"};
   display: grid;
-justify-content: space-between;
+  justify-content: space-between;
   justify-items: center;
   width: 80%;
 

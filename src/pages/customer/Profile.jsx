@@ -72,7 +72,7 @@ const Profile = () => {
         />
       )}
       {!currentUrl.endsWith(`${username}/info`) && (
-        <StyledContainer $customMargin="15% 0 0 5%">
+        <StyledContainer $customMargin="15% 5% 0 5%">
           <h2>{t("profile_owner", { username })}</h2>
         </StyledContainer>
       )}

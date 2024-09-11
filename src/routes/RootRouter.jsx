@@ -41,7 +41,7 @@ const RootRouter = () => {
       />
       <Route
         path=":username"
-        element={<Profile />}
+        element={<UserPublicInfo />}
       />
       <Route
         path="/password-reminder"

@@ -1,3 +1,5 @@
+import { createSelector } from "@reduxjs/toolkit";
+
 export const getIsLogged = (state) => state.authState;
 export const getError = (state) => {
   if (state.ui.state === "error") {
@@ -41,6 +43,10 @@ export const getSinglePublicProfileUserDescription = (state) =>
 export const getSinglePublicProfileOwner = (state) =>
   state.singlePublicProfile.data.userName;
 export const getAdsSelector = (state) => state.adsState.data;
+export const getMyAds = (username) =>
+  createSelector([getAdsSelector], (myAds) =>
+    myAds.filter((ad) => ad.user.username === username)
+  );
 export const getUiIDState = (state) => state.uiID.errors;
 export const getPassword = (state) => state.password;
 export const getPasswordState = (state) => state.password.state;

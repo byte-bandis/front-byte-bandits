@@ -12,6 +12,7 @@ import myPaymentsReducer from "./MyPersonalData/paymentSlice";
 import myDataReducer from "./MyPersonalData/myDataSlice";
 import userReducer from "./userSlice";
 import passwordReducer from "./MyPersonalData/passwordSlice";
+import transactionsReducer from "./transactionsSlice";
 
 export const store = configureStore({
   reducer: {
@@ -28,6 +29,7 @@ export const store = configureStore({
     myData: myDataReducer,
     account: userReducer,
     password: passwordReducer,
+    transactions: transactionsReducer,
   },
   devTools: import.meta.env.NODE_ENV !== "production",
   //devTools: true,

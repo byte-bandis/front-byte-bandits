@@ -2,7 +2,7 @@ import { useTranslation } from "react-i18next";
 import StyledContainer from "../../components/shared/StyledContainer";
 import { useParams } from "react-router-dom";
 import { useSelector } from "react-redux";
-import { getAdsSelector, getMyAds } from "../../store/selectors";
+import { getAdsSelector } from "../../store/selectors";
 import { StyledAdList } from "../../components/shared/lists";
 import ProductItem from "../product/ProductItem";
 import { useState } from "react";
@@ -11,15 +11,13 @@ import { useEffect } from "react";
 const MyProducts = () => {
   const { t } = useTranslation();
   const { username } = useParams();
-  /* const ads = useSelector(getAdsSelector);
-  const [myAds, setMyAds] = useState([]); */
-  const myAds = useSelector(getMyAds(username));
-
-  /*   useEffect(() => {
+  const ads = useSelector(getAdsSelector);
+  const [myAds, setMyAds] = useState([]);
+  useEffect(() => {
     if (ads) {
       setMyAds(ads.filter((item) => item.user.username === username));
     }
-  }, [ads, username]); */
+  }, [ads, username]);
 
   return (
     <>

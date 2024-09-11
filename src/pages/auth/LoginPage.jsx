@@ -226,7 +226,10 @@ const LoginPage = () => {
             </StyledContainer>
           </>
         ) : (
-          <CustomPulseLoader />
+          <CustomPulseLoader
+            loading={isLoading.toString()}
+            $customHeight="200px"
+          />
         )}
       </form>
     </div>

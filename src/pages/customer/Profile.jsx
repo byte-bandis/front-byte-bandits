@@ -67,7 +67,7 @@ const Profile = () => {
     <StyledContainer>
       {isLoading && (
         <CustomPulseLoader
-          loading={isLoading}
+          loading={isLoading.toString()}
           $customHeight="500px"
         />
       )}

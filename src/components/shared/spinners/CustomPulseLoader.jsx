@@ -19,7 +19,7 @@ const CustomPulseLoader = ({ isLoading, ...props }) => {
 };
 
 CustomPulseLoader.propTypes = {
-  isLoading: PropTypes.bool.isRequired,
+  isLoading: PropTypes.bool,
 };
 
 export default CustomPulseLoader;

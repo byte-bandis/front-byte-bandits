@@ -42,7 +42,15 @@ const StyledMyAccount = ({ children }) => {
   ];
 
   return (
-    <>
+    <StyledContainer
+      $customDisplay="flex"
+      $customFlexDirection="row"
+      $customJustifyContent="flex-start"
+      $customGap="3%"
+      $customAlignItems="flex-start"
+      $customBackground="var(--bg-100)"
+      $customMargin="1% 1% 0 1%"
+    >
       <TagsNav
         options={sideBarElements}
         $FlexDirection="column"
@@ -50,8 +58,10 @@ const StyledMyAccount = ({ children }) => {
         $CustomGap="20px"
         $CustomMargin="1rem"
       ></TagsNav>
-      <StyledContainer>{children}</StyledContainer>
-    </>
+      <StyledContainer $customBackground="var(-bg-100)">
+        {children}
+      </StyledContainer>
+    </StyledContainer>
   );
 };
 

@@ -29,6 +29,7 @@ const RegularButton = styled.button`
   &:focus {
     background-color: ${(props) =>
       props.$customFocusBackground || "var(--primary-200)"};
+    color: ${(props) => props.$customFocusColor || "var(--bg-100)"};
   }
 
   &:active {

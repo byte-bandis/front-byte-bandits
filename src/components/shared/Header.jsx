@@ -129,12 +129,12 @@ const Header = () => {
 
       <HeaderStyledContainer
         $CustomMargin=" 0 auto"
-        $CustomPadding="1rem 1rem"
-        $CustomWidth="100%"
+        $CustomPadding=".4rem .4rem"
+        $CustomWidth="85%"
         $CustomBorderBottom="1px dotted var(--primary-100)"
       >
         <Logo
-          $CustomWidth="10%"
+          $CustomWidth="15%"
           $customImageWidth="80%"
           $customImageHeight="80%"
         />
@@ -262,6 +262,8 @@ const HeaderStyledContainer = styled.div`
   background-color: ${(props) =>
     props.$customBackGroundColor || "var(--bg-100)"};
   margin: ${(props) => props.$CustomMargin || 0};
+  max-width: calc(290px * 5);
+
 `;
 
 const StyledNav = styled.nav`

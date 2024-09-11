@@ -37,12 +37,22 @@ const LoginPage = () => {
   const [inputPassword, setInputPassword] = useState("");
   const [checkboxStatus, setCheckboxStatus] = useState(false);
   const [show, setShow] = useState(false);
+
   const resetForm = () => {
     setInputEmail("");
     setInputPassword("");
     setCheckboxStatus(false);
   };
   const loggedUser = useSelector(getLoggedUser);
+  const [disableButton, setDisableButton] = useState(false);
+
+  useEffect(() => {
+    if (!inputEmail || !inputPassword) {
+      setDisableButton(true);
+    } else {
+      setDisableButton(false);
+    }
+  }, [inputEmail, inputPassword]);
 
   useEffect(() => {
     if (isError) {
@@ -146,7 +156,6 @@ const LoginPage = () => {
           <CustomAlert
             variant="error"
             onClose={handleCloseErrorAlert}
-            dismissible
             $customWidth="100%"
           >
             {message}
@@ -199,10 +208,11 @@ const LoginPage = () => {
               $customwidth="100%"
               $variant="attention"
               $customVerticalPadding=".6rem"
+              $customDisableBackGroundColor="var(--accent-300)"
               type="submit"
-              disabled={isLogged.loading}
+              disabled={disableButton}
             >
-              {isLogged.loading ? t("login.loggingIn") : t("login.logIn")}
+              {t("login.logIn")}
             </RegularButton>
             <StyledContainer
               className="form-links"
@@ -226,7 +236,10 @@ const LoginPage = () => {
             </StyledContainer>
           </>
         ) : (
-          <CustomPulseLoader />
+          <CustomPulseLoader
+            loading={isLoading.toString()}
+            $customHeight="200px"
+          />
         )}
       </form>
     </div>

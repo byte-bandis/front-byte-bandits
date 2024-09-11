@@ -1,18 +1,21 @@
-import { setCookie } from "../../../lib/setCookies";
 import i18n from "i18next";
 import PropTypes from "prop-types";
 import { RegularButton } from "../buttons";
 import { ButtonContainer } from "../buttons";
 import FlagSelector from "./FlagSelector";
+import Cookies from "js-cookie";
 
 const LanguageSwitcher = ({ flag, ...props }) => {
   const handleLanguageChange = (lng) => {
     i18n.changeLanguage(lng);
-    setCookie("formatLanguage", lng, 365);
+    Cookies.set("formatLanguage", lng, 365);
   };
 
   return (
-    <ButtonContainer {...props} $widthContainer= "auto">
+    <ButtonContainer
+      {...props}
+      $widthContainer="auto"
+    >
       <RegularButton
         onClick={() => handleLanguageChange("en")}
         $customBackground="transparent"

@@ -1,4 +1,6 @@
 :root {
+  background: var(--bg-100);
+
   --advert-1: #ffffff;
   --advert-2: #3d3d3d;
   --advert-3: #000000;
@@ -33,6 +35,7 @@
   --primary-400: #e8f8f0a0;
   --accent-100: #f18f01;
   --accent-200: #833500;
+  --accent-300: #fab752;
   --text-100: #333333;
   --text-200: #5c5c5c;
   --background-100: #e8e8e8;
@@ -53,4 +56,7 @@
   --bg-100-d: #1b2b34;
   --bg-200-d: #2b3b44;
   --bg-300-d: #43545e;
+}
+#root {
+  background: var(--bg-100);
 }

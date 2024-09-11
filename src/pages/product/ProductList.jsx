@@ -3,13 +3,13 @@ import propTypes from "prop-types";
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect } from "react";
 import { getAds } from "../../store/adsThunk";
-import styled from "styled-components";
+
 import Pager from "../pagination/Pager";
 import { getWishlist } from "../../store/likesThunk";
 import ErrorMessage from "./components/ErrorMessage";
 import { resetMessage } from "../../store/uiSlice";
-
-const ProductList = () => {
+import { StyledAdList } from "../../components/shared/lists";
+const ProductList = ({ $customMargin, $customTop }) => {
   const dispatch = useDispatch();
   const page = useSelector((state) => state.adsState.page);
   const userid = useSelector((state) => state.authState.user.userId);
@@ -39,7 +39,7 @@ const ProductList = () => {
 
   return (
     <>
-      <StyledAdList className="ad-list">
+      <StyledAdList className="ad-list" $customMargin={$customMargin} $customTop={$customTop}>
         {adsData.length > 0 ? (
           adsData.map((ad) => (
             <ProductItem
@@ -79,26 +79,8 @@ ProductList.propTypes = {
     buysell: propTypes.oneOf(["all", "sell", "buy"]),
     price: propTypes.number,
   }),
+  $customMargin: propTypes.string,
+  $customTop: propTypes.string,
 };
-const StyledAdList = styled.div`
-  margin: 12% auto;
-  display: grid;
-justify-content: space-between;
-  justify-items: center;
-  width: 80%;
 
-  gap: 30px;
-  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-  padding-top: 0px;
-
-  &:has(.no-ad[noad]) {
-    display: flex;
-  }
-
-  .no-ad {
-    color: silver;
-    text-wrap: nowrap;
-    text-align: start;
-  }
-`;
 export default ProductList;

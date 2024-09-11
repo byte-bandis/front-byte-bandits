@@ -149,7 +149,9 @@ const Paginator = styled.div`
     display: flex;
     justify-content: center;
     align-items: center;
-    padding: 20px 0;
+    padding: 0;
+    position: relative;
+    top: -10px;
 `;
 
 export default Pager;

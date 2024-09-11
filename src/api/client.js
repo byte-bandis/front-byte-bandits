@@ -1,8 +1,22 @@
 import axios from "axios";
+import i18n from "i18next";
 
 export const client = axios.create({
   baseURL: import.meta.env.VITE_API_BASE_URL,
 });
+
+client.interceptors.request.use(
+  (config) => {
+    const currentLanguage = i18n.language;
+    if (currentLanguage) {
+      config.headers["Accept-Language"] = currentLanguage;
+    }
+    return config;
+  },
+  (error) => {
+    return Promise.reject(error);
+  }
+);
 
 client.interceptors.response.use(
   (response) => {

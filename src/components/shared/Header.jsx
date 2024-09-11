@@ -18,6 +18,7 @@ import Confirmator from "./Confirmator";
 import { useState, useEffect } from "react";
 import LanguageSwitcher from "./localization/LanguageSwitcher";
 import FilterHeaderOptions from "./filters/FilterHeaderOptions";
+import { MenuApp } from "react-bootstrap-icons";
 
 const Header = () => {
   const { t } = useTranslation();
@@ -154,6 +155,14 @@ const Header = () => {
             $CustomGap="10px"
             $CustomJustifyContent="space-between"
           >
+              <DropdownLink
+              options={TAG_OPTIONS}
+              className="allCategoriesBurguer"
+              $CustomWidth="fit-content"
+              $CustomGap="10px"
+            >
+              <MenuApp  size={20} />
+            </DropdownLink>
             <SearchContainer className="search">
               <SearchByadTitle
                 className="searchByadTitle"
@@ -263,7 +272,9 @@ const HeaderStyledContainer = styled.div`
     props.$customBackGroundColor || "var(--bg-100)"};
   margin: ${(props) => props.$CustomMargin || 0};
   max-width: calc(290px * 5);
-
+@media (max-width: 768px) {
+  width: 100%;
+}
 `;
 
 const StyledNav = styled.nav`
@@ -272,6 +283,14 @@ const StyledNav = styled.nav`
   justify-content: ${(props) => props.$CustomJustifyContent || "center"};
   width: ${(props) => props.$CustomWidth || "100%"};
   gap: ${(props) => props.$CustomGap || "0px"};
+  .allCategoriesBurguer {
+    display: none;
+  }
+  @media (max-width: 768px) {
+    .allCategoriesBurguer {
+      display: flex;
+    }
+  }
 `;
 
 const SearchContainer = styled.div`
@@ -315,6 +334,11 @@ const StyledTagsNavContainer = styled.div`
 
     .TagsNavegation {
       justify-content: ${(props) => props.$CustomJustifyContent || "center"};
+      display: none;
     }
+   
+   display: none;
+   
+   
   }
 `;

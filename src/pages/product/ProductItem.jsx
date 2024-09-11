@@ -124,7 +124,8 @@ const StyledSingleAd = styled.div`
   flex-direction: ${(props) => props.$customFlexDirection || "column"};
   overflow: hidden;
   width: ${(props) => props.$customWidth || "100%"};
-  max-height: ${(props) => props.$customMaxHeight || "340px"};
+aspect-ratio: 0.8;
+  max-height: ${(props) => props.$customMaxHeight || "100%"};
   gap: ${(props) => props.$customGap || "4px"};
   transition: 0.09s;
   border-radius: 10px;
@@ -152,12 +153,12 @@ const StyledSingleAd = styled.div`
     text-overflow: ellipsis;
   }
   & .img-container {
-    position: relative;
+    sposition: relative;
     max-width: 100%;
-    height: 200px;
+    height: auto;
     max-height: 100%;
+    aspect-ratio: 0.9;
     justify-content: center;
-
     align-items: center;
     background: var(--bg-100);
     overflow: hidden;

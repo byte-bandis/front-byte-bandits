@@ -162,7 +162,7 @@ const Address = () => {
       <StyledListContainer $customWidth="80%">
         {isLoading && (
           <CustomPulseLoader
-            loading={isLoading}
+            loading={isLoading.toString()}
             $customHeight="200px"
           />
         )}

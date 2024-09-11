@@ -20,7 +20,7 @@ const Safety = () => {
         <p>{t("safety_intro")}</p>
         {isLoading ? (
           <CustomPulseLoader
-            loading={isLoading}
+            loading={isLoading.toString()}
             $customHeight="200px"
           />
         ) : (

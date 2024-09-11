@@ -15,7 +15,7 @@ import { logout } from "../auth/service.js";
 import { useNavigate } from "react-router-dom";
 import CustomAlert from "../../components/shared/Alert.jsx";
 import { resetUI } from "../../store/uiSlice.js";
-import { resetLoggedUserInfo } from "../../store/authSlice.js";
+import { resetLoggedUserInfo, setAuth } from "../../store/authSlice.js";
 import { resetSinglePublicProfile } from "../../store/singlePublicProfileSlice.js";
 import CustomPulseLoader from "../../components/shared/spinners/CustomPulseLoader.jsx";
 
@@ -42,7 +42,7 @@ const Safety = () => {
       const timer = setTimeout(() => {
         setShowDeletionResult(false);
         logout(reloadPage);
-        dispatch(resetUI());
+        dispatch(setAuth(false));
         dispatch(resetLoggedUserInfo());
         dispatch(resetSinglePublicProfile());
       }, 3000);
@@ -69,7 +69,7 @@ const Safety = () => {
         )}
         {isLoading ? (
           <CustomPulseLoader
-            loading={isLoading}
+            loading={isLoading.toString()}
             $customHeight="200px"
           />
         ) : (

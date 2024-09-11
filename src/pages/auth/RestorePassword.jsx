@@ -5,13 +5,14 @@ import { RegularButton } from "../../components/shared/buttons";
 import Logo from "../../components/shared/Logo";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate, useParams } from "react-router-dom";
-import { getError, getSuccess } from "../../store/selectors";
+import { getError, getLoading, getSuccess } from "../../store/selectors";
 import { resetUI } from "../../store/uiSlice";
 import StyledContainer from "../../components/shared/StyledContainer";
 import { useTranslation } from "react-i18next";
 import IconWrapper from "../../components/shared/iconsComponents/IconWrapper";
 import { XCircle } from "react-bootstrap-icons";
 import { sendMyRestoredPasswordThunk } from "../../store/MyPersonalData/myPasswordThunk";
+import CustomPulseLoader from "../../components/shared/spinners/CustomPulseLoader";
 
 const RestorePassword = () => {
   const { t } = useTranslation();
@@ -24,10 +25,21 @@ const RestorePassword = () => {
   const [inputConfirmPassword, setInputConfirmPassword] = useState("");
   const [showError, setShowError] = useState(false);
   const [showSuccess, setShowSuccess] = useState(false);
+  const [disableButton, setDisableButton] = useState(false);
+  const isLoading = useSelector(getLoading);
+
   const [formData, setFormData] = useState({
     newPassword: "",
     confirmPassword: "",
   });
+
+  useEffect(() => {
+    if (!inputNewPassword || !inputConfirmPassword) {
+      setDisableButton(true);
+    } else {
+      setDisableButton(false);
+    }
+  }, [inputConfirmPassword, inputNewPassword]);
 
   useEffect(() => {
     setFormData({
@@ -92,96 +104,130 @@ const RestorePassword = () => {
         onSubmit={handleSubmit}
         noValidate
       >
-        {/* Header */}
-        <StyledContainer $customDisplay="flex">
-          <IconWrapper
-            IconComponent={XCircle}
-            size="30px"
-            top="1%"
-            right="-5%"
-            onClick={handleToLogin}
-            cursor="pointer"
-          />
-          <Logo $CustomWidth="30%" />
-          <StyledContainer
-            $customDisplay="flex"
-            $customJustifyContent="center"
-            $customMargin="1rem"
-          >
-            <h4>{t("login.restore_password_title")}</h4>
-          </StyledContainer>
-        </StyledContainer>
-        {/* Alert */}
-        {showError && (
-          <CustomAlert
-            variant="error"
-            onClose={handleCloseErrorAlert}
-            $customWidth="100%"
-          >
-            {isError}
-          </CustomAlert>
+        {isLoading ? (
+          <>
+            {/* Header */}
+            <StyledContainer $customDisplay="flex">
+              <IconWrapper
+                IconComponent={XCircle}
+                size="30px"
+                top="1%"
+                right="-5%"
+                onClick={handleToLogin}
+                cursor="pointer"
+              />
+              <Logo $CustomWidth="30%" />
+              <StyledContainer
+                $customDisplay="flex"
+                $customJustifyContent="center"
+                $customMargin="1rem"
+              >
+                <h4>{t("login.restore_password_title")}</h4>
+              </StyledContainer>
+            </StyledContainer>
+            <CustomPulseLoader
+              loading={isLoading.toString()}
+              $customHeight="200px"
+            />
+          </>
+        ) : (
+          <>
+            {/* Header */}
+            <StyledContainer $customDisplay="flex">
+              <IconWrapper
+                IconComponent={XCircle}
+                size="30px"
+                top="1%"
+                right="-5%"
+                onClick={handleToLogin}
+                cursor="pointer"
+              />
+              <Logo $CustomWidth="30%" />
+              <StyledContainer
+                $customDisplay="flex"
+                $customJustifyContent="center"
+                $customMargin="1rem"
+              >
+                <h4>{t("login.restore_password_title")}</h4>
+              </StyledContainer>
+            </StyledContainer>
+            {/* Alert */}
+            {showError && (
+              <CustomAlert
+                variant="error"
+                onClose={handleCloseErrorAlert}
+                $customWidth="100%"
+              >
+                {isError}
+              </CustomAlert>
+            )}
+
+            {showSuccess && (
+              <CustomAlert
+                variant="success"
+                onClose={handleCloseSuccessAlert}
+                $customWidth="100%"
+              >
+                {isSuccess}
+              </CustomAlert>
+            )}
+            <StyledContainer
+              className="info"
+              $customDisplay="flex"
+              $customFlexDirection="row"
+              $customJustifyContent="flex-start"
+              $customGap="2%"
+              $customMargin="1rem 0 0 0"
+            >
+              <p>{t("login.info_insert_new_password")}</p>
+            </StyledContainer>
+
+            <StyledContainer
+              $customMargin
+              className="form-group"
+            >
+              <label htmlFor="newPassword">
+                {t("login.insert_new_password")}
+              </label>
+              <input
+                type="password"
+                id="newPassword"
+                value={inputNewPassword}
+                onChange={(e) => setInputNewPassword(e.target.value)}
+                placeholder={t("login.write_new_password")}
+                required
+              />
+            </StyledContainer>
+            <StyledContainer
+              $customMargin
+              className="form-group"
+            >
+              <label htmlFor="confirmPassword">
+                {t("login.confirm_new_password")}
+              </label>
+              <input
+                type="password"
+                id="confirmPassword"
+                value={inputConfirmPassword}
+                onChange={(e) => setInputConfirmPassword(e.target.value)}
+                placeholder={t("login.write_confirm_new_password")}
+                required
+              />
+            </StyledContainer>
+
+            <RegularButton
+              $customMargin="2rem 0 2rem 0"
+              $customwidth="100%"
+              $variant="attention"
+              $customVerticalPadding=".6rem"
+              type="submit"
+              $customDisableBackGroundColor="var(--accent-300)"
+              disabled={disableButton}
+            >
+              {t("send")}
+            </RegularButton>
+          </>
         )}
-
-        {showSuccess && (
-          <CustomAlert
-            variant="success"
-            onClose={handleCloseSuccessAlert}
-            $customWidth="100%"
-          >
-            {isSuccess}
-          </CustomAlert>
-        )}
-        <StyledContainer
-          className="info"
-          $customDisplay="flex"
-          $customFlexDirection="row"
-          $customJustifyContent="flex-start"
-          $customGap="2%"
-          $customMargin="1rem 0 0 0"
-        >
-          <p>{t("login.info_insert_new_password")}</p>
-        </StyledContainer>
-
-        <StyledContainer
-          $customMargin
-          className="form-group"
-        >
-          <label htmlFor="newPassword">{t("login.insert_new_password")}</label>
-          <input
-            type="password"
-            id="newPassword"
-            value={inputNewPassword}
-            onChange={(e) => setInputNewPassword(e.target.value)}
-            placeholder={t("login.write_new_password")}
-            required
-          />
-        </StyledContainer>
-        <StyledContainer
-          $customMargin
-          className="form-group"
-        >
-          <label htmlFor="confirmPassword">
-            {t("login.confirm_new_password")}
-          </label>
-          <input
-            type="password"
-            id="confirmPassword"
-            value={inputConfirmPassword}
-            onChange={(e) => setInputConfirmPassword(e.target.value)}
-            placeholder={t("login.write_confirm_new_password")}
-            required
-          />
-        </StyledContainer>
-
-        <RegularButton
-          $customMargin="2rem 0 2rem 0"
-          $customwidth="100%"
-          $variant="attention"
-          $customVerticalPadding=".6rem"
-          type="submit"
-        >
-          {t("send")}
-        </RegularButton>
       </form>
     </div>
   );

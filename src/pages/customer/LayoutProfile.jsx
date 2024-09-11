@@ -14,7 +14,10 @@ const LayoutProfile = () => {
   return (
     <StyledMyAccount>
       {loggedUserName ? (
-        <StyledContainer $customMargin="2rem 0 0 1rem">
+        <StyledContainer
+          $customMargin="2rem 0 0 1rem"
+          $customBackground="var(--bg-100)"
+        >
           {
             <h1 className="display-5 fw-bold">
               {t("welcome_you_zone", { username: loggedUserName })}

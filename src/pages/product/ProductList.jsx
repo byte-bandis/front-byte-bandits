@@ -9,7 +9,7 @@ import { getWishlist } from "../../store/likesThunk";
 import ErrorMessage from "./components/ErrorMessage";
 import { resetMessage } from "../../store/uiSlice";
 
-const ProductList = ({ $customMargin }) => {
+const ProductList = ({ $customMargin, $customTop }) => {
   const dispatch = useDispatch();
   const page = useSelector((state) => state.adsState.page);
   const userid = useSelector((state) => state.authState.user.userId);
@@ -39,7 +39,7 @@ const ProductList = ({ $customMargin }) => {
 
   return (
     <>
-      <StyledAdList className="ad-list">
+      <StyledAdList className="ad-list" $customMargin={$customMargin} $customTop={$customTop}>
         {adsData.length > 0 ? (
           adsData.map((ad) => (
             <ProductItem
@@ -54,7 +54,6 @@ const ProductList = ({ $customMargin }) => {
               createdAt={ad.createdAt}
               updatedAt={ad.updatedAt}
               tags={ad.tags || []}
-              $customMargin={$customMargin}
             />
           ))
         ) : (
@@ -81,16 +80,19 @@ ProductList.propTypes = {
     price: propTypes.number,
   }),
   $customMargin: propTypes.string,
+  $customTop: propTypes.string,
 };
 const StyledAdList = styled.div`
-  margin: ${(props) => props.$customMargin || "12% auto"};
+  margin: ${(props) => props.$customMargin || "auto"};
   display: grid;
+  position: relative;
+  top: ${(props) => props.$customTop || "0px"};
   justify-content: space-between;
   justify-items: center;
   width: 80%;
-
+ max-width: calc(280px * 5);
   gap: 30px;
-  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
   padding-top: 0px;
 
   &:has(.no-ad[noad]) {
@@ -102,5 +104,6 @@ const StyledAdList = styled.div`
     text-wrap: nowrap;
     text-align: start;
   }
+    
 `;
 export default ProductList;

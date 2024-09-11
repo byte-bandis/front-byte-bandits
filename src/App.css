@@ -57,3 +57,6 @@
   --bg-200-d: #2b3b44;
   --bg-300-d: #43545e;
 }
+#root {
+  background: var(--bg-100);
+}

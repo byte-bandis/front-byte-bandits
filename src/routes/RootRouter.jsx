@@ -11,7 +11,8 @@ import NewProductPage from "../pages/product/NewProductPage";
 import TermsAndConditions from "../pages/register/TermsAndConditions";
 import PrivacyPolicy from "../pages/register/PrivacyPolicy";
 import RequireAuth from "../pages/auth/components/RequireAuth";
-import Profile from "../pages/customer/Profile";
+/* import Profile from "../pages/customer/Profile";
+ */
 import LayoutProfile from "../pages/customer/LayoutProfile";
 import PersonalInfo from "../pages/customer/PersonalInfo";
 import UserPublicInfo from "../pages/customer/UserPublicInfo";
@@ -124,7 +125,7 @@ const RootRouter = () => {
       />
       <Route
         path="/"
-        element={<ProductList />}
+        element={<ProductList $customMargin={"80px auto"} $customTop={"40px"} />}
       />
     </Routes>
   );

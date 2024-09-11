@@ -156,7 +156,6 @@ const LoginPage = () => {
           <CustomAlert
             variant="error"
             onClose={handleCloseErrorAlert}
-            dismissible
             $customWidth="100%"
           >
             {message}

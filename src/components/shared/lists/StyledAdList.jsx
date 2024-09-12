@@ -15,7 +15,6 @@ const StyledAdList = styled.div`
 
   &.single-ad {
     grid-template-columns: 25%;
-    justyfy-content: center;
   }
 
   &:has(.no-ad[noad]) {

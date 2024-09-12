@@ -48,8 +48,7 @@ const Pager = () => {
 
     items.push(
         <Button
-		$customBorderRadius='5px 0 0 5px'
-
+            $customBorderRadius='5px 0 0 5px'
             $cLPadding='12px'
             $cRPadding='18px'
             $cBPadding='2px'
@@ -126,8 +125,7 @@ const Pager = () => {
 
     items.push(
         <Button
-		$customBorderRadius=' 0 5px 5px 0 '
-
+            $customBorderRadius=' 0 5px 5px 0 '
             $cLPadding='12px'
             $cRPadding='18px'
             $cBPadding='2px'
@@ -146,6 +144,7 @@ const Pager = () => {
 };
 
 const Paginator = styled.div`
+    margin-top: 20px;
     display: flex;
     justify-content: center;
     align-items: center;

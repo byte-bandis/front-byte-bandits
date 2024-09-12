@@ -13,6 +13,7 @@ const RegularButton = styled.button`
   font-weight: ${(props) => props.$customFontWeight || "500"};
   transition: ${(props) =>
     props.$customTransition || "background-color .3s ease, color .3s ease"};
+  text-wrap: nowrap;
 
   /* Default or other $variants styles */
   background-color: ${(props) => props.$customBackground || "var(--bg-100)"};

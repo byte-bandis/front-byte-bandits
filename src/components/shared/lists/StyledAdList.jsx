@@ -2,6 +2,7 @@ import styled from "styled-components";
 
 const StyledAdList = styled.div`
   margin: ${(props) => props.$customMargin || "auto"};
+  margin-bottom: ${(props) => props.$customMarginBottom || "10px"};
   display: grid;
   position: relative;
   top: ${(props) => props.$customTop || "0px"};

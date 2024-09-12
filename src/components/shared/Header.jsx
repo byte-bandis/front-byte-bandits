@@ -2,32 +2,26 @@ import styled from "styled-components";
 import SearchByadTitle from "./filters/SearchByadTitle";
 import { useTranslation } from "react-i18next";
 import { useLocation, useNavigate } from "react-router-dom";
-import { useSelector, useDispatch } from "react-redux";
+import { useDispatch } from "react-redux";
 import Logo from "./Logo";
-import RegularButton from "./buttons/RegularButton";
-import EmailLink from "./EmailLink";
-import HeartLink from "./HeartLink";
 import { logout } from "../../pages/auth/service";
 import DropdownLink from "./DropdownLink";
 import { resetLoggedUserInfo } from "../../store/authSlice";
 import { resetSinglePublicProfile } from "../../store/singlePublicProfileSlice";
 import TagsNav from "./TagsNav";
-import { getLoggedUserName } from "../../store/selectors";
 import { resetUI } from "../../store/uiSlice";
 import Confirmator from "./Confirmator";
 import { useState, useEffect } from "react";
-import LanguageSwitcher from "./localization/LanguageSwitcher";
 import FilterHeaderOptions from "./filters/FilterHeaderOptions";
 import { MenuApp } from "react-bootstrap-icons";
+import ButtonsComponent from "./ButtonsComponent";
 
 const Header = () => {
   const { t } = useTranslation();
   const location = useLocation();
-  const isAuthenticated = useSelector((state) => state.authState.authState);
   const [showConfirmator, setShowConfirmator] = useState(false);
   const [isSearching, setIsSearching] = useState(false);
 
-  const loggedUser = useSelector(getLoggedUserName);
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
@@ -55,31 +49,8 @@ const Header = () => {
     dispatch(resetUI());
   };
 
-  const handleSellButton = () => {
-    if (isAuthenticated) {
-      navigate(`${loggedUser}/new`);
-    } else {
-      navigate("/login", {
-        replace: true,
-        state: { from: `/new` },
-      });
-    }
-  };
+ 
 
-  const dropdownOptions = [
-    {
-      text: t("user_zone"),
-      to: `/${loggedUser}/info`,
-      className: "UserZone",
-    },
-    {
-      text: t("log_out"),
-      onClick: () => {
-        setShowConfirmator(true);
-      },
-      className: "Logout",
-    },
-  ];
 
   const TAG_OPTIONS = [
     {
@@ -170,75 +141,12 @@ const Header = () => {
                 onClear={handleClearSearch}
               />
             </SearchContainer>
+              <ButtonsComponent
+              navigate={navigate}
+              setShowConfirmator={setShowConfirmator}
+            /> 
 
-            <div className="buttonsContiner">
-
-
-            {isAuthenticated ? (
-              <>
-                <HeartLink
-                  to={"/myaccount"}
-                  size={30}
-                  $CustomMargin="0"
-                  className="heartHead"
-                />
-                <EmailLink
-                  to={`/${loggedUser}/chat`}
-                  $CustomMargin="0"
-                  size={35}
-                  className="emailHead"
-                />
-
-                <LanguageSwitcher flag />
-
-
-                <DropdownLink
-                  options={dropdownOptions}
-                  className="myAccount"
-                  $CustomWidth="120px"
-                >
-                  {t("user_zone")}
-                </DropdownLink>
-
-
-                <RegularButton
-                  onClick={handleSellButton}
-                  className="sellButton"
-                  $variant="attention"
-                  $customVerticalPadding="5px 50px"
-                >
-                  {t("sell")}
-                </RegularButton>
-                
-              </>
-            ) : (
-              //No authenticated
-              <>
-                <LanguageSwitcher $gap="5px" flag />
-                <RegularButton
-                  onClick={() =>
-                    navigate("/login", {
-                      state: { from: location },
-                    })
-                  }
-                  className="login"
-                  $backgroundColor="var(--primary-200)"
-                >
-                  {t("login_register")}
-                </RegularButton>
-                <RegularButton
-                  onClick={handleSellButton}
-                  className="sellButton"
-                  $variant="attention"
-                  $customVerticalPadding="5px 50px"
-
-                >
-                  {t("sell")}
-                </RegularButton>
-              </>
-              
-            )}
-          </div>
+             
 
           </StyledNav>
           <StyledTagsNavContainer
@@ -307,19 +215,16 @@ const StyledNav = styled.nav`
       display: block;
     }
   }
-    .buttonsContiner {
-      display: flex;
-      gap: 10px;
-      @media (max-width: 800px) {
-        display: none;
-      }
-    }
+   
 `;
 
 const SearchContainer = styled.div`
-  flex-grow: ${(props) => props.$CustomFlexGrow || 1};
+display: ${(props) => props.$CustomDisplay || "flex"};
   margin: ${(props) => props.$CustomMargin || "0"};
+  align-items: ${(props) => props.$CustomAlignItems || "center"};
+  justify-content: ${(props) => props.$CustomJustifyContent || "space-between"};
   width: ${(props) => props.$CustomWidth || "auto"};
+   flex: 1;
 `;
 
 const StyledTagsNavContainer = styled.div`

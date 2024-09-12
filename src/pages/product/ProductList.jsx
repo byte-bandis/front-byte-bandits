@@ -54,8 +54,10 @@ const ProductList = ({ $customMargin }) => {
 
   return (
     <>
-      <StyledAdList className="ad-list">
-        {adsListToShow && adsListToShow.length > 0 ? (
+      <StyledAdList
+        className={`ad-list ${adsListToShow.length === 1 ? "single-ad" : ""}`}
+      >
+        {adsListToShow.length > 0 ? (
           adsListToShow.map((ad) => (
             <ProductItem
               ad={ad}
@@ -107,6 +109,10 @@ const StyledAdList = styled.div`
   gap: 30px;
   grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
   padding-top: 0px;
+
+  &.single-ad {
+    grid-template-columns: 25%;
+  }
 
   &:has(.no-ad[noad]) {
     display: flex;

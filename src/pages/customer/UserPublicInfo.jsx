@@ -16,7 +16,6 @@ const UserPublicInfo = () => {
           <h1>{t("title_public_profile")}</h1>
         </StyledContainer>
       )}
-
       <Profile />
       <MyProducts />
     </>

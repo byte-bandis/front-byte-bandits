@@ -12,7 +12,7 @@ const MyProducts = () => {
       <StyledContainer $customMargin="2% 5% 0 5%">
         <h3>{t("product_list_owner", { username })}</h3>
       </StyledContainer>
-      <StyledContainer $customMargin="0">
+      <StyledContainer>
         <ProductList />
       </StyledContainer>
     </>

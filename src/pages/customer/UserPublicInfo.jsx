@@ -3,12 +3,10 @@ import Profile from "./Profile";
 import StyledContainer from "../../components/shared/StyledContainer";
 import { useParams } from "react-router-dom";
 import MyProducts from "./MyProducts";
-import { useEffect } from "react";
 
 const UserPublicInfo = () => {
   const { t } = useTranslation();
   const { username } = useParams();
-
   const currentUrl = window.location.href;
 
   return (

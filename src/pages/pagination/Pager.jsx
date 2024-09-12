@@ -1,155 +1,151 @@
-import { useEffect } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { setPage } from '../../store/adsSlice';
-import getTotalAds from '../../store/adscounThunk';
+import { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { setPage } from "../../store/adsSlice";
+import getTotalAds from "../../store/adscounThunk";
 import {
-    CaretLeft,
-    CaretLeftFill,
-    CaretRight,
-    CaretRightFill,
-} from 'react-bootstrap-icons';
-import { useNavigate, useLocation } from 'react-router-dom';
-import Button from '../product/components/Button';
-import styled from 'styled-components';
+  CaretLeft,
+  CaretLeftFill,
+  CaretRight,
+  CaretRightFill,
+} from "react-bootstrap-icons";
+import { useNavigate, useLocation, useParams } from "react-router-dom";
+import Button from "../product/components/Button";
+import styled from "styled-components";
 
 const Pager = () => {
-    const dispatch = useDispatch();
-    const navigate = useNavigate();
-    const location = useLocation();
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const location = useLocation();
+  const { username } = useParams();
 
-    useEffect(() => {
-        dispatch(getTotalAds());
-    }, [dispatch]);
+  useEffect(() => {
+    dispatch(getTotalAds());
+  }, [dispatch]);
 
-    const adsAccount = useSelector((state) => state.adsState.totalAds);
-    let active = useSelector((state) => state.adsState.page);
-    const steps = 3;
-    const limit = 10;
-    const max = Math.ceil(adsAccount / limit);
-    let items = [];
+  const adsAccount = useSelector((state) => state.adsState.totalAds);
+  let active = useSelector((state) => state.adsState.page);
+  const steps = 3;
+  const limit = username ? 3 : 10;
+  const max = Math.ceil(adsAccount / limit);
+  let items = [];
 
-    useEffect(() => {
-        const queryParams = new URLSearchParams(location.search);
-        const currentPage = queryParams.get('page');
-        const limitAdsPerPage = queryParams.get('limit');
+  useEffect(() => {
+    const queryParams = new URLSearchParams(location.search);
+    const currentPage = queryParams.get("page");
+    const limitAdsPerPage = queryParams.get("limit");
 
-        if (
-            currentPage !== String(active) ||
-            limitAdsPerPage !== String(limit)
-        ) {
-            queryParams.set('page', active);
-            queryParams.set('limit', limit);
-            navigate({
-                pathname: location.pathname,
-                search: `?${queryParams.toString()}`,
-            });
-        }
-    }, [active, navigate, location]);
-
-    items.push(
-        <Button
-		$customBorderRadius='5px 0 0 5px'
-
-            $cLPadding='12px'
-            $cRPadding='18px'
-            $cBPadding='2px'
-            $customheight='40px'
-            $customwidth='40px'
-            key='initial'
-            onClick={() => {
-                dispatch(setPage(1));
-            }}
-        >
-            <CaretLeftFill />
-        </Button>
-    );
-
-    items.push(
-        <Button
-            $cLPadding='12px'
-            $cRPadding='18px'
-            $cBPadding='2px'
-            $customheight='40px'
-            $customwidth='40px'
-            key='prev'
-            onClick={() => {
-                if (active > 1) {
-                    dispatch(setPage(active - 1));
-                }
-            }}
-        >
-            <CaretLeft />
-        </Button>
-    );
-
-    for (let number = 1; number <= max; number++) {
-        if (
-            number < active - steps - Math.max(steps + active - max, 0) ||
-            number > active + steps + Math.max(steps - active + 1, 0)
-        )
-            continue;
-
-        items.push(
-            <Button
-                $cLPadding='15px'
-                $cRPadding='15px'
-                $customheight='40px'
-                $customwidth='40px'
-                key={number}
-                onClick={() => {
-                    dispatch(setPage(number));
-                }}
-                className={number === active && 'active'}
-            >
-                {number}
-            </Button>
-        );
+    if (currentPage !== String(active) || limitAdsPerPage !== String(limit)) {
+      queryParams.set("page", active);
+      queryParams.set("limit", limit);
+      navigate({
+        pathname: location.pathname,
+        search: `?${queryParams.toString()}`,
+      });
     }
+  }, [active, navigate, location]);
+
+  items.push(
+    <Button
+      $customBorderRadius="5px 0 0 5px"
+      $cLPadding="12px"
+      $cRPadding="18px"
+      $cBPadding="2px"
+      $customheight="40px"
+      $customwidth="40px"
+      key="initial"
+      onClick={() => {
+        dispatch(setPage(1));
+      }}
+    >
+      <CaretLeftFill />
+    </Button>
+  );
+
+  items.push(
+    <Button
+      $cLPadding="12px"
+      $cRPadding="18px"
+      $cBPadding="2px"
+      $customheight="40px"
+      $customwidth="40px"
+      key="prev"
+      onClick={() => {
+        if (active > 1) {
+          dispatch(setPage(active - 1));
+        }
+      }}
+    >
+      <CaretLeft />
+    </Button>
+  );
+
+  for (let number = 1; number <= max; number++) {
+    if (
+      number < active - steps - Math.max(steps + active - max, 0) ||
+      number > active + steps + Math.max(steps - active + 1, 0)
+    )
+      continue;
 
     items.push(
-        <Button
-            $cLPadding='12px'
-            $cRPadding='18px'
-            $cBPadding='2px'
-            $customheight='40px'
-            $customwidth='40px'
-            key='next'
-            onClick={() => {
-                if (active < max) {
-                    dispatch(setPage(active + 1));
-                }
-            }}
-        >
-            <CaretRight />
-        </Button>
+      <Button
+        $cLPadding="15px"
+        $cRPadding="15px"
+        $customheight="40px"
+        $customwidth="40px"
+        key={number}
+        onClick={() => {
+          dispatch(setPage(number));
+        }}
+        className={number === active && "active"}
+      >
+        {number}
+      </Button>
     );
+  }
 
-    items.push(
-        <Button
-		$customBorderRadius=' 0 5px 5px 0 '
+  items.push(
+    <Button
+      $cLPadding="12px"
+      $cRPadding="18px"
+      $cBPadding="2px"
+      $customheight="40px"
+      $customwidth="40px"
+      key="next"
+      onClick={() => {
+        if (active < max) {
+          dispatch(setPage(active + 1));
+        }
+      }}
+    >
+      <CaretRight />
+    </Button>
+  );
 
-            $cLPadding='12px'
-            $cRPadding='18px'
-            $cBPadding='2px'
-            $customheight='40px'
-            $customwidth='40px'
-            key='final'
-            onClick={() => {
-                dispatch(setPage(max));
-            }}
-        >
-            <CaretRightFill />
-        </Button>
-    );
+  items.push(
+    <Button
+      $customBorderRadius=" 0 5px 5px 0 "
+      $cLPadding="12px"
+      $cRPadding="18px"
+      $cBPadding="2px"
+      $customheight="40px"
+      $customwidth="40px"
+      key="final"
+      onClick={() => {
+        dispatch(setPage(max));
+      }}
+    >
+      <CaretRightFill />
+    </Button>
+  );
 
-    return <Paginator>{items}</Paginator>;
+  return <Paginator>{items}</Paginator>;
 };
 
 const Paginator = styled.div`
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    padding: 20px 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 20px 0;
 `;
 
 export default Pager;

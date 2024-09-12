@@ -138,7 +138,16 @@ const ProductView = () => {
             <RegularButton
               className="edit-chat-button"
               onClick={() => {
-                navigate(`/${username}/chat?productId=${productId}`);
+                if (authUser) {
+
+                  navigate(`/${username}/chat?productId=${productId}`);
+                }else {
+                  navigate('/login', {
+                    replace: true,
+                    state: { from: `/${username}/chat?productId=${productId}` },
+                });
+                }
+
               }}
               $customBackground="var(--primary-200)"
               $customColor="var(--bg-100)"

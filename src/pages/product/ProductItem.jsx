@@ -27,19 +27,18 @@ const ProductItem = ({ ad, $customTransform, $customMargin }) => {
   }, [_id, dispatch]);
   const likesCount = useSelector((state) => state.likesSlice.adcrosslikes[_id]);
   const myLikes = useSelector((state) => state.likesSlice.wishlist);
-  
+
   const handleLike = () => {
     dispatch(setLike(_id, user));
     setiLikeIt(!iLikeIt);
   };
- useEffect(() => {
+  useEffect(() => {
     myLikes.forEach((like) => {
       if (like.ad && like.ad._id === _id) {
         setiLikeIt(true);
       }
     });
   }, [myLikes, _id]);
-  
 
   return (
     <ReducirContainer
@@ -47,22 +46,23 @@ const ProductItem = ({ ad, $customTransform, $customMargin }) => {
       $customTransform={$customTransform}
     >
       {iLikeIt ? (
-            <HeartFill
-              className={authUser ? "heart heartbutton" : "heart"}
-              color="red"
-              onClick={authUser ? handleLike : null}
-            />
-          ) : (
-            <Heart
-              className={authUser ? "heart heartbutton" : "heart"}
-              color="red"
-              onClick={authUser ? handleLike : null}
-            />
-          )}
-      <Link className="add" to={`/product/${_id}/${slug}`}>
-        <StyledSingleAd className= {`single-ad ${sell ? "" : "buyitem"}`}>
-        
-
+        <HeartFill
+          className={authUser ? "heart heartbutton" : "heart"}
+          color="var(--accent-100)"
+          onClick={authUser ? handleLike : null}
+        />
+      ) : (
+        <Heart
+          className={authUser ? "heart heartbutton" : "heart"}
+          color="var(--accent-100)"
+          onClick={authUser ? handleLike : null}
+        />
+      )}
+      <Link
+        className="add"
+        to={`/product/${_id}/${slug}`}
+      >
+        <StyledSingleAd className={`single-ad ${sell ? "" : "buyitem"}`}>
           <div className="img-container">
             {photo ? (
               <img
@@ -71,17 +71,26 @@ const ProductItem = ({ ad, $customTransform, $customMargin }) => {
                 crossOrigin={origin}
               />
             ) : (
-              <img className="noImg" src={image} alt="Articulo sin foto" />
+              <img
+                className="noImg"
+                src={image}
+                alt="Articulo sin foto"
+              />
             )}
           </div>
 
           <div className="textcontainer">
             <strong className="">{price} €</strong>
             <p className="item">{adTitle}</p>
-            <p className={`pill sell ${sell ? "" : "buy"}`}>{sell ? "Venta" : "Compra"}</p>
+            <p className={`pill sell ${sell ? "" : "buy"}`}>
+              {sell ? "Venta" : "Compra"}
+            </p>
             <div className="tags-container">
               {tags.map((tag, index) => (
-                <div key={index} className="pill">
+                <div
+                  key={index}
+                  className="pill"
+                >
                   <p className="pill-text">{tag}</p>
                 </div>
               ))}
@@ -139,7 +148,7 @@ const StyledSingleAd = styled.div`
   & .count {
     top: 4px;
     left: 30px;
-    color: red;
+    color: "var(--accent-100)"
     font-size: 20px;
     font-weight: bold;
   }
@@ -228,18 +237,18 @@ const ReducirContainer = styled.div`
   margin: ${(props) => props.$customMargin || "0px"};
   transform: ${(props) => props.$customTransform || "scale(1.0)"};
   position: relative;
-& .heart {
+  & .heart {
     position: absolute;
     top: 7px;
     left: 10px;
     z-index: 10;
     &:hover {
-    transform: scale(1.2);
+      transform: scale(1.2);
+    }
   }
-  }
-    
-    & .heartbutton{
-    cursor: auto;	;
+
+  & .heartbutton {
+    cursor: auto;
   }
   width: 100%;
 `;

@@ -143,12 +143,14 @@ const StyledButtonComponet = styled.div`
             justify-content: center;
             .sellButton,
             .myAccount {
-                
                 padding: 5px 5px;
-                .languageSwitcher {
-                    width: fit-content;
-                    gap: 0px;
+                div {
+                    top: -80px;
                 }
+            }
+            .languageSwitcher {
+                width: fit-content;
+                gap: 0px;
             }
         }
         display: none;

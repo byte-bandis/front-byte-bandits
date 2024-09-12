@@ -1,3 +1,4 @@
+import PropTypes from "prop-types";
 import { useDispatch, useSelector } from "react-redux";
 import { createTransaction } from "../../../store/transactionsThunk";
 import { RegularButton } from "../../../components/shared/buttons";
@@ -55,6 +56,7 @@ const BuyButton = ({ ownerId }) => {
             className="buy-button"
             $customBackground="var(--primary-200)"
             $customColor="var(--bg-100)"
+            $customVerticalPadding="5px 45px"
           >
             Buy
           </RegularButton>
@@ -67,16 +69,18 @@ const BuyButton = ({ ownerId }) => {
 };
 
 export default BuyButton;
-
+BuyButton.propTypes = {
+  ownerId: PropTypes.string.isRequired,
+}
 const PurchaseButton = styled.div`
-  .buy-button {
+  
     position: absolute;
     top: 450px;
-    right: 260px;
+    margin: 0 auto;
     z-index: 10;
     display: flex;
     align-items: center;
     gap: 5px;
     padding: 5px 45px;
-  }
+  
 `;

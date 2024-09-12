@@ -13,8 +13,8 @@ import { getComments } from "../../store/commentsThunk";
 import Confirmator from "../../components/shared/Confirmator";
 import { getSinglePublicProfileWithThunk } from "../../store/profilesThunk";
 import { RegularButton } from "../../components/shared/buttons";
-import { createTransaction } from "../../store/transactionsThunk";
-import CustomAlert from "../../components/shared/Alert";
+/* import { createTransaction } from "../../store/transactionsThunk";
+import CustomAlert from "../../components/shared/Alert"; */
 import BuyButton from "./components/BuyButton";
 
 const ProductView = () => {
@@ -92,9 +92,9 @@ const ProductView = () => {
   };
   
 
-  const handleBuy = (productId, userid) => {
+  /* const handleBuy = (productId, userid) => {
     dispatch(createTransaction({ adId: productId, userid }));
-  };
+  }; */
   if (loadedAds) {
     const { adTitle, adBody, sell, price, photo, tags } = loadedAds;
     const image = photo ? `${photo}` : "../../assets/images/no-image.jpg";
@@ -298,16 +298,7 @@ const StyledAdvertPage = styled.div`
     align-items: center;
     gap: 5px;
   }
-  & .buy-button {
-    position: absolute;
-    top: 450px;
-    right: 260px;
-    z-index: 10;
-    display: flex;
-    align-items: center;
-    gap: 5px;
-    padding: 5px 45px;
-  }
+  
   & h2,
   h1,
   p {

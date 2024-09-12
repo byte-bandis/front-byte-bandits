@@ -19,7 +19,7 @@ import BuyButton from "./components/BuyButton";
 
 const ProductView = () => {
   const origin = import.meta.env.VITE_API_BASE_URL;
-
+  const [editMode, setEditMode] = useState(false);
   const navigate = useNavigate();
   const location = useLocation();
   const dispatch = useDispatch();
@@ -29,7 +29,10 @@ const ProductView = () => {
   const [owner, setOwnerId] = useState("");
   const [iLikeIt, setiLikeIt] = useState(false);
   const [hideDelete, setHideDelete] = useState(false);
-
+  const [toEditComment, setToEditComment] = useState({
+    commentText: "",
+    score : 0,
+});
   const authUser = useSelector((state) => state.authState.user.userId);
   const loadedAds = useSelector((state) => state.adsState.data).find(
     (onead) => onead._id === productId,
@@ -87,6 +90,7 @@ const ProductView = () => {
   const handleDeleteConfirm = async () => {
     dispatch(deleteAd(productId));
   };
+  
 
   const handleBuy = (productId, userid) => {
     dispatch(createTransaction({ adId: productId, userid }));
@@ -218,12 +222,12 @@ const ProductView = () => {
                   </Button>
                 </div>
               }
-              {!!authUser && <CommentForm productId={productId} />}
+              {!!authUser && <CommentForm productId={productId} toEditComment={toEditComment} editMode={editMode} />}
               {comments.length > 0 && (
                 <div className="advert-comments-box">
                   <h3>Comentarios</h3>
                   {comments.map((comment) => (
-                    <CommentItem key={comment._id} comment={comment} />
+                    <CommentItem key={comment._id} comment={comment} productId={productId} setEditMode={setEditMode} setToEditComment={setToEditComment} />
                   ))}
                 </div>
               )}

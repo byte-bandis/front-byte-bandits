@@ -41,6 +41,8 @@ const updateComment = createAsyncThunk(
   "comments/updateComments",
   async (params, { rejectWithValue }) => {
     const { commentId, adFormData } = params;
+    console.log(params)
+    console.log(adFormData)
     try {
       const response = await client.put(`${commentsURL}/${commentId}`, adFormData);
       return response.data;
@@ -55,12 +57,12 @@ const deleteComment = createAsyncThunk(
   async (commentId, { rejectWithValue }) => {
     try {
       const response = await client.delete(`${commentsURL}/${commentId}`);
-      response.message = "Comentario borrado correctamente";
-      return response;
+      console.log( "Comentario borrado correctamente",response);
+      return commentId;
     } catch (error) {
       return rejectWithValue(error.message || error);
     }
   },
 );
 
-export { createComment, getComments, updateComment, deleteComment };
+export { createComment, getComments, updateComment, deleteComment  };

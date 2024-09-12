@@ -125,7 +125,7 @@ const RootRouter = () => {
       />
       <Route
         path="/"
-        element={<ProductList $customMargin={"80px auto"} $customTop={"40px"} />}
+        element={<ProductList $customMargin={"10px auto"} $customTop={"0"} />}
       />
     </Routes>
   );

@@ -110,7 +110,7 @@ const Header = () => {
   ];
 
   const tagsOptions = TAG_OPTIONS.filter(
-    (tag) => tag.text !== t("all_categories")
+    (tag) => tag.text !== t("all_categories"),
   );
 
   return (
@@ -155,13 +155,13 @@ const Header = () => {
             $CustomGap="10px"
             $CustomJustifyContent="space-between"
           >
-              <DropdownLink
+            <DropdownLink
               options={TAG_OPTIONS}
-              className="allCategoriesBurguer"
-              $CustomWidth="fit-content"
+              className="allCategoriesBurger"
+              $CustomWidth="40px"
               $CustomGap="10px"
             >
-              <MenuApp  size={20} />
+              <MenuApp size={20} />
             </DropdownLink>
             <SearchContainer className="search">
               <SearchByadTitle
@@ -170,6 +170,10 @@ const Header = () => {
                 onClear={handleClearSearch}
               />
             </SearchContainer>
+
+            <div className="buttonsContiner">
+
+
             {isAuthenticated ? (
               <>
                 <HeartLink
@@ -184,14 +188,19 @@ const Header = () => {
                   size={35}
                   className="emailHead"
                 />
+
                 <LanguageSwitcher flag />
+
+
                 <DropdownLink
                   options={dropdownOptions}
                   className="myAccount"
-                  $CustomWidth="130px"
+                  $CustomWidth="120px"
                 >
                   {t("user_zone")}
                 </DropdownLink>
+
+
                 <RegularButton
                   onClick={handleSellButton}
                   className="sellButton"
@@ -200,14 +209,12 @@ const Header = () => {
                 >
                   {t("sell")}
                 </RegularButton>
+                
               </>
             ) : (
               //No authenticated
               <>
-                <LanguageSwitcher
-                  $gap="5px"
-                  flag
-                />
+                <LanguageSwitcher $gap="5px" flag />
                 <RegularButton
                   onClick={() =>
                     navigate("/login", {
@@ -223,11 +230,16 @@ const Header = () => {
                   onClick={handleSellButton}
                   className="sellButton"
                   $variant="attention"
+                  $customVerticalPadding="5px 50px"
+
                 >
                   {t("sell")}
                 </RegularButton>
               </>
+              
             )}
+          </div>
+
           </StyledNav>
           <StyledTagsNavContainer
             $CustomGap="10px"
@@ -236,7 +248,7 @@ const Header = () => {
             <DropdownLink
               options={TAG_OPTIONS}
               className="allCategories"
-              $CustomWidth="140px"
+              $CustomWidth="120px"
               $CustomGap="10px"
             >
               {t("all_categories")}
@@ -248,6 +260,11 @@ const Header = () => {
             )}
           </StyledTagsNavContainer>
         </div>
+
+        
+
+          
+
       </HeaderStyledContainer>
     </>
   );
@@ -256,7 +273,7 @@ const Header = () => {
 export default Header;
 
 const HeaderStyledContainer = styled.div`
-  position: ${(props) => props.$CustomPosition || "fixed"};
+  position: ${(props) => props.$CustomPosition || "sticky"};
   top: ${(props) => props.$CustomTop || 0};
   left: ${(props) => props.$CustomLeft || 0};
   right: ${(props) => props.$CustomRight || 0};
@@ -272,9 +289,10 @@ const HeaderStyledContainer = styled.div`
     props.$customBackGroundColor || "var(--bg-100)"};
   margin: ${(props) => props.$CustomMargin || 0};
   max-width: calc(290px * 5);
-@media (max-width: 768px) {
-  width: 100%;
-}
+  @media (max-width: 800px) {
+     width: 100%;
+    }
+
 `;
 
 const StyledNav = styled.nav`
@@ -283,14 +301,19 @@ const StyledNav = styled.nav`
   justify-content: ${(props) => props.$CustomJustifyContent || "center"};
   width: ${(props) => props.$CustomWidth || "100%"};
   gap: ${(props) => props.$CustomGap || "0px"};
-  .allCategoriesBurguer {
+  .allCategoriesBurger {
     display: none;
-  }
-  @media (max-width: 768px) {
-    .allCategoriesBurguer {
-      display: flex;
+    @media (max-width: 800px) {
+      display: block;
     }
   }
+    .buttonsContiner {
+      display: flex;
+      gap: 10px;
+      @media (max-width: 800px) {
+        display: none;
+      }
+    }
 `;
 
 const SearchContainer = styled.div`
@@ -313,6 +336,7 @@ const StyledTagsNavContainer = styled.div`
     props.$customBackGroundColor || "var(--bg-100)"};
   .allCategories {
     margin-right: ${(props) => props.$CustomMarginRight || "0"};
+    
   }
 
   .TagsNavegation {
@@ -321,24 +345,10 @@ const StyledTagsNavContainer = styled.div`
     justify-content: ${(props) => props.$CustomJustifyContent || "center"};
     align-items: ${(props) => props.$CustomAlignItems || "center"};
     gap: ${(props) => props.$CustomGap || "20px"};
+    
   }
-
-  @media (max-width: 768px) {
-    flex-direction: ${(props) => props.$CustomFlexDirection || "column"};
-    align-items: ${(props) => props.$CustomAlignItems || "center"};
-
-    .allCategories {
-      margin-right: ${(props) => props.$CustomMarginRight || "0"};
-      margin-bottom: ${(props) => props.$CustomMarginBottom || "0"};
-    }
-
-    .TagsNavegation {
-      justify-content: ${(props) => props.$CustomJustifyContent || "center"};
+@media (max-width: 800px) {
       display: none;
     }
-   
-   display: none;
-   
-   
-  }
+  
 `;

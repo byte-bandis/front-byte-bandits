@@ -67,8 +67,9 @@ const ProductList = ({ $customMargin, $customTop }) => {
             <h3>{error.toUpperCase()}</h3>
           </ErrorMessage>
         )}
+        <Pager></Pager>
       </StyledAdList>
-      <Pager></Pager>
+      
     </>
   );
 };

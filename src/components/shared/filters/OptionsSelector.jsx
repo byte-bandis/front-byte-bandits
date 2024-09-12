@@ -51,7 +51,7 @@ export default OptionsSelector;
 const TagsContainer = styled.div`
   display: flex;
   flex-direction: column;
-  background-color: var(--background-200);
+  background-color: var(--bg-100);
   padding: 5px 5px;
 `;
 

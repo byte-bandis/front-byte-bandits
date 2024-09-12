@@ -2,16 +2,55 @@ import "./Footer.css";
 import { useTranslation } from "react-i18next";
 import StyledContainer from "./StyledContainer";
 import Logo from "./Logo";
+import Confirmator from "./Confirmator";
+import { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { resetLoggedUserInfo } from "../../store/authSlice";
+import { logout } from "../../pages/auth/service";
+import { resetSinglePublicProfile } from "../../store/singlePublicProfileSlice";
+import { resetUI } from "../../store/uiSlice";
+import ButtonsComponent from "./ButtonsComponent";
 
 const Footer = () => {
+    const [showConfirmator, setShowConfirmator] = useState(false);
+    const navigate = useNavigate();
+    const dispatch = useDispatch();
   const { t } = useTranslation();
+  const handleLogout = () => {
+    logout();
+    navigate("/");
+    dispatch(resetLoggedUserInfo());
+    dispatch(resetSinglePublicProfile());
+    dispatch(resetUI());
+  };
 
   return (
+    <>
+    <ButtonsComponent ClassName="buttonsContinerMobile"
+              navigate={navigate}
+              setShowConfirmator={setShowConfirmator}
+            /> 
     <footer className="footer">
+      {showConfirmator && (
+        <Confirmator
+          textValue={t("confirm_logout")}
+          onConfirm={handleLogout}
+          sethiden={() => setShowConfirmator(false)}
+          hidden={showConfirmator}
+          $blurerBackgroundColor="var(--primary-200)"
+          $blurerHeight="150%"
+          $customBorder="1px solid var(--primary-300)"
+          $customBackground="var(--bg-100)"
+        />
+      )}
+      
       <StyledContainer
         $customDisplay="flex"
         $customFlexDirection="row"
       >
+       
+
         <StyledContainer
           $customDisplay="flex"
           $customJustifyContent="center"
@@ -66,6 +105,7 @@ const Footer = () => {
         </StyledContainer>
       </StyledContainer>
     </footer>
+    </>
   );
 };
 

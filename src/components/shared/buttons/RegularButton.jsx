@@ -13,12 +13,16 @@ const RegularButton = styled.button`
   font-weight: ${(props) => props.$customFontWeight || "500"};
   transition: ${(props) =>
     props.$customTransition || "background-color .3s ease, color .3s ease"};
+  text-wrap: nowrap;
 
   /* Default or other $variants styles */
   background-color: ${(props) => props.$customBackground || "var(--bg-100)"};
   color: ${(props) => props.$customColor || "var(--primary-300)"};
   border: ${(props) => props.$customBorder || "1px solid var(--primary-200)"};
-
+  @media (max-width: 768px) {
+    margin: ${(props) => props.$customMarginMobile || "0"};
+    
+  }
   &:hover {
     transform: scale(0.96);
     background-color: ${(props) =>
@@ -90,6 +94,7 @@ const RegularButton = styled.button`
     &:active {
       background-color: var(--accent-300);
     }
+      
   `}
 `;
 

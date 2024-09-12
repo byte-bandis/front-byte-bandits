@@ -45,3 +45,6 @@
 .social-icons a:hover {
   color: var(--accent-100);
 }
+.buttonsContinerMobile {
+  display: none;
+}

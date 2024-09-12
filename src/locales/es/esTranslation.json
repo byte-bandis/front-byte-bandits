@@ -86,7 +86,7 @@
   "work": "Trabajo",
   "others": "Otros",
   "sell": "Vender",
-  "login_register": "Iniciar sesión o registrarse",
+  "login_register": "Iniciar sesión",
   "confirm_logout": "salir",
   "change_password": "Cambiar contraseña",
   "current_password_label": "Contraseña actual",

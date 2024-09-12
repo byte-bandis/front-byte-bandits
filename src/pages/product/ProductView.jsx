@@ -277,7 +277,7 @@ const StyledAdvertPage = styled.div`
   padding: 20px 10px;
   border-radius: 10px;
   gap: 10px;
-  margin: 12% auto;
+  margin: 2% auto;
   position: relative;
 
   & .heart {

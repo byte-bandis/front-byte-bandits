@@ -101,8 +101,8 @@ const Header = () => {
 
       <HeaderStyledContainer
         $CustomMargin=" 0 auto"
-        $CustomPadding=".4rem .4rem"
-        $CustomWidth="85%"
+        $CustomPadding=".4rem 2%"
+        $CustomWidth="100%"
         $CustomBorderBottom="1px dotted var(--primary-100)"
       >
         <Logo
@@ -196,7 +196,6 @@ const HeaderStyledContainer = styled.div`
   background-color: ${(props) =>
     props.$customBackGroundColor || "var(--bg-100)"};
   margin: ${(props) => props.$CustomMargin || 0};
-  max-width: calc(290px * 5);
   @media (max-width: 800px) {
      width: 100%;
     }

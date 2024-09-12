@@ -14,6 +14,14 @@
   gap: 5px;
 }
 
+.chat-list-empty {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  color: var(--text-300);
+}
+
 .chat-window {
   width: 70%;
   display: flex;

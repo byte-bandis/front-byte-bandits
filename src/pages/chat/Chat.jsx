@@ -7,8 +7,9 @@ import { Check2All, Send } from "react-bootstrap-icons";
 import { getError } from "../../store/selectors";
 import { useDispatch } from "react-redux";
 import { resetMessage } from "../../store/uiSlice";
+import { useSocket } from "../../context/SocketContext";
 
-const Chat = ({ socket, productId, buyerId }) => {
+const Chat = ({ productId, buyerId }) => {
   const [chatId, setChatId] = useState(null);
   const [message, setMessage] = useState("");
   const [messages, setMessages] = useState([]);
@@ -16,8 +17,33 @@ const Chat = ({ socket, productId, buyerId }) => {
   const messageContainerRef = useRef(null);
   const error = useSelector(getError);
   const dispatch = useDispatch();
+  const socket = useSocket();
 
   useEffect(() => {
+    if (!socket) return;
+
+    socket.on("newMessage", (newMessage) => {
+      setMessages((prevMessages) => [...prevMessages, newMessage]);
+
+      // Marcar el mensaje como leído si el mensaje no fue enviado por el usuario actual
+      if (newMessage.user._id !== loggedUserId) {
+        socket.emit("readMessage", {
+          chatId,
+        });
+      }
+    });
+
+    socket.on("messagesRead", (userId) => {
+      setMessages((prevMessages) =>
+        prevMessages.map((msg) => {
+          if (msg.user._id !== userId) {
+            return { ...msg, read: true };
+          }
+          return msg;
+        })
+      );
+    });
+
     const checkChatExists = async () => {
       try {
         const response = await client.get(`/chat`, {
@@ -26,6 +52,7 @@ const Chat = ({ socket, productId, buyerId }) => {
         if (response.chats && response.chats.length > 0) {
           const existingChatId = response.chats[0]._id;
           setChatId(existingChatId);
+          setMessages(response.chats[0].messages);
 
           // Unirse al chat existente
           socket.emit("joinChat", {
@@ -41,48 +68,13 @@ const Chat = ({ socket, productId, buyerId }) => {
     };
 
     checkChatExists();
+
+    return () => {
+      socket.off("newMessage");
+      socket.off("messagesRead");
+      socket.emit("leaveChat", { chatId });
+    };
   }, [productId, buyerId]);
-
-  // Suscribirse a los eventos del chat después de que `chatId` esté disponible
-  useEffect(() => {
-    if (chatId) {
-      // Escuchar el historial de mensajes
-      socket.on("chatHistory", (chatHistory) => {
-        setMessages(chatHistory);
-      });
-
-      // Escuchar nuevos mensajes
-      socket.on("newMessage", (newMessage) => {
-        setMessages((prevMessages) => [...prevMessages, newMessage]);
-
-        // Marcar el mensaje como leído si el mensaje no fue enviado por el usuario actual
-        if (newMessage.user._id !== loggedUserId) {
-          socket.emit("readMessage", {
-            chatId,
-          });
-        }
-      });
-
-      socket.on("messagesRead", (userId) => {
-        setMessages((prevMessages) =>
-          prevMessages.map((msg) => {
-            if (msg.user._id !== userId) {
-              return { ...msg, read: true };
-            }
-            return msg;
-          })
-        );
-      });
-
-      // Limpiar las suscripciones cuando el componente se desmonte o `chatId` cambie
-      return () => {
-        socket.off("chatHistory");
-        socket.off("newMessage");
-        socket.off("messagesRead");
-        socket.emit("leaveChat", { chatId });
-      };
-    }
-  }, [chatId]);
 
   const clearError = () => {
     dispatch(resetMessage());

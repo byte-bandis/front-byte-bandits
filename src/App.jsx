@@ -5,6 +5,7 @@ import Layout from "./components/layout/Layout";
 import RootRouter from "./routes/RootRouter";
 import storage from "./utils/storage";
 import { setAuthorizationHeader } from "./api/client";
+import { SocketProvider } from "./context/SocketContext";
 
 function App() {
   const accessToken = storage.get("authToken");
@@ -14,9 +15,11 @@ function App() {
 
   return (
     <>
-      <Layout>
-        <RootRouter />
-      </Layout>
+      <SocketProvider>
+        <Layout>
+          <RootRouter />
+        </Layout>
+      </SocketProvider>
     </>
   );
 }

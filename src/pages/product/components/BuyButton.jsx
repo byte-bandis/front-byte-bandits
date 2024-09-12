@@ -5,6 +5,7 @@ import styled from "styled-components";
 import CustomAlert from "../../../components/shared/Alert";
 import { useParams } from "react-router-dom";
 import { useState, useEffect } from "react";
+import P from "prop-types";
 
 const BuyButton = ({ ownerId }) => {
   const dispatch = useDispatch();
@@ -67,6 +68,10 @@ const BuyButton = ({ ownerId }) => {
 };
 
 export default BuyButton;
+
+BuyButton.propTypes = {
+  ownerId: P.string,
+};
 
 const PurchaseButton = styled.div`
   .buy-button {

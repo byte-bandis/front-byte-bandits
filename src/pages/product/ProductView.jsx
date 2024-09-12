@@ -13,8 +13,6 @@ import { getComments } from "../../store/commentsThunk";
 import Confirmator from "../../components/shared/Confirmator";
 import { getSinglePublicProfileWithThunk } from "../../store/profilesThunk";
 import { RegularButton } from "../../components/shared/buttons";
-import { createTransaction } from "../../store/transactionsThunk";
-import CustomAlert from "../../components/shared/Alert";
 import BuyButton from "./components/BuyButton";
 
 const ProductView = () => {
@@ -88,9 +86,6 @@ const ProductView = () => {
     dispatch(deleteAd(productId));
   };
 
-  const handleBuy = (productId, userid) => {
-    dispatch(createTransaction({ adId: productId, userid }));
-  };
   if (loadedAds) {
     const { adTitle, adBody, sell, price, photo, tags } = loadedAds;
     const image = photo ? `${photo}` : "../../assets/images/no-image.jpg";
@@ -144,19 +139,7 @@ const ProductView = () => {
           )}
 
           <BuyButton ownerId={owner._id} />
-          {/* {authUser !== owner._id ? (
-            <RegularButton
-              onClick={() => handleBuy(productId, userid)}
-              className="buy-button"
-              $customBackground="var(--primary-200)"
-              $customColor="var(--bg-100)"
-            >
-              Buy
-            </RegularButton>
-          ) : (
-            "nada"
-          )}
-        <CustomAlert></CustomAlert> */}
+
           {adTitle && (
             <>
               <div className="advert-img-container">

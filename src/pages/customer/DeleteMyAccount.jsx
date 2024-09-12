@@ -29,7 +29,7 @@ const Safety = () => {
   const deletionMessage = useSelector(getUIMessage);
   const deletionMessageType = useSelector(getUIState);
   const goBack = -1;
-  const reloadPage = true;
+  const reloadPage = "true";
   const isLoading = useSelector(getLoading);
   const handleHideConfirmator = () => {
     setShowConfirmator(false);

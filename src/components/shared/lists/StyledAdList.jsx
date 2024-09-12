@@ -8,10 +8,15 @@ const StyledAdList = styled.div`
   justify-content: space-between;
   justify-items: center;
   width: 80%;
- max-width: calc(280px * 5);
+  max-width: calc(280px * 5);
   gap: 30px;
   grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
   padding-top: 0px;
+
+  &.single-ad {
+    grid-template-columns: 25%;
+    justyfy-content: center;
+  }
 
   &:has(.no-ad[noad]) {
     display: flex;
@@ -22,7 +27,6 @@ const StyledAdList = styled.div`
     text-wrap: nowrap;
     text-align: start;
   }
-    
 `;
 
 export default StyledAdList;

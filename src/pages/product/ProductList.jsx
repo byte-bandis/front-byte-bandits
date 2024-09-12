@@ -56,7 +56,7 @@ const ProductList = ({ $customMargin, $customTop }) => {
   return (
     <>
       <StyledAdList
-        className="ad-list"
+        className={`ad-list ${adsListToShow.length === 1 ? "single-ad" : ""}`}
         $customMargin={$customMargin}
         $customTop={$customTop}
       >

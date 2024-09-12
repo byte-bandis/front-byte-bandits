@@ -8,8 +8,12 @@ import Pager from "../pagination/Pager";
 import { getWishlist } from "../../store/likesThunk";
 import ErrorMessage from "./components/ErrorMessage";
 import { resetMessage } from "../../store/uiSlice";
+import { useParams } from "react-router-dom";
+import { useState } from "react";
+import { useTranslation } from "react-i18next";
 
 const ProductList = ({ $customMargin }) => {
+  const { t } = useTranslation();
   const dispatch = useDispatch();
   const page = useSelector((state) => state.adsState.page);
   const userid = useSelector((state) => state.authState.user.userId);
@@ -18,6 +22,17 @@ const ProductList = ({ $customMargin }) => {
   const adsData = useSelector((state) => state.adsState.data);
   const urlParams = new URLSearchParams(window.location.search);
   const limit = urlParams.get("limit");
+  const { username } = useParams();
+  const [adsListToShow, setAdsListToShow] = useState([]);
+
+  useEffect(() => {
+    if (username) {
+      const userAds = adsData.filter((item) => item.user.username === username);
+      setAdsListToShow(userAds);
+    } else {
+      setAdsListToShow(adsData);
+    }
+  }, [username, adsData]);
 
   const resetError = () => {
     dispatch(resetMessage());
@@ -40,8 +55,8 @@ const ProductList = ({ $customMargin }) => {
   return (
     <>
       <StyledAdList className="ad-list">
-        {adsData.length > 0 ? (
-          adsData.map((ad) => (
+        {adsListToShow && adsListToShow.length > 0 ? (
+          adsListToShow.map((ad) => (
             <ProductItem
               ad={ad}
               key={ad._id}
@@ -58,7 +73,7 @@ const ProductList = ({ $customMargin }) => {
             />
           ))
         ) : (
-          <p className="no-ad">No hay resultados</p>
+          <p className="no-ad">{t("user_has_no_ads", { username })}</p>
         )}
         {error && (
           <ErrorMessage

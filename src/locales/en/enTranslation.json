@@ -178,5 +178,7 @@
   "Read our": "Read our",
   "privacy and cookies policy": "privacy and cookies policy",
   "to find out how we collect and use your personal data.": "to find out how we collect and use your personal data.",
-  "Remember me": "Remember me"
+  "Remember me": "Remember me",
+  "user_has_no_ads": "{{username}} hasn't a list of products in search or offer yet",
+  "product_list_owner": "{{username}}'s list of products"
 }

@@ -3,19 +3,13 @@ import Profile from "./Profile";
 import StyledContainer from "../../components/shared/StyledContainer";
 import { useParams } from "react-router-dom";
 import MyProducts from "./MyProducts";
-import { useDispatch } from "react-redux";
 import { useEffect } from "react";
-import { getAds } from "../../store/adsThunk";
 
 const UserPublicInfo = () => {
   const { t } = useTranslation();
   const { username } = useParams();
-  const dispatch = useDispatch();
 
   const currentUrl = window.location.href;
-  useEffect(() => {
-    dispatch(getAds(username));
-  }, [username, dispatch]);
 
   return (
     <>

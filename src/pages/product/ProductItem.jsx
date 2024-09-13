@@ -29,8 +29,6 @@ const ProductItem = ({ ad, $customTransform, $customMargin }) => {
   const mylikes = useSelector((state) => state.likesSlice.wishlist);
   useEffect(() => {
     const filteredLikes = mylikes.filter((like) => like.ad=== _id || like.ad._id === _id);
-    console.log('Anuncios en mylikes:', mylikes);
-    console.log('¿Este anuncio tiene like?', filteredLikes.length > 0);
     setiLikeIt(filteredLikes.length > 0);
   }, [mylikes, _id]);
   const handleLike = () => {

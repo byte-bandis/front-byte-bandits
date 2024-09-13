@@ -4,14 +4,25 @@ import StyledMyAccount from "../../components/shared/StyledMyAccount";
 import PasswordUpdater from "./myPersonalInfo/components/PasswordUpdater.jsx";
 import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
-import { getLoading, getLoggedUserName } from "../../store/selectors.js";
+import {
+  getLoading,
+  getLoggedUserName,
+  getLoggedUserUpdateTime,
+  getPasswordData,
+} from "../../store/selectors.js";
 import { Link } from "react-router-dom";
 import CustomPulseLoader from "../../components/shared/spinners/CustomPulseLoader.jsx";
+import { useEffect } from "react";
 
 const Safety = () => {
   const { t } = useTranslation();
   const loggedUserName = useSelector(getLoggedUserName);
   const isLoading = useSelector(getLoading);
+  const dateUpdatedUser = useSelector(getLoggedUserUpdateTime);
+
+  useEffect(() => {
+    console.log("esto es dateUpdatedUser: ", dateUpdatedUser);
+  }, [loggedUserName, dateUpdatedUser]);
 
   return (
     <StyledMyAccount>

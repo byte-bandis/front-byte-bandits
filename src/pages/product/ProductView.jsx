@@ -6,7 +6,6 @@ import { deleteAd, getAds } from "../../store/adsThunk";
 import styled from "styled-components";
 import Button from "./components/Button";
 import { Heart, HeartFill, ChatFill, BrushFill } from "react-bootstrap-icons";
-import { setLike } from "../../utils/setLike";
 import CommentItem from "./components/CommentItem";
 import CommentForm from "./components/CommentForm";
 import { getComments } from "../../store/commentsThunk";
@@ -16,6 +15,7 @@ import { RegularButton } from "../../components/shared/buttons";
 /* import { createTransaction } from "../../store/transactionsThunk";
 import CustomAlert from "../../components/shared/Alert"; */
 import BuyButton from "./components/BuyButton";
+import { setLike } from "../../store/likesThunk";
 
 const ProductView = () => {
   const origin = import.meta.env.VITE_API_BASE_URL;

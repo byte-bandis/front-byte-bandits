@@ -8,43 +8,42 @@ import { useDispatch, useSelector } from "react-redux";
 import { useEffect, useState } from "react";
 import "../../assets/images/no-image.jpg";
 import slugify from "slugify";
-import { setLike } from "../../utils/setLike";
+import { setLike } from "../../store/likesThunk";
 
 const ProductItem = ({ ad, $customTransform, $customMargin }) => {
   const { _id, adTitle, sell, price, photo, tags, user } = ad;
   const origin = import.meta.env.VITE_API_BASE_URL;
   const image = photo ? photo : "../../assets/images/no-image.jpg";
   const authUser = useSelector((state) => state.authState.user.userId);
-  const [iLikeIt, setiLikeIt] = useState(false);
-
   const dispatch = useDispatch();
   const slug = slugify(adTitle, {
     replacement: "-",
     lower: true,
   });
+  const [iLikeIt, setiLikeIt] = useState(false);
   useEffect(() => {
     dispatch(getLikes(_id));
   }, [_id, dispatch]);
   const likesCount = useSelector((state) => state.likesSlice.adcrosslikes[_id]);
-  const myLikes = useSelector((state) => state.likesSlice.wishlist);
 
-  const handleLike = () => {
-    dispatch(setLike(_id, user));
-    setiLikeIt(!iLikeIt);
-  };
+  const mylikes = useSelector((state) => state.likesSlice.wishlist);
   useEffect(() => {
-    myLikes.forEach((like) => {
-      if (like.ad && like.ad._id === _id) {
-        setiLikeIt(true);
-      }
-    });
-  }, [myLikes, _id]);
-
+    const filteredLikes = mylikes.filter((like) => like.ad=== _id || like.ad._id === _id);
+    console.log('Anuncios en mylikes:', mylikes);
+    console.log('¿Este anuncio tiene like?', filteredLikes.length > 0);
+    setiLikeIt(filteredLikes.length > 0);
+  }, [mylikes, _id]);
+  const handleLike = () => {
+    dispatch(setLike({adId:_id, userId:user._id}));
+   
+  };
+  
   return (
     <ReducirContainer
       $customMargin={$customMargin}
       $customTransform={$customTransform}
     >
+      <div className="likeContinerDisplay">
       {iLikeIt ? (
         <HeartFill
           className={authUser ? "heart heartbutton" : "heart"}
@@ -58,6 +57,9 @@ const ProductItem = ({ ad, $customTransform, $customMargin }) => {
           onClick={authUser ? handleLike : null}
         />
       )}
+        <h6 className="likes">{likesCount}</h6>
+      </div>
+      
       <Link
         className="add"
         to={`/product/${_id}/${slug}`}
@@ -238,14 +240,32 @@ const ReducirContainer = styled.div`
   margin: ${(props) => props.$customMargin || "0px"};
   transform: ${(props) => props.$customTransform || "scale(1.0)"};
   position: relative;
-  & .heart {
+  .likeContinerDisplay {
+  background: var(--bg-100-alpha);
+  border-radius: 1px 5px 5px 1px;
+  border: 1px dotted var(--shadow-1);
+  width: fit-content;
+  padding: 3px 3px 3px 12px;
     position: absolute;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
     top: 7px;
-    left: 10px;
+    left: -4px;
+    color: var(--text-1);
     z-index: 10;
+    gap: 5px;
+    h6 {
+      margin: 0;
+      font-weight: bold;
+      font-size: 14px;
+      
+    }
+  & .heart {
     &:hover {
       transform: scale(1.2);
     }
+  }
   }
 
   & .heartbutton {

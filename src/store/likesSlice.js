@@ -1,6 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
 
-import { getLikes, getWishlist } from "./likesThunk";
+import { getLikes, getWishlist, setLike } from "./likesThunk";
 
 export const defaultadsState = {
   adcrosslikes: {},
@@ -37,6 +37,25 @@ const likesSlice = createSlice({
       .addCase(getWishlist.fulfilled, (state, action) => {
         state.loaded = true;
         state.wishlist = action.payload;
+      })
+      .addCase(setLike.fulfilled, (state, action) => {
+        if (action.payload.like) {
+          state.wishlist = [...state.wishlist, action.payload];
+          state.adcrosslikes = {
+          
+            ...state.adcrosslikes,
+            [action.payload.ad]: state.adcrosslikes[action.payload.ad] ? state.adcrosslikes[action.payload.ad] + 1 : 1,
+          };
+        }else{
+          state.wishlist = state.wishlist.filter(
+          (like) => like.ad !== action.payload.ad && like.ad._id !== action.payload.ad
+        );
+        state.adcrosslikes = {
+          
+          ...state.adcrosslikes,
+          [action.payload.ad]: state.adcrosslikes[action.payload.ad] - 1 ,
+        };}
+        
       });
   },
 });

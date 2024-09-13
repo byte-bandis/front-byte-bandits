@@ -67,8 +67,8 @@ const ReservedProducts = () => {
                   $customBorder="1px solid var(--success-border)"
                   $customVerticalPadding="0.5rem 2.5rem"
                   $customPosition="relative"
-                  $customTop="-190px"
-                  $customRight="-150px"
+                  $customTop="-450px"
+                  $customRight="-180px"
                   $customZIndex="10"
                 >
                   Accept
@@ -85,8 +85,8 @@ const ReservedProducts = () => {
                   $customBorder="1px solid var(--success-border)"
                   $customVerticalPadding="0.5rem 2.9rem"
                   $customPosition="relative"
-                  $customTop="-190px"
-                  $customRight="-300px"
+                  $customTop="-450px"
+                  $customRight="-350px"
                   $customZIndex="10"
                 >
                   Reject

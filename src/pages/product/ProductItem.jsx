@@ -28,42 +28,40 @@ const ProductItem = ({ ad, $customTransform, $customMargin }) => {
 
   const mylikes = useSelector((state) => state.likesSlice.wishlist);
   useEffect(() => {
-    const filteredLikes = mylikes.filter((like) => like.ad=== _id || like.ad._id === _id);
-    console.log('Anuncios en mylikes:', mylikes);
-    console.log('¿Este anuncio tiene like?', filteredLikes.length > 0);
+    const filteredLikes = mylikes.filter(
+      (like) => like.ad === _id || like.ad._id === _id,
+    );
+    console.log("Anuncios en mylikes:", mylikes);
+    console.log("¿Este anuncio tiene like?", filteredLikes.length > 0);
     setiLikeIt(filteredLikes.length > 0);
   }, [mylikes, _id]);
   const handleLike = () => {
-    dispatch(setLike({adId:_id, userId:user._id}));
-   
+    dispatch(setLike({ adId: _id, userId: user._id }));
   };
-  
+
   return (
     <ReducirContainer
       $customMargin={$customMargin}
       $customTransform={$customTransform}
     >
       <div className="likeContinerDisplay">
-      {iLikeIt ? (
-        <HeartFill
-          className={authUser ? "heart heartbutton" : "heart"}
-          color="var(--accent-100)"
-          onClick={authUser ? handleLike : null}
-        />
-      ) : (
-        <Heart
-          className={authUser ? "heart heartbutton" : "heart"}
-          color="var(--accent-100)"
-          onClick={authUser ? handleLike : null}
-        />
-      )}
+        {iLikeIt ? (
+          <HeartFill
+            className={authUser ? "heart heartbutton" : "heart"}
+            color="var(--accent-100)"
+            onClick={authUser ? handleLike : null}
+          />
+        ) : (
+          <Heart
+            className={authUser ? "heart heartbutton" : "heart"}
+            color="var(--accent-100)"
+            onClick={authUser ? handleLike : null}
+          />
+        )}
         <h6 className="likes">{likesCount}</h6>
       </div>
-      
-      <Link
-        className="add"
-        to={`/product/${_id}/${slug}`}
-      >
+
+      <Link className="add" to={`/product/${_id}/${slug}`}>
         <StyledSingleAd className={`single-ad ${sell ? "" : "buyitem"}`}>
           <div className="img-container">
             {photo ? (
@@ -73,11 +71,7 @@ const ProductItem = ({ ad, $customTransform, $customMargin }) => {
                 crossOrigin={origin}
               />
             ) : (
-              <img
-                className="noImg"
-                src={image}
-                alt="Articulo sin foto"
-              />
+              <img className="noImg" src={image} alt="Articulo sin foto" />
             )}
           </div>
 
@@ -89,10 +83,7 @@ const ProductItem = ({ ad, $customTransform, $customMargin }) => {
             </p>
             <div className="tags-container">
               {tags.map((tag, index) => (
-                <div
-                  key={index}
-                  className="pill"
-                >
+                <div key={index} className="pill">
                   <p className="pill-text">{tag}</p>
                 </div>
               ))}
@@ -164,7 +155,7 @@ aspect-ratio: 0.8;
     text-overflow: ellipsis;
   }
   & .img-container {
-    sposition: relative;
+    position: relative;
     max-width: 100%;
     height: auto;
     max-height: 100%;
@@ -241,11 +232,11 @@ const ReducirContainer = styled.div`
   transform: ${(props) => props.$customTransform || "scale(1.0)"};
   position: relative;
   .likeContinerDisplay {
-  background: var(--bg-100-alpha);
-  border-radius: 1px 5px 5px 1px;
-  border: 1px dotted var(--shadow-1);
-  width: fit-content;
-  padding: 3px 3px 3px 12px;
+    background: var(--bg-100-alpha);
+    border-radius: 1px 5px 5px 1px;
+    border: 1px dotted var(--shadow-1);
+    width: fit-content;
+    padding: 3px 3px 3px 12px;
     position: absolute;
     display: flex;
     flex-direction: row;
@@ -259,13 +250,12 @@ const ReducirContainer = styled.div`
       margin: 0;
       font-weight: bold;
       font-size: 14px;
-      
     }
-  & .heart {
-    &:hover {
-      transform: scale(1.2);
+    & .heart {
+      &:hover {
+        transform: scale(1.2);
+      }
     }
-  }
   }
 
   & .heartbutton {

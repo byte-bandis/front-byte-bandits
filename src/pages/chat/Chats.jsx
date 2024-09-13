@@ -1,17 +1,14 @@
-import React, { useEffect, useState } from "react";
-import { useLocation } from "react-router-dom";
+import { useEffect, useState } from "react";
+import { useLocation, useNavigate } from "react-router-dom";
 import { client } from "../../api/client";
 import Chat from "./Chat";
 import { getLoggedUserId } from "../../store/selectors";
-import { useSelector } from "react-redux";
-import "./Chats.css";
+import { useSelector, useDispatch } from "react-redux";
+import { getAds } from "../../store/adsThunk";
+import { useSocket } from "../../context/SocketContext";
 import StyledMyAccount from "../../components/shared/StyledMyAccount";
 import ChatListItem from "./ChatListItem";
-import { getAdsSelector } from "../../store/selectors";
-import { useNavigate } from "react-router-dom";
-import { useDispatch } from "react-redux";
-import { getAds } from "../../store/adsThunk";
-import socket from "../../utils/socket";
+import styled from "styled-components";
 
 const Chats = () => {
   const [chatList, setChatList] = useState([]);
@@ -20,17 +17,20 @@ const Chats = () => {
   const location = useLocation();
   const productId =
     new URLSearchParams(location.search).get("productId") || undefined;
-  const loadedAd = useSelector(getAdsSelector).find(
-    (advert) => advert._id === productId
+  const buyerId =
+    new URLSearchParams(location.search).get("buyerId") || undefined;
+  const loadedAd = useSelector((state) =>
+    state.adsState.data.find((advert) => advert._id === productId)
   );
   const navigate = useNavigate();
   const dispatch = useDispatch();
+  const socket = useSocket();
 
   useEffect(() => {
     if (!loggedUserId) return;
+    if (!socket) return;
 
     socket.emit("connectUser");
-    console.log("Connected to socket");
 
     socket.on("userMessagesRead", () => {
       fetchChats();
@@ -45,42 +45,70 @@ const Chats = () => {
       socket.off("userNewMessage");
       socket.emit("disconnectUser");
     };
-  }, [loggedUserId]);
+  }, [loggedUserId, socket]);
 
   useEffect(() => {
-    const checkProduct = async () => {
-      if (productId && loggedUserId) {
-        let fetchedAd = loadedAd;
-        try {
-          if (!fetchedAd) {
-            const fetchedAds = await dispatch(
-              getAds({ id: productId })
-            ).unwrap();
-            fetchedAd = fetchedAds[0] || undefined;
+    const checkProductAndBuyer = async () => {
+      const checkProduct = async () => {
+        if (productId && loggedUserId) {
+          let fetchedAd = loadedAd;
+          try {
+            if (!fetchedAd) {
+              const fetchedAds = await dispatch(
+                getAds({ id: productId })
+              ).unwrap();
+              fetchedAd = fetchedAds[0] || undefined;
+            }
+            return fetchedAd;
+          } catch (errorMsg) {
+            console.error("Failed to fetch product: ", errorMsg.message);
           }
-        } catch (errorMsg) {
-          console.error("Failed to fetch product: ", errorMsg.message);
-        }
 
-        if (fetchedAd === undefined || fetchedAd.user._id === loggedUserId) {
+          if (!fetchedAd) {
+            navigate("/404");
+            return;
+          }
+        }
+      };
+
+      const checkBuyer = async () => {
+        if (buyerId && loggedUserId) {
+          let fetchedBuyer = null;
+          try {
+            const response = await client.get(`/user/find/${buyerId}`);
+            fetchedBuyer = response.user;
+            return fetchedBuyer;
+          } catch (error) {
+            console.error("Error al obtener el comprador:", error);
+          }
+          if (!fetchedBuyer) {
+            navigate("/404");
+            return;
+          }
+        }
+      };
+
+      if (productId && buyerId) {
+        const ad = await checkProduct();
+        const buyer = await checkBuyer();
+        if (ad.user._id !== loggedUserId && buyer._id !== loggedUserId) {
           navigate("/404");
-          return;
         }
       }
     };
 
-    checkProduct();
-  }, [productId, loggedUserId]);
+    checkProductAndBuyer();
+  }, [productId, buyerId, loggedUserId, loadedAd]);
 
   useEffect(() => {
     fetchChats();
-    if (productId && !selectedChat) {
+    if (productId && buyerId && !selectedChat) {
       setSelectedChat({
         product: { _id: productId },
-        buyer: { _id: loggedUserId },
+        buyer: { _id: buyerId },
       });
     }
-  }, [loadedAd, loggedUserId, productId]);
+  }, [productId, buyerId]);
 
   const fetchChats = async () => {
     if (!loggedUserId) return;
@@ -91,8 +119,12 @@ const Chats = () => {
 
       if (
         productId &&
+        buyerId &&
         loadedAd &&
-        !existingChats.some((chat) => chat.product._id === productId)
+        !existingChats.some(
+          (chat) =>
+            chat?.product?._id === productId && chat?.buyer?._id === buyerId
+        )
       ) {
         const newChat = {
           product: {
@@ -100,7 +132,7 @@ const Chats = () => {
             photo: loadedAd.photo,
             adTitle: loadedAd.adTitle,
           },
-          buyer: { _id: loggedUserId },
+          buyer: { _id: buyerId },
           messages: [],
           seller: {
             _id: loadedAd.user._id,
@@ -113,8 +145,11 @@ const Chats = () => {
       }
 
       if (
-        !productId ||
-        existingChats.some((chat) => chat.product._id === productId)
+        (!productId && !buyerId) ||
+        existingChats.some(
+          (chat) =>
+            chat?.product?._id === productId && chat?.buyer?._id === buyerId
+        )
       ) {
         setChatList(existingChats);
       }
@@ -125,36 +160,85 @@ const Chats = () => {
 
   return (
     <StyledMyAccount>
-      <div className="chats-container">
-        <div className="chat-list">
+      <ChatsContainer>
+        <ChatList>
           {chatList.length === 0 ? (
-            <p>No tienes chats aún.</p>
+            <ChatListEmpty>
+              <p>No tienes chats aún.</p>
+            </ChatListEmpty>
           ) : (
             chatList.map((chat) => (
               <ChatListItem
                 key={chat._id}
                 chat={chat}
-                isSelected={chat.product?._id === selectedChat?.product?._id}
+                isSelected={
+                  chat.product?._id === selectedChat?.product?._id &&
+                  chat.buyer?._id === selectedChat?.buyer?._id
+                }
                 onClick={() => setSelectedChat(chat)}
                 loggedUserId={loggedUserId}
               />
             ))
           )}
-        </div>
-        <div className="chat-window">
+        </ChatList>
+        <ChatWindow>
           {selectedChat && selectedChat.product?._id ? (
             <Chat
-              socket={socket}
               productId={selectedChat.product._id}
               buyerId={selectedChat.buyer._id}
             />
           ) : (
             <p>Selecciona un chat para comenzar.</p>
           )}
-        </div>
-      </div>
+        </ChatWindow>
+      </ChatsContainer>
     </StyledMyAccount>
   );
 };
+
+const ChatsContainer = styled.div`
+  display: flex;
+  width: 100%;
+  height: 79vh;
+`;
+
+const ChatList = styled.div`
+  display: flex;
+  flex-direction: column;
+  width: 30%;
+  border-right: 1px solid var(--bg-300);
+  padding: 10px;
+  overflow-y: auto;
+  gap: 5px;
+
+  ::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    background-color: var(--bg-300);
+    border-radius: 10px;
+  }
+
+  ::-webkit-scrollbar-thumb:hover {
+    background-color: #555;
+  }
+`;
+
+const ChatListEmpty = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  color: var(--text-300);
+`;
+
+const ChatWindow = styled.div`
+  width: 70%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+`;
 
 export default Chats;

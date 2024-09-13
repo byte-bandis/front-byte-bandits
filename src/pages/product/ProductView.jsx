@@ -14,7 +14,7 @@ import { getSinglePublicProfileWithThunk } from "../../store/profilesThunk";
 import { RegularButton } from "../../components/shared/buttons";
 import BuyButton from "./components/BuyButton";
 import { setLike } from "../../store/likesThunk";
-import noImage from '../../assets/images/no-image.jpg';
+import noImage from "../../assets/images/no-image.jpg";
 
 const ProductView = () => {
   const origin = import.meta.env.VITE_API_BASE_URL;
@@ -32,9 +32,11 @@ const ProductView = () => {
     commentText: "",
     score: 0,
   });
+    score: 0,
+  });
   const authUser = useSelector((state) => state.authState.user.userId);
   const loadedAds = useSelector((state) => state.adsState.data).find(
-    (onead) => onead._id === productId,
+    (onead) => onead._id === productId
   );
   const myLikes = useSelector((state) => state.likesSlice.wishlist);
   const comments = useSelector((state) => state.commentsSlice.data);
@@ -93,7 +95,7 @@ const ProductView = () => {
   if (loadedAds) {
     const { adTitle, adBody, sell, price, photo, tags } = loadedAds;
     const image = photo ? photo : noImage;
-    console.log(image)
+    console.log(image);
     return (
       <>
         {
@@ -135,11 +137,15 @@ const ProductView = () => {
               className="edit-chat-button"
               onClick={() => {
                 if (authUser) {
-                  navigate(`/${username}/chat?productId=${productId}`);
+                  navigate(
+                    `/${username}/chat?productId=${productId}&buyerId=${userid}`
+                  );
                 } else {
                   navigate("/login", {
                     replace: true,
-                    state: { from: `/${username}/chat?productId=${productId}` },
+                    state: {
+                      from: `/${username}/chat?productId=${productId}&buyerId=${userid}`,
+                    },
                   });
                 }
               }}
@@ -243,9 +249,10 @@ const ProductView = () => {
 			  )} */}
         </StyledAdvertPage>
       </>
+    
     );
   }
-};
+
 
 ProductView.propTypes = {
   ad: PropTypes.shape({

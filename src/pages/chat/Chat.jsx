@@ -1,36 +1,42 @@
-import React, { useEffect, useState, useRef } from "react";
-import "./Chat.css";
+import PropTypes from "prop-types";
+import { useDispatch, useSelector } from "react-redux";
+import { useEffect, useState, useRef } from "react";
+import styled from "styled-components";
+import { useSocket } from "../../context/SocketContext";
 import { client } from "../../api/client";
-import { getLoggedUserId } from "../../store/selectors";
-import { useSelector } from "react-redux";
-import { Check2All, Send } from "react-bootstrap-icons";
-import { getError } from "../../store/selectors";
-import { useDispatch } from "react-redux";
+import { getLoggedUserId, getError } from "../../store/selectors";
 import { resetMessage } from "../../store/uiSlice";
+import ChatHeader from "./ChatHeader";
+import { Check2All, Send } from "react-bootstrap-icons";
+import { useTranslation } from "react-i18next";
 
-const Chat = ({ socket, productId, buyerId }) => {
+const Chat = ({ productId, buyerId }) => {
   const [chatId, setChatId] = useState(null);
   const [message, setMessage] = useState("");
   const [messages, setMessages] = useState([]);
+  const [chatInfo, setChatInfo] = useState(null);
   const loggedUserId = useSelector(getLoggedUserId);
   const messageContainerRef = useRef(null);
   const error = useSelector(getError);
   const dispatch = useDispatch();
+  const socket = useSocket();
+  const { t } = useTranslation();
 
   useEffect(() => {
+    if (!socket || !loggedUserId) return;
+
     const checkChatExists = async () => {
       try {
         const response = await client.get(`/chat`, {
-          params: { productId, buyerId },
+          params: { productId, buyerId, isExtended: true },
         });
         if (response.chats && response.chats.length > 0) {
           const existingChatId = response.chats[0]._id;
           setChatId(existingChatId);
+          setMessages(response.chats[0].messages);
+          setChatInfo(response.chats[0]);
 
-          // Unirse al chat existente
-          socket.emit("joinChat", {
-            chatId: existingChatId,
-          });
+          socket.emit("joinChat", { chatId: existingChatId });
         } else {
           setMessages([]);
           setChatId(null);
@@ -41,25 +47,13 @@ const Chat = ({ socket, productId, buyerId }) => {
     };
 
     checkChatExists();
-  }, [productId, buyerId]);
 
-  // Suscribirse a los eventos del chat después de que `chatId` esté disponible
-  useEffect(() => {
     if (chatId) {
-      // Escuchar el historial de mensajes
-      socket.on("chatHistory", (chatHistory) => {
-        setMessages(chatHistory);
-      });
-
-      // Escuchar nuevos mensajes
       socket.on("newMessage", (newMessage) => {
         setMessages((prevMessages) => [...prevMessages, newMessage]);
 
-        // Marcar el mensaje como leído si el mensaje no fue enviado por el usuario actual
         if (newMessage.user._id !== loggedUserId) {
-          socket.emit("readMessage", {
-            chatId,
-          });
+          socket.emit("readMessage", { chatId });
         }
       });
 
@@ -73,24 +67,18 @@ const Chat = ({ socket, productId, buyerId }) => {
           })
         );
       });
-
-      // Limpiar las suscripciones cuando el componente se desmonte o `chatId` cambie
-      return () => {
-        socket.off("chatHistory");
-        socket.off("newMessage");
-        socket.off("messagesRead");
-        socket.emit("leaveChat", { chatId });
-      };
     }
-  }, [chatId]);
 
-  const clearError = () => {
-    dispatch(resetMessage());
-  };
+    return () => {
+      socket.off("newMessage");
+      socket.off("messagesRead");
+      socket.emit("leaveChat", { chatId });
+    };
+  }, [productId, buyerId, chatId, loggedUserId, socket]);
 
   useEffect(() => {
-    if (error) clearError();
-  }, []);
+    if (error) dispatch(resetMessage());
+  }, [error, dispatch]);
 
   useEffect(() => {
     if (messageContainerRef.current) {
@@ -99,13 +87,11 @@ const Chat = ({ socket, productId, buyerId }) => {
     }
   }, [messages]);
 
-  // Manejar el envío del mensaje
   const handleSendMessage = async (e) => {
     e.preventDefault();
 
     if (message.trim()) {
       try {
-        // Si no hay chatId, crear uno nuevo antes de enviar el mensaje
         let currentChatId = chatId;
         if (!chatId) {
           const response = await client.post("/chat", { productId, buyerId });
@@ -114,10 +100,7 @@ const Chat = ({ socket, productId, buyerId }) => {
           setChatId(currentChatId);
           console.log("Chat creado:", response.chat);
 
-          // Unirse al nuevo chat
-          socket.emit("joinChat", {
-            chatId: currentChatId,
-          });
+          socket.emit("joinChat", { chatId: currentChatId });
         }
 
         const newMessage = {
@@ -127,7 +110,6 @@ const Chat = ({ socket, productId, buyerId }) => {
         };
 
         console.log("Enviando mensaje:", newMessage);
-        // Enviar el mensaje
         socket.emit("sendMessage", newMessage);
 
         setMessage("");
@@ -137,21 +119,27 @@ const Chat = ({ socket, productId, buyerId }) => {
     }
   };
 
+  if (!chatInfo) {
+    return null;
+  }
+
+  const headerUser =
+    chatInfo.seller._id === loggedUserId ? chatInfo.buyer : chatInfo.seller;
+
   return (
-    <div className="chat-container">
-      <div className="message-container" ref={messageContainerRef}>
+    <ChatContainer>
+      <ChatHeader product={chatInfo.product} user={headerUser} />
+      <MessageContainer ref={messageContainerRef}>
         {messages.map((msg, index) => (
-          <div
+          <Message
             key={index}
-            className={`message ${
-              msg.user._id === loggedUserId ? "sent" : "received"
-            }`}
+            className={msg.user._id === loggedUserId ? "sent" : "received"}
           >
-            <div className="message-content">
+            <MessageContent>
               <span>{msg.content}</span>
-            </div>
-            <div className="message-info">
-              <span className="timestamp">
+            </MessageContent>
+            <MessageInfo>
+              <Timestamp>
                 {new Date(msg.timestamp)
                   .toLocaleString("es-ES", {
                     day: "2-digit",
@@ -161,33 +149,154 @@ const Chat = ({ socket, productId, buyerId }) => {
                     minute: "2-digit",
                   })
                   .replace(",", "")}
-              </span>
+              </Timestamp>
               {msg.user._id === loggedUserId && (
-                <span className={`tick ${msg.read ? "read" : ""}`}>
+                <Tick className={msg.read ? "read" : ""}>
                   <span />
                   <Check2All />
-                </span>
+                </Tick>
               )}
-            </div>
-          </div>
+            </MessageInfo>
+          </Message>
         ))}
-      </div>
-      <form className="send-container" onSubmit={handleSendMessage}>
-        <input
+      </MessageContainer>
+      <SendContainer onSubmit={handleSendMessage}>
+        <Input
           type="text"
           value={message}
           onChange={(e) => setMessage(e.target.value)}
-          placeholder="Escribe un mensaje..."
+          placeholder={t("chat_write_message") + "…"}
         />
-        <button
-          type="submit"
-          className={`${message === "" ? "empty" : "filled"}`}
-        >
-          <Send />{" "}
-        </button>
-      </form>
-    </div>
+        <Button type="submit" className={message === "" ? "empty" : "filled"}>
+          <Send />
+        </Button>
+      </SendContainer>
+    </ChatContainer>
   );
 };
+
+Chat.propTypes = {
+  productId: PropTypes.string.isRequired,
+  buyerId: PropTypes.string.isRequired,
+};
+
+const ChatContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  margin: 0 auto;
+  background-color: var(--bg-200);
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  height: 100%;
+  width: 100%;
+`;
+
+const MessageContainer = styled.div`
+  flex-grow: 1;
+  overflow-y: auto;
+  border: 0px 1px solid #ddd;
+  padding: 10px;
+  background-color: #fff;
+  max-height: 90%;
+
+  ::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    background-color: #888;
+    border-radius: 10px;
+  }
+
+  ::-webkit-scrollbar-thumb:hover {
+    background-color: #555;
+  }
+`;
+
+const Message = styled.div`
+  margin-bottom: 10px;
+  padding: 8px;
+  border-radius: 8px;
+  width: fit-content;
+  max-width: 70%;
+  display: flex;
+  flex-direction: column;
+
+  &.sent {
+    margin-left: auto;
+    background-color: var(--bg-200);
+  }
+
+  &.received {
+    margin-right: auto;
+    background-color: var(--bg-300);
+  }
+`;
+
+const MessageContent = styled.div`
+  margin-bottom: 4px;
+  color: var(--text-100);
+  font-weight: bold;
+  font-size: 14px;
+`;
+
+const MessageInfo = styled.div`
+  display: flex;
+  justify-content: end;
+  align-items: center;
+  gap: 3px;
+`;
+
+const Timestamp = styled.span`
+  font-size: 9.5px;
+  color: var(--text-200);
+`;
+
+const Tick = styled.span`
+  font-size: 11px;
+  color: var(--text-200);
+
+  &.read {
+    color: dodgerblue;
+  }
+`;
+
+const SendContainer = styled.form`
+  display: flex;
+  padding: 20px;
+  border-top: 1px solid var(--bg-300);
+`;
+
+const Input = styled.input`
+  flex-grow: 1;
+  padding: 10px;
+  border: 1px solid var(--bg-300);
+  border-radius: 40px;
+`;
+
+const Button = styled.button`
+  width: 44px;
+  height: 44px;
+  padding: 10px;
+  background-color: var(--primary-200);
+  color: white;
+  border: none;
+  border-radius: 40px;
+  margin-left: 10px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  &:hover {
+    background-color: var(--primary-300);
+  }
+
+  &.empty {
+    background-color: var(--primary-100);
+    pointer-events: none;
+  }
+`;
 
 export default Chat;

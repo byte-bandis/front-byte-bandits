@@ -21,6 +21,8 @@ export const login = async (email, password, requestStorage) => {
         storage.set("userName", userName);
         storage.set("userId", userId);
         storage.set("updatedAt", updatedAt);
+      } else {
+        sessionStorage.setItem("authToken", token);
       }
       if (token) {
         return {
@@ -44,6 +46,7 @@ export const logout = (reloadPage) => {
   storage.remove("userId");
   storage.remove("updatedAt");
   removeAuthorizationHeader();
+  sessionStorage.removeItem("authToken");
 
   if (reload === "true") {
     window.location.href = "/";

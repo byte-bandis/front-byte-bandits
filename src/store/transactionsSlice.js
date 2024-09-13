@@ -1,10 +1,11 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { createTransaction } from "./transactionsThunk";
+import { createTransaction, getTransactions } from "./transactionsThunk";
 
 export const defaultTransactionState = {
   transactions: [],
   status: "",
   message: null,
+  ordersReceived: [],
 };
 
 const transactionSlice = createSlice({
@@ -25,6 +26,19 @@ const transactionSlice = createSlice({
       .addCase(createTransaction.rejected, (state, action) => {
         state.status = "error";
         state.transactions = action.payload;
+      })
+      .addCase(getTransactions.pending, (state) => {
+        state.status = "loading";
+        state.message = null;
+      })
+      .addCase(getTransactions.fulfilled, (state, action) => {
+        (state.status = action.payload.status),
+          (state.ordersReceived = action.payload.data),
+          (state.message = action.payload.message);
+      })
+      .addCase(getTransactions.rejected, (state, action) => {
+        (state.status = action.payload.status),
+          (state.status = action.payload.message);
       });
   },
 });

@@ -6,6 +6,7 @@ import styled from "styled-components";
 import CustomAlert from "../../../components/shared/Alert";
 import { useParams } from "react-router-dom";
 import { useState, useEffect } from "react";
+import P from "prop-types";
 
 const BuyButton = ({ ownerId }) => {
   const dispatch = useDispatch();
@@ -71,16 +72,14 @@ const BuyButton = ({ ownerId }) => {
 export default BuyButton;
 BuyButton.propTypes = {
   ownerId: PropTypes.string.isRequired,
-}
+};
 const PurchaseButton = styled.div`
-  
-    position: absolute;
-    top: 450px;
-    margin: 0 auto;
-    z-index: 10;
-    display: flex;
-    align-items: center;
-    gap: 5px;
-    padding: 5px 45px;
-  
+  position: absolute;
+  top: 450px;
+  margin: 0 auto;
+  z-index: 10;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  padding: 5px 45px;
 `;

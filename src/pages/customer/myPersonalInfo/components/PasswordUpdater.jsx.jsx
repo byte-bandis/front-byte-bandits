@@ -1,15 +1,8 @@
 import { useDispatch, useSelector } from "react-redux";
 import {
-  getError,
   getLoggedUserId,
   getLoggedUserName,
   getLoggedUserUpdateTime,
-  getPassword,
-  getPasswordMessage,
-  getPasswordState,
-  getSuccess,
-  getUI,
-  getUIMessage,
 } from "../../../../store/selectors";
 import { useTranslation } from "react-i18next";
 import { trimDate } from "../../../../utils/dateTools";
@@ -23,25 +16,21 @@ import {
   RegularButton,
   ButtonContainer,
 } from "../../../../components/shared/buttons";
-import { resetMessage, resetUI } from "../../../../store/uiSlice";
 
 import { Key } from "react-bootstrap-icons";
 import IconWrapper from "../../../../components/shared/iconsComponents/IconWrapper";
-import { updateMyPasswordWithThunk } from "../../../../store/MyPersonalData/myPasswordThunk";
 import { useState } from "react";
 import { useEffect } from "react";
 import Cookies from "js-cookie";
 import CustomAlert from "../../../../components/shared/Alert";
 import { emptyMyPassword } from "../../../../store/MyPersonalData/passwordSlice";
 import { logout } from "../../../auth/service";
-import { useNavigate } from "react-router-dom";
 import { resetLoggedUserInfo, setAuth } from "../../../../store/authSlice";
 import { updateMyPassword } from "../passwordService";
 
 const PasswordUpdater = () => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
-  const navigate = useNavigate();
   const loggedUsername = useSelector(getLoggedUserName);
   const loggedUserId = useSelector(getLoggedUserId);
   const [isError, setIsError] = useState(null);
@@ -57,8 +46,6 @@ const PasswordUpdater = () => {
     newPassword: "",
   });
   const passwordDate = useSelector(getLoggedUserUpdateTime);
-  const passwordState = useSelector(getPasswordState);
-  const passwordMessage = useSelector(getPasswordMessage);
 
   const containerStyles = {
     $customDisplay: "flex",
@@ -84,10 +71,6 @@ const PasswordUpdater = () => {
   }, [passwordDate, languageCookieFormat]);
 
   useEffect(() => {
-    console.log("Esto es isSuccess: ", isSuccess);
-  });
-
-  useEffect(() => {
     if (isSuccess) {
       setShowSuccess(true);
       setShowError(false);
@@ -107,7 +90,6 @@ const PasswordUpdater = () => {
     }
     const timer = setTimeout(() => {
       setShowError(false);
-      //dispatch(resetUI());
     }, 3000);
     return () => clearTimeout(timer);
   }, [isError, dispatch]);

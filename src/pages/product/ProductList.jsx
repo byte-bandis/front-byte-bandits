@@ -88,7 +88,9 @@ const ProductList = ({ $customMargin, $customTop }) => {
           </ErrorMessage>
         )}
       </StyledAdList>
-      <Pager></Pager>
+      
+        <Pager></Pager>
+      
     </>
   );
 };

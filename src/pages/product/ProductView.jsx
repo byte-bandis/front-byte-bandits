@@ -6,20 +6,20 @@ import { deleteAd, getAds } from "../../store/adsThunk";
 import styled from "styled-components";
 import Button from "./components/Button";
 import { Heart, HeartFill, ChatFill, BrushFill } from "react-bootstrap-icons";
-import { setLike } from "../../utils/setLike";
 import CommentItem from "./components/CommentItem";
 import CommentForm from "./components/CommentForm";
 import { getComments } from "../../store/commentsThunk";
 import Confirmator from "../../components/shared/Confirmator";
 import { getSinglePublicProfileWithThunk } from "../../store/profilesThunk";
 import { RegularButton } from "../../components/shared/buttons";
-import { createTransaction } from "../../store/transactionsThunk";
-import CustomAlert from "../../components/shared/Alert";
+/* import { createTransaction } from "../../store/transactionsThunk";
+import CustomAlert from "../../components/shared/Alert"; */
 import BuyButton from "./components/BuyButton";
+import { setLike } from "../../store/likesThunk";
 
 const ProductView = () => {
   const origin = import.meta.env.VITE_API_BASE_URL;
-
+  const [editMode, setEditMode] = useState(false);
   const navigate = useNavigate();
   const location = useLocation();
   const dispatch = useDispatch();
@@ -29,7 +29,10 @@ const ProductView = () => {
   const [owner, setOwnerId] = useState("");
   const [iLikeIt, setiLikeIt] = useState(false);
   const [hideDelete, setHideDelete] = useState(false);
-
+  const [toEditComment, setToEditComment] = useState({
+    commentText: "",
+    score : 0,
+});
   const authUser = useSelector((state) => state.authState.user.userId);
   const loadedAds = useSelector((state) => state.adsState.data).find(
     (onead) => onead._id === productId,
@@ -87,10 +90,11 @@ const ProductView = () => {
   const handleDeleteConfirm = async () => {
     dispatch(deleteAd(productId));
   };
+  
 
-  const handleBuy = (productId, userid) => {
+  /* const handleBuy = (productId, userid) => {
     dispatch(createTransaction({ adId: productId, userid }));
-  };
+  }; */
   if (loadedAds) {
     const { adTitle, adBody, sell, price, photo, tags } = loadedAds;
     const image = photo ? `${photo}` : "../../assets/images/no-image.jpg";
@@ -134,7 +138,16 @@ const ProductView = () => {
             <RegularButton
               className="edit-chat-button"
               onClick={() => {
-                navigate(`/${username}/chat?productId=${productId}`);
+                if (authUser) {
+
+                  navigate(`/${username}/chat?productId=${productId}`);
+                }else {
+                  navigate('/login', {
+                    replace: true,
+                    state: { from: `/${username}/chat?productId=${productId}` },
+                });
+                }
+
               }}
               $customBackground="var(--primary-200)"
               $customColor="var(--bg-100)"
@@ -218,12 +231,12 @@ const ProductView = () => {
                   </Button>
                 </div>
               }
-              {!!authUser && <CommentForm productId={productId} />}
+              {!!authUser && <CommentForm productId={productId} toEditComment={toEditComment} editMode={editMode} />}
               {comments.length > 0 && (
                 <div className="advert-comments-box">
                   <h3>Comentarios</h3>
                   {comments.map((comment) => (
-                    <CommentItem key={comment._id} comment={comment} />
+                    <CommentItem key={comment._id} comment={comment} productId={productId} setEditMode={setEditMode} setToEditComment={setToEditComment} />
                   ))}
                 </div>
               )}
@@ -273,7 +286,7 @@ const StyledAdvertPage = styled.div`
   padding: 20px 10px;
   border-radius: 10px;
   gap: 10px;
-  margin: 12% auto;
+  margin: 2% auto;
   position: relative;
 
   & .heart {
@@ -294,16 +307,7 @@ const StyledAdvertPage = styled.div`
     align-items: center;
     gap: 5px;
   }
-  & .buy-button {
-    position: absolute;
-    top: 450px;
-    right: 260px;
-    z-index: 10;
-    display: flex;
-    align-items: center;
-    gap: 5px;
-    padding: 5px 45px;
-  }
+  
   & h2,
   h1,
   p {

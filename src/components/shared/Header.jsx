@@ -2,31 +2,26 @@ import styled from "styled-components";
 import SearchByadTitle from "./filters/SearchByadTitle";
 import { useTranslation } from "react-i18next";
 import { useLocation, useNavigate } from "react-router-dom";
-import { useSelector, useDispatch } from "react-redux";
+import { useDispatch } from "react-redux";
 import Logo from "./Logo";
-import RegularButton from "./buttons/RegularButton";
-import EmailLink from "./EmailLink";
-import HeartLink from "./HeartLink";
 import { logout } from "../../pages/auth/service";
 import DropdownLink from "./DropdownLink";
 import { resetLoggedUserInfo } from "../../store/authSlice";
 import { resetSinglePublicProfile } from "../../store/singlePublicProfileSlice";
 import TagsNav from "./TagsNav";
-import { getLoggedUserName } from "../../store/selectors";
 import { resetUI } from "../../store/uiSlice";
 import Confirmator from "./Confirmator";
 import { useState, useEffect } from "react";
-import LanguageSwitcher from "./localization/LanguageSwitcher";
 import FilterHeaderOptions from "./filters/FilterHeaderOptions";
+import { MenuApp } from "react-bootstrap-icons";
+import ButtonsComponent from "./ButtonsComponent";
 
 const Header = () => {
   const { t } = useTranslation();
   const location = useLocation();
-  const isAuthenticated = useSelector((state) => state.authState.authState);
   const [showConfirmator, setShowConfirmator] = useState(false);
   const [isSearching, setIsSearching] = useState(false);
 
-  const loggedUser = useSelector(getLoggedUserName);
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
@@ -54,31 +49,8 @@ const Header = () => {
     dispatch(resetUI());
   };
 
-  const handleSellButton = () => {
-    if (isAuthenticated) {
-      navigate(`${loggedUser}/new`);
-    } else {
-      navigate("/login", {
-        replace: true,
-        state: { from: `/new` },
-      });
-    }
-  };
+ 
 
-  const dropdownOptions = [
-    {
-      text: t("user_zone"),
-      to: `/${loggedUser}/info`,
-      className: "UserZone",
-    },
-    {
-      text: t("log_out"),
-      onClick: () => {
-        setShowConfirmator(true);
-      },
-      className: "Logout",
-    },
-  ];
 
   const TAG_OPTIONS = [
     {
@@ -129,8 +101,8 @@ const Header = () => {
 
       <HeaderStyledContainer
         $CustomMargin=" 0 auto"
-        $CustomPadding=".4rem .4rem"
-        $CustomWidth="85%"
+        $CustomPadding=".4rem 2%"
+        $CustomWidth="100%"
         $CustomBorderBottom="1px dotted var(--primary-100)"
       >
         <Logo
@@ -154,6 +126,14 @@ const Header = () => {
             $CustomGap="10px"
             $CustomJustifyContent="space-between"
           >
+            <DropdownLink
+              options={TAG_OPTIONS}
+              className="allCategoriesBurger"
+              $CustomWidth="40px"
+              $CustomGap="10px"
+            >
+              <MenuApp size={20} />
+            </DropdownLink>
             <SearchContainer className="search">
               <SearchByadTitle
                 className="searchByadTitle"
@@ -161,61 +141,13 @@ const Header = () => {
                 onClear={handleClearSearch}
               />
             </SearchContainer>
-            {isAuthenticated ? (
-              <>
-                <HeartLink
-                  to={"/myaccount"}
-                  size={30}
-                  $CustomMargin="0"
-                  className="heartHead"
-                />
-                <EmailLink
-                  to={`/${loggedUser}/chat`}
-                  $CustomMargin="0"
-                  size={35}
-                  className="emailHead"
-                />
-                <LanguageSwitcher flag />
-                <DropdownLink
-                  options={dropdownOptions}
-                  className="myAccount"
-                  $CustomWidth="130px"
-                >
-                  {t("user_zone")}
-                </DropdownLink>
-                <RegularButton
-                  onClick={handleSellButton}
-                  className="sellButton"
-                  $variant="attention"
-                  $customVerticalPadding="5px 50px"
-                >
-                  {t("sell")}
-                </RegularButton>
-              </>
-            ) : (
-              //No authenticated
-              <>
-                <LanguageSwitcher $gap="5px" flag />
-                <RegularButton
-                  onClick={() =>
-                    navigate("/login", {
-                      state: { from: location },
-                    })
-                  }
-                  className="login"
-                  $backgroundColor="var(--primary-200)"
-                >
-                  {t("login_register")}
-                </RegularButton>
-                <RegularButton
-                  onClick={handleSellButton}
-                  className="sellButton"
-                  $variant="attention"
-                >
-                  {t("sell")}
-                </RegularButton>
-              </>
-            )}
+              <ButtonsComponent
+              navigate={navigate}
+              setShowConfirmator={setShowConfirmator}
+            /> 
+
+             
+
           </StyledNav>
           <StyledTagsNavContainer
             $CustomGap="10px"
@@ -224,7 +156,7 @@ const Header = () => {
             <DropdownLink
               options={TAG_OPTIONS}
               className="allCategories"
-              $CustomWidth="140px"
+              $CustomWidth="120px"
               $CustomGap="10px"
             >
               {t("all_categories")}
@@ -236,6 +168,11 @@ const Header = () => {
             )}
           </StyledTagsNavContainer>
         </div>
+
+        
+
+          
+
       </HeaderStyledContainer>
     </>
   );
@@ -244,7 +181,7 @@ const Header = () => {
 export default Header;
 
 const HeaderStyledContainer = styled.div`
-  position: ${(props) => props.$CustomPosition || "fixed"};
+  position: ${(props) => props.$CustomPosition || "sticky"};
   top: ${(props) => props.$CustomTop || 0};
   left: ${(props) => props.$CustomLeft || 0};
   right: ${(props) => props.$CustomRight || 0};
@@ -259,7 +196,9 @@ const HeaderStyledContainer = styled.div`
   background-color: ${(props) =>
     props.$customBackGroundColor || "var(--bg-100)"};
   margin: ${(props) => props.$CustomMargin || 0};
-  max-width: calc(290px * 5);
+  @media (max-width: 800px) {
+     width: 100%;
+    }
 
 `;
 
@@ -269,12 +208,22 @@ const StyledNav = styled.nav`
   justify-content: ${(props) => props.$CustomJustifyContent || "center"};
   width: ${(props) => props.$CustomWidth || "100%"};
   gap: ${(props) => props.$CustomGap || "0px"};
+  .allCategoriesBurger {
+    display: none;
+    @media (max-width: 800px) {
+      display: block;
+    }
+  }
+   
 `;
 
 const SearchContainer = styled.div`
-  flex-grow: ${(props) => props.$CustomFlexGrow || 1};
+display: ${(props) => props.$CustomDisplay || "flex"};
   margin: ${(props) => props.$CustomMargin || "0"};
+  align-items: ${(props) => props.$CustomAlignItems || "center"};
+  justify-content: ${(props) => props.$CustomJustifyContent || "space-between"};
   width: ${(props) => props.$CustomWidth || "auto"};
+   flex: 1;
 `;
 
 const StyledTagsNavContainer = styled.div`
@@ -291,6 +240,7 @@ const StyledTagsNavContainer = styled.div`
     props.$customBackGroundColor || "var(--bg-100)"};
   .allCategories {
     margin-right: ${(props) => props.$CustomMarginRight || "0"};
+    
   }
 
   .TagsNavegation {
@@ -299,19 +249,10 @@ const StyledTagsNavContainer = styled.div`
     justify-content: ${(props) => props.$CustomJustifyContent || "center"};
     align-items: ${(props) => props.$CustomAlignItems || "center"};
     gap: ${(props) => props.$CustomGap || "20px"};
+    
   }
-
-  @media (max-width: 768px) {
-    flex-direction: ${(props) => props.$CustomFlexDirection || "column"};
-    align-items: ${(props) => props.$CustomAlignItems || "center"};
-
-    .allCategories {
-      margin-right: ${(props) => props.$CustomMarginRight || "0"};
-      margin-bottom: ${(props) => props.$CustomMarginBottom || "0"};
+@media (max-width: 800px) {
+      display: none;
     }
-
-    .TagsNavegation {
-      justify-content: ${(props) => props.$CustomJustifyContent || "center"};
-    }
-  }
+  
 `;

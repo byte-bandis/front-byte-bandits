@@ -14,6 +14,7 @@ const LanguageSwitcher = ({ flag, ...props }) => {
   return (
     <ButtonContainer
       {...props}
+      className="languageSwitcher"
       $widthContainer="auto"
     >
       <RegularButton
@@ -25,6 +26,7 @@ const LanguageSwitcher = ({ flag, ...props }) => {
         $customFocusBackground="transparent"
         $customActiveBackground="transparent"
         $customPadding="0"
+        className="languageButton"
         {...props}
       >
         {flag ? (
@@ -47,6 +49,7 @@ const LanguageSwitcher = ({ flag, ...props }) => {
         $customFocusBackground="transparent"
         $customActiveBackground="transparent"
         $customVerticalPadding="0"
+        className="languageButton"
         {...props}
       >
         {flag ? (

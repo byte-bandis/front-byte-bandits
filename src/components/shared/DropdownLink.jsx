@@ -76,24 +76,27 @@ const DropdownContainer = styled.div`
   display: ${(props) => props.$CustomDisplay || "inline-block"};
   padding: ${(props) => props.$CustomPadding || "0"};
   gap: ${(props) => props.$CustomGap || "0"};
+   border: 1px solid var(--primary-200)
+   border-radius: 5px;
 `;
 
 const DropdownToggle = styled.button`
   background-color: ${(props) =>
     props.$CustomBackgroundColor || "var(--primary-200)"};
-  color: ${(props) => props.$CustomColor || "var(--botton-2)"};
+  color: ${(props) => props.$CustomColor || "var(--accent-300)"};
   padding: ${(props) => props.$CustomPadding || "5px"};
   text-align: ${(props) => props.$CustomTextAlign || "center"};
   border: ${(props) => props.$CustomBorder || "none"};
   border-radius: ${(props) => props.$CustomBorderRadius || "5px"};
-  width: ${(props) => props.$CustomWidth || "125px"};
+  width: ${(props) => props.$CustomWidth || "123px"};
   margin: ${(props) => props.$CustomMagin || "0"};
 
   &:hover {
     background-color: ${(props) =>
       props.$CustomHoverBackgroundColor || "var(--bg-3)"};
-    color: ${(props) => props.$CustomHoverColor || "var(--boton-2)"};
-  }
+    color: ${(props) => props.$CustomHoverColor || "var(--accent-300)"};
+
+    }
 `;
 
 const DropdownMenu = styled.div`
@@ -105,11 +108,12 @@ const DropdownMenu = styled.div`
   box-shadow: ${(props) =>
     props.$CustomBoxShadow || "0px 8px 16px var(--shadow-1)"};
   z-index: ${(props) => props.$CustomZIndex || 1};
-  padding: ${(props) => props.$CustomPadding || "10% 5% 10% 10%"};
+  padding: ${(props) => props.$CustomPadding || "5% 5% 5% 5%"};
   gap: ${(props) => props.$CustomGap || "5px"};
   border-radius: ${(props) => props.$CustomBorderRadius || "5px"};
-  margin: ${(props) => props.$CustomMagin || "1px 10px"};
-  width: ${(props) => props.$CustomWidth || "140px"};
+  margin: ${(props) => props.$CustomMagin || "2px 0 0 0"};
+  width: ${(props) => props.$CustomWidth || "120px"};
+  opacity: ${(props) => props.$CustomOpacity || .8};
 `;
 
 const DropdownItem = styled.div`
@@ -119,15 +123,17 @@ const DropdownItem = styled.div`
   background-color: ${(props) =>
     props.$CustomBackgroundColor || "var(--bg-300)"};
   text-align: ${(props) => props.$CustomTextAlign || "center"};
+  border-radius: ${(props) => props.$CustomBorderRadius || "5px"};
   &:hover {
-    color: ${(props) => props.$CustomHoverColor || "white"};
+    color: ${(props) => props.$CustomHoverColor || "var(--accent-100)"};
+    background-color: var(--bg-3);
   }
 `;
 
 const DropdownDivider = styled.div`
   border-bottom: ${(props) =>
     props.$CustomBorderBottom || "1px solid var(--text-100)"};
-  margin: ${(props) => props.$CustomMargin || "0.5rem 0"};
-  width: ${(props) => props.$CustomWidth || "118%"};
-  margin-left: ${(props) => props.$CustomMarginLeft || "-13px"};
+  margin: ${(props) => props.$CustomMargin || "0.1rem 0"};
+  width: ${(props) => props.$CustomWidth || "100%"};
+  margin-left: ${(props) => props.$CustomMarginLeft || "0"};
 `;

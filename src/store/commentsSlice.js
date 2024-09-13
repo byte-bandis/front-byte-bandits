@@ -1,5 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { getComments, createComment, updateComment } from "./commentsThunk";
+import { getComments, createComment, updateComment, deleteComment } from "./commentsThunk";
 export const defaultadsState = {
   data: [],
   page: 1,
@@ -20,14 +20,22 @@ const commentsSlice = createSlice({
     builder
       .addCase(getComments.fulfilled, (state, action) => {
         state.data = action.payload;
-      })     
+      })
       .addCase(createComment.fulfilled, (state, action) => {
-        state.data = [ action.payload, ...state.data];
+        state.data = [action.payload, ...state.data];
       })
       .addCase(updateComment.fulfilled, (state, action) => {
-        state.data = [action.payload];
-      });
+        const newComment = action.payload;
+        state.data = state.data.filter(comment => comment._id !== newComment._id);
+        state.data = [newComment, ...state.data];
+      })
+      .addCase(deleteComment.fulfilled, (state, action) => {
+        console.log(action.payload)
+        state.data = state.data.filter(comment => comment._id !== action.payload);
+      })
+      
+
   },
 });
 export default commentsSlice.reducer;
-export const {  setPageComments,resetComments } = commentsSlice.actions;
+export const { setPageComments, resetComments } = commentsSlice.actions;

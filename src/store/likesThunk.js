@@ -22,9 +22,28 @@ export const getWishlist = createAsyncThunk(
         const { page, limit } = params;
         try {
             const response = await client.get(`/likes/wishlist/?page=${page}&limit=${limit}`);
-
-            console.log(response);
             return response.likes;
+        } catch (error) {
+            return rejectWithValue({
+                message: error.message,
+                status: error.response?.status,
+            });
+        }
+    }
+
+);
+export const setLike = createAsyncThunk(
+    "ads/setLike",
+    async ({ adId, userId }, { rejectWithValue }) => {
+        try {
+            const body = { adId, userId };
+            const response = await client.post('/likes/', body);
+            if (response) {
+                response.like.like = true;
+                return response.like;
+            }
+                return  { ad:adId, user:userId, like: false };
+            
         } catch (error) {
             return rejectWithValue({
                 message: error.message,

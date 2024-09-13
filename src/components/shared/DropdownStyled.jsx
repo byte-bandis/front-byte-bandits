@@ -26,22 +26,30 @@ export default DropdownStyled;
 const DropdownContainer = styled.div`
   position: relative;
   display: inline-block;
-  border: 1px solid var(--text-200);
+  border-radius: 5px;
+  padding: 5px;
+  border: 1px solid var(--primary-200);
+&:hover {
+    background-color: ${(props) =>
+      props.$CustomHoverBackgroundColor || "var(--primary-200)"};
+    color: ${(props) => props.$CustomHoverColor || "var(--bg-100)"};
+  }
 `;
 
 const DropdownHeader = styled.div`
-  background-color: var(--background-100);
-
-  padding: 8px 20px;
+  border-radius: 5px;
+  width: 120px;  
   cursor: pointer;
+  margin: auto;
+  text-align: center;
+
 `;
 
 const DropdownBody = styled.div`
   position: absolute;
-  background-color: #fff;
+  background-color: var(--bg-100);
   border: 1px solid #ccc;
   box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
   z-index: 1;
-  margin-top: 5px;
   width: 120px;
 `;

@@ -44,22 +44,22 @@ const Pager = () => {
     }
   }, [active, navigate, location]);
 
-  items.push(
-    <Button
-      $customBorderRadius="5px 0 0 5px"
-      $cLPadding="12px"
-      $cRPadding="18px"
-      $cBPadding="2px"
-      $customheight="40px"
-      $customwidth="40px"
-      key="initial"
-      onClick={() => {
-        dispatch(setPage(1));
-      }}
-    >
-      <CaretLeftFill />
-    </Button>
-  );
+    items.push(
+        <Button
+            $customBorderRadius='5px 0 0 5px'
+            $cLPadding='12px'
+            $cRPadding='18px'
+            $cBPadding='2px'
+            $customheight='40px'
+            $customwidth='40px'
+            key='initial'
+            onClick={() => {
+                dispatch(setPage(1));
+            }}
+        >
+            <CaretLeftFill />
+        </Button>
+    );
 
   items.push(
     <Button
@@ -121,33 +121,34 @@ const Pager = () => {
     </Button>
   );
 
-  items.push(
-    <Button
-      $customBorderRadius=" 0 5px 5px 0 "
-      $cLPadding="12px"
-      $cRPadding="18px"
-      $cBPadding="2px"
-      $customheight="40px"
-      $customwidth="40px"
-      key="final"
-      onClick={() => {
-        dispatch(setPage(max));
-      }}
-    >
-      <CaretRightFill />
-    </Button>
-  );
+    items.push(
+        <Button
+            $customBorderRadius=' 0 5px 5px 0 '
+            $cLPadding='12px'
+            $cRPadding='18px'
+            $cBPadding='2px'
+            $customheight='40px'
+            $customwidth='40px'
+            key='final'
+            onClick={() => {
+                dispatch(setPage(max));
+            }}
+        >
+            <CaretRightFill />
+        </Button>
+    );
 
   return <Paginator>{items}</Paginator>;
 };
 
 const Paginator = styled.div`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  padding: 0;
-  position: relative;
-  top: -10px;
+    margin-top: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 0;
+    position: relative;
+    top: -10px;
 `;
 
 export default Pager;

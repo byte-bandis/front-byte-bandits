@@ -1,10 +1,15 @@
 import { useDispatch, useSelector } from "react-redux";
 import {
+  getError,
   getLoggedUserId,
   getLoggedUserName,
   getLoggedUserUpdateTime,
   getPassword,
+  getPasswordMessage,
+  getPasswordState,
+  getSuccess,
   getUI,
+  getUIMessage,
 } from "../../../../store/selectors";
 import { useTranslation } from "react-i18next";
 import { trimDate } from "../../../../utils/dateTools";
@@ -28,14 +33,20 @@ import { useEffect } from "react";
 import Cookies from "js-cookie";
 import CustomAlert from "../../../../components/shared/Alert";
 import { emptyMyPassword } from "../../../../store/MyPersonalData/passwordSlice";
+import { logout } from "../../../auth/service";
+import { useNavigate } from "react-router-dom";
+import { resetLoggedUserInfo, setAuth } from "../../../../store/authSlice";
+import { updateMyPassword } from "../passwordService";
 
 const PasswordUpdater = () => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const loggedUsername = useSelector(getLoggedUserName);
   const loggedUserId = useSelector(getLoggedUserId);
-  const isError = useSelector(getUI);
-  const isSuccess = useSelector(getPassword);
+  const [isError, setIsError] = useState(null);
+  const [isSuccess, setIsSuccess] = useState(null);
+
   const [updateTime, setUpdateTime] = useState("000-00-00");
   const [editMode, setEditMode] = useState(false);
   const [confirmProcess, setConfirmProcess] = useState(false);
@@ -46,6 +57,8 @@ const PasswordUpdater = () => {
     newPassword: "",
   });
   const passwordDate = useSelector(getLoggedUserUpdateTime);
+  const passwordState = useSelector(getPasswordState);
+  const passwordMessage = useSelector(getPasswordMessage);
 
   const containerStyles = {
     $customDisplay: "flex",
@@ -71,28 +84,34 @@ const PasswordUpdater = () => {
   }, [passwordDate, languageCookieFormat]);
 
   useEffect(() => {
-    if (isSuccess.state === "success" && isSuccess.message.length > 0) {
+    console.log("Esto es isSuccess: ", isSuccess);
+  });
+
+  useEffect(() => {
+    if (isSuccess) {
       setShowSuccess(true);
+      setShowError(false);
     }
 
     const timer = setTimeout(() => {
       dispatch(emptyMyPassword());
       setShowSuccess(false);
       dispatch(resetUI());
-    }, 2000);
+    }, 3000);
     return () => clearTimeout(timer);
-  }, [isSuccess.state, dispatch, isSuccess.message]);
+  }, [isSuccess, dispatch]);
 
   useEffect(() => {
-    if (isError.state === "error" && isError.message.length > 0) {
+    if (isError) {
       setShowError(true);
+      setShowSuccess(false);
     }
     const timer = setTimeout(() => {
       setShowError(false);
-      dispatch(resetUI());
+      //dispatch(resetUI());
     }, 3000);
     return () => clearTimeout(timer);
-  }, [isError.state, isError.message, dispatch]);
+  }, [isError, dispatch]);
 
   const handleShowEditMode = (event) => {
     event.preventDefault();
@@ -118,12 +137,24 @@ const PasswordUpdater = () => {
     }));
   };
 
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
-    dispatch(updateMyPasswordWithThunk({ loggedUsername, formData }));
-    setConfirmProcess(false);
-    setEditMode(false);
-    dispatch(resetMessage());
+    try {
+      const updatedPassword = await updateMyPassword(loggedUsername, formData);
+      setIsSuccess(updatedPassword.message);
+      console.log("Esto es updatedPassword.message: ", updatedPassword.message);
+      console.log("Esto es updatedPassword.state: ", updatedPassword.state);
+      const timer = setTimeout(() => {
+        logout("true");
+        dispatch(setAuth(false));
+        dispatch(resetLoggedUserInfo());
+      }, 3000);
+      return () => clearTimeout(timer);
+    } catch (error) {
+      setIsError(error.message);
+      console.log("Esto es error.state: ", error.state);
+      console.log("Esto es error.message: ", error.message);
+    }
   };
 
   const handleCancelSubmit = () => {
@@ -144,16 +175,9 @@ const PasswordUpdater = () => {
 
           <StyledContainer {...containerStyles}>
             {showSuccess && (
-              <CustomAlert
-                variant="success"
-                dismissible
-              >
-                {isSuccess.message}
-              </CustomAlert>
+              <CustomAlert variant="success">{isSuccess}</CustomAlert>
             )}
-            {showError && (
-              <CustomAlert variant="error">{isError.message}</CustomAlert>
-            )}
+            {showError && <CustomAlert variant="error">{isError}</CustomAlert>}
 
             <StyledListItem {...listItemStyles}>
               <label>{t("current_password_label")}</label>

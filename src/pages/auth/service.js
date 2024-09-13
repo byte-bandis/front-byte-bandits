@@ -51,8 +51,6 @@ export const logout = (reloadPage) => {
   removeAuthorizationHeader();
 
   if (reloadPage === true || reloadPage === "true") {
-    setTimeout(() => {
-      window.location.href = "/";
-    }, 100);
+    window.location.href = "/";
   }
 };

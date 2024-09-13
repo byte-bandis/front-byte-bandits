@@ -18,7 +18,11 @@ function App() {
       const token = storage.get("authToken");
       if (token) {
         setAccessToken(token);
+      } else {
+        setAccessToken(null);
       }
+    } else {
+      setAccessToken(null);
     }
   }, [loggedUserId]);
 

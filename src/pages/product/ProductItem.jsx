@@ -9,11 +9,13 @@ import { useEffect, useState } from "react";
 import "../../assets/images/no-image.jpg";
 import slugify from "slugify";
 import { setLike } from "../../store/likesThunk";
+import noImage from '../../assets/images/no-image.jpg';
 
 const ProductItem = ({ ad, $customTransform, $customMargin }) => {
   const { _id, adTitle, sell, price, photo, tags, user } = ad;
   const origin = import.meta.env.VITE_API_BASE_URL;
-  const image = photo ? photo : "../../assets/images/no-image.jpg";
+
+  const image = photo ? photo : noImage;
   const authUser = useSelector((state) => state.authState.user.userId);
   const dispatch = useDispatch();
   const slug = slugify(adTitle, {
@@ -172,8 +174,7 @@ aspect-ratio: 0.8;
     background: var(--bg-100);
     overflow: hidden;
     &:has(.noImg) img {
-      width: 40%;
-      height: 40%;
+      
       object-fit: cover;
     }
 

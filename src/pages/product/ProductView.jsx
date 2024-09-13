@@ -16,6 +16,7 @@ import { RegularButton } from "../../components/shared/buttons";
 import CustomAlert from "../../components/shared/Alert"; */
 import BuyButton from "./components/BuyButton";
 import { setLike } from "../../store/likesThunk";
+import noImage from '../../assets/images/no-image.jpg';
 
 const ProductView = () => {
   const origin = import.meta.env.VITE_API_BASE_URL;
@@ -97,7 +98,8 @@ const ProductView = () => {
   }; */
   if (loadedAds) {
     const { adTitle, adBody, sell, price, photo, tags } = loadedAds;
-    const image = photo ? `${photo}` : "../../assets/images/no-image.jpg";
+    const image = photo ? photo : noImage;
+    console.log(image)
     return (
       <>
         {

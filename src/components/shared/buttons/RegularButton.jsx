@@ -11,6 +11,10 @@ const RegularButton = styled.button`
   height: fit-content;
   width: ${(props) => props.$customwidth || "fit-content"};
   font-weight: ${(props) => props.$customFontWeight || "500"};
+  position: ${(props) => props.$customPosition || "relative"};
+  top: ${(props) => props.$customTop || "0"};
+  right: ${(props) => props.$customRight || "0"};
+  z-index: ${(props) => props.$customZIndex || "auto"};
   transition: ${(props) =>
     props.$customTransition || "background-color .3s ease, color .3s ease"};
 

@@ -1,6 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { createTransaction, getTransactions } from "./transactionsThunk";
-import { getLoading } from "./selectors";
 
 export const defaultTransactionState = {
   transactions: [],

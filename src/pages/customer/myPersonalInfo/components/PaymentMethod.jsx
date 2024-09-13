@@ -69,7 +69,7 @@ const CreditCard = () => {
     if (loggedUsername === username) {
       dispatch(getMyCreditCardWithThunk(username));
     }
-  }, [username, loggedUsername, dispatch]);
+  }, [username, loggedUsername, dispatch, myCreditCard.updatedAt]);
 
   useEffect(() => {
     if (myCreditCard.updatedAt) {

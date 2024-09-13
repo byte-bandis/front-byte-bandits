@@ -1,17 +1,14 @@
-import React, { useEffect, useState } from "react";
-import { useLocation } from "react-router-dom";
+import { useEffect, useState } from "react";
+import { useLocation, useNavigate } from "react-router-dom";
 import { client } from "../../api/client";
 import Chat from "./Chat";
 import { getLoggedUserId } from "../../store/selectors";
-import { useSelector } from "react-redux";
-import "./Chats.css";
-import StyledMyAccount from "../../components/shared/StyledMyAccount";
-import ChatListItem from "./ChatListItem";
-import { getAdsSelector } from "../../store/selectors";
-import { useNavigate } from "react-router-dom";
-import { useDispatch } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import { getAds } from "../../store/adsThunk";
 import { useSocket } from "../../context/SocketContext";
+import StyledMyAccount from "../../components/shared/StyledMyAccount";
+import ChatListItem from "./ChatListItem";
+import styled from "styled-components";
 
 const Chats = () => {
   const [chatList, setChatList] = useState([]);
@@ -22,8 +19,8 @@ const Chats = () => {
     new URLSearchParams(location.search).get("productId") || undefined;
   const buyerId =
     new URLSearchParams(location.search).get("buyerId") || undefined;
-  const loadedAd = useSelector(getAdsSelector).find(
-    (advert) => advert._id === productId
+  const loadedAd = useSelector((state) =>
+    state.adsState.data.find((advert) => advert._id === productId)
   );
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -163,12 +160,12 @@ const Chats = () => {
 
   return (
     <StyledMyAccount>
-      <div className="chats-container">
-        <div className="chat-list">
+      <ChatsContainer>
+        <ChatList>
           {chatList.length === 0 ? (
-            <div className="chat-list-empty">
+            <ChatListEmpty>
               <p>No tienes chats aún.</p>
-            </div>
+            </ChatListEmpty>
           ) : (
             chatList.map((chat) => (
               <ChatListItem
@@ -183,8 +180,8 @@ const Chats = () => {
               />
             ))
           )}
-        </div>
-        <div className="chat-window">
+        </ChatList>
+        <ChatWindow>
           {selectedChat && selectedChat.product?._id ? (
             <Chat
               productId={selectedChat.product._id}
@@ -193,10 +190,55 @@ const Chats = () => {
           ) : (
             <p>Selecciona un chat para comenzar.</p>
           )}
-        </div>
-      </div>
+        </ChatWindow>
+      </ChatsContainer>
     </StyledMyAccount>
   );
 };
+
+const ChatsContainer = styled.div`
+  display: flex;
+  width: 100%;
+  height: 79vh;
+`;
+
+const ChatList = styled.div`
+  display: flex;
+  flex-direction: column;
+  width: 30%;
+  border-right: 1px solid var(--bg-300);
+  padding: 10px;
+  overflow-y: auto;
+  gap: 5px;
+
+  ::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    background-color: var(--bg-300);
+    border-radius: 10px;
+  }
+
+  ::-webkit-scrollbar-thumb:hover {
+    background-color: #555;
+  }
+`;
+
+const ChatListEmpty = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  color: var(--text-300);
+`;
+
+const ChatWindow = styled.div`
+  width: 70%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+`;
 
 export default Chats;

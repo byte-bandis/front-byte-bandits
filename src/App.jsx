@@ -4,18 +4,27 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import Layout from "./components/layout/Layout";
 import RootRouter from "./routes/RootRouter";
 import storage from "./utils/storage";
-import { setAuthorizationHeader } from "./api/client";
 import { SocketProvider } from "./context/SocketContext";
+import { useEffect, useState } from "react";
+import { useSelector } from "react-redux";
+import { getLoggedUserId } from "./store/selectors";
 
 function App() {
-  const accessToken = storage.get("authToken");
-  if (accessToken) {
-    setAuthorizationHeader(accessToken);
-  }
+  const [accessToken, setAccessToken] = useState(null);
+  const loggedUserId = useSelector(getLoggedUserId);
+
+  useEffect(() => {
+    if (loggedUserId) {
+      const token = storage.get("authToken");
+      if (token) {
+        setAccessToken(token);
+      }
+    }
+  }, [loggedUserId]);
 
   return (
     <>
-      <SocketProvider>
+      <SocketProvider authToken={accessToken}>
         <Layout>
           <RootRouter />
         </Layout>

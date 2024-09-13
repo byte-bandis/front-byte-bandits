@@ -48,7 +48,7 @@ const Chats = () => {
       socket.off("userNewMessage");
       socket.emit("disconnectUser");
     };
-  }, [loggedUserId]);
+  }, [loggedUserId, socket]);
 
   useEffect(() => {
     const checkProductAndBuyer = async () => {
@@ -91,15 +91,17 @@ const Chats = () => {
         }
       };
 
-      const ad = await checkProduct();
-      const buyer = await checkBuyer();
-      if (ad.user._id !== loggedUserId && buyer._id !== loggedUserId) {
-        navigate("/404");
+      if (productId && buyerId) {
+        const ad = await checkProduct();
+        const buyer = await checkBuyer();
+        if (ad.user._id !== loggedUserId && buyer._id !== loggedUserId) {
+          navigate("/404");
+        }
       }
     };
 
     checkProductAndBuyer();
-  }, [productId, loggedUserId]);
+  }, [productId, buyerId, loggedUserId, loadedAd]);
 
   useEffect(() => {
     fetchChats();
@@ -109,7 +111,7 @@ const Chats = () => {
         buyer: { _id: buyerId },
       });
     }
-  }, [loadedAd, loggedUserId, productId, buyerId]);
+  }, [productId, buyerId]);
 
   const fetchChats = async () => {
     if (!loggedUserId) return;

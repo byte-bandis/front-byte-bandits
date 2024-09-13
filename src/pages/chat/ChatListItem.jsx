@@ -4,9 +4,7 @@ import "./ChatListItem.css";
 
 const ChatListItem = ({ chat, isSelected, onClick, loggedUserId }) => {
   const { product, buyer, seller, messages } = chat;
-  const unreadMessages = messages.filter(
-    (message) => !message.read && message.user._id !== loggedUserId
-  ).length;
+  const unreadMessages = messages.totalUnreadMessages;
   const counterpart = loggedUserId === buyer._id ? seller : buyer;
 
   return (

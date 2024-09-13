@@ -1,6 +1,5 @@
 import React, { createContext, useContext, useEffect, useState } from "react";
 import io from "socket.io-client";
-import storage from "../utils/storage";
 
 const SocketContext = createContext();
 
@@ -8,7 +7,7 @@ export const useSocket = () => {
   return useContext(SocketContext);
 };
 
-export const SocketProvider = ({ children }) => {
+export const SocketProvider = ({ authToken, children }) => {
   const [socket, setSocket] = useState(null);
 
   useEffect(() => {
@@ -21,7 +20,7 @@ export const SocketProvider = ({ children }) => {
             ? "/socket.io"
             : "/api/socket.io",
         query: {
-          token: storage.get("authToken"),
+          token: authToken,
         },
         withCredentials: true,
       }
@@ -32,7 +31,7 @@ export const SocketProvider = ({ children }) => {
     return () => {
       newSocket.disconnect();
     };
-  }, []);
+  }, [authToken]);
 
   return (
     <SocketContext.Provider value={socket}>{children}</SocketContext.Provider>

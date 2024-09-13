@@ -21,40 +21,18 @@ const Chat = ({ productId, buyerId }) => {
 
   useEffect(() => {
     if (!socket) return;
-
-    socket.on("newMessage", (newMessage) => {
-      setMessages((prevMessages) => [...prevMessages, newMessage]);
-
-      // Marcar el mensaje como leído si el mensaje no fue enviado por el usuario actual
-      if (newMessage.user._id !== loggedUserId) {
-        socket.emit("readMessage", {
-          chatId,
-        });
-      }
-    });
-
-    socket.on("messagesRead", (userId) => {
-      setMessages((prevMessages) =>
-        prevMessages.map((msg) => {
-          if (msg.user._id !== userId) {
-            return { ...msg, read: true };
-          }
-          return msg;
-        })
-      );
-    });
+    if (!loggedUserId) return;
 
     const checkChatExists = async () => {
       try {
         const response = await client.get(`/chat`, {
-          params: { productId, buyerId },
+          params: { productId, buyerId, isExtended: true },
         });
         if (response.chats && response.chats.length > 0) {
           const existingChatId = response.chats[0]._id;
           setChatId(existingChatId);
           setMessages(response.chats[0].messages);
 
-          // Unirse al chat existente
           socket.emit("joinChat", {
             chatId: existingChatId,
           });
@@ -69,12 +47,35 @@ const Chat = ({ productId, buyerId }) => {
 
     checkChatExists();
 
+    if (chatId) {
+      socket.on("newMessage", (newMessage) => {
+        setMessages((prevMessages) => [...prevMessages, newMessage]);
+
+        if (newMessage.user._id !== loggedUserId) {
+          socket.emit("readMessage", {
+            chatId,
+          });
+        }
+      });
+
+      socket.on("messagesRead", (userId) => {
+        setMessages((prevMessages) =>
+          prevMessages.map((msg) => {
+            if (msg.user._id !== userId) {
+              return { ...msg, read: true };
+            }
+            return msg;
+          })
+        );
+      });
+    }
+
     return () => {
       socket.off("newMessage");
       socket.off("messagesRead");
       socket.emit("leaveChat", { chatId });
     };
-  }, [productId, buyerId]);
+  }, [productId, buyerId, chatId, loggedUserId, socket]);
 
   const clearError = () => {
     dispatch(resetMessage());

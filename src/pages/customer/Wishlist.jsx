@@ -11,8 +11,7 @@ import { setPage } from "../../store/adsSlice";
 const Wishlist = () => {
   const dispatch = useDispatch();
   const page = useSelector((state) => state.adsState.page);
-  const urlSegment = window.location.pathname.split("/");
-  const userName = urlSegment[1];
+  const userName = useSelector((state) => state.authState.user.userName);
   const userLikes = useSelector((state) => state.likesSlice.wishlist);
   const searchParams = new URLSearchParams(window.location.search);
   const limit = searchParams.get("limit");

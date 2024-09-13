@@ -1,6 +1,5 @@
 import StyledMyAccount from "../../components/shared/StyledMyAccount";
 import styled from "styled-components";
-import P from "prop-types";
 import { useSelector, useDispatch } from "react-redux";
 import { useEffect } from "react";
 import { getTransactions } from "../../store/transactionsThunk";
@@ -16,8 +15,6 @@ const ReservedProducts = () => {
   const ordersReceived = useSelector(
     (state) => state.transactions.ordersReceived,
   );
-
-  console.log(ordersReceived);
 
   useEffect(() => {
     if (userid) {

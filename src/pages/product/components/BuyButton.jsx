@@ -1,25 +1,42 @@
 import PropTypes from "prop-types";
-import { useDispatch, useSelector } from "react-redux";
-import { createTransaction } from "../../../store/transactionsThunk";
+import { useSelector } from "react-redux";
 import { RegularButton } from "../../../components/shared/buttons";
 import styled from "styled-components";
 import CustomAlert from "../../../components/shared/Alert";
 import { useParams } from "react-router-dom";
 import { useState, useEffect } from "react";
-import P from "prop-types";
+import { client } from "../../../api/client";
+import { useNavigate } from "react-router-dom";
 
 const BuyButton = ({ ownerId }) => {
-  const dispatch = useDispatch();
   const authUser = useSelector((state) => state.authState.user.userId);
+  const logged = useSelector((state) => state.authState.user);
+  const isLogged = logged.userName !== null;
+  const navigate = useNavigate();
   const { productId } = useParams();
-  const { status, message } = useSelector((state) => state.transactions);
-
   const [showAlert, setShowAlert] = useState(false);
+  const [response, setResponse] = useState(null);
 
-  const handleBuy = () => {
-    dispatch(createTransaction({ adId: productId, userId: authUser })).then(
-      () => setShowAlert(true),
-    );
+  const handleBuy = async () => {
+    if (!isLogged) {
+      navigate("/login");
+    }
+    try {
+      const res = await client.post(
+        `${import.meta.env.VITE_API_BASE_URL}transactions/${productId}`,
+        {
+          adId: productId,
+        },
+      );
+      setResponse(res);
+      setShowAlert(true);
+    } catch (error) {
+      setResponse({
+        status: error,
+        message: error.message,
+      });
+      setShowAlert(true);
+    }
   };
 
   useEffect(() => {
@@ -37,18 +54,18 @@ const BuyButton = ({ ownerId }) => {
 
   return (
     <>
-      {authUser !== ownerId ? (
+      {authUser !== ownerId && !!logged ? (
         <PurchaseButton>
           {showAlert && (
             <CustomAlert
-              variant={status === "success" ? "success" : "error"}
+              variant={response.status === "success" ? "success" : "error"}
               onClose={() => setShowAlert(false)}
               customStyles={customStyles}
             >
-              {message ||
-                (status === "success"
+              {response.message ||
+                (response.status === "success"
                   ? "Purchase finalized succesfuly!"
-                  : "Error proccesing transaction")}
+                  : response.message)}
             </CustomAlert>
           )}
 

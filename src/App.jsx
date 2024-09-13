@@ -15,7 +15,8 @@ function App() {
 
   useEffect(() => {
     if (loggedUserId) {
-      const token = storage.get("authToken");
+      const token =
+        storage.get("authToken") || sessionStorage.getItem("authToken");
       if (token) {
         setAccessToken(token);
       } else {

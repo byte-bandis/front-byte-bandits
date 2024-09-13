@@ -38,8 +38,13 @@ export const login = async (email, password, requestStorage) => {
 };
 
 export const logout = (reloadPage) => {
-  const reload = reloadPage;
-  //console.log("Esto es reload: ", reloadPage, "de tipo", typeof reloadPage);
+  //const reload = reloadPage;
+  console.log(
+    "Esto es reloadPage en service: ",
+    reloadPage,
+    "de tipo",
+    typeof reloadPage
+  );
 
   storage.remove("authToken");
   storage.remove("userName");
@@ -48,7 +53,7 @@ export const logout = (reloadPage) => {
   removeAuthorizationHeader();
   sessionStorage.removeItem("authToken");
 
-  if (reload === "true") {
+  if (reloadPage === true || reloadPage === "true") {
     window.location.href = "/";
   }
 };

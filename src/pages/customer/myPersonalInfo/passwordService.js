@@ -32,8 +32,6 @@ export const validateEmailForRestorePassword = async (email, type) => {
 
 export const sendMyRestoredPassword = async (token, formData) => {
   const url = `${nodemailerURL}/reset-password/${token}`;
-  console.log("Este es el token en el service de restore pass: ", token);
-  console.log("Y esta es la URL que mando: ", url);
 
   return client.put(url, formData).then((response) => {
     const result = {

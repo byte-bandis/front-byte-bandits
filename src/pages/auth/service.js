@@ -38,16 +38,14 @@ export const login = async (email, password, requestStorage) => {
 export const logout = (reloadPage) => {
   const reload = reloadPage;
   //console.log("Esto es reload: ", reloadPage, "de tipo", typeof reloadPage);
-  if (reload === "true") {
-    window.location.href = "/";
-  }
+
   storage.remove("authToken");
   storage.remove("userName");
   storage.remove("userId");
   storage.remove("updatedAt");
   removeAuthorizationHeader();
 
-  if (reloadPage || reloadPage === "true") {
+  if (reload === "true") {
     window.location.href = "/";
   }
 };

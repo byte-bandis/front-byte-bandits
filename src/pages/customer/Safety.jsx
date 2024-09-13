@@ -20,9 +20,9 @@ const Safety = () => {
   const isLoading = useSelector(getLoading);
   const dateUpdatedUser = useSelector(getLoggedUserUpdateTime);
 
-  useEffect(() => {
+  /*   useEffect(() => {
     console.log("esto es dateUpdatedUser: ", dateUpdatedUser);
-  }, [loggedUserName, dateUpdatedUser]);
+  }, [loggedUserName, dateUpdatedUser]); */
 
   return (
     <StyledMyAccount>

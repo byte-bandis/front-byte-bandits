@@ -45,8 +45,8 @@ const Safety = () => {
     );
   });
 
-  const fireDeletion = () => {
-    dispatch(deleteUserWithThunk(loggedUserName));
+  const fireDeletion = async () => {
+    await dispatch(deleteUserWithThunk(loggedUserName));
     setShowDeletionResult(true);
     if (deletionMessageType === "success") {
       const timer = setTimeout(() => {

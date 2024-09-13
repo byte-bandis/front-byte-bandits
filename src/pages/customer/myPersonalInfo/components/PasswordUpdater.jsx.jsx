@@ -96,7 +96,6 @@ const PasswordUpdater = () => {
     const timer = setTimeout(() => {
       dispatch(emptyMyPassword());
       setShowSuccess(false);
-      dispatch(resetUI());
     }, 3000);
     return () => clearTimeout(timer);
   }, [isSuccess, dispatch]);
@@ -139,11 +138,11 @@ const PasswordUpdater = () => {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
+    setIsSuccess(null);
+    setIsError(null);
     try {
       const updatedPassword = await updateMyPassword(loggedUsername, formData);
       setIsSuccess(updatedPassword.message);
-      console.log("Esto es updatedPassword.message: ", updatedPassword.message);
-      console.log("Esto es updatedPassword.state: ", updatedPassword.state);
       const timer = setTimeout(() => {
         logout("true");
         dispatch(setAuth(false));
@@ -152,8 +151,6 @@ const PasswordUpdater = () => {
       return () => clearTimeout(timer);
     } catch (error) {
       setIsError(error.message);
-      console.log("Esto es error.state: ", error.state);
-      console.log("Esto es error.message: ", error.message);
     }
   };
 

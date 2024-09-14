@@ -1,6 +1,5 @@
 import StyledMyAccount from "../../components/shared/StyledMyAccount";
 import styled from "styled-components";
-import P from "prop-types";
 import { useSelector, useDispatch } from "react-redux";
 import { useEffect } from "react";
 import { getTransactions } from "../../store/transactionsThunk";
@@ -8,16 +7,18 @@ import ProductItem from "../product/ProductItem";
 import { RegularButton } from "../../components/shared/buttons";
 import React from "react";
 import { client } from "../../api/client";
+import CustomAlert from "../../components/shared/Alert";
+import { useState } from "react";
 
 const ReservedProducts = () => {
   const dispatch = useDispatch();
   const userid = useSelector((state) => state.authState.user.userId);
+  const [response, setResponse] = useState(null);
+  const [showAlert, setShowAlert] = useState(false);
 
   const ordersReceived = useSelector(
     (state) => state.transactions.ordersReceived,
   );
-
-  console.log(ordersReceived);
 
   useEffect(() => {
     if (userid) {
@@ -25,21 +26,32 @@ const ReservedProducts = () => {
     }
   }, [dispatch, userid]);
 
+  console.log(dispatch(getTransactions(userid)));
+
   const handleTransaction = async (orderId, action) => {
     try {
-      const response = await client.post(
+      const res = await client.post(
         `${import.meta.env.VITE_API_BASE_URL}transactions/handleTransactions`,
         { transactionId: orderId, action },
       );
-      console.log(response);
-
-      if (response.state === "success") {
-        console.log(response.message);
+      console.log(res);
+      setResponse(res);
+      if (res.state === "success") {
         dispatch(getTransactions(userid));
+        setShowAlert(true);
       }
     } catch (error) {
-      console.log(error);
+      setResponse({
+        status: error,
+        message: error.message,
+      });
+      setShowAlert(true);
     }
+  };
+
+  const customStyles = {
+    $customPosition: "absolute",
+    $customTop: "-250px",
   };
 
   return (
@@ -47,6 +59,13 @@ const ReservedProducts = () => {
       <StyledMyAccount>
         <StyledH1>Orders received</StyledH1>
         <OrdersContainer>
+          {showAlert && (
+            <CustomAlert
+              variant={response.status === "success" ? "success" : "error"}
+              onClose={() => setShowAlert(false)}
+              customStyles={customStyles}
+            ></CustomAlert>
+          )}
           {ordersReceived.length > 0 ? (
             ordersReceived.map((transaction) => (
               <React.Fragment key={transaction._id}>

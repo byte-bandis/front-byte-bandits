@@ -1,5 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { createTransaction, getTransactions } from "./transactionsThunk";
+import { getTransactions } from "./transactionsThunk";
 
 export const defaultTransactionState = {
   transactions: [],
@@ -14,19 +14,6 @@ const transactionSlice = createSlice({
   reducers: {},
   extraReducers: (builder) => {
     builder
-      .addCase(createTransaction.pending, (state) => {
-        state.status = "loading";
-        state.message = null;
-      })
-      .addCase(createTransaction.fulfilled, (state, action) => {
-        (state.status = action.payload.status),
-          (state.transactions = [action.payload.data, ...state.transactions]),
-          (state.message = action.payload.message);
-      })
-      .addCase(createTransaction.rejected, (state, action) => {
-        state.status = "error";
-        state.transactions = action.payload;
-      })
       .addCase(getTransactions.pending, (state) => {
         state.status = "loading";
         state.message = null;

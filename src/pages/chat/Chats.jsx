@@ -29,103 +29,6 @@ const Chats = () => {
   const socket = useSocket();
   const { t } = useTranslation();
 
-  useEffect(() => {
-    if (!loggedUserId) return;
-    if (!socket) return;
-
-    socket.emit("connectUser");
-
-    socket.on("userMessagesRead", () => {
-      fetchChats();
-    });
-
-    socket.on("userNewMessage", () => {
-      fetchChats();
-    });
-
-    return () => {
-      socket.off("userMessagesRead");
-      socket.off("userNewMessage");
-      socket.emit("disconnectUser");
-    };
-  }, [loggedUserId, socket]);
-
-  useEffect(() => {
-    const checkProductAndBuyer = async () => {
-      const checkProduct = async () => {
-        if (productId && loggedUserId) {
-          let fetchedAd = loadedAd;
-          try {
-            if (!fetchedAd) {
-              const fetchedAds = await dispatch(
-                getAds({ id: productId })
-              ).unwrap();
-              fetchedAd = fetchedAds[0] || undefined;
-            }
-            return fetchedAd;
-          } catch (errorMsg) {
-            console.error("Failed to fetch product: ", errorMsg.message);
-          }
-
-          if (!fetchedAd) {
-            navigate("/404");
-            return;
-          }
-        }
-      };
-
-      const checkBuyer = async () => {
-        if (buyerId && loggedUserId) {
-          let fetchedBuyer = null;
-          try {
-            const response = await client.get(`/user/find/${buyerId}`);
-            fetchedBuyer = response.user;
-            return fetchedBuyer;
-          } catch (error) {
-            console.error("Error al obtener el comprador:", error);
-          }
-          if (!fetchedBuyer) {
-            navigate("/404");
-            return;
-          }
-        }
-      };
-
-      if (productId && buyerId) {
-        const ad = await checkProduct();
-        const buyer = await checkBuyer();
-        if (ad.user._id !== loggedUserId && buyer._id !== loggedUserId) {
-          navigate("/404");
-        }
-      }
-    };
-
-    checkProductAndBuyer();
-  }, [productId, buyerId, loggedUserId, loadedAd]);
-
-  useEffect(() => {
-    fetchChats();
-    if (productId && buyerId && !selectedChat && loadedAd) {
-      setSelectedChat({
-        product: {
-          _id: productId,
-          photo: loadedAd.photo,
-          adTitle: loadedAd.adTitle,
-          user: { _id: loadedAd.user._id },
-        },
-        buyer: { _id: buyerId },
-        messages: [],
-        seller: {
-          _id: loadedAd.user._id,
-          name: loadedAd.user.name,
-          lastname: loadedAd.user.lastname,
-          username: loadedAd.user.username,
-        },
-        _id: "new",
-      });
-    }
-  }, [productId, buyerId, loadedAd]);
-
   const fetchChats = async () => {
     if (!loggedUserId) return;
 
@@ -180,6 +83,106 @@ const Chats = () => {
       console.error("Error al obtener la lista de chats:", error);
     }
   };
+
+  useEffect(() => {
+    if (!loggedUserId) return;
+    if (!socket) return;
+
+    socket.emit("connectUser");
+
+    socket.on("userMessagesRead", () => {
+      fetchChats();
+    });
+
+    socket.on("userNewMessage", () => {
+      fetchChats();
+    });
+
+    return () => {
+      socket.off("userMessagesRead");
+      socket.off("userNewMessage");
+      socket.emit("disconnectUser");
+    };
+  }, [loggedUserId, socket, fetchChats]);
+
+  useEffect(() => {
+    const checkProductAndBuyer = async () => {
+      const checkProduct = async () => {
+        if (productId && loggedUserId) {
+          let fetchedAd = loadedAd;
+          try {
+            if (!fetchedAd) {
+              const fetchedAds = await dispatch(
+                getAds({ id: productId })
+              ).unwrap();
+              fetchedAd = fetchedAds[0] || undefined;
+            }
+            return fetchedAd;
+          } catch (errorMsg) {
+            console.error("Failed to fetch product: ", errorMsg.message);
+          }
+
+          if (!fetchedAd) {
+            navigate("/404");
+            return;
+          }
+        }
+      };
+
+      const checkBuyer = async () => {
+        if (buyerId && loggedUserId) {
+          let fetchedBuyer = null;
+          try {
+            const response = await client.get(`/user/find/${buyerId}`);
+            fetchedBuyer = response.user;
+            return fetchedBuyer;
+          } catch (error) {
+            console.error("Error al obtener el comprador:", error);
+          }
+          if (!fetchedBuyer) {
+            navigate("/404");
+            return;
+          }
+        }
+      };
+
+      if (productId && buyerId) {
+        const ad = await checkProduct();
+        const buyer = await checkBuyer();
+        if (
+          (ad.user._id !== loggedUserId && buyer._id !== loggedUserId) ||
+          ad.user._id === buyer._id
+        ) {
+          navigate("/404");
+        }
+      }
+    };
+
+    checkProductAndBuyer();
+  }, [productId, buyerId, loggedUserId, loadedAd]);
+
+  useEffect(() => {
+    fetchChats();
+    if (productId && buyerId && !selectedChat && loadedAd) {
+      setSelectedChat({
+        product: {
+          _id: productId,
+          photo: loadedAd.photo,
+          adTitle: loadedAd.adTitle,
+          user: { _id: loadedAd.user._id },
+        },
+        buyer: { _id: buyerId },
+        messages: [],
+        seller: {
+          _id: loadedAd.user._id,
+          name: loadedAd.user.name,
+          lastname: loadedAd.user.lastname,
+          username: loadedAd.user.username,
+        },
+        _id: "new",
+      });
+    }
+  }, [productId, buyerId, loadedAd]);
 
   useEffect(() => {
     setSelectedChat(null);

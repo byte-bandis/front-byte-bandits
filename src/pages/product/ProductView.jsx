@@ -35,7 +35,7 @@ const ProductView = () => {
 
   const authUser = useSelector((state) => state.authState.user.userId);
   const loadedAds = useSelector((state) => state.adsState.data).find(
-    (onead) => onead._id === productId,
+    (onead) => onead._id === productId
   );
   const myLikes = useSelector((state) => state.likesSlice.wishlist);
   const comments = useSelector((state) => state.commentsSlice.data);
@@ -137,13 +137,13 @@ const ProductView = () => {
               onClick={() => {
                 if (authUser) {
                   navigate(
-                    `/${username}/chat?productId=${productId}&buyerId=${userid}`,
+                    `/${username}/chat?productId=${productId}&buyerId=${userid}`
                   );
                 } else {
                   navigate("/login", {
                     replace: true,
                     state: {
-                      from: `/${username}/chat?productId=${productId}&buyerId=${userid}`,
+                      from: `/chat?productId=${productId}`,
                     },
                   });
                 }

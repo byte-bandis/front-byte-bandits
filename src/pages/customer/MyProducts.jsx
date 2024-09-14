@@ -9,10 +9,22 @@ const MyProducts = () => {
 
   return (
     <>
-      <StyledContainer $customMargin="2% 5% 0 5%">
-        <h3>{t("product_list_owner", { username })}</h3>
+      <StyledContainer
+        $customMargin="0 0 3rem 1rem"
+        $customColor="var(--primary-300)"
+        $customWidth="90%"
+      >
+        <h2>{t("product_list_owner", { username })}</h2>
       </StyledContainer>
-      <StyledContainer>
+      <StyledContainer
+        $customDisplay="flex"
+        $customPadding="2rem"
+        $customAlignItems="center"
+        $customMargin="0 0 2rem 0"
+        $customBorder="1px dotted var(--primary-300)"
+        $customBorderRadius="10px"
+        $customWidth="80%"
+      >
         <ProductList />
       </StyledContainer>
     </>

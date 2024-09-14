@@ -181,6 +181,7 @@
   "Remember me": "Remember me",
   "user_has_no_ads": "{{username}} hasn't a list of products in search or offer yet",
   "product_list_owner": "{{username}}'s list of products",
+  "no_info_found_for_username": "No info found for {{username}}",
   "chat_write_message": "Write a message",
   "seller": "Seller",
   "buyer": "Buyer",

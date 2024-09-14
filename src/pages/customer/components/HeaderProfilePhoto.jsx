@@ -6,6 +6,7 @@ const HeaderProfilePhoto = styled(CustomPhoto)`
   height: 300px;
   object-fit: cover;
   margin-top: 2rem;
+  border-radius: 10px;
 `;
 
 export default HeaderProfilePhoto;

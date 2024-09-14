@@ -31,6 +31,6 @@ export const store = configureStore({
     password: passwordReducer,
     transactions: transactionsReducer,
   },
-  devTools: import.meta.env.NODE_ENV !== "production",
+  devTools: import.meta.env.VITE_USER_NODE_ENV !== "production",
   //devTools: true,
 });

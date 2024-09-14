@@ -1,5 +1,6 @@
 import PropTypes from "prop-types";
 import styled from "styled-components";
+import noImage from "../../assets/images/no-image.jpg";
 import { useTranslation } from "react-i18next";
 
 const ChatListItem = ({ chat, isSelected, onClick, loggedUserId }) => {
@@ -11,7 +12,7 @@ const ChatListItem = ({ chat, isSelected, onClick, loggedUserId }) => {
   return (
     <StyledChatListItem isSelected={isSelected} onClick={onClick}>
       <img
-        src={product?.photo}
+        src={product.photo ? product.photo : noImage}
         alt={product?.adTitle}
         className="product-photo"
         crossOrigin="http://localhost:4000/"

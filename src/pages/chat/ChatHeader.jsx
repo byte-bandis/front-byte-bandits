@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { getLoggedUserId } from "../../store/selectors";
 import { client } from "../../api/client";
+import noImage from "../../assets/images/no-image.jpg";
 import styled from "styled-components";
 
 const ChatHeader = ({ product, user }) => {
@@ -37,7 +38,7 @@ const ChatHeader = ({ product, user }) => {
   return (
     <HeaderContainer>
       <ProductImage
-        src={product.photo}
+        src={product.photo ? product.photo : noImage}
         alt={product.adTitle}
         crossOrigin="http://localhost:4000/"
         onClick={handleProductClick}

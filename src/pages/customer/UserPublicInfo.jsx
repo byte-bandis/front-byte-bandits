@@ -11,11 +11,11 @@ const UserPublicInfo = () => {
 
   return (
     <>
-      {currentUrl.endsWith(`${username}/info`) && (
+      {/*       {currentUrl.endsWith(`${username}/info`) && (
         <StyledContainer $customMargin="2rem">
           <h1>{t("title_public_profile")}</h1>
         </StyledContainer>
-      )}
+      )} */}
       <Profile />
       <MyProducts />
     </>

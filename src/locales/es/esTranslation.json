@@ -180,6 +180,7 @@
   "Remember me": "Recordarme",
   "user_has_no_ads": "{{username}} todavía no tiene una lista de productos en venta o en búsqueda",
   "product_list_owner": "Lista de productos de {{username}}",
+  "no_info_found_for_username": "No hemos encontrado información para {{username}}",
   "chat_write_message": "Escribe tu mensaje",
   "seller": "Seller",
   "buyer": "Buyer"

@@ -14,21 +14,25 @@ const LayoutProfile = () => {
   return (
     <StyledMyAccount>
       {loggedUserName ? (
-        <StyledContainer
-          $customMargin="2rem 0 0 1rem"
-          $customBackground="var(--bg-100)"
-        >
-          {
-            <h1 className="display-5 fw-bold">
-              {t("welcome_you_zone", { username: loggedUserName })}
-            </h1>
-          }
-          <p>{t("profile_zone_intro")}</p>
-          <HeaderProfile />
+        <>
+          <StyledContainer
+            $customBackground="var(--primary-100)"
+            $customPadding="1rem 1.5rem"
+            $customBorderRadius="15px"
+            $customWidth="80%"
+          >
+            {
+              <h1 className="display-5 fw-bold">
+                {t("welcome_you_zone", { username: loggedUserName })}
+              </h1>
+            }
+            <p>{t("profile_zone_intro")}</p>
+            <HeaderProfile />
+          </StyledContainer>
           <Outlet />
-        </StyledContainer>
+        </>
       ) : (
-        `No info found for user ${username}`
+        <>{t("no_info_found_for_username", { username: username })}</>
       )}
     </StyledMyAccount>
   );

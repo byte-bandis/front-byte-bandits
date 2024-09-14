@@ -41,15 +41,18 @@ const BuyButton = ({ ownerId }) => {
 
   useEffect(() => {
     if (showAlert) {
-      const timer = setTimeout(() => setShowAlert(false), 6000);
+      const timer = setTimeout(() => {
+        setShowAlert(false);
+        navigate("/");
+      }, 6000);
+
       return () => clearTimeout(timer);
     }
-  }, [showAlert]);
+  }, [navigate, showAlert]);
 
   const customStyles = {
     $customPosition: "absolute",
-    $customTop: "250px",
-    $customRight: "120px",
+    $customTop: "-250px",
   };
 
   return (
@@ -59,7 +62,14 @@ const BuyButton = ({ ownerId }) => {
           {showAlert && (
             <CustomAlert
               variant={response.status === "success" ? "success" : "error"}
-              onClose={() => setShowAlert(false)}
+              onClose={() => {
+                setShowAlert(false);
+                navigate("/");
+                const timer = setTimeout(() => {
+                  navigate("/");
+                }, 6000);
+                return () => clearTimeout(timer);
+              }}
               customStyles={customStyles}
             >
               {response.message ||

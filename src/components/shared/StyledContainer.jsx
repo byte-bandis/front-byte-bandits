@@ -18,8 +18,10 @@ const StyleContainer = styled.div`
   width: ${(props) => props.$customWidth || "100%"};
   height: ${(props) => props.$customHeight || "auto"};
   margin: ${(props) => props.$customMargin || "0"};
+  padding: ${(props) => props.$customPadding || "0"};
   z-index: ${(props) => props.$customZIndex || "0"};
   font-weigth: ${(props) => props.$customFontWeight || 100};
+  color: ${(props) => props.$customColor || "var(--text-1)"};
 `;
 
 export default StyledContainer;

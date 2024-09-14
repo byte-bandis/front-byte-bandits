@@ -1,5 +1,4 @@
 :root {
-
   --advert-1: #ffffff;
   --advert-2: #3d3d3d;
   --advert-3: #000000;
@@ -57,6 +56,36 @@
   --bg-200-d: #2b3b44;
   --bg-300-d: #43545e;
 }
+
+@font-face {
+  font-family: MerriweatherSans;
+  src: url("/src/assets/fonts/MerriweatherSans-Regular.ttf") format("truetype");
+  font-weight: 400;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: MerriweatherSans;
+  src: url("/src/assets/fonts/MerriweatherSans-Bold.ttf") format("truetype");
+  font-weight: 700;
+  font-style: normal;
+}
+
+body {
+  font-family: MerriweatherSans, sans-serif;
+  font-weight: 400; /* Medium weight by default */
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-family: MerriweatherSans, sans-serif;
+  font-weight: 700;
+}
+
 #root {
   background: var(--bg-100);
 }

@@ -64,7 +64,11 @@ const Profile = () => {
   };
 
   return (
-    <StyledContainer>
+    <StyledContainer
+      $customMargin="2rem 0"
+      $customWidth="80%"
+      $customPadding="1rem"
+    >
       {isLoading && (
         <CustomPulseLoader
           loading={isLoading.toString()}
@@ -72,7 +76,7 @@ const Profile = () => {
         />
       )}
       {!currentUrl.endsWith(`${username}/info`) && (
-        <StyledContainer $customMargin="15% 5% 0 5%">
+        <StyledContainer $customColor="var(--primary-300)">
           <h2>{t("profile_owner", { username })}</h2>
         </StyledContainer>
       )}

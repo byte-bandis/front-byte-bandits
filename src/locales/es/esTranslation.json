@@ -179,5 +179,6 @@
   "to find out how we collect and use your personal data.": "para saber cómo recopilamos y utilizamos tus datos personales.",
   "Remember me": "Recordarme",
   "user_has_no_ads": "{{username}} todavía no tiene una lista de productos en venta o en búsqueda",
-  "product_list_owner": "Lista de productos de {{username}}"
+  "product_list_owner": "Lista de productos de {{username}}",
+  "no_info_found_for_username": "No hemos encontrado información para {{username}}"
 }

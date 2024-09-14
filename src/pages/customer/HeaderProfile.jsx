@@ -5,6 +5,7 @@ import { getLoggedUserName } from "../../store/selectors";
 import { useEffect } from "react";
 import RegularButton from "../../components/shared/buttons/RegularButton";
 import ButtonContainer from "../../components/shared/buttons/ButtonContainer";
+import StyledContainer from "../../components/shared/StyledContainer";
 
 const HeaderProfile = () => {
   const { t } = useTranslation();
@@ -19,7 +20,7 @@ const HeaderProfile = () => {
   }, [loggedUserName, username, navigate]);
 
   return (
-    <>
+    <StyledContainer>
       <ButtonContainer
         $justifyContent="flex-start"
         $gap={"2%"}
@@ -27,17 +28,19 @@ const HeaderProfile = () => {
         <RegularButton
           as={Link}
           to={`/${username}/info`}
+          $variant="dark-green"
         >
           {t("your_public_profile")}
         </RegularButton>
         <RegularButton
           as={Link}
           to={`/${username}/info/mydata`}
+          $variant="dark-green"
         >
           {t("your_private_data")}
         </RegularButton>
       </ButtonContainer>
-    </>
+    </StyledContainer>
   );
 };
 

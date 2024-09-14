@@ -21,7 +21,6 @@ const RegularButton = styled.button`
   border: ${(props) => props.$customBorder || "1px solid var(--primary-200)"};
   @media (max-width: 768px) {
     margin: ${(props) => props.$customMarginMobile || "0"};
-    
   }
   &:hover {
     transform: scale(0.96);
@@ -95,6 +94,29 @@ const RegularButton = styled.button`
       background-color: var(--accent-300);
     }
       
+  `}
+
+  /* Dark-Green $variant */
+  ${(props) =>
+    props.$variant === "dark-green" &&
+    `
+    background-color: var(--primary-100);
+    border: 1px solid var(--primary-300);
+    color: var(--text-1);
+
+    &:hover {
+      background-color: var(--primary-300);
+      color: var(--bg-100);
+    }
+
+    &:focus {
+      background-color: var(--primary-300);
+      color: var(--bg-100);
+    }
+
+    &:active {
+      background-color: var(--primary-100);
+    }
   `}
 `;
 

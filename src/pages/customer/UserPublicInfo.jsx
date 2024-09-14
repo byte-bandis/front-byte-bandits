@@ -11,13 +11,21 @@ const UserPublicInfo = () => {
 
   return (
     <>
-      {/*       {currentUrl.endsWith(`${username}/info`) && (
+      {currentUrl.includes(`${username}/info`) && (
         <StyledContainer $customMargin="2rem">
           <h1>{t("title_public_profile")}</h1>
         </StyledContainer>
-      )} */}
-      <Profile />
-      <MyProducts />
+      )}
+      <Profile
+        className={
+          !currentUrl.includes(`${username}/info`) ? "profile-for-visitors" : ""
+        }
+      />
+      <MyProducts
+        className={
+          !currentUrl.includes(`${username}/info`) ? "profile-for-visitors" : ""
+        }
+      />
     </>
   );
 };

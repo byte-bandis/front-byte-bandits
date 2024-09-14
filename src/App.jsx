@@ -8,10 +8,15 @@ import { SocketProvider } from "./context/SocketContext";
 import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { getLoggedUserId } from "./store/selectors";
+import { setAuthorizationHeader } from "./api/client";
 
 function App() {
-  const [accessToken, setAccessToken] = useState(null);
+  const [accessToken, setAccessToken] = useState(
+    storage.get("authToken") || null
+  );
   const loggedUserId = useSelector(getLoggedUserId);
+
+  setAuthorizationHeader(accessToken);
 
   useEffect(() => {
     if (loggedUserId) {

@@ -13,6 +13,7 @@ const ChatHeader = ({ product, user }) => {
 
   useEffect(() => {
     if (!loggedUserId) return;
+    if (!user?.username) return;
     const fetchUser = async () => {
       try {
         const response = await client.get(`/user/${user.username}`);
@@ -44,12 +45,14 @@ const ChatHeader = ({ product, user }) => {
       <ProductTitleContainer onClick={handleProductClick}>
         <ProductTitle>{product.adTitle}</ProductTitle>
       </ProductTitleContainer>
-      <UserAvatar
-        src={userPhoto || "/path/to/default-avatar.jpg"}
-        alt={user.username}
-        crossOrigin="http://localhost:4000/"
-        onClick={handleUserClick}
-      />
+      {userPhoto && (
+        <UserAvatar
+          src={userPhoto}
+          alt={user.username}
+          crossOrigin="http://localhost:4000/"
+          onClick={handleUserClick}
+        />
+      )}
     </HeaderContainer>
   );
 };
@@ -70,8 +73,10 @@ const HeaderContainer = styled.div`
   align-items: center;
   padding: 10px;
   background-color: var(--bg-200);
-  border-bottom: 1px solid var(--bg-300);
+  border: 1px solid var(--bg-300);
+  border-bottom: none;
   border-radius: 8px 8px 0 0;
+  width: 100%;
 `;
 
 const ProductImage = styled.img`

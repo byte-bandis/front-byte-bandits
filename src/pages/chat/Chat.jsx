@@ -6,7 +6,6 @@ import { useSocket } from "../../context/SocketContext";
 import { client } from "../../api/client";
 import { getLoggedUserId, getError } from "../../store/selectors";
 import { resetMessage } from "../../store/uiSlice";
-import ChatHeader from "./ChatHeader";
 import { Check2All, Send } from "react-bootstrap-icons";
 import { useTranslation } from "react-i18next";
 
@@ -14,7 +13,6 @@ const Chat = ({ productId, buyerId }) => {
   const [chatId, setChatId] = useState(null);
   const [message, setMessage] = useState("");
   const [messages, setMessages] = useState([]);
-  const [chatInfo, setChatInfo] = useState(null);
   const loggedUserId = useSelector(getLoggedUserId);
   const messageContainerRef = useRef(null);
   const error = useSelector(getError);
@@ -34,7 +32,6 @@ const Chat = ({ productId, buyerId }) => {
           const existingChatId = response.chats[0]._id;
           setChatId(existingChatId);
           setMessages(response.chats[0].messages);
-          setChatInfo(response.chats[0]);
 
           socket.emit("joinChat", { chatId: existingChatId });
         } else {
@@ -119,16 +116,8 @@ const Chat = ({ productId, buyerId }) => {
     }
   };
 
-  if (!chatInfo) {
-    return null;
-  }
-
-  const headerUser =
-    chatInfo.seller._id === loggedUserId ? chatInfo.buyer : chatInfo.seller;
-
   return (
     <ChatContainer>
-      <ChatHeader product={chatInfo.product} user={headerUser} />
       <MessageContainer ref={messageContainerRef}>
         {messages.map((msg, index) => (
           <Message
@@ -186,7 +175,7 @@ const ChatContainer = styled.div`
   margin: 0 auto;
   background-color: var(--bg-200);
   border: 1px solid #ccc;
-  border-radius: 8px;
+  border-radius: 0px 0px 8px 8px;
   height: 100%;
   width: 100%;
 `;
@@ -194,7 +183,6 @@ const ChatContainer = styled.div`
 const MessageContainer = styled.div`
   flex-grow: 1;
   overflow-y: auto;
-  border: 0px 1px solid #ddd;
   padding: 10px;
   background-color: #fff;
   max-height: 90%;

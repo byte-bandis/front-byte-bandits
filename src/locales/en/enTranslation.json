@@ -183,5 +183,7 @@
   "product_list_owner": "{{username}}'s list of products",
   "chat_write_message": "Write a message",
   "seller": "Seller",
-  "buyer": "Buyer"
+  "buyer": "Buyer",
+  "you_dont_have_any_chat_yet": "You don't have any chat yet.",
+  "choose_a_chat_to_start" : "Choose a chat to start."
 }

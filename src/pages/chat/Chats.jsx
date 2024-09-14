@@ -9,6 +9,8 @@ import { useSocket } from "../../context/SocketContext";
 import StyledMyAccount from "../../components/shared/StyledMyAccount";
 import ChatListItem from "./ChatListItem";
 import styled from "styled-components";
+import ChatHeader from "./ChatHeader";
+import { useTranslation } from "react-i18next";
 
 const Chats = () => {
   const [chatList, setChatList] = useState([]);
@@ -25,6 +27,7 @@ const Chats = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const socket = useSocket();
+  const { t } = useTranslation();
 
   useEffect(() => {
     if (!loggedUserId) return;
@@ -102,13 +105,26 @@ const Chats = () => {
 
   useEffect(() => {
     fetchChats();
-    if (productId && buyerId && !selectedChat) {
+    if (productId && buyerId && !selectedChat && loadedAd) {
       setSelectedChat({
-        product: { _id: productId },
+        product: {
+          _id: productId,
+          photo: loadedAd.photo,
+          adTitle: loadedAd.adTitle,
+          user: { _id: loadedAd.user._id },
+        },
         buyer: { _id: buyerId },
+        messages: [],
+        seller: {
+          _id: loadedAd.user._id,
+          name: loadedAd.user.name,
+          lastname: loadedAd.user.lastname,
+          username: loadedAd.user.username,
+        },
+        _id: "new",
       });
     }
-  }, [productId, buyerId]);
+  }, [productId, buyerId, loadedAd]);
 
   const fetchChats = async () => {
     if (!loggedUserId) return;
@@ -116,6 +132,11 @@ const Chats = () => {
     try {
       const response = await client.get(`/chat`);
       const existingChats = response.chats || [];
+
+      if (existingChats.length === 0 && !productId && !buyerId) {
+        setChatList([]);
+        setSelectedChat(null);
+      }
 
       if (
         productId &&
@@ -131,6 +152,7 @@ const Chats = () => {
             _id: productId,
             photo: loadedAd.photo,
             adTitle: loadedAd.adTitle,
+            user: { _id: loadedAd.user._id },
           },
           buyer: { _id: buyerId },
           messages: [],
@@ -138,6 +160,7 @@ const Chats = () => {
             _id: loadedAd.user._id,
             name: loadedAd.user.name,
             lastname: loadedAd.user.lastname,
+            username: loadedAd.user.username,
           },
           _id: "new",
         };
@@ -158,13 +181,18 @@ const Chats = () => {
     }
   };
 
+  useEffect(() => {
+    setSelectedChat(null);
+    setChatList([]);
+  }, [productId, buyerId]);
+
   return (
     <StyledMyAccount>
       <ChatsContainer>
         <ChatList>
           {chatList.length === 0 ? (
             <ChatListEmpty>
-              <p>No tienes chats aún.</p>
+              <p>{t("you_dont_have_any_chat_yet")}</p>
             </ChatListEmpty>
           ) : (
             chatList.map((chat) => (
@@ -183,12 +211,22 @@ const Chats = () => {
         </ChatList>
         <ChatWindow>
           {selectedChat && selectedChat.product?._id ? (
-            <Chat
-              productId={selectedChat.product._id}
-              buyerId={selectedChat.buyer._id}
-            />
+            <>
+              <ChatHeader
+                product={selectedChat.product}
+                user={
+                  loggedUserId === selectedChat.product.user._id
+                    ? selectedChat.buyer
+                    : selectedChat.seller
+                }
+              />
+              <Chat
+                productId={selectedChat.product._id}
+                buyerId={selectedChat.buyer._id}
+              />
+            </>
           ) : (
-            <p>Selecciona un chat para comenzar.</p>
+            <p>{t("choose_a_chat_to_start")}</p>
           )}
         </ChatWindow>
       </ChatsContainer>
@@ -199,7 +237,7 @@ const Chats = () => {
 const ChatsContainer = styled.div`
   display: flex;
   width: 100%;
-  height: 79vh;
+  height: 75vh;
 `;
 
 const ChatList = styled.div`
@@ -237,6 +275,7 @@ const ChatListEmpty = styled.div`
 const ChatWindow = styled.div`
   width: 70%;
   display: flex;
+  flex-direction: column;
   align-items: center;
   justify-content: center;
 `;

@@ -285,6 +285,7 @@ const NewProductPage = ({ isEditMode = false }) => {
             onChange={handleInputTransactionTypeChange}
             required
             id="sell"
+            disabled={isEditMode}
           />
           <Form.Check
             type="radio"
@@ -294,6 +295,7 @@ const NewProductPage = ({ isEditMode = false }) => {
             onChange={handleInputTransactionTypeChange}
             required
             id="buy"
+            disabled={isEditMode}
           />
         </StyledInputGroup>
         <StyledInputGroup>

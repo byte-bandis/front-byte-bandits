@@ -28,7 +28,6 @@ const StyledMyAccount = ({ children }) => {
       onClick: () => navigate("/"),
     },
     { text: t("products"), onClick: () => navigate("/") },
-    { text: t("email_short"), onClick: () => navigate("/") },
     {
       text: t("whishlist"),
       to: `/${loggedUserName}/whishlist`,

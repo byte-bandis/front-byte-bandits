@@ -181,8 +181,8 @@
   "user_has_no_ads": "{{username}} todavía no tiene una lista de productos en venta o en búsqueda",
   "product_list_owner": "Lista de productos de {{username}}",
   "chat_write_message": "Escribe tu mensaje",
-  "seller": "Seller",
-  "buyer": "Buyer",
+  "seller": "Vendedor",
+  "buyer": "Comprador",
   "you_dont_have_any_chat_yet": "Todavía no tienes ningún chat.",
   "choose_a_chat_to_start" :  "Elige un chat para empezar."
 }

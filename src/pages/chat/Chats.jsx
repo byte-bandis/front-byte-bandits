@@ -29,6 +29,61 @@ const Chats = () => {
   const socket = useSocket();
   const { t } = useTranslation();
 
+  const fetchChats = async () => {
+    if (!loggedUserId) return;
+
+    try {
+      const response = await client.get(`/chat`);
+      const existingChats = response.chats || [];
+
+      if (existingChats.length === 0 && !productId && !buyerId) {
+        setChatList([]);
+        setSelectedChat(null);
+      }
+
+      if (
+        productId &&
+        buyerId &&
+        loadedAd &&
+        !existingChats.some(
+          (chat) =>
+            chat?.product?._id === productId && chat?.buyer?._id === buyerId
+        )
+      ) {
+        const newChat = {
+          product: {
+            _id: productId,
+            photo: loadedAd.photo,
+            adTitle: loadedAd.adTitle,
+            user: { _id: loadedAd.user._id },
+          },
+          buyer: { _id: buyerId },
+          messages: [],
+          seller: {
+            _id: loadedAd.user._id,
+            name: loadedAd.user.name,
+            lastname: loadedAd.user.lastname,
+            username: loadedAd.user.username,
+          },
+          _id: "new",
+        };
+        setChatList([newChat, ...existingChats]);
+      }
+
+      if (
+        (!productId && !buyerId) ||
+        existingChats.some(
+          (chat) =>
+            chat?.product?._id === productId && chat?.buyer?._id === buyerId
+        )
+      ) {
+        setChatList(existingChats);
+      }
+    } catch (error) {
+      console.error("Error al obtener la lista de chats:", error);
+    }
+  };
+
   useEffect(() => {
     if (!loggedUserId) return;
     if (!socket) return;
@@ -48,7 +103,7 @@ const Chats = () => {
       socket.off("userNewMessage");
       socket.emit("disconnectUser");
     };
-  }, [loggedUserId, socket]);
+  }, [loggedUserId, socket, fetchChats]);
 
   useEffect(() => {
     const checkProductAndBuyer = async () => {
@@ -125,61 +180,6 @@ const Chats = () => {
       });
     }
   }, [productId, buyerId, loadedAd]);
-
-  const fetchChats = async () => {
-    if (!loggedUserId) return;
-
-    try {
-      const response = await client.get(`/chat`);
-      const existingChats = response.chats || [];
-
-      if (existingChats.length === 0 && !productId && !buyerId) {
-        setChatList([]);
-        setSelectedChat(null);
-      }
-
-      if (
-        productId &&
-        buyerId &&
-        loadedAd &&
-        !existingChats.some(
-          (chat) =>
-            chat?.product?._id === productId && chat?.buyer?._id === buyerId
-        )
-      ) {
-        const newChat = {
-          product: {
-            _id: productId,
-            photo: loadedAd.photo,
-            adTitle: loadedAd.adTitle,
-            user: { _id: loadedAd.user._id },
-          },
-          buyer: { _id: buyerId },
-          messages: [],
-          seller: {
-            _id: loadedAd.user._id,
-            name: loadedAd.user.name,
-            lastname: loadedAd.user.lastname,
-            username: loadedAd.user.username,
-          },
-          _id: "new",
-        };
-        setChatList([newChat, ...existingChats]);
-      }
-
-      if (
-        (!productId && !buyerId) ||
-        existingChats.some(
-          (chat) =>
-            chat?.product?._id === productId && chat?.buyer?._id === buyerId
-        )
-      ) {
-        setChatList(existingChats);
-      }
-    } catch (error) {
-      console.error("Error al obtener la lista de chats:", error);
-    }
-  };
 
   useEffect(() => {
     setSelectedChat(null);

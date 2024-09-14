@@ -1,3 +1,5 @@
+import "./Profile.css";
+import PropTypes from "prop-types";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate, useParams } from "react-router-dom";
@@ -18,7 +20,7 @@ import { resetUI } from "../../store/uiSlice";
 import CustomAlert from "../../components/shared/Alert";
 import CustomPulseLoader from "../../components/shared/spinners/CustomPulseLoader";
 
-const Profile = () => {
+const Profile = ({ className }) => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const isLoading = useSelector(getLoading);
@@ -65,6 +67,7 @@ const Profile = () => {
 
   return (
     <StyledContainer
+      className={className}
       $customMargin="2rem 0"
       $customWidth="80%"
       $customPadding="1rem"
@@ -75,13 +78,15 @@ const Profile = () => {
           $customHeight="500px"
         />
       )}
-      {!currentUrl.endsWith(`${username}/info`) && (
-        <StyledContainer $customColor="var(--primary-300)">
-          <h2>{t("profile_owner", { username })}</h2>
-        </StyledContainer>
-      )}
+      <StyledContainer
+        $customColor="var(--primary-300)"
+        isHidden={currentUrl.includes(`${username}/info`) ? true : false}
+      >
+        <h2>{t("profile_owner", { username })}</h2>
+      </StyledContainer>
+
       {isError && (
-        <StyledContainer $customMargin="30% 0 0 20%">
+        <StyledContainer $customMargin="15% 0 0 20%">
           <CustomAlert
             variant="error"
             onClose={handleCloseError}
@@ -127,6 +132,10 @@ const Profile = () => {
       )}
     </StyledContainer>
   );
+};
+
+Profile.propTypes = {
+  className: PropTypes.string,
 };
 
 export default Profile;

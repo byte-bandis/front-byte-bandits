@@ -1,12 +1,20 @@
 import styled from "styled-components";
 import P from "prop-types";
 
-const StyledContainer = ({ children, ...props }) => {
-  return <StyleContainer {...props}>{children}</StyleContainer>;
+const StyledContainer = ({ children, isHidden, ...props }) => {
+  return (
+    <StyleContainer
+      isHidden={isHidden}
+      {...props}
+    >
+      {children}
+    </StyleContainer>
+  );
 };
 
 const StyleContainer = styled.div`
-  display: ${(props) => props.$customDisplay || "block"};
+  display: ${(props) =>
+    props.isHidden ? "none" : props.$customDisplay || "block"};
   position: ${(props) => props.$customPosition || "relative"};
   background: ${(props) => props.$customBackground || "transparent"};
   border: ${(props) => props.$customBorder || "none"};
@@ -27,5 +35,7 @@ const StyleContainer = styled.div`
 export default StyledContainer;
 
 StyledContainer.propTypes = {
+  isHidden: P.bool,
   children: P.node,
+  className: P.string,
 };

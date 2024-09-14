@@ -78,7 +78,7 @@
   "credit_card_length_invalid": "El número de tarjeta de crédito debe tener entre 13 y 18 dígitos",
   "credit_card_digits_only": "El número de tarjeta de crédito debe contener solo dígitos",
   "user_zone": "Mi zona",
-  "log_out": "Desconectar",
+  "log_out": "Salir",
   "all_categories": "Todo",
   "lifestyle": "Estilo de vida",
   "mobile": "Móvil",
@@ -142,7 +142,7 @@
     "write_new_password": "Escribe tu nueva contraseña",
     "confirm_new_password": "Confirmar contraseña",
     "write_confirm_new_password": "Escribe tu nueva contraseña de nuevo",
-    "succes_sending_email_to_restore_password": "Hemos recibido tu solicitud para restablecer tu contraseña. Te hemos enviado un email con instrucciones para finalizar el proceso de recuperación tu cuenta.",
+    "succes_sending_email_to_restore_password": "Hemos recibido tu solicitud para restablecer tu contraseña. Te hemos enviado un email con instrucciones para finalizar el proceso de recuperación de tu cuenta.",
     "back_to_login": "Iniciar sesión"
   },
   "delete_my_account": "Borrar mi cuenta",

@@ -11,6 +11,7 @@ import {
   getIsLogged,
   getLoading,
   getLoggedUser,
+  getLoggedUserId,
   getLoggedUserName,
   getUIMessage,
 } from "../../store/selectors";
@@ -32,6 +33,7 @@ const LoginPage = () => {
   const isLogged = useSelector(getIsLogged);
   const isLoading = useSelector(getLoading);
   const loggedUserName = useSelector(getLoggedUserName);
+  const loggedUserId = useSelector(getLoggedUserId);
   const message = useSelector(getUIMessage);
   const [inputEmail, setInputEmail] = useState("");
   const [inputPassword, setInputPassword] = useState("");
@@ -71,6 +73,17 @@ const LoginPage = () => {
         navigate(redirectToNew, {
           replace: true,
           state: { from: redirectToNew },
+        });
+      } else if (
+        loggedUserName &&
+        loggedUserId &&
+        safeFrom.startsWith("/chat")
+      ) {
+        const redirectToChat = `/${loggedUserName}${safeFrom}&buyerId=${loggedUserId}`;
+        console.log(redirectToChat);
+        navigate(redirectToChat, {
+          replace: true,
+          state: { from: redirectToChat },
         });
       } else {
         navigate(from, { replace: true });
@@ -124,11 +137,7 @@ const LoginPage = () => {
       {/* Overlay */}
       <div className="sign-in__backdrop"></div>
       {/* Form */}
-      <form
-        className="sign-in__form"
-        onSubmit={handleSubmit}
-        noValidate
-      >
+      <form className="sign-in__form" onSubmit={handleSubmit} noValidate>
         {/* Header */}
         <StyledContainer $customDisplay="flex">
           <IconWrapper
@@ -164,10 +173,7 @@ const LoginPage = () => {
 
         {!isLoading ? (
           <>
-            <StyledContainer
-              $customMargin
-              className="form-group"
-            >
+            <StyledContainer $customMargin className="form-group">
               <label htmlFor="email">{t("login.email")}</label>
               <input
                 type="text"
@@ -221,16 +227,10 @@ const LoginPage = () => {
               $customWidth="100%"
               $customJustifyContent="space-between"
             >
-              <button
-                className="form-link"
-                onClick={handleToRegister}
-              >
+              <button className="form-link" onClick={handleToRegister}>
                 {t("login.register_new_user")}
               </button>
-              <button
-                className="form-link"
-                onClick={handlePassword}
-              >
+              <button className="form-link" onClick={handlePassword}>
                 {t("login.forgot_password")}
               </button>
             </StyledContainer>

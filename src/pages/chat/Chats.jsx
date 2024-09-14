@@ -149,7 +149,10 @@ const Chats = () => {
       if (productId && buyerId) {
         const ad = await checkProduct();
         const buyer = await checkBuyer();
-        if (ad.user._id !== loggedUserId && buyer._id !== loggedUserId) {
+        if (
+          (ad.user._id !== loggedUserId && buyer._id !== loggedUserId) ||
+          ad.user._id === buyer._id
+        ) {
           navigate("/404");
         }
       }

@@ -21,17 +21,39 @@ import Safety from "../pages/customer/Safety";
 import SetRestorePasswordEmail from "../pages/auth/GetPasswordEmail";
 import RestorePassword from "../pages/auth/RestorePassword";
 import ReservedProducts from "../pages/customer/ReservedProducts";
+import ConfirmPasswordStep from "../pages/customer/myPersonalInfo/components/ConfirnPasswordStep";
 
 const RootRouter = () => {
   return (
     <Routes>
-      <Route path="/login" element={<LoginPage />} />
-      <Route path="/register" element={<RegisterPage />} />
-      <Route path="/terms-and-conditions" element={<TermsAndConditions />} />
-      <Route path="/privacy-policy" element={<PrivacyPolicy />} />
-      <Route path=":username" element={<UserPublicInfo />} />
-      <Route path="/password-reminder" element={<SetRestorePasswordEmail />} />
-      <Route path="/reset-password/:token" element={<RestorePassword />} />
+      <Route
+        path="/login"
+        element={<LoginPage />}
+      />
+      <Route
+        path="/register"
+        element={<RegisterPage />}
+      />
+      <Route
+        path="/terms-and-conditions"
+        element={<TermsAndConditions />}
+      />
+      <Route
+        path="/privacy-policy"
+        element={<PrivacyPolicy />}
+      />
+      <Route
+        path=":username"
+        element={<UserPublicInfo />}
+      />
+      <Route
+        path="/password-reminder"
+        element={<SetRestorePasswordEmail />}
+      />
+      <Route
+        path="/reset-password/:token"
+        element={<RestorePassword />}
+      />
 
       {/*Private routes*/}
       <Route
@@ -42,29 +64,79 @@ const RootRouter = () => {
           </RequireAuth>
         }
       >
-        <Route path="info" element={<LayoutProfile />}>
-          <Route index element={<UserPublicInfo />} />
-          <Route path="mydata" element={<PersonalInfo />} />
+        <Route
+          path="info"
+          element={<LayoutProfile />}
+        >
+          <Route
+            index
+            element={<UserPublicInfo />}
+          />
+          <Route
+            path="mydata"
+            element={<PersonalInfo />}
+          />
         </Route>
-        <Route path="edit/:productId" element={<NewProductPage isEditMode />} />
-        <Route path="new" element={<NewProductPage />} />
-        <Route path="whishlist" element={<Wishlist />} />
-        <Route path="delete-account" element={<DeleteMyAccount />} />
-        <Route path="chat" element={<Chats />} />
-        <Route path="safety" element={<Safety />} />
-        <Route path="reservedProducts" element={<ReservedProducts />} />
+        <Route
+          path="edit/:productId"
+          element={<NewProductPage isEditMode />}
+        />
+        <Route
+          path="new"
+          element={<NewProductPage />}
+        />
+        <Route
+          path="whishlist"
+          element={<Wishlist />}
+        />
+        <Route
+          path="delete-account"
+          element={<ConfirmPasswordStep />}
+        />
+        <Route
+          path="chat"
+          element={<Chats />}
+        />
+        <Route
+          path="safety"
+          element={<Safety />}
+        />
+        <Route
+          path="reservedProducts"
+          element={<ReservedProducts />}
+        />
       </Route>
 
       {/*Public routes*/}
-      <Route path="/product" element={<Outlet />}>
-        <Route index element={<ProductList />} />
-        <Route path=":productId/*" element={<ProductView />} />
+      <Route
+        path="/product"
+        element={<Outlet />}
+      >
+        <Route
+          index
+          element={<ProductList />}
+        />
+        <Route
+          path=":productId/*"
+          element={<ProductView />}
+        />
       </Route>
-      <Route path="/404" element={<NotFound />} />
-      <Route path="*" element={<Navigate to="/404" />} />
+      <Route
+        path="/404"
+        element={<NotFound />}
+      />
+      <Route
+        path="*"
+        element={<Navigate to="/404" />}
+      />
       <Route
         path="/"
-        element={<ProductList $customMargin={"10px auto"} $customTop={"0"} />}
+        element={
+          <ProductList
+            $customMargin={"10px auto"}
+            $customTop={"0"}
+          />
+        }
       />
     </Routes>
   );

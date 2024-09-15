@@ -18,7 +18,6 @@ import { resetUI } from "../../store/uiSlice.js";
 import { resetLoggedUserInfo, setAuth } from "../../store/authSlice.js";
 import { resetSinglePublicProfile } from "../../store/singlePublicProfileSlice.js";
 import CustomPulseLoader from "../../components/shared/spinners/CustomPulseLoader.jsx";
-import { useEffect } from "react";
 
 const Safety = () => {
   const { t } = useTranslation();
@@ -35,15 +34,6 @@ const Safety = () => {
   const handleHideConfirmator = () => {
     setShowConfirmator(false);
   };
-
-  useEffect(() => {
-    console.log(
-      "Esto es reloadPage en Delete my account: ",
-      reloadPage,
-      "de tipo: ",
-      typeof reloadPage
-    );
-  });
 
   const fireDeletion = async () => {
     await dispatch(deleteUserWithThunk(loggedUserName));

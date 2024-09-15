@@ -10,11 +10,7 @@ const CustomAlert = ({
 }) => {
   const childrenArray = Array.isArray(children) ? children : [children];
   return (
-    <AlertMessage
-      variant={variant}
-      {...customStyles}
-      {...props}
-    >
+    <AlertMessage variant={variant} {...customStyles} {...props}>
       {onClose && <CloseButton onClick={onClose}>X</CloseButton>}
       <div>
         {childrenArray.map((message, index) => (
@@ -46,13 +42,14 @@ const AlertMessage = styled.div`
     props.variant === "success"
       ? "var(--success-1)"
       : props.variant === "error"
-      ? "var(--error-2)"
-      : "var(--bg-100)"};
+        ? "var(--error-2)"
+        : "var(--bg-100)"};
   width: ${(props) => props.$customWidth || "70%"};
   color: ${(props) => props.$customColor || "var(--text-100)"};
   position: ${(props) => props.$customPosition || "static"};
   top: ${(props) => props.$customTop || "0px"};
   right: ${(props) => props.$customRight || "0px"};
+  z-index: ${(props) => props.$customZIndex || "auto"};
 `;
 
 const CloseButton = styled.button`

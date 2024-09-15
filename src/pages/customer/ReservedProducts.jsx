@@ -26,8 +26,6 @@ const ReservedProducts = () => {
     }
   }, [dispatch, userid]);
 
-  console.log(dispatch(getTransactions(userid)));
-
   const handleTransaction = async (orderId, action) => {
     try {
       const res = await client.post(
@@ -50,8 +48,26 @@ const ReservedProducts = () => {
   };
 
   const customStyles = {
-    $customPosition: "absolute",
-    $customTop: "-250px",
+    $customPosition: "fixed",
+    $customTop: "250px",
+    $customZIndex: "15",
+  };
+
+  const handleButtonClick = (transactionId, action) => {
+    handleTransaction(transactionId, action);
+    const timer = setTimeout(() => {
+      setShowAlert(false);
+    }, 4000);
+    return () => clearTimeout(timer);
+  };
+
+  const commonButtonProps = {
+    className: "buttonsOrder",
+    $customColor: "var(--bg-100)",
+    $customBorder: "1px solid var(--success-border)",
+    $customVerticalPadding: "1rem 2rem",
+    $customPosition: "relative",
+    $customZIndex: "10",
   };
 
   return (
@@ -61,34 +77,31 @@ const ReservedProducts = () => {
         <OrdersContainer>
           {showAlert && (
             <CustomAlert
-              variant={response.status === "success" ? "success" : "error"}
+              variant={response.state === "success" ? "success" : "error"}
               onClose={() => setShowAlert(false)}
               customStyles={customStyles}
-            ></CustomAlert>
+            >
+              {response.message}
+            </CustomAlert>
           )}
           {ordersReceived.length > 0 ? (
-            ordersReceived.map((transaction) => (
-              <React.Fragment key={transaction._id}>
-                <ProductItem
-                  ad={transaction.ad}
-                  $customTransform="scale(0.7)"
-                  $customMargin="-15px"
-                />
+            ordersReceived.map((transaction, index) => (
+              <React.Fragment key={index}>
+                <TransactionIdContainer>{index + 1}</TransactionIdContainer>
+                <TransactionIdContainer2>
+                  {transaction._id}
+                </TransactionIdContainer2>
+                <ProductItem ad={transaction.ad} />
 
                 <RegularButton
                   username={userid}
                   formData={{ orderId: transaction._id }}
-                  onClick={() => handleTransaction(transaction._id, "accept")}
+                  onClick={() => handleButtonClick(transaction._id, "accept")}
                   key={`accept${transaction._id}`}
-                  className="buttonsOrder"
                   $customBackground="var(--primary-300)"
-                  $customColor="var( --bg-100)"
-                  $customBorder="1px solid var(--success-border)"
-                  $customVerticalPadding="0.5rem 2.5rem"
-                  $customPosition="relative"
+                  $customRight="90px"
                   $customTop="-450px"
-                  $customRight="-180px"
-                  $customZIndex="10"
+                  {...commonButtonProps}
                 >
                   Accept
                 </RegularButton>
@@ -96,17 +109,12 @@ const ReservedProducts = () => {
                 <RegularButton
                   username={userid}
                   formData={{ orderId: transaction._id }}
-                  onClick={() => handleTransaction(transaction._id, "rejecet")}
+                  onClick={() => handleButtonClick(transaction._id, "accept")}
                   key={`reject${transaction._id}`}
-                  className="buttonsOrder"
                   $customBackground="var(--accent-200)"
-                  $customColor="var( --bg-100)"
-                  $customBorder="1px solid var(--success-border)"
-                  $customVerticalPadding="0.5rem 2.9rem"
-                  $customPosition="relative"
-                  $customTop="-450px"
-                  $customRight="-350px"
-                  $customZIndex="10"
+                  $customRight="-100px"
+                  $customTop="-505px"
+                  {...commonButtonProps}
                 >
                   Reject
                 </RegularButton>
@@ -131,7 +139,19 @@ const StyledH1 = styled.h1`
 
 const OrdersContainer = styled.div`
   display: flex;
-  flex-direction: row;
+  flex-direction: column;
   flex-wrap: wrap;
-  margin: auto 70px;
+  margin: auto;
+  justify-content: center;
+  align-items: center;
+  width: 60%;
+`;
+
+const TransactionIdContainer = styled.div`
+  font-size: 4rem;
+  z-index: 10;
+`;
+
+const TransactionIdContainer2 = styled.div`
+  font-size: 1.5rem;
 `;

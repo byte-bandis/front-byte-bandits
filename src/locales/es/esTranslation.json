@@ -185,5 +185,6 @@
   "seller": "Vendedor",
   "buyer": "Comprador",
   "you_dont_have_any_chat_yet": "Todavía no tienes ningún chat.",
-  "choose_a_chat_to_start" :  "Elige un chat para empezar."
+  "choose_a_chat_to_start" :  "Elige un chat para empezar.",
+  "chat_participant_does_not_exist_anymore" : "El participante del chat ya no existe"
 }

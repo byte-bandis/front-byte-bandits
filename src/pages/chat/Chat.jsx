@@ -9,7 +9,7 @@ import { resetMessage } from "../../store/uiSlice";
 import { Check2All, Send } from "react-bootstrap-icons";
 import { useTranslation } from "react-i18next";
 
-const Chat = ({ productId, buyerId }) => {
+const Chat = ({ productId, buyerId, user }) => {
   const [chatId, setChatId] = useState(null);
   const [message, setMessage] = useState("");
   const [messages, setMessages] = useState([]);
@@ -116,6 +116,12 @@ const Chat = ({ productId, buyerId }) => {
     }
   };
 
+  useEffect(() => {
+    setChatId(null);
+    setMessages([]);
+    setMessage("");
+  }, [productId, buyerId]);
+
   return (
     <ChatContainer>
       <MessageContainer ref={messageContainerRef}>
@@ -154,7 +160,12 @@ const Chat = ({ productId, buyerId }) => {
           type="text"
           value={message}
           onChange={(e) => setMessage(e.target.value)}
-          placeholder={t("chat_write_message") + "…"}
+          placeholder={
+            user.username !== "deleted_" + user._id
+              ? t("chat_write_message") + "…"
+              : t("chat_participant_does_not_exist_anymore")
+          }
+          disabled={user.username === "deleted_" + user._id}
         />
         <Button type="submit" className={message === "" ? "empty" : "filled"}>
           <Send />
@@ -176,7 +187,7 @@ const ChatContainer = styled.div`
   background-color: var(--bg-200);
   border: 1px solid #ccc;
   border-radius: 0px 0px 8px 8px;
-  height: 100%;
+  height: 85%;
   width: 100%;
 `;
 

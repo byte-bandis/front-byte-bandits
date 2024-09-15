@@ -134,7 +134,9 @@ const Chat = ({ productId, buyerId, user }) => {
               <span>{msg.content}</span>
             </MessageContent>
             <MessageInfo>
-              <Timestamp>
+              <Timestamp
+                className={msg.user._id === loggedUserId ? "sent" : "received"}
+              >
                 {new Date(msg.timestamp)
                   .toLocaleString("es-ES", {
                     day: "2-digit",
@@ -224,18 +226,19 @@ const Message = styled.div`
 
   &.sent {
     margin-left: auto;
-    background-color: var(--bg-200);
+    background-color: var(--accent-100);
+    color: var(--text-100);
   }
 
   &.received {
     margin-right: auto;
-    background-color: var(--bg-300);
+    background-color: var(--primary-100);
+    color: var(--bg-100);
   }
 `;
 
 const MessageContent = styled.div`
   margin-bottom: 4px;
-  color: var(--text-100);
   font-weight: bold;
   font-size: 14px;
 `;
@@ -249,7 +252,14 @@ const MessageInfo = styled.div`
 
 const Timestamp = styled.span`
   font-size: 9.5px;
-  color: var(--text-200);
+
+  &.sent {
+    color: var(--text-200);
+  }
+
+  &.received {
+    color: var(--bg-100);
+  }
 `;
 
 const Tick = styled.span`

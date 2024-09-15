@@ -187,5 +187,6 @@
   "you_dont_have_any_chat_yet": "Todavía no tienes ningún chat.",
   "choose_a_chat_to_start": "Elige un chat para empezar.",
   "confirm_current_password": "Confirma tu contraseña",
-  "info_confirm_pass_before_deleting_account": "Para borrar tu cuenta, tienes que confirmar tu contraseña primero."
+  "info_confirm_pass_before_deleting_account": "Para borrar tu cuenta, tienes que confirmar tu contraseña primero.",
+  "confirm": "Confirmar"
 }

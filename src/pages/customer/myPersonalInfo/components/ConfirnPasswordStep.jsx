@@ -21,6 +21,7 @@ import { useEffect } from "react";
 import CustomAlert from "../../../../components/shared/Alert";
 import { emptyMyPassword } from "../../../../store/MyPersonalData/passwordSlice";
 import { useNavigate } from "react-router-dom";
+import { matchMyPassword } from "../passwordService";
 
 const PasswordUpdater = () => {
   const { t } = useTranslation();
@@ -89,10 +90,7 @@ const PasswordUpdater = () => {
     setIsSuccess(null);
     setIsError(null);
     try {
-      const confirmedPassword = await confirmMyPassword(
-        loggedUsername,
-        formData
-      );
+      const confirmedPassword = await matchMyPassword(loggedUsername, formData);
       setIsSuccess(confirmedPassword.message);
     } catch (error) {
       setIsError(error.message);

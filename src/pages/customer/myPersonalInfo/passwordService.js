@@ -15,6 +15,17 @@ export const updateMyPassword = async (username, formData) => {
   });
 };
 
+export const matchMyPassword = async (username, formData) => {
+  const url = `${userURL}/${username}/confirm-password`;
+  return client.post(url, formData).then((response) => {
+    const result = {
+      state: response.state,
+      message: response.message,
+    };
+    return result;
+  });
+};
+
 export const validateEmailForRestorePassword = async (email, type) => {
   const credentials = {
     email,

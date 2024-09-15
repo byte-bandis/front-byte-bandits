@@ -14,6 +14,18 @@ export const getProfilesWithThunk = createAsyncThunk(
   }
 );
 
+export const getMyAccountWithThunk = createAsyncThunk(
+  "myAccount/fetch",
+  async (username, { rejectWithValue }) => {
+    try {
+      const response = await profiles.getMyAccount(username);
+      return response;
+    } catch (error) {
+      return rejectWithValue(error.message);
+    }
+  }
+);
+
 export const getSinglePublicProfileWithThunk = createAsyncThunk(
   "singlePublicProfile/fetch",
   async (username, { rejectWithValue }) => {
@@ -48,6 +60,18 @@ export const updateSinglePublicProfileWithThunk = createAsyncThunk(
         username,
         formData
       );
+      return response;
+    } catch (error) {
+      return rejectWithValue(error.message);
+    }
+  }
+);
+
+export const deleteSinglePublicProfileWithThunk = createAsyncThunk(
+  "singlePublicProfile/delete",
+  async (username, { rejectWithValue }) => {
+    try {
+      const response = await profiles.deleteSinglePublicProfile(username);
       return response;
     } catch (error) {
       return rejectWithValue(error.message);

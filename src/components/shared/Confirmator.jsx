@@ -73,7 +73,7 @@ Confirmator.propTypes = {
 };
 const StyledConfirm = styled.div`
   .blurer {
-    position: ${(props) => props.$blurerPosition || "absolute"};
+    position: ${(props) => props.$blurerPosition || "fixed"};
     left: ${(props) => props.$blurerLeft || "0"};
     top: ${(props) => props.$blurerTop || "0"};
     width: ${(props) => props.$blurerWidth || "100%"};
@@ -99,7 +99,7 @@ const StyledConfirm = styled.div`
     border: ${(props) => props.$customBorder || "2px solid var(--accent-100)"};
     border-radius: 10px;
     background: ${(props) => props.$customBackground || "var(--bg-200)"};
-    position: absolute;
+    position: fixed;
     z-index: 20;
     &[hidden] {
       display: none;

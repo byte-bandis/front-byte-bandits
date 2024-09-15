@@ -4,7 +4,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { useEffect } from "react";
 import { getTransactions } from "../../store/transactionsThunk";
 import ProductItem from "../product/ProductItem";
-import { RegularButton } from "../../components/shared/buttons";
+import { RegularButton as BaseRegularButton } from "../../components/shared/buttons";
 import React from "react";
 import { client } from "../../api/client";
 import CustomAlert from "../../components/shared/Alert";
@@ -68,6 +68,7 @@ const ReservedProducts = () => {
     $customVerticalPadding: "1rem 2rem",
     $customPosition: "relative",
     $customZIndex: "10",
+    $customTop: "-450px",
   };
 
   return (
@@ -93,31 +94,32 @@ const ReservedProducts = () => {
                 </TransactionIdContainer2>
                 <ProductItem ad={transaction.ad} />
 
-                <RegularButton
-                  username={userid}
-                  formData={{ orderId: transaction._id }}
-                  onClick={() => handleButtonClick(transaction._id, "accept")}
-                  key={`accept${transaction._id}`}
-                  $customBackground="var(--primary-300)"
-                  $customRight="90px"
-                  $customTop="-450px"
-                  {...commonButtonProps}
-                >
-                  Accept
-                </RegularButton>
+                <ButtonsContainer>
+                  <RegularButton
+                    username={userid}
+                    formData={{ orderId: transaction._id }}
+                    onClick={() => handleButtonClick(transaction._id, "accept")}
+                    key={`accept${transaction._id}`}
+                    $customBackground="var(--primary-300)"
+                    $customRight="0px"
+                    $customTop="-450px"
+                    {...commonButtonProps}
+                  >
+                    Accept
+                  </RegularButton>
 
-                <RegularButton
-                  username={userid}
-                  formData={{ orderId: transaction._id }}
-                  onClick={() => handleButtonClick(transaction._id, "accept")}
-                  key={`reject${transaction._id}`}
-                  $customBackground="var(--accent-200)"
-                  $customRight="-100px"
-                  $customTop="-505px"
-                  {...commonButtonProps}
-                >
-                  Reject
-                </RegularButton>
+                  <RegularButton
+                    username={userid}
+                    formData={{ orderId: transaction._id }}
+                    onClick={() => handleButtonClick(transaction._id, "accept")}
+                    key={`reject${transaction._id}`}
+                    $customBackground="var(--accent-200)"
+                    $customRight="-20px"
+                    {...commonButtonProps}
+                  >
+                    Reject
+                  </RegularButton>
+                </ButtonsContainer>
               </React.Fragment>
             ))
           ) : (
@@ -135,6 +137,10 @@ const StyledH1 = styled.h1`
   font-size: 3em;
   text-align: center;
   margin-bottom: 20px;
+
+  @media (max-width: 768px) {
+    font-size: 2rem;
+  }
 `;
 
 const OrdersContainer = styled.div`
@@ -144,14 +150,44 @@ const OrdersContainer = styled.div`
   margin: auto;
   justify-content: center;
   align-items: center;
-  width: 60%;
+  width: 40%;
+
+  @media (max-width: 768px) {
+   width: 85%;
+   margin: -2px;
+   font-size: 1.5rem;
+    }
+}
 `;
 
 const TransactionIdContainer = styled.div`
   font-size: 4rem;
   z-index: 10;
+
+  @media (max-width: 768px) {
+    font-size: 2rem;
+  }
 `;
 
 const TransactionIdContainer2 = styled.div`
   font-size: 1.5rem;
+  @media (max-width: 768px) {
+    font-size: 1.1rem;
+  }
 `;
+
+const RegularButton = styled(BaseRegularButton)`
+  right: ${(props) => props.$customRight};
+  top: ${(props) => props.$customTop};
+  background: ${(props) => props.$customBackground};
+
+  @media (max-width: 768px) {
+    position: relative;
+    right: 5px;
+    top: -255px;
+    padding: 0.5rem 0.5rem;
+    margin: 25px;
+  }
+`;
+
+const ButtonsContainer = styled.div``;

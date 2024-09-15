@@ -6,6 +6,10 @@ import { getLoggedUserName } from "../../store/selectors";
 import { useNavigate } from "react-router-dom";
 import P from "prop-types";
 import styled from "styled-components";
+import { useEffect, useState } from "react";
+import { useDispatch } from "react-redux";
+import { getTransactions } from "../../store/transactionsThunk";
+import { clearOrdersReceived } from "../../store/transactionsSlice";
 
 const StyledMyAccount = ({ children }) => {
   const { t } = useTranslation();
@@ -14,58 +18,73 @@ const StyledMyAccount = ({ children }) => {
   const ordersReceived = useSelector(
     (state) => state.transactions.ordersReceived,
   );
-  console.log(ordersReceived);
-  const sideBarElements = [
-    {
-      text: t("my_profile"),
-      to: `/${loggedUserName}/info`,
-    },
-    {
-      text: t("my_data"),
-      to: `/${loggedUserName}/info/mydata`,
-    },
-    {
-      text: t("sales"),
-      to: `/product/?tags=lifestyle&sell=true`,
-    },
-    {
-      text: t("purchases"),
-      onClick: () => navigate("/"),
-    },
-    { text: t("products"), onClick: () => navigate("/") },
-    {
-      text: t("whishlist"),
-      to: `/${loggedUserName}/whishlist`,
-    },
-    { text: t("chat"), to: `/${loggedUserName}/chat` },
-    {
-      text: t("reserved"),
-      to: `/${loggedUserName}/reservedProducts`,
-      component: (
-        <HighlightReserved highlight={ordersReceived.length > 0}>
-          {t("reserved")}
-        </HighlightReserved>
-      ),
-    },
-    {
-      text: t("safety"),
-      to: `/${loggedUserName}/safety`,
-    },
-  ];
+  const dispatch = useDispatch();
+  const [sideBarElements, setSideBarElements] = useState([]);
 
-  if (ordersReceived.length > 0) {
-    sideBarElements.unshift({
-      text: (
-        <HighlightReserved highlight={true}>{t("reserved")}</HighlightReserved>
-      ),
-      to: `/${loggedUserName}/reservedProducts`,
-    });
-  } else {
-    sideBarElements.unshift({
-      text: t("reserved"),
-      to: `/${loggedUserName}/reservedProducts`,
-    });
-  }
+  useEffect(() => {
+    if (loggedUserName) {
+      try {
+        console.log(loggedUserName);
+        // Asegúrate de que esta línea esté llamando a la acción
+        console.log("Despachando getTransactions");
+        dispatch(getTransactions())
+          .unwrap() // Desempaqueta la promesa para manejar errores
+          .then((response) => {
+            console.log("Respuesta exitosa:", response);
+          })
+          .catch((error) => {
+            console.error("Error al despachar getTransactions:", error);
+          });
+      } catch (error) {
+        console.error("Error en el useEffect:", error);
+      }
+    }
+  }, [loggedUserName, dispatch]);
+
+  useEffect(() => {
+    // Ahora actualizamos el sidebar con base en el estado actual
+    const updatedElements = [
+      {
+        text:
+          ordersReceived.length > 0 ? (
+            <HighlightReserved highlight={true}>
+              {t("reserved")}
+            </HighlightReserved>
+          ) : (
+            t("reserved")
+          ),
+        to: `/${loggedUserName}/reservedProducts`,
+      },
+      {
+        text: t("my_profile"),
+        to: `/${loggedUserName}/info`,
+      },
+      {
+        text: t("my_data"),
+        to: `/${loggedUserName}/info/mydata`,
+      },
+      {
+        text: t("sales"),
+        to: `/product/?tags=lifestyle&sell=true`,
+      },
+      {
+        text: t("purchases"),
+        onClick: () => navigate("/"),
+      },
+      { text: t("products"), onClick: () => navigate("/") },
+      {
+        text: t("whishlist"),
+        to: `/${loggedUserName}/whishlist`,
+      },
+      { text: t("chat"), to: `/${loggedUserName}/chat` },
+      {
+        text: t("safety"),
+        to: `/${loggedUserName}/safety`,
+      },
+    ];
+
+    setSideBarElements(updatedElements); // Actualizamos el sidebar
+  }, [ordersReceived, loggedUserName, t, navigate]);
 
   return (
     <StyledContainer

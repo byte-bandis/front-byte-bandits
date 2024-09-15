@@ -12,6 +12,7 @@ import { StyledAdList } from "../../components/shared/lists";
 import { useParams } from "react-router-dom";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
+import getTotalAds from "../../store/adscounThunk";
 
 const ProductList = ({ $customMargin, $customTop }) => {
   const { t } = useTranslation();
@@ -25,7 +26,10 @@ const ProductList = ({ $customMargin, $customTop }) => {
   const limit = urlParams.get("limit");
   const { username } = useParams();
   const [adsListToShow, setAdsListToShow] = useState([]);
-
+  const adsAccount = useSelector((state) => state.adsState.totalAds);
+  useEffect(() => {
+    dispatch(getTotalAds());
+  }, [dispatch]);
   useEffect(() => {
     if (username) {
       const userAds = adsData.filter((item) => item.user.username === username);
@@ -89,7 +93,7 @@ const ProductList = ({ $customMargin, $customTop }) => {
         )}
       </StyledAdList>
       
-        <Pager></Pager>
+        <Pager adsAccount={adsAccount}></Pager>
       
     </>
   );

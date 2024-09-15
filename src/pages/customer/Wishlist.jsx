@@ -6,8 +6,7 @@ import styled from "styled-components";
 import P from "prop-types";
 import { useSelector, useDispatch } from "react-redux";
 import { useEffect } from "react";
-import { setPage } from "../../store/adsSlice";
-
+import { getTotalLikes } from "../../store/likesThunk";
 const Wishlist = () => {
   const dispatch = useDispatch();
   const page = useSelector((state) => state.adsState.page);
@@ -15,15 +14,18 @@ const Wishlist = () => {
   const userLikes = useSelector((state) => state.likesSlice.wishlist);
   const searchParams = new URLSearchParams(window.location.search);
   const limit = searchParams.get("limit");
-
+ const adsAccount = useSelector((state) => state.likesSlice.totalLikes);
   useEffect(() => {
-    dispatch(setPage(1));
     if (userName) {
-      dispatch(getWishlist({ page: 1, limit }));
+      console.log('wishlist');
+      dispatch(getWishlist({ page, limit }));
     }
   }, [dispatch, userName, page, limit]);
-
-  return (
+  useEffect(() => {
+    dispatch(getTotalLikes());
+  }, [dispatch]);
+  
+    return (
     <>
       <StyledMyAccount>
         <StyledH1>Wishlist</StyledH1>
@@ -44,7 +46,7 @@ const Wishlist = () => {
             <p className="no-favorites">There is no favorites</p>
           )}
         </WishlistContainer>
-        <Pager></Pager>
+        <Pager adsAccount={adsAccount}></Pager>
       </StyledMyAccount>
     </>
   );

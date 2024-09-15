@@ -110,7 +110,7 @@
   "description_will_be_deleted": "La descripción se borrará",
   "delete_description": "Borrar descripción",
   "not_found": "No se ha encontrado el recurso solicitado",
-  "profile_owner": "Perfil público de {{username}}",
+  "profile_owner": "Hola, soy {{username}}",
   "send": "Enviar",
   "footer": {
     "rightsReserved": "Todos los derechos reservados.",

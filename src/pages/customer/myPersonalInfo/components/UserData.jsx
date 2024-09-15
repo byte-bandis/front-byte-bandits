@@ -116,7 +116,7 @@ const MyData = () => {
     }));
   };
 
-  const handleSubmit = async (event) => {
+  const handleSubmit = (event) => {
     event.preventDefault();
     const errors = validate(t, {
       name: formData.name,
@@ -133,26 +133,14 @@ const MyData = () => {
       dispatch(setMessage({ payload: errorMessages, type: "error" }));
       return;
     }
-    try {
-      const response = await dispatch(
-        updateMyDataWithThunk({ username: loggedUsername, formData })
-      );
 
-      if (response.error) {
-        console.log("Error al enviar los datos:", response.error);
-        dispatch(setMessage({ payload: t("update_failed"), type: "error" }));
-        return;
-      }
-
-      setConfirmProcess(false);
-      setEditMode(false);
-      dispatch(resetValidationErrors());
-      dispatch(updateUserName(formData.username));
-      navigate(`/${formData.username}/info/mydata`);
-      dispatch(resetUI());
-    } catch (error) {
-      dispatch(setMessage({ payload: t("update_failed"), type: "error" }));
-    }
+    dispatch(updateMyDataWithThunk({ username: loggedUsername, formData }));
+    setConfirmProcess(false);
+    setEditMode(false);
+    dispatch(resetValidationErrors());
+    dispatch(updateUserName(formData.username));
+    navigate(`/${formData.username}/info/mydata`);
+    dispatch(resetUI());
   };
 
   const handleCancelSubmit = () => {
@@ -165,7 +153,7 @@ const MyData = () => {
       <StyledListContainer $customWidth="80%">
         {isLoading && (
           <CustomPulseLoader
-            loading={isLoading.toString()}
+            loading={isLoading}
             $customHeight="200px"
           />
         )}

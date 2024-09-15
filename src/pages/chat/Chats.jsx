@@ -56,6 +56,7 @@ const Chats = () => {
             photo: loadedAd.photo,
             adTitle: loadedAd.adTitle,
             user: { _id: loadedAd.user._id },
+            available: loadedAd.available,
           },
           buyer: { _id: buyerId },
           messages: [],
@@ -170,6 +171,7 @@ const Chats = () => {
           photo: loadedAd.photo,
           adTitle: loadedAd.adTitle,
           user: { _id: loadedAd.user._id },
+          available: loadedAd.available,
         },
         buyer: { _id: buyerId },
         messages: [],
@@ -218,7 +220,7 @@ const Chats = () => {
               <ChatHeader
                 product={selectedChat.product}
                 user={
-                  loggedUserId === selectedChat.product.user._id
+                  loggedUserId === selectedChat.product.user
                     ? selectedChat.buyer
                     : selectedChat.seller
                 }
@@ -226,6 +228,11 @@ const Chats = () => {
               <Chat
                 productId={selectedChat.product._id}
                 buyerId={selectedChat.buyer._id}
+                user={
+                  loggedUserId === selectedChat.product.user
+                    ? selectedChat.buyer
+                    : selectedChat.seller
+                }
               />
             </>
           ) : (
@@ -240,7 +247,7 @@ const Chats = () => {
 const ChatsContainer = styled.div`
   display: flex;
   width: 100%;
-  height: 75vh;
+  height: 70vh;
 `;
 
 const ChatList = styled.div`

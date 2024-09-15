@@ -47,7 +47,7 @@ const StyledChatListItem = styled.div`
   transition: background-color 0.3s ease;
   position: relative;
   background-color: ${(props) =>
-    props.isSelected ? "var(--bg-300)" : "var(--bg-200)"};
+    props.isSelected ? "var(--primary-100)" : "var(--bg-200)"};
   border-radius: 8px;
 
   .product-photo {
@@ -68,12 +68,14 @@ const StyledChatListItem = styled.div`
     font-size: 16px;
     margin: 0;
     font-weight: bold;
-    color: var(--text-100);
+    color: ${(props) =>
+      props.isSelected ? "var(--bg-100)" : "var(--text-100)"};
   }
 
   .counterpart-name {
     font-size: 13px;
-    color: var(--text-200);
+    color: ${(props) =>
+      props.isSelected ? "var(--bg-100)" : "var(--text-200)"};
   }
 
   .unread-messages {

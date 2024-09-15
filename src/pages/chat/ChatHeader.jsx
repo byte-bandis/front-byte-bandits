@@ -17,6 +17,10 @@ const ChatHeader = ({ product, user }) => {
     if (!user?.username) return;
     const fetchUser = async () => {
       try {
+        if (user.username.toString() === "deleted_" + user._id.toString()) {
+          setUserPhoto(null);
+          return;
+        }
         const response = await client.get(`/user/${user.username}`);
         setUserPhoto(response.data.userPhoto);
       } catch (error) {
@@ -25,10 +29,12 @@ const ChatHeader = ({ product, user }) => {
     };
 
     fetchUser();
-  }, [user.username, loggedUserId]);
+  }, [user.username, loggedUserId, user._id]);
 
   const handleProductClick = () => {
-    navigate(`/product/${product._id}`);
+    if (product.available) {
+      navigate(`/product/${product._id}`);
+    }
   };
 
   const handleUserClick = () => {
@@ -41,9 +47,13 @@ const ChatHeader = ({ product, user }) => {
         src={product.photo ? product.photo : noImage}
         alt={product.adTitle}
         crossOrigin="http://localhost:4000/"
-        onClick={handleProductClick}
+        available={product.available}
+        onClick={product.available ? handleProductClick : null}
       />
-      <ProductTitleContainer onClick={handleProductClick}>
+      <ProductTitleContainer
+        available={product.available}
+        onClick={product.available ? handleProductClick : null}
+      >
         <ProductTitle>{product.adTitle}</ProductTitle>
       </ProductTitleContainer>
       {userPhoto && (
@@ -51,7 +61,14 @@ const ChatHeader = ({ product, user }) => {
           src={userPhoto}
           alt={user.username}
           crossOrigin="http://localhost:4000/"
-          onClick={handleUserClick}
+          available={
+            user.username.toString() !== "deleted_" + user._id.toString()
+          }
+          onClick={
+            user.username.toString() !== "deleted_" + user._id.toString()
+              ? handleUserClick
+              : null
+          }
         />
       )}
     </HeaderContainer>
@@ -63,9 +80,12 @@ ChatHeader.propTypes = {
     _id: PropTypes.string.isRequired,
     photo: PropTypes.string.isRequired,
     adTitle: PropTypes.string.isRequired,
+    available: PropTypes.bool.isRequired,
   }).isRequired,
   user: PropTypes.shape({
+    _id: PropTypes.string.isRequired,
     username: PropTypes.string.isRequired,
+    available: PropTypes.bool.isRequired,
   }).isRequired,
 };
 
@@ -84,40 +104,54 @@ const ProductImage = styled.img`
   width: 50px;
   height: 50px;
   border-radius: 8px;
-  cursor: pointer;
+  cursor: ${(props) => (props.available ? "pointer" : "default")};
   margin-right: 15px;
   margin-left: 10px;
+  opacity: ${(props) => (props.available ? 1 : 0.5)};
 
-  &:hover {
-    opacity: 0.8;
-  }
+  ${(props) =>
+    props.available &&
+    `
+    &:hover {
+      opacity: 0.8;
+    }
+  `}
 `;
 
 const ProductTitleContainer = styled.div`
-  cursor: pointer;
+  cursor: ${(props) => (props.available ? "pointer" : "default")};
+
+  ${(props) =>
+    props.available &&
+    `
+    &:hover ${ProductTitle} {
+      font-weight: bold;
+    }
+  `}
 `;
 
 const ProductTitle = styled.h2`
   margin: 0;
   padding: 0;
   font-size: 1.1rem;
-
-  &:hover {
-    font-weight: bold;
-  }
 `;
 
 const UserAvatar = styled.img`
   width: 40px;
   height: 40px;
   border-radius: 50%;
-  cursor: pointer;
+  cursor: ${(props) => (props.available ? "pointer" : "default")};
   margin-left: auto;
   margin-right: 10px;
+  opacity: ${(props) => (props.available ? 1 : 0.5)};
 
-  &:hover {
-    opacity: 0.8;
-  }
+  ${(props) =>
+    props.available &&
+    `
+    &:hover {
+      opacity: 0.8;
+    }
+  `}
 `;
 
 export default ChatHeader;

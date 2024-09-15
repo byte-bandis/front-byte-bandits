@@ -9,7 +9,7 @@ import { resetMessage } from "../../store/uiSlice";
 import { Check2All, Send } from "react-bootstrap-icons";
 import { useTranslation } from "react-i18next";
 
-const Chat = ({ productId, buyerId }) => {
+const Chat = ({ productId, buyerId, user }) => {
   const [chatId, setChatId] = useState(null);
   const [message, setMessage] = useState("");
   const [messages, setMessages] = useState([]);
@@ -116,6 +116,12 @@ const Chat = ({ productId, buyerId }) => {
     }
   };
 
+  useEffect(() => {
+    setChatId(null);
+    setMessages([]);
+    setMessage("");
+  }, [productId, buyerId]);
+
   return (
     <ChatContainer>
       <MessageContainer ref={messageContainerRef}>
@@ -128,7 +134,9 @@ const Chat = ({ productId, buyerId }) => {
               <span>{msg.content}</span>
             </MessageContent>
             <MessageInfo>
-              <Timestamp>
+              <Timestamp
+                className={msg.user._id === loggedUserId ? "sent" : "received"}
+              >
                 {new Date(msg.timestamp)
                   .toLocaleString("es-ES", {
                     day: "2-digit",
@@ -154,7 +162,12 @@ const Chat = ({ productId, buyerId }) => {
           type="text"
           value={message}
           onChange={(e) => setMessage(e.target.value)}
-          placeholder={t("chat_write_message") + "…"}
+          placeholder={
+            user.username !== "deleted_" + user._id
+              ? t("chat_write_message") + "…"
+              : t("chat_participant_does_not_exist_anymore")
+          }
+          disabled={user.username === "deleted_" + user._id}
         />
         <Button type="submit" className={message === "" ? "empty" : "filled"}>
           <Send />
@@ -176,7 +189,7 @@ const ChatContainer = styled.div`
   background-color: var(--bg-200);
   border: 1px solid #ccc;
   border-radius: 0px 0px 8px 8px;
-  height: 100%;
+  height: 85%;
   width: 100%;
 `;
 
@@ -213,18 +226,19 @@ const Message = styled.div`
 
   &.sent {
     margin-left: auto;
-    background-color: var(--bg-200);
+    background-color: var(--accent-100);
+    color: var(--text-100);
   }
 
   &.received {
     margin-right: auto;
-    background-color: var(--bg-300);
+    background-color: var(--primary-100);
+    color: var(--bg-100);
   }
 `;
 
 const MessageContent = styled.div`
   margin-bottom: 4px;
-  color: var(--text-100);
   font-weight: bold;
   font-size: 14px;
 `;
@@ -238,7 +252,14 @@ const MessageInfo = styled.div`
 
 const Timestamp = styled.span`
   font-size: 9.5px;
-  color: var(--text-200);
+
+  &.sent {
+    color: var(--text-200);
+  }
+
+  &.received {
+    color: var(--bg-100);
+  }
 `;
 
 const Tick = styled.span`

@@ -12,17 +12,6 @@ export const getPublicProfiles = async () => {
   });
 };
 
-export const getMyAccount = async (userName) => {
-  const url = `${userURL}/${userName}/myaccount`;
-  return client.get(url).then(({ myAccount }) => {
-    const data = {
-      myAccount,
-      message: "My account loaded!",
-    };
-    return data;
-  });
-};
-
 export const getSinglePublicProfile = async (userName) => {
   const url = `${userURL}/${userName}`;
   return client.get(url).then(({ state, data, message }) => {
@@ -70,10 +59,6 @@ export const updateSinglePublicProfile = async (userName, formData) => {
       };
       return response;
     });
-};
-export const deleteSinglePublicProfile = async (userName) => {
-  const url = `${userURL}/${userName}`;
-  return client.delete(url).then((message) => message);
 };
 
 export const deleteUser = async (username) => {

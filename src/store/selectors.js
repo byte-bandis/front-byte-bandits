@@ -29,7 +29,6 @@ export const getLoggedUserId = (state) => state.authState.user.userId;
 export const getLoggedUserUpdateTime = (state) =>
   state.authState.user.updatedAt;
 export const getPublicProfiles = (state) => state.publicProfiles.data;
-export const getMyAccount = (state) => state.myAccount.data;
 export const getMyAddress = (state) => state.myAddress.data;
 export const getMyPayment = (state) => state.myPayment.data;
 export const getMyData = (state) => state.myData.data;

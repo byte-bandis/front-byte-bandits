@@ -186,6 +186,9 @@
   "seller": "Seller",
   "buyer": "Buyer",
   "you_dont_have_any_chat_yet": "You don't have any chat yet.",
-  "choose_a_chat_to_start" : "Choose a chat to start.",
-  "chat_participant_does_not_exist_anymore" : "Chat participant does not exist anymore"
+  "choose_a_chat_to_start": "Choose a chat to start.",
+  "chat_participant_does_not_exist_anymore": "Chat participant does not exist anymore",
+  "confirm_current_password": "Confirm your password",
+  "info_confirm_pass_before_deleting_account": "In order to delete your account, you need to confirm your password first.",
+  "confirm": "Confirm"
 }

@@ -7,8 +7,10 @@ export const getTransactions = createAsyncThunk(
   "transactions/getTransactions",
   async ({ rejectWithValue }) => {
     try {
+      console.log("entra en transactionsThunk");
       const response = await client.get(`${transactionsURL}/getTransactions/`);
 
+      console.log("Respuesta recibida", response);
       if (response.data) {
         console.log(response.data);
         console.log(response.message);

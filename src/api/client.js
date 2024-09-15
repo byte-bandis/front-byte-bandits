@@ -15,7 +15,7 @@ client.interceptors.request.use(
   },
   (error) => {
     return Promise.reject(error);
-  }
+  },
 );
 
 client.interceptors.response.use(
@@ -32,7 +32,7 @@ client.interceptors.response.use(
     }
     // Request error
     return Promise.reject({ message: error.message });
-  }
+  },
 );
 
 export const setAuthorizationHeader = (token) => {

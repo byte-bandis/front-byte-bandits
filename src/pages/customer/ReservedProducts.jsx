@@ -4,7 +4,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { useEffect } from "react";
 import { getTransactions } from "../../store/transactionsThunk";
 import ProductItem from "../product/ProductItem";
-import { RegularButton } from "../../components/shared/buttons";
+import { RegularButton as BaseRegularButton } from "../../components/shared/buttons";
 import React from "react";
 import { client } from "../../api/client";
 import CustomAlert from "../../components/shared/Alert";
@@ -25,8 +25,6 @@ const ReservedProducts = () => {
       dispatch(getTransactions(userid));
     }
   }, [dispatch, userid]);
-
-  console.log(dispatch(getTransactions(userid)));
 
   const handleTransaction = async (orderId, action) => {
     try {
@@ -50,8 +48,27 @@ const ReservedProducts = () => {
   };
 
   const customStyles = {
-    $customPosition: "absolute",
-    $customTop: "-250px",
+    $customPosition: "fixed",
+    $customTop: "250px",
+    $customZIndex: "15",
+  };
+
+  const handleButtonClick = (transactionId, action) => {
+    handleTransaction(transactionId, action);
+    const timer = setTimeout(() => {
+      setShowAlert(false);
+    }, 4000);
+    return () => clearTimeout(timer);
+  };
+
+  const commonButtonProps = {
+    className: "buttonsOrder",
+    $customColor: "var(--bg-100)",
+    $customBorder: "1px solid var(--success-border)",
+    $customVerticalPadding: "1rem 2rem",
+    $customPosition: "relative",
+    $customZIndex: "10",
+    $customTop: "-450px",
   };
 
   return (
@@ -61,55 +78,48 @@ const ReservedProducts = () => {
         <OrdersContainer>
           {showAlert && (
             <CustomAlert
-              variant={response.status === "success" ? "success" : "error"}
+              variant={response.state === "success" ? "success" : "error"}
               onClose={() => setShowAlert(false)}
               customStyles={customStyles}
-            ></CustomAlert>
+            >
+              {response.message}
+            </CustomAlert>
           )}
           {ordersReceived.length > 0 ? (
-            ordersReceived.map((transaction) => (
-              <React.Fragment key={transaction._id}>
-                <ProductItem
-                  ad={transaction.ad}
-                  $customTransform="scale(0.7)"
-                  $customMargin="-15px"
-                />
+            ordersReceived.map((transaction, index) => (
+              <React.Fragment key={index}>
+                <TransactionIdContainer>{index + 1}</TransactionIdContainer>
+                <TransactionIdContainer2>
+                  {transaction._id}
+                </TransactionIdContainer2>
+                <ProductItem ad={transaction.ad} />
 
-                <RegularButton
-                  username={userid}
-                  formData={{ orderId: transaction._id }}
-                  onClick={() => handleTransaction(transaction._id, "accept")}
-                  key={`accept${transaction._id}`}
-                  className="buttonsOrder"
-                  $customBackground="var(--primary-300)"
-                  $customColor="var( --bg-100)"
-                  $customBorder="1px solid var(--success-border)"
-                  $customVerticalPadding="0.5rem 2.5rem"
-                  $customPosition="relative"
-                  $customTop="-450px"
-                  $customRight="-180px"
-                  $customZIndex="10"
-                >
-                  Accept
-                </RegularButton>
+                <ButtonsContainer>
+                  <RegularButton
+                    username={userid}
+                    formData={{ orderId: transaction._id }}
+                    onClick={() => handleButtonClick(transaction._id, "accept")}
+                    key={`accept${transaction._id}`}
+                    $customBackground="var(--primary-300)"
+                    $customRight="0px"
+                    $customTop="-450px"
+                    {...commonButtonProps}
+                  >
+                    Accept
+                  </RegularButton>
 
-                <RegularButton
-                  username={userid}
-                  formData={{ orderId: transaction._id }}
-                  onClick={() => handleTransaction(transaction._id, "rejecet")}
-                  key={`reject${transaction._id}`}
-                  className="buttonsOrder"
-                  $customBackground="var(--accent-200)"
-                  $customColor="var( --bg-100)"
-                  $customBorder="1px solid var(--success-border)"
-                  $customVerticalPadding="0.5rem 2.9rem"
-                  $customPosition="relative"
-                  $customTop="-450px"
-                  $customRight="-350px"
-                  $customZIndex="10"
-                >
-                  Reject
-                </RegularButton>
+                  <RegularButton
+                    username={userid}
+                    formData={{ orderId: transaction._id }}
+                    onClick={() => handleButtonClick(transaction._id, "accept")}
+                    key={`reject${transaction._id}`}
+                    $customBackground="var(--accent-200)"
+                    $customRight="-20px"
+                    {...commonButtonProps}
+                  >
+                    Reject
+                  </RegularButton>
+                </ButtonsContainer>
               </React.Fragment>
             ))
           ) : (
@@ -127,11 +137,57 @@ const StyledH1 = styled.h1`
   font-size: 3em;
   text-align: center;
   margin-bottom: 20px;
+
+  @media (max-width: 768px) {
+    font-size: 2rem;
+  }
 `;
 
 const OrdersContainer = styled.div`
   display: flex;
-  flex-direction: row;
+  flex-direction: column;
   flex-wrap: wrap;
-  margin: auto 70px;
+  margin: auto;
+  justify-content: center;
+  align-items: center;
+  width: 40%;
+
+  @media (max-width: 768px) {
+   width: 85%;
+   margin: -2px;
+   font-size: 1.5rem;
+    }
+}
 `;
+
+const TransactionIdContainer = styled.div`
+  font-size: 4rem;
+  z-index: 10;
+
+  @media (max-width: 768px) {
+    font-size: 2rem;
+  }
+`;
+
+const TransactionIdContainer2 = styled.div`
+  font-size: 1.5rem;
+  @media (max-width: 768px) {
+    font-size: 1.1rem;
+  }
+`;
+
+const RegularButton = styled(BaseRegularButton)`
+  right: ${(props) => props.$customRight};
+  top: ${(props) => props.$customTop};
+  background: ${(props) => props.$customBackground};
+
+  @media (max-width: 768px) {
+    position: relative;
+    right: 5px;
+    top: -255px;
+    padding: 0.5rem 0.5rem;
+    margin: 25px;
+  }
+`;
+
+const ButtonsContainer = styled.div``;

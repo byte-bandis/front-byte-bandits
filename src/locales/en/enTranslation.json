@@ -110,7 +110,7 @@
   "description_will_be_deleted": "Description will be deleted",
   "delete_description": "Delete description",
   "not_found": "Could not find the requested resource",
-  "profile_owner": "{{username}}'s public profile",
+  "profile_owner": "Hi, I'm {{username}}",
   "send": "Send",
   "footer": {
     "rightsReserved": "All rights reserved.",

@@ -1,3 +1,4 @@
+import P from "prop-types";
 import { useDispatch, useSelector } from "react-redux";
 import {
   getLoggedUserId,
@@ -22,8 +23,9 @@ import CustomAlert from "../../../../components/shared/Alert";
 import { emptyMyPassword } from "../../../../store/MyPersonalData/passwordSlice";
 import { useNavigate } from "react-router-dom";
 import { matchMyPassword } from "../passwordService";
+import CustomPulseLoader from "../../../../components/shared/spinners/CustomPulseLoader";
 
-const PasswordUpdater = () => {
+const ConfirmPasswordStep = ({ onPasswordConfirmed }) => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -34,6 +36,7 @@ const PasswordUpdater = () => {
   const [showSuccess, setShowSuccess] = useState(false);
   const [showError, setShowError] = useState(false);
   const goBack = -1;
+  const [isLoading, setIsLoading] = useState(false);
   const [formData, setFormData] = useState({
     currentPassword: "",
   });
@@ -90,10 +93,17 @@ const PasswordUpdater = () => {
     setIsSuccess(null);
     setIsError(null);
     try {
+      setIsLoading(true);
       const confirmedPassword = await matchMyPassword(loggedUsername, formData);
       setIsSuccess(confirmedPassword.message);
+      const timer = setTimeout(() => {
+        onPasswordConfirmed();
+      }, 3000);
+      return () => clearTimeout(timer);
     } catch (error) {
       setIsError(error.message);
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -112,25 +122,34 @@ const PasswordUpdater = () => {
             <h3>{t("confirm_current_password")}</h3>
           </StyledListItem>
 
-          <StyledContainer {...containerStyles}>
-            {showSuccess && (
-              <CustomAlert variant="success">{isSuccess}</CustomAlert>
-            )}
-            {showError && <CustomAlert variant="error">{isError}</CustomAlert>}
+          {isLoading ? (
+            <CustomPulseLoader
+              loading={isLoading.toString()}
+              $customHeight="200px"
+            />
+          ) : (
+            <StyledContainer {...containerStyles}>
+              {showSuccess && (
+                <CustomAlert variant="success">{isSuccess}</CustomAlert>
+              )}
+              {showError && (
+                <CustomAlert variant="error">{isError}</CustomAlert>
+              )}
 
-            <p>{t("info_confirm_pass_before_deleting_account")}</p>
-            <StyledListItem {...listItemStyles}>
-              <label>{t("current_password_label")}</label>
-              <input
-                type="password"
-                name="currentPassword"
-                value={formData.currentPassword}
-                onChange={handleInputChange}
-                placeholder={t("current_password_placeholder")}
-                required
-              />
-            </StyledListItem>
-          </StyledContainer>
+              <p>{t("info_confirm_pass_before_deleting_account")}</p>
+              <StyledListItem {...listItemStyles}>
+                <label>{t("current_password_label")}</label>
+                <input
+                  type="password"
+                  name="currentPassword"
+                  value={formData.currentPassword}
+                  onChange={handleInputChange}
+                  placeholder={t("current_password_placeholder")}
+                  required
+                />
+              </StyledListItem>
+            </StyledContainer>
+          )}
 
           <ButtonContainer $justifyContent="flex-start">
             <RegularButton
@@ -160,4 +179,8 @@ const PasswordUpdater = () => {
   );
 };
 
-export default PasswordUpdater;
+ConfirmPasswordStep.propTypes = {
+  onPasswordConfirmed: P.func.isRequired,
+};
+
+export default ConfirmPasswordStep;

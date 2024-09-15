@@ -4,7 +4,6 @@ import LoginPage from "../pages/auth/LoginPage";
 import RegisterPage from "../pages/register/RegisterPage";
 import ProductList from "../pages/product/ProductList";
 import ProductView from "../pages/product/ProductView";
-import DeleteMyAccount from "../pages/customer/DeleteMyAccount";
 import LayoutAccount from "../pages/customer/LayoutAccount";
 import Wishlist from "../pages/customer/Wishlist";
 import NewProductPage from "../pages/product/NewProductPage";
@@ -21,7 +20,7 @@ import Safety from "../pages/customer/Safety";
 import SetRestorePasswordEmail from "../pages/auth/GetPasswordEmail";
 import RestorePassword from "../pages/auth/RestorePassword";
 import ReservedProducts from "../pages/customer/ReservedProducts";
-import ConfirmPasswordStep from "../pages/customer/myPersonalInfo/components/ConfirnPasswordStep";
+import AccountDeletion from "../pages/customer/myPersonalInfo/components/AccountDeletion";
 
 const RootRouter = () => {
   return (
@@ -91,7 +90,7 @@ const RootRouter = () => {
         />
         <Route
           path="delete-account"
-          element={<ConfirmPasswordStep />}
+          element={<AccountDeletion />}
         />
         <Route
           path="chat"

@@ -1,7 +1,5 @@
 import { useState } from "react";
 import Confirmator from "../../components/shared/Confirmator.jsx";
-import StyledContainer from "../../components/shared/StyledContainer.jsx";
-import StyledMyAccount from "../../components/shared/StyledMyAccount.jsx";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { deleteUserWithThunk } from "../../store/userThunk.js";
@@ -58,35 +56,33 @@ const Safety = () => {
   };
 
   return (
-    <StyledMyAccount>
-      <StyledContainer $customMargin="20% 0 0 0">
-        {showDeletionResult && (
-          <CustomAlert
-            variant={deletionMessageType === "success" ? "success" : "error"}
-          >
-            {deletionMessage}
-          </CustomAlert>
-        )}
-        {isLoading ? (
-          <CustomPulseLoader
-            loading={isLoading.toString()}
-            $customHeight="200px"
-          />
-        ) : (
-          <Confirmator
-            hidden={showConfirmator}
-            textValue={t("delete_your_account")}
-            onConfirm={fireDeletion}
-            sethiden={handleHideConfirmator}
-            $customBackground="var(--bg-100)"
-            $customBorder="2px solid var(--error-2)"
-            $blurerPosition="fixed"
-            $blurerBackgroundColor="var(--primary-200)"
-            goBack
-          />
-        )}
-      </StyledContainer>
-    </StyledMyAccount>
+    <>
+      {showDeletionResult && (
+        <CustomAlert
+          variant={deletionMessageType === "success" ? "success" : "error"}
+        >
+          {deletionMessage}
+        </CustomAlert>
+      )}
+      {isLoading ? (
+        <CustomPulseLoader
+          loading={isLoading.toString()}
+          $customHeight="200px"
+        />
+      ) : (
+        <Confirmator
+          hidden={showConfirmator}
+          textValue={t("delete_your_account")}
+          onConfirm={fireDeletion}
+          sethiden={handleHideConfirmator}
+          $customBackground="var(--bg-100)"
+          $customBorder="2px solid var(--error-2)"
+          $blurerPosition="fixed"
+          $blurerBackgroundColor="var(--primary-200)"
+          goBack
+        />
+      )}
+    </>
   );
 };
 

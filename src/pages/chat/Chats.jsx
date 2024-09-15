@@ -170,6 +170,7 @@ const Chats = () => {
           photo: loadedAd.photo,
           adTitle: loadedAd.adTitle,
           user: { _id: loadedAd.user._id },
+          available: loadedAd.available,
         },
         buyer: { _id: buyerId },
         messages: [],

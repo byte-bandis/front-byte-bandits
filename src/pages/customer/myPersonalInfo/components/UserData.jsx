@@ -5,7 +5,6 @@ import {
   getMyData,
 } from "../../../../store/selectors";
 import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
 import moment from "moment";
 import { PersonCircle } from "react-bootstrap-icons";
 import { useTranslation } from "react-i18next";
@@ -33,11 +32,9 @@ import { resetUI, setMessage } from "../../../../store/uiSlice";
 import IconWrapper from "../../../../components/shared/iconsComponents/IconWrapper";
 import { trimDate } from "../../../../utils/dateTools";
 import CustomPulseLoader from "../../../../components/shared/spinners/CustomPulseLoader";
-import { updateUserName } from "../../../../store/authSlice";
 
 const MyData = () => {
   const dispatch = useDispatch();
-  const navigate = useNavigate();
   const { t } = useTranslation();
   const loggedUsername = useSelector(getLoggedUserName);
   const myData = useSelector(getMyData);
@@ -150,7 +147,7 @@ const MyData = () => {
       <StyledListContainer $customWidth="80%">
         {isLoading && (
           <CustomPulseLoader
-            loading={isLoading}
+            loading={isLoading.toString()}
             $customHeight="200px"
           />
         )}

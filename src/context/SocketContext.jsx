@@ -11,6 +11,8 @@ export const SocketProvider = ({ authToken, children }) => {
   const [socket, setSocket] = useState(null);
 
   useEffect(() => {
+    if (!authToken || authToken === "null") return;
+
     const newSocket = io(
       import.meta.env.VITE_API_BASE_URL.replace("api/", ""),
       {

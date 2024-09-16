@@ -15,7 +15,7 @@ import { useLocation, useParams } from "react-router-dom";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
 
-const ProductList = ({ $customMargin, $customTop }) => {
+const ProductList = ({ showSoldProducts, $customMargin, $customTop }) => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const page = useSelector((state) => state.adsState.page);
@@ -44,6 +44,9 @@ const ProductList = ({ $customMargin, $customTop }) => {
   const location = useLocation();
   const pathParts = location.pathname.split("/");
   const sectionURL = pathParts[2];
+  const sellerToDispaly = showSoldProducts
+    ? adsListToShow
+    : adsListSellerSoldProducts.map((item) => item.ad);
 
   console.log("adsData", adsData);
   console.log("toshow", adsListToShow);
@@ -169,9 +172,9 @@ const ProductList = ({ $customMargin, $customTop }) => {
 
         {/* Sales*/}
         {sectionURL === "soldProducts" &&
-        adsListToShow &&
-        adsListSeller.length > 0 ? (
-          adsListSeller.map((ad) => (
+        sellerToDispaly &&
+        sellerToDispaly.length > 0 ? (
+          sellerToDispaly.map((ad) => (
             <ProductItem
               ad={ad}
               key={ad._id}
@@ -204,6 +207,7 @@ ProductList.propTypes = {
   }),
   $customMargin: propTypes.string,
   $customTop: propTypes.string,
+  showSoldProducts: propTypes.bool,
 };
 
 export default ProductList;

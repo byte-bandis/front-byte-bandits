@@ -57,8 +57,6 @@ const DeleteCollection = ({
   const [confirmProcess, setConfirmProcess] = useState(false);
   const [deletionConfirmed, setDeletionConfirmed] = useState(false);
   const [wrapUpTrigger, setWrapUpTrigger] = useState(false);
-  console.log("Esto es wrapUpAction: ", wrapUpAction);
-  console.log("Esto es wrapUpTrigger: ", wrapUpTrigger);
 
   useEffect(() => {
     if (deletionConfirmed) {

@@ -5,7 +5,7 @@ import { useDispatch } from "react-redux";
 import { getTransactionsSeller } from "../../store/transactionsThunk";
 import { useSelector } from "react-redux";
 import { useEffect } from "react";
-import ProductItem from "../product/ProductItem";
+import ProductItem from "../product/components/ProductItem";
 
 const SoldProducts = () => {
   const dispatch = useDispatch();

@@ -9,7 +9,6 @@ import styled from "styled-components";
 import { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { getTransactions } from "../../store/transactionsThunk";
-import { clearOrdersReceived } from "../../store/transactionsSlice";
 
 const StyledMyAccount = ({ children }) => {
   const { t } = useTranslation();
@@ -65,7 +64,7 @@ const StyledMyAccount = ({ children }) => {
       },
       {
         text: t("sales"),
-        to: `/product/?tags=lifestyle&sell=true`,
+        to: `/${loggedUserName}/soldProducts`,
       },
       {
         text: t("purchases"),

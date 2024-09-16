@@ -26,7 +26,6 @@ const CommentForm = ({ productId, editMode, toEditComment }) => {
             setScore(0);
             setCommentText('');
         } else {
-            console.log(toEditComment._id);
             dispatch(updateComment({ commentId: toEditComment._id, adFormData: {...toEditComment, score, commentText } }));
             setScore(0);
             setCommentText('');

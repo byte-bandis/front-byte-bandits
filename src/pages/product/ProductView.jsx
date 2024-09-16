@@ -94,7 +94,6 @@ const ProductView = () => {
   if (loadedAds) {
     const { adTitle, adBody, sell, price, photo, tags } = loadedAds;
     const image = photo ? photo : noImage;
-    console.log(image);
     return (
       <>
         {

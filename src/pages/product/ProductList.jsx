@@ -12,6 +12,7 @@ import { StyledAdList } from "../../components/shared/lists";
 
 import { useTranslation } from "react-i18next";
 import getTotalAds from "../../store/adscounThunk";
+import { useParams } from "react-router-dom";
 
 const ProductList = ({ $customMargin, $customTop, $userId,  $limit = '10' }) => {
   const { t } = useTranslation();
@@ -23,6 +24,7 @@ const ProductList = ({ $customMargin, $customTop, $userId,  $limit = '10' }) => 
   const adsData = useSelector((state) => state.adsState.data);
   const urlParams = new URLSearchParams(window.location.search);
   const limit = urlParams.get("limit");
+  const { username } = useParams();
 
   const adsAccount = useSelector((state) => state.adsState.totalAds);
   useEffect(() => {
@@ -83,7 +85,7 @@ const ProductList = ({ $customMargin, $customTop, $userId,  $limit = '10' }) => 
             />
           ))
         ) : (
-          <p className="no-ad">{t("user_has_no_ads")}</p>
+          <p className="no-ad">{t("user_has_no_ads", { username })}</p>
         )}
         {error && (
           <ErrorMessage

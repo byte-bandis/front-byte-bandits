@@ -1,10 +1,10 @@
 import styled from "styled-components";
 import P from "prop-types";
 
-const StyledContainer = ({ children, isHidden, ...props }) => {
+const StyledContainer = ({ children, hidden = false, ...props }) => {
   return (
     <StyleContainer
-      isHidden={isHidden}
+      hidden={hidden}
       {...props}
     >
       {children}
@@ -14,7 +14,7 @@ const StyledContainer = ({ children, isHidden, ...props }) => {
 
 const StyleContainer = styled.div`
   display: ${(props) =>
-    props.isHidden ? "none" : props.$customDisplay || "block"};
+    props.hidden ? "none" : props.$customDisplay || "block"};
   position: ${(props) => props.$customPosition || "relative"};
   background: ${(props) => props.$customBackground || "transparent"};
   border: ${(props) => props.$customBorder || "none"};
@@ -36,7 +36,7 @@ const StyleContainer = styled.div`
 export default StyledContainer;
 
 StyledContainer.propTypes = {
-  isHidden: P.bool,
+  hidden: P.bool,
   children: P.node,
   className: P.string,
 };

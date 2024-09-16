@@ -48,7 +48,7 @@
   "your_public_profile": "Your public profile",
   "welcome_you_zone": "{{username}}, this is your user zone",
   "profile_zone_intro": "Here you can see and change your public profile and your private data.",
-  "title_personal_details": "This are your personal details",
+  "title_personal_details": "These are your personal details",
   "back": "Back",
   "edit_your_profile": "Edit your profile",
   "my_profile": "My profile",
@@ -99,7 +99,7 @@
   "back_to_saved_password": "Back to saved password",
   "safety": "Safety",
   "safety_intro": "Here you can change your nick name, your email, your password and delete your account.",
-  "safety_disclaimer": "Your session wil be closed after doing this",
+  "safety_disclaimer": "Your session will be closed after doing this",
 
   "are_you_sure_you_want_to": "Are you sure you want to ",
   "yes": "Yes",

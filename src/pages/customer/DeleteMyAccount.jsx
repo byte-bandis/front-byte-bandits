@@ -64,24 +64,17 @@ const Deletion = () => {
           {deletionMessage}
         </CustomAlert>
       )}
-      {isLoading ? (
-        <CustomPulseLoader
-          loading={isLoading.toString()}
-          $customHeight="200px"
-        />
-      ) : (
-        <Confirmator
-          hidden={showConfirmator}
-          textValue={t("delete_your_account")}
-          onConfirm={fireDeletion}
-          sethiden={handleHideConfirmator}
-          $customBackground="var(--bg-100)"
-          $customBorder="2px solid var(--error-2)"
-          $blurerPosition="fixed"
-          $blurerBackgroundColor="var(--primary-200)"
-          goBack
-        />
-      )}
+      <Confirmator
+        hidden={showConfirmator}
+        textValue={t("delete_your_account")}
+        onConfirm={fireDeletion}
+        sethiden={handleHideConfirmator}
+        $customBackground="var(--bg-100)"
+        $customBorder="2px solid var(--error-2)"
+        $blurerPosition="fixed"
+        $blurerBackgroundColor="var(--primary-200)"
+        goBack
+      />
     </>
   );
 };

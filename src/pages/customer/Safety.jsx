@@ -1,7 +1,7 @@
 import RegularButton from "../../components/shared/buttons/RegularButton";
 import StyledContainer from "../../components/shared/StyledContainer";
 import StyledMyAccount from "../../components/shared/StyledMyAccount";
-import UsernameEmail from "./myPersonalInfo/components/UsernameEmail";
+import UsernameEmailFace from "./myPersonalInfo/components/UsernameEmailFace.jsx";
 import PasswordUpdater from "./myPersonalInfo/components/PasswordUpdater.jsx";
 import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
@@ -26,7 +26,7 @@ const Safety = () => {
         >
           {t("safety_disclaimer")}
         </StyledContainer>
-        <UsernameEmail />
+        <UsernameEmailFace />
         <PasswordUpdater />
       </StyledContainer>
       <StyledContainer

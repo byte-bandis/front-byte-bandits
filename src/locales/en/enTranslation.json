@@ -48,7 +48,7 @@
   "your_public_profile": "Your public profile",
   "welcome_you_zone": "{{username}}, this is your user zone",
   "profile_zone_intro": "Here you can see and change your public profile and your private data.",
-  "title_personal_details": "This are your personal details",
+  "title_personal_details": "These are your personal details",
   "back": "Back",
   "edit_your_profile": "Edit your profile",
   "my_profile": "My profile",
@@ -99,7 +99,7 @@
   "back_to_saved_password": "Back to saved password",
   "safety": "Safety",
   "safety_intro": "Here you can change your nick name, your email, your password and delete your account.",
-  "safety_disclaimer": "Your session wil be closed after doing this",
+  "safety_disclaimer": "Your session will be closed after doing this",
 
   "are_you_sure_you_want_to": "Are you sure you want to ",
   "yes": "Yes",
@@ -191,6 +191,6 @@
   "choose_a_chat_to_start": "Choose a chat to start.",
   "chat_participant_does_not_exist_anymore": "Chat participant does not exist anymore",
   "confirm_current_password": "Confirm your password",
-  "info_confirm_pass_before_deleting_account": "In order to delete your account, you need to confirm your password first.",
+  "info_confirm_pass_before_modifyng_account": "In order to run this action, you need to confirm your password first.",
   "confirm": "Confirm"
 }

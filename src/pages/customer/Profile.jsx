@@ -80,7 +80,7 @@ const Profile = ({ className }) => {
       )}
       <StyledContainer
         $customColor="var(--primary-300)"
-        isHidden={currentUrl.includes(`${username}/info`) ? true : false}
+        hidden={currentUrl.includes(`${username}/info`) ? true : false}
       >
         <h2>{t("profile_owner", { username })}</h2>
       </StyledContainer>

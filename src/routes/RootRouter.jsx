@@ -21,6 +21,7 @@ import SetRestorePasswordEmail from "../pages/auth/GetPasswordEmail";
 import RestorePassword from "../pages/auth/RestorePassword";
 import ReservedProducts from "../pages/customer/ReservedProducts";
 import AccountDeletion from "../pages/customer/myPersonalInfo/components/AccountDeletion";
+import UserNameEmailUpdate from "../pages/customer/myPersonalInfo/components/UserNameEmailUpdate";
 
 const RootRouter = () => {
   return (
@@ -91,6 +92,10 @@ const RootRouter = () => {
         <Route
           path="delete-account"
           element={<AccountDeletion />}
+        />
+        <Route
+          path="update-name-and-email"
+          element={<UserNameEmailUpdate />}
         />
         <Route
           path="chat"

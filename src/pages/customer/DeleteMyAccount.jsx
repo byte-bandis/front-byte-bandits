@@ -17,7 +17,7 @@ import { resetLoggedUserInfo, setAuth } from "../../store/authSlice.js";
 import { resetSinglePublicProfile } from "../../store/singlePublicProfileSlice.js";
 import CustomPulseLoader from "../../components/shared/spinners/CustomPulseLoader.jsx";
 
-const Safety = () => {
+const Deletion = () => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const loggedUserName = useSelector(getLoggedUserName);
@@ -86,4 +86,4 @@ const Safety = () => {
   );
 };
 
-export default Safety;
+export default Deletion;

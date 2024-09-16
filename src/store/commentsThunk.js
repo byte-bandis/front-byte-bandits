@@ -41,8 +41,6 @@ const updateComment = createAsyncThunk(
   "comments/updateComments",
   async (params, { rejectWithValue }) => {
     const { commentId, adFormData } = params;
-    console.log(params)
-    console.log(adFormData)
     try {
       const response = await client.put(`${commentsURL}/${commentId}`, adFormData);
       return response.data;

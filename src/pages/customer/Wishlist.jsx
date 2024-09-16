@@ -3,7 +3,6 @@ import ProductItem from "../product/ProductItem";
 import { getWishlist } from "../../store/likesThunk";
 import Pager from "../pagination/Pager";
 import styled from "styled-components";
-import P from "prop-types";
 import { useSelector, useDispatch } from "react-redux";
 import { useEffect } from "react";
 import { getTotalLikes } from "../../store/likesThunk";
@@ -17,7 +16,6 @@ const Wishlist = () => {
  const adsAccount = useSelector((state) => state.likesSlice.totalLikes);
   useEffect(() => {
     if (userName) {
-      console.log('wishlist');
       dispatch(getWishlist({ page, limit }));
     }
   }, [dispatch, userName, page, limit]);
@@ -36,8 +34,17 @@ const Wishlist = () => {
               .map((like) => like.ad)
               .map((ad) => (
                 <ProductItem
-                  key={ad._id}
-                  ad={ad}
+                ad={ad}
+                key={ad._id}
+                adTitle={ad.adTitle}
+                adBody={ad.adBody}
+                sell={ad.sell}
+                price={ad.price}
+                photo={ad.photo}
+                user={ad.user}
+                createdAt={ad.createdAt}
+                updatedAt={ad.updatedAt}
+                tags={ad.tags || []}
                   $customTransform="scale(0.7)"
                   $customMargin="-15px"
                 />
@@ -52,9 +59,7 @@ const Wishlist = () => {
   );
 };
 
-Wishlist.propTypes = {
-  filters: P.shape({}),
-};
+
 
 export default Wishlist;
 

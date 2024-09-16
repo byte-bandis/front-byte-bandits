@@ -30,7 +30,6 @@ const commentsSlice = createSlice({
         state.data = [newComment, ...state.data];
       })
       .addCase(deleteComment.fulfilled, (state, action) => {
-        console.log(action.payload)
         state.data = state.data.filter(comment => comment._id !== action.payload);
       })
       

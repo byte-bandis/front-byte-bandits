@@ -17,7 +17,6 @@ const Pager = (ads) => {
   const location = useLocation();
   const { username } = useParams();
   const{adsAccount} =  ads;
-  console.log(adsAccount)
   
 
   let active = useSelector((state) => state.adsState.page);

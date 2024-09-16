@@ -63,7 +63,6 @@ const likesSlice = createSlice({
         
       })
       .addCase(getTotalLikes.fulfilled, (state, action) => {
-        console.log(action.payload)
         state.totalLikes = action.payload;
       });
   },

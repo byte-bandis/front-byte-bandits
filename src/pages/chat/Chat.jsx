@@ -21,7 +21,13 @@ const Chat = ({ productId, buyerId, user }) => {
   const { t } = useTranslation();
 
   useEffect(() => {
-    if (!socket || !loggedUserId) return;
+    setChatId(null);
+    setMessages([]);
+    setMessage("");
+  }, [productId, buyerId]);
+
+  useEffect(() => {
+    if (!loggedUserId) return;
 
     const checkChatExists = async () => {
       try {
@@ -44,6 +50,10 @@ const Chat = ({ productId, buyerId, user }) => {
     };
 
     checkChatExists();
+  }, [productId, buyerId]);
+
+  useEffect(() => {
+    if (!chatId || !loggedUserId) return;
 
     if (chatId) {
       socket.on("newMessage", (newMessage) => {
@@ -71,7 +81,7 @@ const Chat = ({ productId, buyerId, user }) => {
       socket.off("messagesRead");
       socket.emit("leaveChat", { chatId });
     };
-  }, [productId, buyerId, chatId, loggedUserId, socket]);
+  }, [chatId]);
 
   useEffect(() => {
     if (error) dispatch(resetMessage());
@@ -115,12 +125,6 @@ const Chat = ({ productId, buyerId, user }) => {
       }
     }
   };
-
-  useEffect(() => {
-    setChatId(null);
-    setMessages([]);
-    setMessage("");
-  }, [productId, buyerId]);
 
   return (
     <ChatContainer>

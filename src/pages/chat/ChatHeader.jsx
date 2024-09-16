@@ -13,14 +13,15 @@ const ChatHeader = ({ product, user }) => {
   const [userPhoto, setUserPhoto] = useState("");
 
   useEffect(() => {
-    if (!loggedUserId) return;
-    if (!user?.username) return;
+    if (!loggedUserId || !user) return;
+
+    if (user.username.toString() === "deleted_" + user._id.toString()) {
+      setUserPhoto(null);
+      return;
+    }
+
     const fetchUser = async () => {
       try {
-        if (user.username.toString() === "deleted_" + user._id.toString()) {
-          setUserPhoto(null);
-          return;
-        }
         const response = await client.get(`/user/${user.username}`);
         setUserPhoto(response.data.userPhoto);
       } catch (error) {
@@ -29,7 +30,7 @@ const ChatHeader = ({ product, user }) => {
     };
 
     fetchUser();
-  }, [user.username, loggedUserId, user._id]);
+  }, [user, loggedUserId]);
 
   const handleProductClick = () => {
     if (product.available) {

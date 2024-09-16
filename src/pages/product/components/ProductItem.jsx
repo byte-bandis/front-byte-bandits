@@ -3,13 +3,12 @@ import { Heart, HeartFill } from "react-bootstrap-icons";
 import PropTypes from "prop-types";
 import "./ProductItem.css";
 import styled from "styled-components";
-import { getLikes } from "../../store/likesThunk";
+import { getLikes } from "../../../store/likesThunk";
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect, useState } from "react";
-import "../../assets/images/no-image.jpg";
 import slugify from "slugify";
-import { setLike } from "../../store/likesThunk";
-import noImage from "../../assets/images/no-image.jpg";
+import { setLike } from "../../../store/likesThunk";
+import noImage from "../../../assets/images/no-image.jpg";
 
 const ProductItem = ({ ad, $customTransform, $customMargin }) => {
   const { _id, adTitle, sell, price, photo, tags, user } = ad;

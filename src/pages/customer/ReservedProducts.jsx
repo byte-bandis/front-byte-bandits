@@ -3,12 +3,13 @@ import styled from "styled-components";
 import { useSelector, useDispatch } from "react-redux";
 import { useEffect } from "react";
 import { getTransactions } from "../../store/transactionsThunk";
-import ProductItem from "../product/ProductItem";
+
 import { RegularButton as BaseRegularButton } from "../../components/shared/buttons";
 import React from "react";
 import { client } from "../../api/client";
 import CustomAlert from "../../components/shared/Alert";
 import { useState } from "react";
+import ListItems from "../product/components/ListItems";
 
 const ReservedProducts = () => {
   const dispatch = useDispatch();
@@ -92,7 +93,7 @@ const ReservedProducts = () => {
                 <TransactionIdContainer2>
                   {transaction._id}
                 </TransactionIdContainer2>
-                <ProductItem ad={transaction.ad} />
+                <ListItems ad={transaction.ad} />
 
                 <ButtonsContainer>
                   <RegularButton

@@ -9,12 +9,11 @@ import { getWishlist } from "../../store/likesThunk";
 import ErrorMessage from "./components/ErrorMessage";
 import { resetMessage } from "../../store/uiSlice";
 import { StyledAdList } from "../../components/shared/lists";
-import { useParams } from "react-router-dom";
-import { useState } from "react";
+
 import { useTranslation } from "react-i18next";
 import getTotalAds from "../../store/adscounThunk";
 
-const ProductList = ({ $customMargin, $customTop }) => {
+const ProductList = ({ $customMargin, $customTop, $userId,  $limit = '10' }) => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const page = useSelector((state) => state.adsState.page);
@@ -24,20 +23,18 @@ const ProductList = ({ $customMargin, $customTop }) => {
   const adsData = useSelector((state) => state.adsState.data);
   const urlParams = new URLSearchParams(window.location.search);
   const limit = urlParams.get("limit");
-  const { username } = useParams();
-  const [adsListToShow, setAdsListToShow] = useState([]);
+
   const adsAccount = useSelector((state) => state.adsState.totalAds);
   useEffect(() => {
-    dispatch(getTotalAds());
-  }, [dispatch]);
-  useEffect(() => {
-    if (username) {
-      const userAds = adsData.filter((item) => item.user.username === username);
-      setAdsListToShow(userAds);
-    } else {
-      setAdsListToShow(adsData);
+    if ($userId) {
+      console.log('message');
+      dispatch(getTotalAds({user:$userId}));
+    }else{
+      dispatch(getTotalAds());
     }
-  }, [username, adsData]);
+    
+  }, [dispatch]);
+  
 
   const resetError = () => {
     dispatch(resetMessage());
@@ -49,7 +46,11 @@ const ProductList = ({ $customMargin, $customTop }) => {
   }
 
   useEffect(() => {
-    const allFilters = { ...filters, page, limit };
+    const allFilters = { ...filters, page, limit  };
+    if ($userId) {
+      allFilters.user = $userId;
+    }
+    console.log(allFilters);
     dispatch(getAds({ id: "", filters: allFilters }));
 
     if (userid) {
@@ -60,12 +61,13 @@ const ProductList = ({ $customMargin, $customTop }) => {
   return (
     <>
       <StyledAdList
-        className={`ad-list ${adsListToShow.length === 1 ? "single-ad" : ""}`}
+       className="ad-list"
         $customMargin={$customMargin}
         $customTop={$customTop}
       >
-        {adsListToShow && adsListToShow.length > 0 ? (
-          adsListToShow.map((ad) => (
+                {adsData.length > 0 ? (
+          adsData.map((ad) => (
+
             <ProductItem
               ad={ad}
               key={ad._id}
@@ -81,7 +83,7 @@ const ProductList = ({ $customMargin, $customTop }) => {
             />
           ))
         ) : (
-          <p className="no-ad">{t("user_has_no_ads", { username })}</p>
+          <p className="no-ad">{t("user_has_no_ads")}</p>
         )}
         {error && (
           <ErrorMessage
@@ -93,7 +95,7 @@ const ProductList = ({ $customMargin, $customTop }) => {
         )}
       </StyledAdList>
       
-        <Pager adsAccount={adsAccount}></Pager>
+        <Pager adsAccount={adsAccount}limit={$limit} userId={$userId} ></Pager>
       
     </>
   );
@@ -107,6 +109,9 @@ ProductList.propTypes = {
   }),
   $customMargin: propTypes.string,
   $customTop: propTypes.string,
+  $userId: propTypes.string,
+  $limit: propTypes.string,
+  totalAds: propTypes.number
 };
 
 export default ProductList;

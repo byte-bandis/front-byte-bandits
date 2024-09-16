@@ -4,11 +4,13 @@ import PropTypes from "prop-types";
 import StyledContainer from "../../components/shared/StyledContainer";
 import { useParams } from "react-router-dom";
 import ProductList from "../product/ProductList";
+import { useSelector } from "react-redux";
 
 const MyProducts = ({ className }) => {
   const { t } = useTranslation();
   const { username } = useParams();
   const currentUrl = window.location.href;
+  const userId = useSelector((state) => state.authState.user.userId);
 
   return (
     <>
@@ -32,7 +34,13 @@ const MyProducts = ({ className }) => {
         $customBorderRadius="10px"
         $customWidth="80%"
       >
-        <ProductList />
+        <ProductList 
+          $customMargin="0 0 0 2rem"
+          $customWidth="100%"
+          $userId={userId}
+          $limit={3}
+          totalAds={6}
+          />
       </StyledContainer>
     </>
   );

@@ -7,21 +7,18 @@ import {
   CaretRight,
   CaretRightFill,
 } from "react-bootstrap-icons";
-import { useNavigate, useLocation, useParams } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import Button from "../product/components/Button";
 import styled from "styled-components";
 
-const Pager = (ads) => {
+const Pager = (params) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const location = useLocation();
-  const { username } = useParams();
-  const{adsAccount} =  ads;
-  
+  const{adsAccount, limit} =  params;
 
   let active = useSelector((state) => state.adsState.page);
   const steps = 3;
-  const limit = username ? 3 : 10;
   const max = Math.ceil(adsAccount / limit);
   let items = [];
 

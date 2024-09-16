@@ -38,7 +38,7 @@ const getAds = createAsyncThunk(
         }
       }
     }
-
+    console.log(reqUrl);
     try {
       const response = await client.get(`${adsURL}${reqUrl}`);
 

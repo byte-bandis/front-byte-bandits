@@ -15,7 +15,7 @@ const StyledAdList = styled.div`
   padding-top: 0px;
 
   &.single-ad {
-    grid-template-columns: 25%;
+    grid-template-columns: 50%;
   }
 
   &:has(.no-ad[noad]) {

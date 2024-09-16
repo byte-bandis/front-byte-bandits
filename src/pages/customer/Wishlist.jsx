@@ -1,5 +1,5 @@
 import StyledMyAccount from "../../components/shared/StyledMyAccount";
-import ProductItem from "../product/ProductItem";
+import ProductItem from "../product/components/ProductItem";
 import { getWishlist } from "../../store/likesThunk";
 import Pager from "../pagination/Pager";
 import styled from "styled-components";

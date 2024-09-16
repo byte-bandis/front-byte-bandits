@@ -1,5 +1,6 @@
 import { useDispatch, useSelector } from "react-redux";
 import {
+  getLoading,
   getLoggedUserId,
   getLoggedUserName,
   getLoggedUserUpdateTime,
@@ -27,6 +28,7 @@ import { emptyMyPassword } from "../../../../store/MyPersonalData/passwordSlice"
 import { logout } from "../../../auth/service";
 import { resetLoggedUserInfo, setAuth } from "../../../../store/authSlice";
 import { updateMyPassword } from "../passwordService";
+import CustomPulseLoader from "../../../../components/shared/spinners/CustomPulseLoader";
 
 const PasswordUpdater = () => {
   const { t } = useTranslation();
@@ -60,6 +62,7 @@ const PasswordUpdater = () => {
     $customLabelFontWeight: "bold",
     $customInputPadding: "0 0 0 .5rem",
   };
+  const isLoading = useSelector(getLoading);
 
   const languageCookieFormat = Cookies.get("formatLanguage") || "en";
 
@@ -143,99 +146,109 @@ const PasswordUpdater = () => {
 
   return (
     <StyledListContainer $customWidth="80%">
+      {isLoading && (
+        <CustomPulseLoader
+          loading={isLoading.toString()}
+          $customHeight="200px"
+        />
+      )}
       <ul key={loggedUserId}>
-        <form
-          onSubmit={handleSubmit}
-          noValidate
-        >
-          <StyledListItem $customHeaderFontSize="1.5rem">
-            <h3>{t("change_password")}</h3>
-          </StyledListItem>
-
-          <StyledContainer {...containerStyles}>
-            {showSuccess && (
-              <CustomAlert variant="success">{isSuccess}</CustomAlert>
-            )}
-            {showError && <CustomAlert variant="error">{isError}</CustomAlert>}
-
-            <StyledListItem {...listItemStyles}>
-              <label>{t("current_password_label")}</label>
-              {!editMode ? (
-                <div>{t("current_password_input")}</div>
-              ) : (
-                <input
-                  type="password"
-                  name="currentPassword"
-                  value={formData.currentPassword}
-                  onChange={handleInputChange}
-                  placeholder={t("current_password_placeholder")}
-                  required
-                />
-              )}
+        {!isLoading && (
+          <form
+            onSubmit={handleSubmit}
+            noValidate
+          >
+            <StyledListItem $customHeaderFontSize="1.5rem">
+              <h3>{t("change_password")}</h3>
             </StyledListItem>
-          </StyledContainer>
-          {editMode && (
+
             <StyledContainer {...containerStyles}>
+              {showSuccess && (
+                <CustomAlert variant="success">{isSuccess}</CustomAlert>
+              )}
+              {showError && (
+                <CustomAlert variant="error">{isError}</CustomAlert>
+              )}
+
               <StyledListItem {...listItemStyles}>
-                <label>{t("new_password_label")}</label>
-                <input
-                  type="password"
-                  name="newPassword"
-                  value={formData.newPassword}
-                  onChange={handleInputChange}
-                  placeholder={t("new_password_placeholder")}
-                  required
-                />
+                <label>{t("current_password_label")}</label>
+                {!editMode ? (
+                  <div>{t("current_password_input")}</div>
+                ) : (
+                  <input
+                    type="password"
+                    name="currentPassword"
+                    value={formData.currentPassword}
+                    onChange={handleInputChange}
+                    placeholder={t("current_password_placeholder")}
+                    required
+                  />
+                )}
               </StyledListItem>
             </StyledContainer>
-          )}
+            {editMode && (
+              <StyledContainer {...containerStyles}>
+                <StyledListItem {...listItemStyles}>
+                  <label>{t("new_password_label")}</label>
+                  <input
+                    type="password"
+                    name="newPassword"
+                    value={formData.newPassword}
+                    onChange={handleInputChange}
+                    placeholder={t("new_password_placeholder")}
+                    required
+                  />
+                </StyledListItem>
+              </StyledContainer>
+            )}
 
-          {editMode ? (
-            <ButtonContainer $justifyContent="flex-start">
-              {!confirmProcess && (
-                <>
-                  <RegularButton
-                    $customHoverBackgroundColor="var(--accent-100)"
-                    $customMargin="2rem 0 0 0"
-                    onClick={handleConfirmProcess}
-                  >
-                    {t("save_new_password")}
-                  </RegularButton>
-                  <RegularButton
-                    $customMargin="2rem 0 0 0"
-                    onClick={handleHideEditMode}
-                  >
-                    {t("back_to_saved_password")}
-                  </RegularButton>
-                </>
-              )}
-              {confirmProcess && (
-                <>
-                  <RegularButton
-                    type="submit"
-                    $customHoverBackgroundColor="var(--accent-100)"
-                    $customMargin="2rem 0 0 0"
-                  >
-                    {t("confirm_save")}
-                  </RegularButton>
-                  <RegularButton
-                    $customMargin="2rem 0 0 0"
-                    onClick={handleCancelSubmit}
-                  >
-                    {t("cancel")}
-                  </RegularButton>
-                </>
-              )}
-            </ButtonContainer>
-          ) : (
-            <RegularButton
-              $customMargin="2rem 0 0 0"
-              onClick={handleShowEditMode}
-            >
-              {t("click_to_edit")}
-            </RegularButton>
-          )}
-        </form>
+            {editMode ? (
+              <ButtonContainer $justifyContent="flex-start">
+                {!confirmProcess && (
+                  <>
+                    <RegularButton
+                      $customHoverBackgroundColor="var(--accent-100)"
+                      $customMargin="2rem 0 0 0"
+                      onClick={handleConfirmProcess}
+                    >
+                      {t("save_new_password")}
+                    </RegularButton>
+                    <RegularButton
+                      $customMargin="2rem 0 0 0"
+                      onClick={handleHideEditMode}
+                    >
+                      {t("back_to_saved_password")}
+                    </RegularButton>
+                  </>
+                )}
+                {confirmProcess && (
+                  <>
+                    <RegularButton
+                      type="submit"
+                      $customHoverBackgroundColor="var(--accent-100)"
+                      $customMargin="2rem 0 0 0"
+                    >
+                      {t("confirm_save")}
+                    </RegularButton>
+                    <RegularButton
+                      $customMargin="2rem 0 0 0"
+                      onClick={handleCancelSubmit}
+                    >
+                      {t("cancel")}
+                    </RegularButton>
+                  </>
+                )}
+              </ButtonContainer>
+            ) : (
+              <RegularButton
+                $customMargin="2rem 0 0 0"
+                onClick={handleShowEditMode}
+              >
+                {t("click_to_edit")}
+              </RegularButton>
+            )}
+          </form>
+        )}
         <IconWrapper
           IconComponent={Key}
           size="75px"

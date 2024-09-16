@@ -29,7 +29,7 @@ const StyleContainer = styled.div`
   margin: ${(props) => props.$customMargin || "0"};
   padding: ${(props) => props.$customPadding || "0"};
   z-index: ${(props) => props.$customZIndex || "0"};
-  font-weight: ${(props) => props.$customFontWeight || 100};
+  font-weight: ${(props) => props.$customFontWeight || 400};
   color: ${(props) => props.$customColor || "var(--text-1)"};
 `;
 

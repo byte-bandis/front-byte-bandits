@@ -32,7 +32,7 @@ const Safety = () => {
       <StyledContainer
         $customWidth="80%"
         $customDisplay="flex"
-        $customMargin="2rem 2rem 0 0"
+        $customMargin="2rem"
         $customJustifyContent="flex-end"
         $customFlexDirection="row"
       >

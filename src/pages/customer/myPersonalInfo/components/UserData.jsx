@@ -80,6 +80,7 @@ const MyData = () => {
     }
 
     setFormData({
+      username: myData.username || "",
       name: myData.name || "",
       lastname: myData.lastname || "",
       email: myData.email || "",
@@ -119,7 +120,8 @@ const MyData = () => {
     const errors = validate(t, {
       name: formData.name,
       lastname: formData.lastname,
-      email: formData.email,
+      username: myData.username,
+      email: myData.email,
       birthdate: formData.birthdate,
       mobilePhoneNumber: formData.mobilePhoneNumber,
     });
@@ -162,7 +164,12 @@ const MyData = () => {
                 <h3>{t("yourData")}</h3>
               </StyledListItem>
 
-              <StyledContainer {...containerStyles}></StyledContainer>
+              <StyledContainer {...containerStyles}>
+                <StyledListItem {...listItemStyles}>
+                  <label>{t("nickname")}</label>
+                  <div>{myData.username}</div>
+                </StyledListItem>
+              </StyledContainer>
               <StyledContainer {...containerStyles}>
                 <StyledContainer
                   $customDisplay="flex"
@@ -202,17 +209,7 @@ const MyData = () => {
               <StyledContainer {...containerStyles}>
                 <StyledListItem {...listItemStyles}>
                   <label>{t("email")}</label>
-                  {!editMode ? (
-                    <div>{myData.email}</div>
-                  ) : (
-                    <input
-                      type="text"
-                      name="email"
-                      value={formData.email}
-                      onChange={handleInputChange}
-                      placeholder={t("email_placeholder")}
-                    />
-                  )}
+                  <div>{myData.email}</div>
                 </StyledListItem>
               </StyledContainer>
 

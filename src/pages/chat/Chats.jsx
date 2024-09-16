@@ -89,7 +89,7 @@ const Chats = () => {
     checkProductAndBuyer();
   }, [productId, buyerId]);
 
-  const fetchChats = async () => {
+  const fetchChats = useCallback(async () => {
     if (!loggedUserId) return;
 
     try {
@@ -138,7 +138,7 @@ const Chats = () => {
     } catch (error) {
       console.error("Error al obtener la lista de chats:", error);
     }
-  };
+  }, [productId, buyerId]);
 
   useEffect(() => {
     fetchChats();
@@ -183,7 +183,7 @@ const Chats = () => {
       socket.off("userNewMessage");
       socket.emit("disconnectUser");
     };
-  }, []);
+  }, [fetchChats]);
 
   return (
     <StyledMyAccount>

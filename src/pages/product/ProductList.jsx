@@ -3,13 +3,15 @@ import propTypes from "prop-types";
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect } from "react";
 import { getAds } from "../../store/adsThunk";
+import { getTransactionsSeller } from "../../store/transactionsThunk";
+import { getTransactionsBuyer } from "../../store/transactionsThunk";
 
 import Pager from "../pagination/Pager";
 import { getWishlist } from "../../store/likesThunk";
 import ErrorMessage from "./components/ErrorMessage";
 import { resetMessage } from "../../store/uiSlice";
 import { StyledAdList } from "../../components/shared/lists";
-import { useParams } from "react-router-dom";
+import { useLocation, useParams } from "react-router-dom";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
 
@@ -21,11 +23,50 @@ const ProductList = ({ $customMargin, $customTop }) => {
   const errorUi = useSelector((state) => state.ui);
   const filters = useSelector((state) => state.adsState.filters);
   const adsData = useSelector((state) => state.adsState.data);
+  const soldProductsData = useSelector(
+    (state) => state.transactions.ordersSold,
+  );
+  const boughtProductsData = useSelector(
+    (state) => state.transactions.ordersBought,
+  );
   const urlParams = new URLSearchParams(window.location.search);
   const limit = urlParams.get("limit");
   const { username } = useParams();
   const [adsListToShow, setAdsListToShow] = useState([]);
+  const [adsListBuyer, setAdsListBuyer] = useState([]);
+  const [adsListSeller, setAdsListSeller] = useState([]);
+  const [adsListSellerSoldProducts, setAdsListSellerSoldProducts] = useState(
+    [],
+  );
+  const [adsListBuyerBoughtProducts, setAdsListBuyerBoughtProducts] = useState(
+    [],
+  );
+  const location = useLocation();
+  const pathParts = location.pathname.split("/");
+  const sectionURL = pathParts[2];
 
+  console.log("adsData", adsData);
+  console.log("toshow", adsListToShow);
+  console.log("buyer", adsListBuyer);
+  console.log("seller", adsListSeller);
+  console.log("soldProductsData", soldProductsData);
+  console.log("adsListSellerSoldProducts", adsListSellerSoldProducts);
+  console.log("boughtProductsData", boughtProductsData);
+  console.log("adsListBuyerBoughtProducts", adsListBuyerBoughtProducts);
+
+  useEffect(() => {
+    if (userid) {
+      dispatch(getTransactionsSeller());
+    }
+  }, [dispatch, userid]);
+
+  useEffect(() => {
+    if (userid) {
+      dispatch(getTransactionsBuyer());
+    }
+  }, [dispatch, userid]);
+
+  //adsListToShow->getAds
   useEffect(() => {
     if (username) {
       const userAds = adsData.filter((item) => item.user.username === username);
@@ -34,6 +75,46 @@ const ProductList = ({ $customMargin, $customTop }) => {
       setAdsListToShow(adsData);
     }
   }, [username, adsData]);
+
+  //adsListBuyer->getAds
+  useEffect(() => {
+    if (username) {
+      const userBought = adsData
+        .filter((item) => item.user.username === username)
+        .filter((item) => item.sell === false);
+      setAdsListBuyer(userBought);
+    }
+  }, [username, adsData]);
+
+  //adsListSeller->getAds
+  useEffect(() => {
+    if (username) {
+      const userSeller = adsData
+        .filter((item) => item.user.username === username)
+        .filter((item) => item.sell === true);
+      setAdsListSeller(userSeller);
+    }
+  }, [username, adsData]);
+
+  //soldProductsData->soldProductsData
+  useEffect(() => {
+    if (username) {
+      const userSellerSoldProducts = soldProductsData.filter(
+        (item) => item.seller.username === username,
+      );
+      setAdsListSellerSoldProducts(userSellerSoldProducts);
+    }
+  }, [username, soldProductsData]);
+
+  //boughtProductsData->soldProductsData
+  useEffect(() => {
+    if (username) {
+      const userBuyerBoughtProducts = boughtProductsData.filter(
+        (item) => item.buyer.username === username,
+      );
+      setAdsListBuyerBoughtProducts(userBuyerBoughtProducts);
+    }
+  }, [username, boughtProductsData]);
 
   const resetError = () => {
     dispatch(resetMessage());
@@ -60,7 +141,8 @@ const ProductList = ({ $customMargin, $customTop }) => {
         $customMargin={$customMargin}
         $customTop={$customTop}
       >
-        {adsListToShow && adsListToShow.length > 0 ? (
+        {/* MyProfile*/}
+        {sectionURL === "info" && adsListToShow && adsListToShow.length > 0 ? (
           adsListToShow.map((ad) => (
             <ProductItem
               ad={ad}
@@ -80,17 +162,36 @@ const ProductList = ({ $customMargin, $customTop }) => {
           <p className="no-ad">{t("user_has_no_ads", { username })}</p>
         )}
         {error && (
-          <ErrorMessage
-            className="loginPage-error"
-            onClick={resetError}
-          >
+          <ErrorMessage className="loginPage-error" onClick={resetError}>
             <h3>{error.toUpperCase()}</h3>
           </ErrorMessage>
         )}
+
+        {/* Sales*/}
+        {sectionURL === "soldProducts" &&
+        adsListToShow &&
+        adsListSeller.length > 0 ? (
+          adsListSeller.map((ad) => (
+            <ProductItem
+              ad={ad}
+              key={ad._id}
+              adTitle={ad.adTitle}
+              adBody={ad.adBody}
+              sell={ad.sell}
+              price={ad.price}
+              photo={ad.photo}
+              user={ad.user}
+              createdAt={ad.createdAt}
+              updatedAt={ad.updatedAt}
+              tags={ad.tags || []}
+            />
+          ))
+        ) : (
+          <p className="no-ad">{t("user_has_no_ads", { username })}</p>
+        )}
       </StyledAdList>
-      
-        <Pager></Pager>
-      
+
+      <Pager></Pager>
     </>
   );
 };

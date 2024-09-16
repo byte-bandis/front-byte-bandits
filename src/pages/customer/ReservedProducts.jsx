@@ -111,7 +111,7 @@ const ReservedProducts = () => {
                   <RegularButton
                     username={userid}
                     formData={{ orderId: transaction._id }}
-                    onClick={() => handleButtonClick(transaction._id, "accept")}
+                    onClick={() => handleButtonClick(transaction._id, "reject")}
                     key={`reject${transaction._id}`}
                     $customBackground="var(--accent-200)"
                     $customRight="-20px"

@@ -1,6 +1,7 @@
-import RegularButton from "../../components/shared/buttons/RegularButton.jsx";
+import RegularButton from "../../components/shared/buttons/RegularButton";
 import StyledContainer from "../../components/shared/StyledContainer";
 import StyledMyAccount from "../../components/shared/StyledMyAccount";
+import UsernameEmail from "./myPersonalInfo/components/UsernameEmail";
 import PasswordUpdater from "./myPersonalInfo/components/PasswordUpdater.jsx";
 import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
@@ -18,14 +19,8 @@ const Safety = () => {
       <StyledContainer $customMargin="2rem 0 0 1rem">
         <h1>{t("safety")}</h1>
         <p>{t("safety_intro")}</p>
-        {isLoading ? (
-          <CustomPulseLoader
-            loading={isLoading.toString()}
-            $customHeight="200px"
-          />
-        ) : (
-          <PasswordUpdater />
-        )}
+        <UsernameEmail />
+        {/* <PasswordUpdater /> */}
       </StyledContainer>
       <StyledContainer
         $customWidth="80%"

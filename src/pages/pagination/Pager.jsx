@@ -1,7 +1,6 @@
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { setPage } from "../../store/adsSlice";
-import getTotalAds from "../../store/adscounThunk";
 import {
   CaretLeft,
   CaretLeftFill,
@@ -12,17 +11,15 @@ import { useNavigate, useLocation, useParams } from "react-router-dom";
 import Button from "../product/components/Button";
 import styled from "styled-components";
 
-const Pager = () => {
+const Pager = (ads) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const location = useLocation();
   const { username } = useParams();
+  const{adsAccount} =  ads;
+  console.log(adsAccount)
+  
 
-  useEffect(() => {
-    dispatch(getTotalAds());
-  }, [dispatch]);
-
-  const adsAccount = useSelector((state) => state.adsState.totalAds);
   let active = useSelector((state) => state.adsState.page);
   const steps = 3;
   const limit = username ? 3 : 10;

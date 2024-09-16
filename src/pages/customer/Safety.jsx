@@ -1,36 +1,38 @@
-import RegularButton from "../../components/shared/buttons/RegularButton.jsx";
+import RegularButton from "../../components/shared/buttons/RegularButton";
 import StyledContainer from "../../components/shared/StyledContainer";
 import StyledMyAccount from "../../components/shared/StyledMyAccount";
+import UsernameEmail from "./myPersonalInfo/components/UsernameEmail";
 import PasswordUpdater from "./myPersonalInfo/components/PasswordUpdater.jsx";
 import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
-import { getLoading, getLoggedUserName } from "../../store/selectors.js";
+import { getLoggedUserName } from "../../store/selectors.js";
 import { Link } from "react-router-dom";
-import CustomPulseLoader from "../../components/shared/spinners/CustomPulseLoader.jsx";
 
 const Safety = () => {
   const { t } = useTranslation();
   const loggedUserName = useSelector(getLoggedUserName);
-  const isLoading = useSelector(getLoading);
 
   return (
     <StyledMyAccount>
       <StyledContainer $customMargin="2rem 0 0 1rem">
         <h1>{t("safety")}</h1>
         <p>{t("safety_intro")}</p>
-        {isLoading ? (
-          <CustomPulseLoader
-            loading={isLoading.toString()}
-            $customHeight="200px"
-          />
-        ) : (
-          <PasswordUpdater />
-        )}
+        <StyledContainer
+          $customBackground="var(--accent-100)"
+          $customWidth="40%"
+          $customTextAlign="center"
+          $customPadding=".5rem"
+          $customFontWeight="bold"
+        >
+          {t("safety_disclaimer")}
+        </StyledContainer>
+        <UsernameEmail />
+        <PasswordUpdater />
       </StyledContainer>
       <StyledContainer
         $customWidth="80%"
         $customDisplay="flex"
-        $customMargin="2rem 2rem 0 0"
+        $customMargin="2rem"
         $customJustifyContent="flex-end"
         $customFlexDirection="row"
       >

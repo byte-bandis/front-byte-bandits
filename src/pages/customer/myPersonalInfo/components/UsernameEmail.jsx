@@ -5,8 +5,6 @@ import {
   getMyData,
 } from "../../../../store/selectors";
 import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
-import moment from "moment";
 import { PersonCircle } from "react-bootstrap-icons";
 import { useTranslation } from "react-i18next";
 import Cookies from "js-cookie";
@@ -20,36 +18,30 @@ import {
   ButtonContainer,
 } from "../../../../components/shared/buttons";
 
-import {
-  getMyDataWithThunk,
-  updateMyDataWithThunk,
-} from "../../../../store/MyPersonalData/myDataThunk";
-import { validate } from "./userDataValidations";
-import {
-  resetValidationErrors,
-  setValidations,
-} from "../../../../store/MyPersonalData/myDataSlice";
-import { resetUI, setMessage } from "../../../../store/uiSlice";
+import { getMyDataWithThunk } from "../../../../store/MyPersonalData/myDataThunk";
 import IconWrapper from "../../../../components/shared/iconsComponents/IconWrapper";
 import { trimDate } from "../../../../utils/dateTools";
 import CustomPulseLoader from "../../../../components/shared/spinners/CustomPulseLoader";
-import { updateUserName } from "../../../../store/authSlice";
+import { resetLoggedUserInfo, setAuth } from "../../../../store/authSlice";
+import CustomAlert from "../../../../components/shared/Alert";
+import { logout } from "../../../auth/service";
+import { updateMyData } from "../userDataService";
 
-const MyData = () => {
+const UsernameEmail = () => {
   const dispatch = useDispatch();
-  const navigate = useNavigate();
   const { t } = useTranslation();
   const loggedUsername = useSelector(getLoggedUserName);
   const myData = useSelector(getMyData);
   const [updateTime, setUpdateTime] = useState("000-00-00");
   const [editMode, setEditMode] = useState(false);
+  const [isError, setIsError] = useState(null);
+  const [isSuccess, setIsSuccess] = useState(null);
+  const [showSuccess, setShowSuccess] = useState(false);
+  const [showError, setShowError] = useState(false);
   const [confirmProcess, setConfirmProcess] = useState(false);
   const [formData, setFormData] = useState({
-    name: "",
-    lastname: "",
+    username: "",
     email: "",
-    birthdate: "",
-    mobilePhoneNumber: "",
   });
 
   const containerStyles = {
@@ -74,6 +66,29 @@ const MyData = () => {
   }, [loggedUsername, dispatch]);
 
   useEffect(() => {
+    if (isError) {
+      setShowError(true);
+      setShowSuccess(false);
+    }
+    const timer = setTimeout(() => {
+      setShowError(false);
+    }, 3000);
+    return () => clearTimeout(timer);
+  }, [isError, dispatch]);
+
+  useEffect(() => {
+    if (isSuccess) {
+      setShowSuccess(true);
+      setShowError(false);
+    }
+
+    const timer = setTimeout(() => {
+      setShowSuccess(false);
+    }, 3000);
+    return () => clearTimeout(timer);
+  }, [isSuccess, dispatch]);
+
+  useEffect(() => {
     if (myData.updatedAt) {
       const trimmedDate = trimDate(myData.updatedAt, languageCookieFormat);
       setUpdateTime(trimmedDate);
@@ -81,13 +96,7 @@ const MyData = () => {
 
     setFormData({
       username: myData.username || "",
-      name: myData.name || "",
-      lastname: myData.lastname || "",
       email: myData.email || "",
-      mobilePhoneNumber: myData.mobilePhoneNumber || "",
-      birthdate: myData.birthdate
-        ? moment(myData.birthdate).format("YYYY-MM-DD")
-        : "",
     });
   }, [myData, languageCookieFormat]);
 
@@ -115,29 +124,25 @@ const MyData = () => {
     }));
   };
 
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
-    const errors = validate(t, {
-      name: formData.name,
-      lastname: formData.lastname,
-      username: myData.username,
-      email: myData.email,
-      birthdate: formData.birthdate,
-      mobilePhoneNumber: formData.mobilePhoneNumber,
-    });
-    dispatch(setValidations(errors));
+    setIsSuccess(null);
+    setIsError(null);
 
-    if (Object.keys(errors).length > 0) {
-      const errorMessages = Object.values(errors).join(" ");
-      dispatch(setMessage({ payload: errorMessages, type: "error" }));
-      return;
+    try {
+      const updateUsernameEmail = await updateMyData(loggedUsername, formData);
+      setIsSuccess(updateUsernameEmail.message);
+      setConfirmProcess(false);
+      setEditMode(false);
+      const timer = setTimeout(() => {
+        logout("true");
+        dispatch(setAuth(false));
+        dispatch(resetLoggedUserInfo());
+      }, 3000);
+      return () => clearTimeout(timer);
+    } catch (error) {
+      setIsError(error.message);
     }
-
-    dispatch(updateMyDataWithThunk({ username: loggedUsername, formData }));
-    setConfirmProcess(false);
-    setEditMode(false);
-    dispatch(resetValidationErrors());
-    dispatch(resetUI());
   };
 
   const handleCancelSubmit = () => {
@@ -150,7 +155,7 @@ const MyData = () => {
       <StyledListContainer $customWidth="80%">
         {isLoading && (
           <CustomPulseLoader
-            loading={isLoading}
+            loading={isLoading.toString()}
             $customHeight="200px"
           />
         )}
@@ -165,83 +170,40 @@ const MyData = () => {
               </StyledListItem>
 
               <StyledContainer {...containerStyles}>
+                {showSuccess && (
+                  <CustomAlert variant="success">{isSuccess}</CustomAlert>
+                )}
+                {showError && (
+                  <CustomAlert variant="error">{isError}</CustomAlert>
+                )}
+
                 <StyledListItem {...listItemStyles}>
                   <label>{t("nickname")}</label>
-                  <div>{myData.username}</div>
-                </StyledListItem>
-              </StyledContainer>
-              <StyledContainer {...containerStyles}>
-                <StyledContainer
-                  $customDisplay="flex"
-                  $customFlexDirection="row"
-                  $customGap="40px"
-                >
-                  <StyledListItem {...listItemStyles}>
-                    <label>{t("name")}</label>
-                    {!editMode ? (
-                      <div>{myData.name}</div>
-                    ) : (
-                      <input
-                        type="text"
-                        name="name"
-                        value={formData.name}
-                        onChange={handleInputChange}
-                        placeholder={t("name_placeholder")}
-                      />
-                    )}
-                  </StyledListItem>
-                  <StyledListItem {...listItemStyles}>
-                    <label>{t("lastname")}</label>
-                    {!editMode ? (
-                      <div>{myData.lastname}</div>
-                    ) : (
-                      <input
-                        type="text"
-                        name="lastname"
-                        value={formData.lastname}
-                        onChange={handleInputChange}
-                        placeholder={t("lastname_placeholder")}
-                      />
-                    )}
-                  </StyledListItem>
-                </StyledContainer>
-              </StyledContainer>
-              <StyledContainer {...containerStyles}>
-                <StyledListItem {...listItemStyles}>
-                  <label>{t("email")}</label>
-                  <div>{myData.email}</div>
-                </StyledListItem>
-              </StyledContainer>
-
-              <StyledContainer {...containerStyles}>
-                <StyledListItem {...listItemStyles}>
-                  <label>{t("phone")}</label>
                   {!editMode ? (
-                    <div>{myData.mobilePhoneNumber}</div>
+                    <div>{myData.username}</div>
                   ) : (
                     <input
                       type="text"
-                      name="mobilePhoneNumber"
-                      value={formData.mobilePhoneNumber}
+                      name="username"
+                      value={formData.username}
                       onChange={handleInputChange}
-                      placeholder={t("phone_placeholder")}
+                      placeholder={t("nickname_placeholder")}
                     />
                   )}
                 </StyledListItem>
               </StyledContainer>
-
               <StyledContainer {...containerStyles}>
                 <StyledListItem {...listItemStyles}>
-                  <label>{t("birthdate")}</label>
+                  <label>{t("email")}</label>
                   {!editMode ? (
-                    <div>{moment(myData.birthdate).format("DD-MM-YYYY")}</div>
+                    <div>{myData.email}</div>
                   ) : (
                     <input
-                      type="date"
-                      name="birthdate"
-                      value={formData.birthdate}
+                      type="text"
+                      name="email"
+                      value={formData.email}
                       onChange={handleInputChange}
-                      placeholder={t("birthdate_placeholder")}
+                      placeholder={t("email_placeholder")}
                     />
                   )}
                 </StyledListItem>
@@ -317,4 +279,4 @@ const MyData = () => {
   );
 };
 
-export default MyData;
+export default UsernameEmail;

@@ -1,12 +1,13 @@
 import { createSlice } from "@reduxjs/toolkit";
 
-import { getLikes, getWishlist, setLike } from "./likesThunk";
+import { getLikes, getTotalLikes, getWishlist, setLike } from "./likesThunk";
 
 export const defaultadsState = {
   adcrosslikes: {},
   wishlist: [],
   loaded: false,
   page: 1,
+  totalLikes: 0,
   filters: {},
 };
 const likesSlice = createSlice({
@@ -17,6 +18,9 @@ const likesSlice = createSlice({
       state.adcrosslikes = {};
       state.wishlist = [];
       state.loaded = false;
+    },
+    setPageLikes: (state, action) => {
+      state.page = action.payload;
     },
   },
   extraReducers: (builder) => {
@@ -56,6 +60,11 @@ const likesSlice = createSlice({
           [action.payload.ad]: state.adcrosslikes[action.payload.ad] - 1 ,
         };}
         
+        
+      })
+      .addCase(getTotalLikes.fulfilled, (state, action) => {
+        console.log(action.payload)
+        state.totalLikes = action.payload;
       });
   },
 });

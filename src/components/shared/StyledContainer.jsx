@@ -23,12 +23,13 @@ const StyleContainer = styled.div`
   gap: ${(props) => props.$customGap || "10px"};
   justify-content: ${(props) => props.$customJustifyContent || "flex-start"};
   align-items: ${(props) => props.$customAlignItems || "center"};
+  text-align: ${(props) => props.$customTextAlign || "left"};
   width: ${(props) => props.$customWidth || "100%"};
   height: ${(props) => props.$customHeight || "auto"};
   margin: ${(props) => props.$customMargin || "0"};
   padding: ${(props) => props.$customPadding || "0"};
   z-index: ${(props) => props.$customZIndex || "0"};
-  font-weigth: ${(props) => props.$customFontWeight || 100};
+  font-weight: ${(props) => props.$customFontWeight || 100};
   color: ${(props) => props.$customColor || "var(--text-1)"};
 `;
 

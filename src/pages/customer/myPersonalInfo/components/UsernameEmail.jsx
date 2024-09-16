@@ -19,12 +19,6 @@ import {
 } from "../../../../components/shared/buttons";
 
 import { getMyDataWithThunk } from "../../../../store/MyPersonalData/myDataThunk";
-import { validate } from "./userDataValidations";
-import {
-  resetValidationErrors,
-  setValidations,
-} from "../../../../store/MyPersonalData/myDataSlice";
-import { resetUI, setMessage } from "../../../../store/uiSlice";
 import IconWrapper from "../../../../components/shared/iconsComponents/IconWrapper";
 import { trimDate } from "../../../../utils/dateTools";
 import CustomPulseLoader from "../../../../components/shared/spinners/CustomPulseLoader";
@@ -78,7 +72,6 @@ const UsernameEmail = () => {
     }
     const timer = setTimeout(() => {
       setShowError(false);
-      //dispatch(resetValidationErrors());
     }, 3000);
     return () => clearTimeout(timer);
   }, [isError, dispatch]);
@@ -90,7 +83,6 @@ const UsernameEmail = () => {
     }
 
     const timer = setTimeout(() => {
-      //dispatch(emptyMyPassword());
       setShowSuccess(false);
     }, 3000);
     return () => clearTimeout(timer);
@@ -136,25 +128,10 @@ const UsernameEmail = () => {
     event.preventDefault();
     setIsSuccess(null);
     setIsError(null);
-    dispatch(resetValidationErrors());
-
-    const errors = validate(t, {
-      username: formData.username,
-      email: formData.email,
-    });
-    dispatch(setValidations(errors));
-
-    if (Object.keys(errors).length > 0) {
-      const errorMessages = Object.values(errors).join(" ");
-      setIsError(errorMessages);
-
-      return;
-    }
 
     try {
       const updateUsernameEmail = await updateMyData(loggedUsername, formData);
       setIsSuccess(updateUsernameEmail.message);
-      dispatch(resetValidationErrors());
       setConfirmProcess(false);
       setEditMode(false);
       const timer = setTimeout(() => {

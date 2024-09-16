@@ -26,9 +26,12 @@ import { resetLoggedUserInfo, setAuth } from "../../../../store/authSlice";
 import CustomAlert from "../../../../components/shared/Alert";
 import { logout } from "../../../auth/service";
 import { updateMyData } from "../userDataService";
+import { useNavigate } from "react-router-dom";
 
 const UsernameEmail = () => {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const goBack = -1;
   const { t } = useTranslation();
   const loggedUsername = useSelector(getLoggedUserName);
   const myData = useSelector(getMyData);
@@ -100,11 +103,6 @@ const UsernameEmail = () => {
     });
   }, [myData, languageCookieFormat]);
 
-  const handleShowEditMode = (event) => {
-    event.preventDefault();
-    setEditMode(true);
-  };
-
   const handleConfirmProcess = (event) => {
     event.preventDefault();
     setConfirmProcess(true);
@@ -113,6 +111,7 @@ const UsernameEmail = () => {
   const handleHideEditMode = (event) => {
     event.preventDefault();
     setEditMode(false);
+    navigate(goBack);
   };
 
   const handleInputChange = (event) => {
@@ -179,81 +178,64 @@ const UsernameEmail = () => {
 
                 <StyledListItem {...listItemStyles}>
                   <label>{t("nickname")}</label>
-                  {!editMode ? (
-                    <div>{myData.username}</div>
-                  ) : (
-                    <input
-                      type="text"
-                      name="username"
-                      value={formData.username}
-                      onChange={handleInputChange}
-                      placeholder={t("nickname_placeholder")}
-                    />
-                  )}
+                  <input
+                    type="text"
+                    name="username"
+                    value={formData.username}
+                    onChange={handleInputChange}
+                    placeholder={t("nickname_placeholder")}
+                  />
                 </StyledListItem>
               </StyledContainer>
               <StyledContainer {...containerStyles}>
                 <StyledListItem {...listItemStyles}>
                   <label>{t("email")}</label>
-                  {!editMode ? (
-                    <div>{myData.email}</div>
-                  ) : (
-                    <input
-                      type="text"
-                      name="email"
-                      value={formData.email}
-                      onChange={handleInputChange}
-                      placeholder={t("email_placeholder")}
-                    />
-                  )}
+                  <input
+                    type="text"
+                    name="email"
+                    value={formData.email}
+                    onChange={handleInputChange}
+                    placeholder={t("email_placeholder")}
+                  />
                 </StyledListItem>
               </StyledContainer>
 
-              {editMode ? (
-                <ButtonContainer $justifyContent="flex-start">
-                  {!confirmProcess && (
-                    <>
-                      <RegularButton
-                        $customHoverBackgroundColor="var(--accent-100)"
-                        $customMargin="2rem 0 0 0"
-                        onClick={handleConfirmProcess}
-                      >
-                        {t("save_your_data")}
-                      </RegularButton>
-                      <RegularButton
-                        $customMargin="2rem 0 0 0"
-                        onClick={handleHideEditMode}
-                      >
-                        {t("back_to_saved_data")}
-                      </RegularButton>
-                    </>
-                  )}
-                  {confirmProcess && (
-                    <>
-                      <RegularButton
-                        type="submit"
-                        $customHoverBackgroundColor="var(--accent-100)"
-                        $customMargin="2rem 0 0 0"
-                      >
-                        {t("confirm_save")}
-                      </RegularButton>
-                      <RegularButton
-                        $customMargin="2rem 0 0 0"
-                        onClick={handleCancelSubmit}
-                      >
-                        {t("cancel")}
-                      </RegularButton>
-                    </>
-                  )}
-                </ButtonContainer>
-              ) : (
-                <RegularButton
-                  $customMargin="2rem 0 0 0"
-                  onClick={handleShowEditMode}
-                >
-                  {t("click_to_edit")}
-                </RegularButton>
-              )}
+              <ButtonContainer $justifyContent="flex-start">
+                {!confirmProcess && (
+                  <>
+                    <RegularButton
+                      $customHoverBackgroundColor="var(--accent-100)"
+                      $customMargin="2rem 0 0 0"
+                      onClick={handleConfirmProcess}
+                    >
+                      {t("save_your_data")}
+                    </RegularButton>
+                    <RegularButton
+                      $customMargin="2rem 0 0 0"
+                      onClick={handleHideEditMode}
+                    >
+                      {t("back_to_saved_data")}
+                    </RegularButton>
+                  </>
+                )}
+                {confirmProcess && (
+                  <>
+                    <RegularButton
+                      type="submit"
+                      $customHoverBackgroundColor="var(--accent-100)"
+                      $customMargin="2rem 0 0 0"
+                    >
+                      {t("confirm_save")}
+                    </RegularButton>
+                    <RegularButton
+                      $customMargin="2rem 0 0 0"
+                      onClick={handleCancelSubmit}
+                    >
+                      {t("cancel")}
+                    </RegularButton>
+                  </>
+                )}
+              </ButtonContainer>
             </form>
           )}
           <IconWrapper

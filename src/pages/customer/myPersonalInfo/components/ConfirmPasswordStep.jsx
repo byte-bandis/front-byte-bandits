@@ -25,7 +25,7 @@ import { useNavigate } from "react-router-dom";
 import { matchMyPassword } from "../passwordService";
 import CustomPulseLoader from "../../../../components/shared/spinners/CustomPulseLoader";
 
-const ConfirmPasswordStep = ({ onPasswordConfirmed }) => {
+const ConfirmPasswordStep = ({ onPasswordConfirmed, onCancel }) => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -108,7 +108,11 @@ const ConfirmPasswordStep = ({ onPasswordConfirmed }) => {
   };
 
   const handleCancelSubmit = () => {
-    navigate(goBack);
+    if (onCancel) {
+      onCancel();
+    } else {
+      navigate(goBack);
+    }
   };
 
   return (
@@ -136,7 +140,7 @@ const ConfirmPasswordStep = ({ onPasswordConfirmed }) => {
                 <CustomAlert variant="error">{isError}</CustomAlert>
               )}
 
-              <p>{t("info_confirm_pass_before_deleting_account")}</p>
+              <p>{t("info_confirm_pass_before_modifyng_account")}</p>
               <StyledListItem {...listItemStyles}>
                 <label>{t("current_password_label")}</label>
                 <input
@@ -181,6 +185,7 @@ const ConfirmPasswordStep = ({ onPasswordConfirmed }) => {
 
 ConfirmPasswordStep.propTypes = {
   onPasswordConfirmed: P.func.isRequired,
+  onCancel: P.func,
 };
 
 export default ConfirmPasswordStep;

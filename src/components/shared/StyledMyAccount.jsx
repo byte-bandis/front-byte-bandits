@@ -67,10 +67,10 @@ const StyledMyAccount = ({ children }) => {
         to: `/${loggedUserName}/soldProducts`,
       },
       {
-        text: t("purchases"),
-        onClick: () => navigate("/"),
+        text: t("Purchased"),
+        to: `/${loggedUserName}/purchasedProducts`,
       },
-      { text: t("products"), onClick: () => navigate("/") },
+      { text: t("All Products"), to: `/${loggedUserName}/allProducts` },
       {
         text: t("whishlist"),
         to: `/${loggedUserName}/whishlist`,

@@ -9,6 +9,7 @@ import getTotalAds from '../../store/adscounThunk';
 import { useEffect } from 'react';
 import { getAds } from '../../store/adsThunk';
 import Pager from '../pagination/Pager';
+import ProductItem from '../product/components/ProductItem';
 
 const MyProducts = ({ className }) => {
     const { t } = useTranslation();
@@ -59,7 +60,8 @@ const MyProducts = ({ className }) => {
                 <ListItems
                     $customMargin='0 0 0 2rem'
                     $customWidth='100%'
-                    adsData={adsData}
+                    data={adsData}
+                    ItemContiner={ProductItem}
                 />
                 <Pager
                     adsAccount={adsAccount}

@@ -23,10 +23,8 @@ const BuyButton = ({ ownerId }) => {
     }
     try {
       const res = await client.post(
-        `${import.meta.env.VITE_API_BASE_URL}transactions/${productId}`,
-        {
-          adId: productId,
-        },
+        `/transactions/${productId}`,
+    
       );
       setResponse(res);
       setShowAlert(true);

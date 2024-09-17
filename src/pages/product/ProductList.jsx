@@ -8,6 +8,7 @@ import { getWishlist } from "../../store/likesThunk";
 
 import getTotalAds from "../../store/adscounThunk";
 import ListItems from "./components/ListItems";
+import ProductItem from "./components/ProductItem";
 
 const ProductList = () => {
   const dispatch = useDispatch();
@@ -15,6 +16,7 @@ const ProductList = () => {
   const userid = useSelector((state) => state.authState.user.userId);
   const filters = useSelector((state) => state.adsState.filters);
   const urlParams = new URLSearchParams(window.location.search);
+  console.log(urlParams)
   const limit = urlParams.get("limit");
 
   const adsAccount = useSelector((state) => state.adsState.totalAds);
@@ -34,7 +36,7 @@ const ProductList = () => {
 
   return (
     <>
-      <ListItems adsData={adsData} />
+      <ListItems data={adsData} ItemContiner={ProductItem} />
       
       <Pager adsAccount={adsAccount}limit={10} page={page} ></Pager>
       

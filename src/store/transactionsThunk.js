@@ -31,12 +31,12 @@ export const getTransactionsSeller = createAsyncThunk(
   "transactions/seller",
   async (_, { rejectWithValue }) => {
     try {
-      const response = await client.get(`${transactionsURL}/seller`);
-
+      const response = await client.get(`${transactionsURL}/seller?page=1&limit=1`);
+      
       if (response.data) {
-        console.log(response.data);
-        console.log(response.message);
-        console.log(response.status);
+        console.log('Respuesta recibida', response.data);
+        console.log('Respuesta recibida', response.message);
+        console.log('Respuesta recibida', response.status);
         return {
           data: response.data,
           message: response.message,

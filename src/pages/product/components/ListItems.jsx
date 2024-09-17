@@ -1,13 +1,13 @@
 import { useDispatch, useSelector } from "react-redux";
 import { StyledAdList } from "../../../components/shared/lists";
 import ErrorMessage from "./ErrorMessage";
-import ProductItem from "./ProductItem";
 import { useTranslation } from "react-i18next";
 import { resetMessage } from "../../../store/uiSlice";
 import propTypes from "prop-types";
+import "./ProductItem.css";
 
 
-const ListItems = ({ $customMargin, $customTop, username, adsData }) => {
+const ListItems = ({ $customMargin, $customTop, username, data, ItemContiner }) => {
     const errorUi = useSelector((state) => state.ui);
 
     const { t } = useTranslation();
@@ -21,21 +21,13 @@ const ListItems = ({ $customMargin, $customTop, username, adsData }) => {
      $customMargin={$customMargin}
      $customTop={$customTop}
    >
-             {adsData.length > 0 ? (
-       adsData.map((ad) => (
+             {data.length > 0 ? (
+       data.map((item) => (
 
-         <ProductItem
-           ad={ad}
-           key={ad._id}
-           adTitle={ad.adTitle}
-           adBody={ad.adBody}
-           sell={ad.sell}
-           price={ad.price}
-           photo={ad.photo}
-           user={ad.user}
-           createdAt={ad.createdAt}
-           updatedAt={ad.updatedAt}
-           tags={ad.tags || []}
+         <ItemContiner  
+         item={item}
+           key={item._id}
+           
          />
        ))
      ) : (
@@ -56,7 +48,8 @@ ListItems.propTypes = {
     $customMargin: propTypes.string,
     $customTop: propTypes.string,
     username: propTypes.string.isRequired,
-    adsData: propTypes.array.isRequired,
+    data: propTypes.array.isRequired,
+    ItemContiner:propTypes.func.isRequired
   };
 
 export default ListItems;

@@ -190,5 +190,6 @@
   "chat_participant_does_not_exist_anymore": "El participante del chat ya no existe",
   "confirm_current_password": "Confirma tu contraseña",
   "info_confirm_pass_before_modifyng_account": "Para realizar esta acción, tienes que confirmar tu contraseña primero.",
-  "confirm": "Confirmar"
+  "confirm": "Confirmar",
+  "Buyer": "Comprador: "
 }

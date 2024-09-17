@@ -2,33 +2,26 @@ import StyledMyAccount from "../../components/shared/StyledMyAccount";
 import styled from "styled-components";
 import { useState } from "react";
 import { useDispatch } from "react-redux";
-import { getTransactionsSeller } from "../../store/transactionsThunk";
+import { getTransactionsByUser } from "../../store/transactionsThunk";
 import { useSelector } from "react-redux";
 import { useEffect } from "react";
-import ProductItem from "../product/components/ProductItem";
+import ListItems from "../product/components/ListItems";
 
 const SoldProducts = () => {
   const dispatch = useDispatch();
   const userid = useSelector((state) => state.authState.user.userId);
   const adsData = useSelector((state) => state.adsState.data);
-  const soldProductsData = useSelector(
-    (state) => state.transactions.ordersSold,
+  const transactionsData = useSelector(
+    (state) => state.transactions.transactionsByUser,
   );
 
   const [showSoldProducts, setShowSoldProducts] = useState(true);
   const [adsListSeller, setAdsListSeller] = useState([]);
-  const [adsListSellerSoldProducts, setAdsListSellerSoldProducts] = useState(
-    [],
-  );
-
-  console.log("adsData", adsData);
-  console.log("seller", adsListSeller);
-  console.log("soldProductsData", soldProductsData);
-  console.log("adsListSellerSoldProducts", adsListSellerSoldProducts);
+  const [adsListSellerProducts, setAdsListSellerSoldProducts] = useState([]);
 
   useEffect(() => {
     if (userid) {
-      dispatch(getTransactionsSeller());
+      dispatch(getTransactionsByUser());
     }
   }, [dispatch, userid]);
 
@@ -43,12 +36,12 @@ const SoldProducts = () => {
 
   useEffect(() => {
     if (userid) {
-      const userSellerSoldProducts = soldProductsData.filter(
-        (item) => item.seller._id === userid,
-      );
+      const userSellerSoldProducts = transactionsData
+        .filter((item) => item.seller)
+        .filter((item) => item.seller._id === userid);
       setAdsListSellerSoldProducts(userSellerSoldProducts);
     }
-  }, [userid, soldProductsData]);
+  }, [userid, transactionsData]);
 
   return (
     <>
@@ -65,10 +58,24 @@ const SoldProducts = () => {
 
         <AdsContainer>
           {showSoldProducts
-            ? adsListSeller.map((ad) => <ProductItem key={ad._id} ad={ad} />)
-            : adsListSellerSoldProducts
-                .map((item) => item.ad)
-                .map((ad) => <ProductItem key={ad._id} ad={ad} />)}
+            ? adsListSeller.length > 0
+              ? adsListSeller.map((ad, index) => (
+                  <ListItems
+                    key={index}
+                    username={ad.user.username}
+                    adsData={[ad]}
+                  />
+                ))
+              : "There are no products"
+            : adsListSellerProducts.length > 0
+              ? adsListSellerProducts.map((item, index) => (
+                  <ListItems
+                    key={index}
+                    userName={item.ad._id}
+                    adsData={[item.ad]}
+                  />
+                ))
+              : "There are no products"}
         </AdsContainer>
       </StyledMyAccount>
     </>

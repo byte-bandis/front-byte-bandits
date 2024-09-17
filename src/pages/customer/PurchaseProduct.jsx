@@ -2,28 +2,26 @@ import StyledMyAccount from "../../components/shared/StyledMyAccount";
 import styled from "styled-components";
 import { useState } from "react";
 import { useDispatch } from "react-redux";
-import { getTransactionsBuyer } from "../../store/transactionsThunk";
+import { getTransactionsByUser } from "../../store/transactionsThunk";
 import { useSelector } from "react-redux";
 import { useEffect } from "react";
-import ProductItem from "../product/components/ProductItem";
+import ListItems from "../product/components/ListItems";
 
 const PurchaseProducts = () => {
   const dispatch = useDispatch();
   const userid = useSelector((state) => state.authState.user.userId);
   const adsData = useSelector((state) => state.adsState.data);
-  const boughtProductsData = useSelector(
-    (state) => state.transactions.ordersBought,
+  const transactionsData = useSelector(
+    (state) => state.transactions.transactionsByUser,
   );
 
   const [showBoughtProducts, setShowSoldProducts] = useState(true);
   const [adsListBuyer, setAdsListBuyer] = useState([]);
   const [adsListBoughtProducts, setAdsListBuyerProducts] = useState([]);
 
-  console.log("adsListBoughtProducts", adsListBoughtProducts);
-
   useEffect(() => {
     if (userid) {
-      dispatch(getTransactionsBuyer());
+      dispatch(getTransactionsByUser());
     }
   }, [dispatch, userid]);
 
@@ -38,12 +36,12 @@ const PurchaseProducts = () => {
 
   useEffect(() => {
     if (userid) {
-      const userBuyerBoughtProducts = boughtProductsData.filter(
-        (item) => item.buyer._id === userid,
-      );
+      const userBuyerBoughtProducts = transactionsData
+        .filter((item) => item.buyer)
+        .filter((item) => item.buyer._id === userid);
       setAdsListBuyerProducts(userBuyerBoughtProducts);
     }
-  }, [userid, boughtProductsData]);
+  }, [userid, transactionsData]);
 
   return (
     <StyledMyAccount>
@@ -58,10 +56,18 @@ const PurchaseProducts = () => {
       </ButtonContainer>
       <AdsContainer>
         {showBoughtProducts
-          ? adsListBuyer.map((ad) => <ProductItem key={ad._id} ad={ad} />)
+          ? adsListBuyer.map((ad, index) => (
+              <ListItems
+                key={index}
+                username={ad.user.username}
+                adsData={[ad]}
+              />
+            ))
           : adsListBoughtProducts
               .map((item) => item.ad)
-              .map((ad) => <ProductItem key={ad._id} ad={ad} />)}
+              .map((ad, index) => (
+                <ListItems key={index} userName={ad._id} adsData={[ad]} />
+              ))}
       </AdsContainer>
     </StyledMyAccount>
   );

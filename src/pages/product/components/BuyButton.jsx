@@ -7,12 +7,14 @@ import { useParams } from "react-router-dom";
 import { useState, useEffect } from "react";
 import { client } from "../../../api/client";
 import { useNavigate } from "react-router-dom";
+import { getLoggedUserName } from "../../../store/selectors";
 
 const BuyButton = ({ ownerId }) => {
   const authUser = useSelector((state) => state.authState.user.userId);
   const logged = useSelector((state) => state.authState.user);
   const isLogged = logged.userName !== null;
   const navigate = useNavigate();
+  const loggedUserName = useSelector(getLoggedUserName);
   const { productId } = useParams();
   const [showAlert, setShowAlert] = useState(false);
   const [response, setResponse] = useState(null);
@@ -43,12 +45,15 @@ const BuyButton = ({ ownerId }) => {
     if (showAlert) {
       const timer = setTimeout(() => {
         setShowAlert(false);
-        navigate("/");
-      }, 6000);
+        if (response?.message?.includes("credit card")) {
+          navigate();
+        }
+        navigate(`/${loggedUserName}/info/mydata`);
+      }, 3000);
 
       return () => clearTimeout(timer);
     }
-  }, [navigate, showAlert]);
+  }, [navigate, showAlert, loggedUserName, response?.message]);
 
   const customStyles = {
     $customPosition: "absolute",

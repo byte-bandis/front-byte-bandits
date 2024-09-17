@@ -5,7 +5,7 @@ import { useDispatch } from "react-redux";
 import { getTransactionsByUser } from "../../store/transactionsThunk";
 import { useSelector } from "react-redux";
 import { useEffect } from "react";
-import ProductItem from "../product/components/ProductItem";
+import ListItems from "../product/components/ListItems";
 
 const AllProducts = () => {
   const dispatch = useDispatch();
@@ -16,11 +16,13 @@ const AllProducts = () => {
   );
 
   const [showAllProducts, setShowAllProducts] = useState(true);
-  const [adsListAll, setAdsListAll] = useState([]);
-  const [adsListTransactions, setAdsListTransactions] = useState([]);
+  const [adsListSales, setAdsListSales] = useState([]);
+  const [adsListPurchase, setAdsListPurchase] = useState([]);
 
-  console.log("adsListAll", adsListAll);
+  console.log("adsData", adsData);
   console.log("transactionsUserData", transactionsUserData);
+  console.log("adsListSales", adsListSales);
+  console.log("adsListPurchase", adsListPurchase);
 
   useEffect(() => {
     if (userid) {
@@ -30,19 +32,27 @@ const AllProducts = () => {
 
   useEffect(() => {
     if (userid) {
-      const userAds = adsData.filter((item) => item.user._id === userid);
-      setAdsListAll(userAds);
-    }
-  }, [adsData, userid]);
+      const salesTransactions = transactionsUserData
+        .filter((transaction) => transaction.seller._id === userid)
+        .map((item) => item.ad);
 
-  useEffect(() => {
-    if (userid) {
-      const userTransactions = transactionsUserData.filter(
-        (item) => item.seller._id === userid,
+      const purchaseTransactions = transactionsUserData
+        .filter((transaction) => transaction.buyer._id === userid)
+        .map((item) => item.ad);
+
+      const userAdsForSale = adsData.filter(
+        (ad) => ad.user._id === userid && !ad.sell === true,
       );
-      setAdsListTransactions(userTransactions);
+
+      const userAdsWanted = adsData.filter(
+        (ad) => ad.user._id === userid && !ad.sell === false,
+      );
+
+      setAdsListSales([...salesTransactions, ...userAdsForSale]);
+
+      setAdsListPurchase([...purchaseTransactions, ...userAdsWanted]);
     }
-  }, [userid, transactionsUserData]);
+  }, [transactionsUserData, adsData, userid]);
 
   return (
     <>
@@ -55,10 +65,16 @@ const AllProducts = () => {
 
         <AdsContainer>
           {showAllProducts
-            ? adsListAll.map((ad) => <ProductItem key={ad._id} ad={ad} />)
-            : adsListTransactions
-                .map((item) => item.ad)
-                .map((ad) => <ProductItem key={ad._id} ad={ad} />)}
+            ? adsListSales.length > 0
+              ? adsListSales.map((ad, index) => (
+                  <ListItems key={index} username={ad._id} adsData={[ad]} />
+                ))
+              : "There are no products"
+            : adsListPurchase.length > 0
+              ? adsListPurchase.map((ad, index) => (
+                  <ListItems key={index} username={ad._id} adsData={[ad]} />
+                ))
+              : "There are no products"}
         </AdsContainer>
       </StyledMyAccount>
     </>

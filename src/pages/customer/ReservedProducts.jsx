@@ -18,14 +18,20 @@ const ReservedProducts = () => {
   const [showAlert, setShowAlert] = useState(false);
 
   const ordersReceived = useSelector(
-    (state) => state.transactions.ordersReceived,
+    (state) => state.transactions.getTransactions,
   );
 
   useEffect(() => {
+    console.log("User ID:", userid);
+    console.log("Orders Received before dispatch:", ordersReceived);
     if (userid) {
-      dispatch(getTransactions(userid));
+      dispatch(getTransactions());
     }
-  }, [dispatch, userid]);
+  }, [dispatch, userid, ordersReceived]);
+
+  useEffect(() => {
+    console.log("Orders Received after dispatch:", ordersReceived);
+  }, [ordersReceived]);
 
   const handleTransaction = async (orderId, action) => {
     try {
@@ -36,7 +42,7 @@ const ReservedProducts = () => {
       console.log(res);
       setResponse(res);
       if (res.state === "success") {
-        dispatch(getTransactions(userid));
+        dispatch(getTransactions());
         setShowAlert(true);
       }
     } catch (error) {

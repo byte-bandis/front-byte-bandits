@@ -11,7 +11,7 @@ import { logout } from "../../pages/auth/service";
 import { resetSinglePublicProfile } from "../../store/singlePublicProfileSlice";
 import { resetUI } from "../../store/uiSlice";
 import ButtonsComponent from "./ButtonsComponent";
-import { Facebook, Instagram, Twitter, TwitterX } from "react-bootstrap-icons";
+import { Facebook, Instagram, TwitterX } from "react-bootstrap-icons";
 
 const Footer = () => {
   const [showConfirmator, setShowConfirmator] = useState(false);

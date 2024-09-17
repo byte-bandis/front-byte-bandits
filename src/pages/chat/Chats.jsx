@@ -230,7 +230,9 @@ const Chats = () => {
               />
             </>
           ) : (
-            <p>{t("choose_a_chat_to_start")}</p>
+            <ChooseChat>
+              <p>{t("choose_a_chat_to_start")}</p>
+            </ChooseChat>
           )}
         </ChatWindow>
       </ChatsContainer>
@@ -281,7 +283,14 @@ const ChatWindow = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
+`;
+
+const ChooseChat = styled.div`
+  display: flex;
+  align-items: center;
   justify-content: center;
+  height: 100%;
+  color: var(--text-300);
 `;
 
 export default Chats;

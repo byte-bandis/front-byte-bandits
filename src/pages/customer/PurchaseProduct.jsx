@@ -19,8 +19,6 @@ const PurchaseProducts = () => {
   const [adsListBuyer, setAdsListBuyer] = useState([]);
   const [adsListBoughtProducts, setAdsListBuyerProducts] = useState([]);
 
-  console.log("adsListBoughtProducts", adsListBoughtProducts);
-
   useEffect(() => {
     if (userid) {
       dispatch(getTransactionsBuyer());

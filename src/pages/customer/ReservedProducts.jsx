@@ -32,7 +32,6 @@ const ReservedProducts = () => {
                 transactionId: orderId,
                 action,
             });
-            console.log(res);
             setResponse(res);
             if (res.state === 'success') {
                 dispatch(getTransactions(userid));

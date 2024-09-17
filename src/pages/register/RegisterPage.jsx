@@ -44,7 +44,6 @@ const RegisterPage = () => {
   const { loading } = useSelector((state) => state.register);
   const [disableSubmit, setDisableSubmit] = useState(true);
   const [rememberMe, setRememberMeStatus] = useState(false);
-  console.log("disableSubmit", disableSubmit);
 
   const handleRememberMeStatus = (event) => {
     setRememberMeStatus(event.target.checked);

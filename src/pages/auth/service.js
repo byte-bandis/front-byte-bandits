@@ -39,12 +39,6 @@ export const login = async (email, password, requestStorage) => {
 
 export const logout = (reloadPage) => {
   //const reload = reloadPage;
-  console.log(
-    "Esto es reloadPage en service: ",
-    reloadPage,
-    "de tipo",
-    typeof reloadPage
-  );
 
   storage.remove("authToken");
   storage.remove("userName");

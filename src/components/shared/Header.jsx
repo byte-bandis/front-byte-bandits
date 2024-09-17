@@ -49,9 +49,6 @@ const Header = () => {
     dispatch(resetUI());
   };
 
- 
-
-
   const TAG_OPTIONS = [
     {
       onClick: () => navigate("/"),
@@ -59,20 +56,20 @@ const Header = () => {
       text: t("all_categories"),
     },
     {
-      text: t("lifestyle"),
-      to: `/product/?tags=lifestyle`,
+      text: t("accessories"),
+      to: `/product/?tags=accessories`,
     },
     {
-      text: t("mobile"),
-      to: "/product/?tags=mobile",
+      text: t("fashion"),
+      to: "/product/?tags=fashion",
     },
     {
-      text: t("motor"),
-      to: "/product/?tags=motor",
+      text: t("decoration"),
+      to: "/product/?tags=decoration",
     },
     {
-      text: t("work"),
-      to: "/product/?tags=work",
+      text: t("arts"),
+      to: "/product/?tags=arts",
     },
     {
       text: t("others"),
@@ -81,7 +78,7 @@ const Header = () => {
   ];
 
   const tagsOptions = TAG_OPTIONS.filter(
-    (tag) => tag.text !== t("all_categories"),
+    (tag) => tag.text !== t("all_categories")
   );
 
   return (
@@ -141,13 +138,10 @@ const Header = () => {
                 onClear={handleClearSearch}
               />
             </SearchContainer>
-              <ButtonsComponent
+            <ButtonsComponent
               navigate={navigate}
               setShowConfirmator={setShowConfirmator}
-            /> 
-
-             
-
+            />
           </StyledNav>
           <StyledTagsNavContainer
             $CustomGap="10px"
@@ -168,11 +162,6 @@ const Header = () => {
             )}
           </StyledTagsNavContainer>
         </div>
-
-        
-
-          
-
       </HeaderStyledContainer>
     </>
   );
@@ -197,9 +186,8 @@ const HeaderStyledContainer = styled.div`
     props.$customBackGroundColor || "var(--bg-100)"};
   margin: ${(props) => props.$CustomMargin || 0};
   @media (max-width: 800px) {
-     width: 100%;
-    }
-
+    width: 100%;
+  }
 `;
 
 const StyledNav = styled.nav`
@@ -214,16 +202,15 @@ const StyledNav = styled.nav`
       display: block;
     }
   }
-   
 `;
 
 const SearchContainer = styled.div`
-display: ${(props) => props.$CustomDisplay || "flex"};
+  display: ${(props) => props.$CustomDisplay || "flex"};
   margin: ${(props) => props.$CustomMargin || "0"};
   align-items: ${(props) => props.$CustomAlignItems || "center"};
   justify-content: ${(props) => props.$CustomJustifyContent || "space-between"};
   width: ${(props) => props.$CustomWidth || "auto"};
-   flex: 1;
+  flex: 1;
 `;
 
 const StyledTagsNavContainer = styled.div`
@@ -240,7 +227,6 @@ const StyledTagsNavContainer = styled.div`
     props.$customBackGroundColor || "var(--bg-100)"};
   .allCategories {
     margin-right: ${(props) => props.$CustomMarginRight || "0"};
-    
   }
 
   .TagsNavegation {
@@ -249,10 +235,8 @@ const StyledTagsNavContainer = styled.div`
     justify-content: ${(props) => props.$CustomJustifyContent || "center"};
     align-items: ${(props) => props.$CustomAlignItems || "center"};
     gap: ${(props) => props.$CustomGap || "20px"};
-    
   }
-@media (max-width: 800px) {
-      display: none;
-    }
-  
+  @media (max-width: 800px) {
+    display: none;
+  }
 `;

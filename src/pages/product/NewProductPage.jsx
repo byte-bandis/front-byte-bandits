@@ -11,7 +11,7 @@ import { useTranslation } from "react-i18next";
 import styled from "styled-components";
 import StyledContainer from "../../components/shared/StyledContainer";
 
-const TAG_OPTIONS = ["lifestyle", "mobile", "motor", "work", "others"];
+const TAG_OPTIONS = ["accessories", "fashion", "decoration", "arts", "others"];
 
 const NewProductPage = ({ isEditMode = false }) => {
   const { productId } = useParams();

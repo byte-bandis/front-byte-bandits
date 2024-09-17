@@ -49,7 +49,7 @@ const Deletion = () => {
       const timer = setTimeout(() => {
         setShowDeletionResult(false);
         dispatch(resetUI());
-        navigate(goBack);
+        navigate(goBack, { replace: true });
       }, 3000);
       return () => clearTimeout(timer);
     }

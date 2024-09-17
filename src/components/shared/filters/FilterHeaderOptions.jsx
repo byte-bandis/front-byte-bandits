@@ -52,7 +52,7 @@ const FilterHeaderOptions = ({ minValue, maxValue, min, max }) => {
       setTags((prevTags) =>
         prevTags.includes(tag)
           ? prevTags.filter((t) => t !== tag)
-          : [...prevTags, tag],
+          : [...prevTags, tag]
       );
     }
   };
@@ -136,10 +136,10 @@ const FilterHeaderOptions = ({ minValue, maxValue, min, max }) => {
   };
 
   const TAG_OPTIONS = [
-    { value: "lifestyle", label: t("Lifestyle") },
-    { value: "mobile", label: t("Mobile") },
-    { value: "motor", label: t("Motor") },
-    { value: "work", label: t("Work") },
+    { value: "accessories", label: t("accessories") },
+    { value: "fashion", label: t("fashion") },
+    { value: "decoration", label: t("decoration") },
+    { value: "arts", label: t("arts") },
     { value: "others", label: t("Others") },
   ];
 

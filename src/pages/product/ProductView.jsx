@@ -22,6 +22,7 @@ const ProductView = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const dispatch = useDispatch();
+  const goBack = -1;
 
   const { productId } = useParams();
 
@@ -89,6 +90,7 @@ const ProductView = () => {
   };
   const handleDeleteConfirm = async () => {
     dispatch(deleteAd(productId));
+    navigate(goBack, { replace: true });
   };
 
   if (loadedAds) {
@@ -173,7 +175,10 @@ const ProductView = () => {
                   />
                 )}
               </div>
-              <Link className="userBlock" to={`/${owner.username}`}>
+              <Link
+                className="userBlock"
+                to={`/${owner.username}`}
+              >
                 <img
                   className="userPhoto"
                   src={userphoto}
@@ -189,7 +194,10 @@ const ProductView = () => {
               </div>
               <div className="advert-tags-container">
                 {tags.map((tag, index) => (
-                  <div key={index} className="advert-tagLink">
+                  <div
+                    key={index}
+                    className="advert-tagLink"
+                  >
                     {tag}
                   </div>
                 ))}

@@ -9,6 +9,7 @@ import getTotalAds from '../../store/adscounThunk';
 import { useEffect } from 'react';
 import { getAds } from '../../store/adsThunk';
 import Pager from '../pagination/Pager';
+import ProductItem from '../product/components/ProductItem';
 
 const MyProducts = ({ className }) => {
     const { t } = useTranslation();
@@ -18,7 +19,6 @@ const MyProducts = ({ className }) => {
     const urlParams = new URLSearchParams(window.location.search);
     const adsAccount = useSelector((state) => state.adsState.totalAds);
     const adsData = useSelector((state) => state.adsState.data);
-    console.log(adsData);
     const limit = urlParams.get('limit');
 
     const { username } = useParams();
@@ -59,7 +59,8 @@ const MyProducts = ({ className }) => {
                 <ListItems
                     $customMargin='0 0 0 2rem'
                     $customWidth='100%'
-                    adsData={adsData}
+                    data={adsData}
+                    ItemContiner={ProductItem}
                 />
                 <Pager
                     adsAccount={adsAccount}

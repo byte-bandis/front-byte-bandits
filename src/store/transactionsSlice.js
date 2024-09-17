@@ -1,5 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
 import {
+  getTotalSellerTransactions,
   getTransactions,
   getTransactionsBuyer,
   getTransactionsSeller,
@@ -12,6 +13,7 @@ export const defaultTransactionState = {
   ordersReceived: [],
   ordersSold: [],
   ordersBought: [],
+  totalTransactions: 0,
 };
 
 const transactionSlice = createSlice({
@@ -58,6 +60,9 @@ const transactionSlice = createSlice({
       .addCase(getTransactionsBuyer.rejected, (state, action) => {
         state.status = action.payload.status;
         state.message = action.payload.message;
+      })
+      .addCase(getTotalSellerTransactions.fulfilled, (state, action) => {
+        state.totalTransactions = action.payload;
       });
   },
 });

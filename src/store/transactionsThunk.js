@@ -2,19 +2,30 @@ import { createAsyncThunk } from "@reduxjs/toolkit";
 import { client } from "../api/client";
 
 const transactionsURL = "/transactions";
-
+export const getTotalSellerTransactions = createAsyncThunk(
+  "transactions/getTotalSellerTransactions",
+  async (_, { rejectWithValue }) => {
+    try {
+      const response = await client.get(
+        `${transactionsURL}/count/seller`,
+      );
+      if (response.data) {
+        return  response.data
+        
+      }
+    } catch (error) {
+      return rejectWithValue(error.message || error);
+    }
+  },
+)
 export const getTransactions = createAsyncThunk(
   "transactions/getTransactions",
   async (_, { rejectWithValue }) => {
     try {
-      console.log("entra en transactionsThunk");
       const response = await client.get(`${transactionsURL}/getTransactions/`);
 
-      console.log("Respuesta recibida", response);
       if (response.data) {
-        console.log(response.data);
-        console.log(response.message);
-        console.log(response.status);
+        
         return {
           data: response.data,
           message: response.message,
@@ -29,14 +40,12 @@ export const getTransactions = createAsyncThunk(
 
 export const getTransactionsSeller = createAsyncThunk(
   "transactions/seller",
-  async (_, { rejectWithValue }) => {
+  async (params, { rejectWithValue }) => {
+    const { page, limit } = params;
     try {
-      const response = await client.get(`${transactionsURL}/seller`);
-
+      const response = await client.get(`${transactionsURL}/seller?page=${page}&limit=${limit}`);
+      
       if (response.data) {
-        console.log(response.data);
-        console.log(response.message);
-        console.log(response.status);
         return {
           data: response.data,
           message: response.message,
@@ -56,9 +65,7 @@ export const getTransactionsBuyer = createAsyncThunk(
       const response = await client.get(`${transactionsURL}/buyer`);
 
       if (response.data) {
-        console.log(response.data);
-        console.log(response.message);
-        console.log(response.status);
+        
         return {
           data: response.data,
           message: response.message,

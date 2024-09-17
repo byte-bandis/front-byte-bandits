@@ -7,7 +7,6 @@ const getTotalAds = createAsyncThunk('ads/fetchTotalAds', async ( user, { reject
   if (user) {
 
     url += `?user=${user.user}`
-    console.log(url)
   }
   try {
     const response = await client.get(url);

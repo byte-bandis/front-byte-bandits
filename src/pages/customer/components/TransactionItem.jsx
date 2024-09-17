@@ -1,71 +1,34 @@
-import { Link } from "react-router-dom";
-import { Heart, HeartFill } from "react-bootstrap-icons";
 import PropTypes from "prop-types";
 import styled from "styled-components";
-import { getLikes } from "../../../store/likesThunk";
-import { useDispatch, useSelector } from "react-redux";
-import { useEffect, useState } from "react";
-import slugify from "slugify";
-import { setLike } from "../../../store/likesThunk";
 import noImage from "../../../assets/images/no-image.jpg";
+import { useTranslation } from "react-i18next";
 
-const ProductItem = ({ item, $customTransform, $customMargin }) => {
-  const { _id, adTitle, sell, price, photo, tags, user } = item;
+const TransactionItem = ({ item, $customTransform, $customMargin }) => {
+  const { t } = useTranslation();
+
+  const {_id, buyer, ad, price,createdAt } = item;
   const origin = import.meta.env.VITE_API_BASE_URL;
 
-  const image = photo ? photo : noImage;
-  const authUser = useSelector((state) => state.authState.user.userId);
-  const dispatch = useDispatch();
-  const slug = slugify(adTitle, {
-    replacement: "-",
-    lower: true,
-  });
-  const [iLikeIt, setiLikeIt] = useState(false);
-  useEffect(() => {
-    dispatch(getLikes(_id));
-  }, [_id, dispatch]);
-  const likesCount = useSelector((state) => state.likesSlice.adcrosslikes[_id]);
-
-  const mylikes = useSelector((state) => state.likesSlice.wishlist);
-  useEffect(() => {
-    const filteredLikes = mylikes.filter(
-      (like) => like.ad === _id || like.ad._id === _id,
-    );
-    setiLikeIt(filteredLikes.length > 0);
-  }, [mylikes, _id]);
-  const handleLike = () => {
-    dispatch(setLike({ adId: _id, userId: user._id }));
-  };
+  const image = ad.photo ? ad.photo : noImage;
+  
+  
+  
+  
 
   return (
     <ReducirContainer
       $customMargin={$customMargin}
       $customTransform={$customTransform}
     >
-      <div className="likeContinerDisplay">
-        {iLikeIt ? (
-          <HeartFill
-            className={authUser ? "heart heartbutton" : "heart"}
-            color="var(--accent-100)"
-            onClick={authUser ? handleLike : null}
-          />
-        ) : (
-          <Heart
-            className={authUser ? "heart heartbutton" : "heart"}
-            color="var(--accent-100)"
-            onClick={authUser ? handleLike : null}
-          />
-        )}
-        <h6 className="likes">{likesCount}</h6>
-      </div>
+      
 
-      <Link className="add" to={`/product/${_id}/${slug}`}>
-        <StyledSingleAd className={`single-ad ${sell ? "" : "buyitem"}`}>
+      <div className="add" key={_id} to={`/product/${ad._id}`}>
+        <StyledSingleAd className={`single-ad ${ad.sell ? "" : "buyitem"}`}>
           <div className="img-container">
-            {photo ? (
+            {ad.photo ? (
               <img
                 src={image}
-                alt={"Imagen de " + adTitle}
+                alt={"Imagen de " + ad.adTitle}
                 crossOrigin={origin}
               />
             ) : (
@@ -75,49 +38,63 @@ const ProductItem = ({ item, $customTransform, $customMargin }) => {
 
           <div className="textcontainer">
             <strong className="">{price} €</strong>
-            <p className="item">{adTitle}</p>
-            <p className={`pill sell ${sell ? "" : "buy"}`}>
-              {sell ? "Venta" : "Compra"}
+            <p className="item">{ad.adTitle}</p>
+            <p className={`pill sell`}>
+              {t("Buyer")}{buyer.username}
             </p>
             <div className="tags-container">
-              {tags.map((tag, index) => (
-                <div key={index} className="pill">
-                  <p className="pill-text">{tag}</p>
+                <div  className="pill">
+                  <p className="pill-text">{createdAt}</p>
                 </div>
-              ))}
             </div>
           </div>
         </StyledSingleAd>
-      </Link>
+      </div>
     </ReducirContainer>
   );
 };
 
-ProductItem.propTypes = {
+TransactionItem.propTypes = {
   item: PropTypes.shape({
     _id: PropTypes.string.isRequired,
-    adTitle: PropTypes.string.isRequired,
-    adBody: PropTypes.string.isRequired,
-    sell: PropTypes.bool.isRequired,
-    price: PropTypes.number.isRequired,
-    photo: PropTypes.string,
-    user: PropTypes.shape({
+    seller: PropTypes.string.isRequired,
+    buyer: PropTypes.shape({
       _id: PropTypes.string.isRequired,
       username: PropTypes.string.isRequired,
+      name: PropTypes.string.isRequired,
+      lastname: PropTypes.string.isRequired,
+      mobilePhoneNumber: PropTypes.string.isRequired,
       email: PropTypes.string.isRequired,
       role: PropTypes.string.isRequired,
       birthdate: PropTypes.string.isRequired,
-      creditCard: PropTypes.string,
+      createdAt: PropTypes.string.isRequired,
+      updatedAt: PropTypes.string.isRequired,
+      __v: PropTypes.number.isRequired,
     }),
-    createdAt: PropTypes.string.isRequired,
-    updatedAt: PropTypes.string.isRequired,
-    tags: PropTypes.arrayOf(PropTypes.string).isRequired,
+    ad: PropTypes.shape({
+      _id: PropTypes.string.isRequired,
+      adTitle: PropTypes.string.isRequired,
+      adBody: PropTypes.string.isRequired,
+      sell: PropTypes.bool.isRequired,
+      price: PropTypes.number.isRequired,
+      photo: PropTypes.string,
+      tags: PropTypes.arrayOf(PropTypes.string).isRequired,
+      user: PropTypes.string.isRequired,
+      available: PropTypes.bool.isRequired,
+      createdAt: PropTypes.string.isRequired,
+      updatedAt: PropTypes.string.isRequired,
+
   }),
-  $customMargin: PropTypes.string,
+    state: PropTypes.string.isRequired,
+    price: PropTypes.number.isRequired,
+    createdAt: PropTypes.string.isRequired
+  }),
   $customTransform: PropTypes.string,
+  $customMargin: PropTypes.string,
 };
 
-export default ProductItem;
+
+export default TransactionItem;
 const StyledSingleAd = styled.div`
   box-shadow: 0px 0px 1px 1px var(--shadow-1);
   display: flex;
@@ -125,6 +102,7 @@ const StyledSingleAd = styled.div`
   overflow: hidden;
   width: ${(props) => props.$customWidth || "100%"};
 aspect-ratio: 0.8;
+  max-width: ${(props) => props.$customMaxWidth || "280px"};
   max-height: ${(props) => props.$customMaxHeight || "100%"};
   gap: ${(props) => props.$customGap || "4px"};
   transition: 0.09s;

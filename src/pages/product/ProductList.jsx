@@ -8,6 +8,7 @@ import { getWishlist } from "../../store/likesThunk";
 
 import getTotalAds from "../../store/adscounThunk";
 import ListItems from "./components/ListItems";
+import ProductItem from "./components/ProductItem";
 
 const ProductList = () => {
   const dispatch = useDispatch();
@@ -34,7 +35,7 @@ const ProductList = () => {
 
   return (
     <>
-      <ListItems adsData={adsData} />
+      <ListItems data={adsData} ItemContiner={ProductItem} />
       
       <Pager adsAccount={adsAccount}limit={10} page={page} ></Pager>
       

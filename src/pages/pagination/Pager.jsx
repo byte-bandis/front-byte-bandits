@@ -16,7 +16,6 @@ const Pager = (params) => {
   const navigate = useNavigate();
   const location = useLocation();
   const{adsAccount, limit} =  params;
-
   let active = useSelector((state) => state.adsState.page);
   const steps = 3;
   const max = Math.ceil(adsAccount / limit);

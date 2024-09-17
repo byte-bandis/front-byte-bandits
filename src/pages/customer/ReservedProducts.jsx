@@ -93,7 +93,7 @@ const ReservedProducts = () => {
                 <TransactionIdContainer2>
                   {transaction._id}
                 </TransactionIdContainer2>
-                <ListItems username={userid} adsData={transaction.ad} />
+                <ListItems ad={transaction.ad} ItemContiner={ListItems} />
 
                 <ButtonsContainer>
                   <RegularButton

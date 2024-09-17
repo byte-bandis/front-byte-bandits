@@ -70,3 +70,27 @@ export const getTransactionsBuyer = createAsyncThunk(
     }
   },
 );
+
+export const getTransactionsByUser = createAsyncThunk(
+  "transactionsByUser",
+  async (_, { rejectWithValue }) => {
+    try {
+      const response = await client.get(
+        `${transactionsURL}/transactionsByUser`,
+      );
+
+      if (response.data) {
+        console.log(response.data);
+        console.log(response.message);
+        console.log(response.state);
+        return {
+          data: response.data,
+          message: response.message,
+          status: response.state,
+        };
+      }
+    } catch (error) {
+      return rejectWithValue(error.message || error);
+    }
+  },
+);

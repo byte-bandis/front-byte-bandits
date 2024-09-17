@@ -3,6 +3,7 @@ import {
   getTransactions,
   getTransactionsBuyer,
   getTransactionsSeller,
+  getTransactionsByUser,
 } from "./transactionsThunk";
 
 export const defaultTransactionState = {
@@ -12,6 +13,7 @@ export const defaultTransactionState = {
   ordersReceived: [],
   ordersSold: [],
   ordersBought: [],
+  transactionsByUser: [],
 };
 
 const transactionSlice = createSlice({
@@ -56,6 +58,19 @@ const transactionSlice = createSlice({
         state.message = action.payload.message;
       })
       .addCase(getTransactionsBuyer.rejected, (state, action) => {
+        state.status = action.payload.status;
+        state.message = action.payload.message;
+      })
+      .addCase(getTransactionsByUser.pending, (state) => {
+        state.status = "loading";
+        state.message = null;
+      })
+      .addCase(getTransactionsByUser.fulfilled, (state, action) => {
+        state.status = action.payload.status;
+        state.transactionsByUser = action.payload.data;
+        state.message = action.payload.message;
+      })
+      .addCase(getTransactionsByUser.rejected, (state, action) => {
         state.status = action.payload.status;
         state.message = action.payload.message;
       });

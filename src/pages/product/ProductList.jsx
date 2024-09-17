@@ -16,7 +16,6 @@ const ProductList = () => {
   const userid = useSelector((state) => state.authState.user.userId);
   const filters = useSelector((state) => state.adsState.filters);
   const urlParams = new URLSearchParams(window.location.search);
-  console.log(urlParams)
   const limit = urlParams.get("limit");
 
   const adsAccount = useSelector((state) => state.adsState.totalAds);

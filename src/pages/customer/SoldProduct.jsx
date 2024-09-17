@@ -2,7 +2,7 @@ import StyledMyAccount from "../../components/shared/StyledMyAccount";
 import styled from "styled-components";
 import { useState } from "react";
 import { useDispatch } from "react-redux";
-import { getTransactionsSeller } from "../../store/transactionsThunk";
+import { getTotalSellerTransactions, getTransactionsSeller } from "../../store/transactionsThunk";
 import { useSelector } from "react-redux";
 import { useEffect } from "react";
 import ListItems from "../product/components/ListItems";
@@ -26,11 +26,9 @@ const SoldProducts = () => {
   const soldProductsData = useSelector(
     (state) => state.transactions.ordersSold,
   );
+  
   const { username } = useParams();
-  console.log("soldiseruProductsData", soldProductsData);
   const [showSoldProducts, setShowSoldProducts] = useState(true);
-  const [adsListSellerSoldProducts, setAdsListSellerSoldProducts] = useState([]);
-
   useEffect(() => {
     dispatch(getTotalAds({ user: username }));
     const allFilters = { ...filters, page, limit };
@@ -39,30 +37,22 @@ const SoldProducts = () => {
         allFilters.user = username;
     }
     dispatch(getAds({ id: '', filters: allFilters }));
-}, [adsData, dispatch, filters, limit, page, username]);
+}, [ dispatch, filters, limit, page, username]);
 
   const adsAccount = useSelector((state) => state.adsState.totalAds);
-
-  console.log("adsData", adsData);
-  console.log("soldProductsData", soldProductsData);
-  console.log("adsListSellerSoldProducts", adsListSellerSoldProducts);
+  const transactionsAccount = useSelector(
+    (state) => state.transactions.totalTransactions,
+  )
 
   useEffect(() => {
     if (userid) {
-      dispatch(getTransactionsSeller());
+      dispatch(getTransactionsSeller({ page, limit}));
+      dispatch(getTotalSellerTransactions());
     }
-  }, [dispatch, userid]);
+  }, [dispatch, limit, page, userid]);
 
   
 
-  useEffect(() => {
-    if (userid) {
-      const userSellerSoldProducts = soldProductsData.filter(
-        (item) => item.seller._id === userid,
-      );
-      setAdsListSellerSoldProducts(userSellerSoldProducts);
-    }
-  }, [userid, soldProductsData]);
 
   return (
     <>
@@ -83,7 +73,8 @@ const SoldProducts = () => {
             <ListItems data={adsData} ItemContiner={ProductItem}/>
             <Pager adsAccount={adsAccount} limit={4} page={1} ></Pager>
             </>
-            : <ListItems data={adsListSellerSoldProducts} ItemContiner={TransactionItem}/>}
+            : <><ListItems data={soldProductsData} ItemContiner={TransactionItem}/>
+            <Pager adsAccount={transactionsAccount} limit={4} page={1} ></Pager></>}
 
         </AdsContainer>
       </StyledMyAccount>

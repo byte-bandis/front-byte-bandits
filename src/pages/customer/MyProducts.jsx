@@ -19,7 +19,6 @@ const MyProducts = ({ className }) => {
     const urlParams = new URLSearchParams(window.location.search);
     const adsAccount = useSelector((state) => state.adsState.totalAds);
     const adsData = useSelector((state) => state.adsState.data);
-    console.log(adsData);
     const limit = urlParams.get('limit');
 
     const { username } = useParams();

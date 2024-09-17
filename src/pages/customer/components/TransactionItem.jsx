@@ -6,7 +6,6 @@ import { useTranslation } from "react-i18next";
 const TransactionItem = ({ item, $customTransform, $customMargin }) => {
   const { t } = useTranslation();
 
-  console.log(item)
   const {_id, buyer, ad, price,createdAt } = item;
   const origin = import.meta.env.VITE_API_BASE_URL;
 
@@ -90,8 +89,8 @@ TransactionItem.propTypes = {
     price: PropTypes.number.isRequired,
     createdAt: PropTypes.string.isRequired
   }),
-  $customWidth: PropTypes.string,
-  $customMaxHeight: PropTypes.string,
+  $customTransform: PropTypes.string,
+  $customMargin: PropTypes.string,
 };
 
 

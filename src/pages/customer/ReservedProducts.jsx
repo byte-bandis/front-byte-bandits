@@ -18,7 +18,7 @@ const ReservedProducts = () => {
   const [showAlert, setShowAlert] = useState(false);
 
   const ordersReceived = useSelector(
-    (state) => state.transactions.ordersReceived,
+    (state) => state.transactions.ordersReceived
   );
 
   useEffect(() => {
@@ -31,9 +31,8 @@ const ReservedProducts = () => {
     try {
       const res = await client.post(
         `${import.meta.env.VITE_API_BASE_URL}transactions/handleTransactions`,
-        { transactionId: orderId, action },
+        { transactionId: orderId, action }
       );
-      console.log(res);
       setResponse(res);
       if (res.state === "success") {
         dispatch(getTransactions(userid));

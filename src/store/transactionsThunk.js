@@ -7,14 +7,9 @@ export const getTransactions = createAsyncThunk(
   "transactions/getTransactions",
   async (_, { rejectWithValue }) => {
     try {
-      console.log("entra en transactionsThunk");
       const response = await client.get(`${transactionsURL}/getTransactions/`);
 
-      console.log("Respuesta recibida", response);
       if (response.data) {
-        console.log(response.data);
-        console.log(response.message);
-        console.log(response.status);
         return {
           data: response.data,
           message: response.message,
@@ -34,9 +29,6 @@ export const getTransactionsSeller = createAsyncThunk(
       const response = await client.get(`${transactionsURL}/seller`);
 
       if (response.data) {
-        console.log(response.data);
-        console.log(response.message);
-        console.log(response.status);
         return {
           data: response.data,
           message: response.message,
@@ -56,9 +48,6 @@ export const getTransactionsBuyer = createAsyncThunk(
       const response = await client.get(`${transactionsURL}/buyer`);
 
       if (response.data) {
-        console.log(response.data);
-        console.log(response.message);
-        console.log(response.status);
         return {
           data: response.data,
           message: response.message,

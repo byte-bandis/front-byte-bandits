@@ -15,7 +15,7 @@ const StyledMyAccount = ({ children }) => {
   const loggedUserName = useSelector(getLoggedUserName);
   const navigate = useNavigate();
   const ordersReceived = useSelector(
-    (state) => state.transactions.ordersReceived,
+    (state) => state.transactions.ordersReceived
   );
   const dispatch = useDispatch();
   const [sideBarElements, setSideBarElements] = useState([]);
@@ -23,14 +23,10 @@ const StyledMyAccount = ({ children }) => {
   useEffect(() => {
     if (loggedUserName) {
       try {
-        console.log(loggedUserName);
         // Asegúrate de que esta línea esté llamando a la acción
-        console.log("Despachando getTransactions");
         dispatch(getTransactions())
           .unwrap() // Desempaqueta la promesa para manejar errores
-          .then((response) => {
-            console.log("Respuesta exitosa:", response);
-          })
+          .then((response) => {})
           .catch((error) => {
             console.error("Error al despachar getTransactions:", error);
           });

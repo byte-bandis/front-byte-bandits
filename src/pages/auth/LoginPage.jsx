@@ -80,7 +80,6 @@ const LoginPage = () => {
         safeFrom.startsWith("/chat")
       ) {
         const redirectToChat = `/${loggedUserName}${safeFrom}&buyerId=${loggedUserId}`;
-        console.log(redirectToChat);
         navigate(redirectToChat, {
           replace: true,
           state: { from: redirectToChat },

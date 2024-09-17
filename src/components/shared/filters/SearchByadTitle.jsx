@@ -31,7 +31,6 @@ const SearchByadTitle = ({ onSearch, onClear }) => {
   }, [location.search, dispatch]);
 
   const handleFilterAdsByName = (event) => {
-    console.log("handleFilterAdsByName called with: ", event.target.value);
     setAdTitle(event.target.value);
     if (event.target.value) {
       onSearch();

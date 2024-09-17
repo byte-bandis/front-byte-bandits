@@ -55,7 +55,6 @@ const deleteComment = createAsyncThunk(
   async (commentId, { rejectWithValue }) => {
     try {
       const response = await client.delete(`${commentsURL}/${commentId}`);
-      console.log( "Comentario borrado correctamente",response);
       return commentId;
     } catch (error) {
       return rejectWithValue(error.message || error);

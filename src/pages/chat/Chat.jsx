@@ -105,7 +105,6 @@ const Chat = ({ productId, buyerId, user }) => {
           currentChatId = response.chat._id;
 
           setChatId(currentChatId);
-          console.log("Chat creado:", response.chat);
 
           socket.emit("joinChat", { chatId: currentChatId });
         }
@@ -116,7 +115,6 @@ const Chat = ({ productId, buyerId, user }) => {
           content: message,
         };
 
-        console.log("Enviando mensaje:", newMessage);
         socket.emit("sendMessage", newMessage);
 
         setMessage("");

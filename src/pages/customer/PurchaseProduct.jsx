@@ -12,14 +12,12 @@ const PurchaseProducts = () => {
   const userid = useSelector((state) => state.authState.user.userId);
   const adsData = useSelector((state) => state.adsState.data);
   const boughtProductsData = useSelector(
-    (state) => state.transactions.ordersBought,
+    (state) => state.transactions.ordersBought
   );
 
   const [showBoughtProducts, setShowSoldProducts] = useState(true);
   const [adsListBuyer, setAdsListBuyer] = useState([]);
   const [adsListBoughtProducts, setAdsListBuyerProducts] = useState([]);
-
-  console.log("adsListBoughtProducts", adsListBoughtProducts);
 
   useEffect(() => {
     if (userid) {
@@ -39,7 +37,7 @@ const PurchaseProducts = () => {
   useEffect(() => {
     if (userid) {
       const userBuyerBoughtProducts = boughtProductsData.filter(
-        (item) => item.buyer._id === userid,
+        (item) => item.buyer._id === userid
       );
       setAdsListBuyerProducts(userBuyerBoughtProducts);
     }

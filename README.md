@@ -16,13 +16,23 @@ I Craft You is a React Single Page Application (SPA) built with Vite.
 - Adaptability for Mobile Applications
 - Reduced Server Load
 
-## Starting the app
+## Starting the App
 
-To start the application, first configure the required environment variables as outlined in the .env.example file. Then, install the necessary dependencies by running the following command:
+To start the application, follow these steps:
 
-```sh
-npm install
-```
+1. Configure the required environment variables as outlined in the `.env.example` file.
+
+2. Install the necessary dependencies by running:
+
+   ```sh
+   npm install
+   ```
+
+3. Start the application in development mode:
+
+   ```sh
+   npm run dev
+   ```
 
 ## The core of I Craft You
 
@@ -207,3 +217,19 @@ Under the Safety section, users can perform the following actions:
 Once the account is deleted, all sensitive user data is cleared. However, their user and product IDs remain stored under an anonymous account.
 
 <img src="./docs/assets/deleteaccount.PNG" alt="Delete Account" width="25%">
+
+## Email service
+
+### Welcome email
+
+After registering, user receives a welcome email.
+
+### Restore Password
+
+If user forget their password, can ask to restore it:
+
+#### Step 1: request restoring the password
+
+<img src="./docs/assets/restorepass.PNG" alt="Delete Account" width="50%">
+
+#### Step 2: receives an email with a link

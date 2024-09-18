@@ -6,22 +6,18 @@ import { useTranslation } from "react-i18next";
 const TransactionItem = ({ item, $customTransform, $customMargin }) => {
   const { t } = useTranslation();
 
-  const {_id, buyer, ad, price,createdAt } = item;
+  const { _id, buyer, ad, price, createdAt } = item;
   const origin = import.meta.env.VITE_API_BASE_URL;
 
+  console.log("Transaction item ad", ad);
+
   const image = ad.photo ? ad.photo : noImage;
-  
-  
-  
-  
 
   return (
     <ReducirContainer
       $customMargin={$customMargin}
       $customTransform={$customTransform}
     >
-      
-
       <div className="add" key={_id} to={`/product/${ad._id}`}>
         <StyledSingleAd className={`single-ad ${ad.sell ? "" : "buyitem"}`}>
           <div className="img-container">
@@ -40,12 +36,13 @@ const TransactionItem = ({ item, $customTransform, $customMargin }) => {
             <strong className="">{price} €</strong>
             <p className="item">{ad.adTitle}</p>
             <p className={`pill sell`}>
-              {t("Buyer")}{buyer.username}
+              {t("Buyer")}
+              {buyer.username}
             </p>
             <div className="tags-container">
-                <div  className="pill">
-                  <p className="pill-text">{createdAt}</p>
-                </div>
+              <div className="pill">
+                <p className="pill-text">{createdAt}</p>
+              </div>
             </div>
           </div>
         </StyledSingleAd>
@@ -83,16 +80,14 @@ TransactionItem.propTypes = {
       available: PropTypes.bool.isRequired,
       createdAt: PropTypes.string.isRequired,
       updatedAt: PropTypes.string.isRequired,
-
-  }),
+    }),
     state: PropTypes.string.isRequired,
     price: PropTypes.number.isRequired,
-    createdAt: PropTypes.string.isRequired
+    createdAt: PropTypes.string.isRequired,
   }),
   $customTransform: PropTypes.string,
   $customMargin: PropTypes.string,
 };
-
 
 export default TransactionItem;
 const StyledSingleAd = styled.div`

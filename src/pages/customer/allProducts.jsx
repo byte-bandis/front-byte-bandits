@@ -29,43 +29,29 @@ const AllProducts = () => {
   );
 
   const [showAllProducts, setShowAllProducts] = useState(true);
-  const [adsListSales, setAdsListSales] = useState([]);
-  const [adsListPurchase, setAdsListPurchase] = useState([]);
 
-  console.log("adsData", adsData);
-  console.log("transactionsUserData", transactionsUserData);
-  console.log("adsListSales", adsListSales);
-  console.log("adsListPurchase", adsListPurchase);
+  const salesTransactions = transactionsUserData
+    .filter((transaction) => transaction.seller._id === userid)
+    .map((item) => ({ ...item.ad, type: "transaction" }));
 
-  useEffect(() => {
-    if (userid) {
-      dispatch(getTransactionsByUser());
-    }
-  }, [dispatch, userid]);
+  const purchaseTransactions = transactionsUserData
+    .filter((transaction) => transaction.buyer._id === userid)
+    .map((item) => ({ ...item.ad, type: "transaction" }));
 
-  useEffect(() => {
-    if (userid) {
-      const salesTransactions = transactionsUserData
-        .filter((transaction) => transaction.seller._id === userid)
-        .map((item) => item.ad);
+  const userAdsForSale = adsData
+    .filter((ad) => ad.user._id === userid && !ad.sell === true)
+    .map((ad) => ({ ...ad, type: "ad" }));
 
-      const purchaseTransactions = transactionsUserData
-        .filter((transaction) => transaction.buyer._id === userid)
-        .map((item) => item.ad);
+  const userAdsWanted = adsData
+    .filter((ad) => ad.user._id === userid && !ad.sell === false)
+    .map((ad) => ({ ...ad, type: "ad" }));
 
-      const userAdsForSale = adsData.filter(
-        (ad) => ad.user._id === userid && !ad.sell === true,
-      );
+  const userSales = [...salesTransactions, ...userAdsForSale];
 
-      const userAdsWanted = adsData.filter(
-        (ad) => ad.user._id === userid && !ad.sell === false,
-      );
+  const userPurchases = [...purchaseTransactions, ...userAdsWanted];
 
-      setAdsListSales([...salesTransactions, ...userAdsForSale]);
-
-      setAdsListPurchase([...purchaseTransactions, ...userAdsWanted]);
-    }
-  }, [transactionsUserData, adsData, userid]);
+  console.log("userSales", userSales);
+  console.log("userPurchases", userPurchases);
 
   useEffect(() => {
     dispatch(getTotalAds({ user: username }));
@@ -101,12 +87,15 @@ const AllProducts = () => {
         <AdsContainer>
           {showAllProducts ? (
             <>
-              {adsListSales.length > 0 ? (
+              {userSales.length > 0 ? (
                 <>
                   <ListItems
-                    data={adsListSales}
-                    username={adsListSales.map((item) => item.user._id)}
-                    ItemContiner={ProductItem}
+                    data={userSales}
+                    username={userSales.map((item) => item.user._id)}
+                    ItemContiner={(itemData) => {
+                      const item = itemData; // Desestructuramos el objeto
+                      return item.type === "ad" ? ProductItem : TransactionItem;
+                    }}
                   />
                   <Pager adsAccount={adsAccount} limit={4} page={1} />
                 </>
@@ -116,12 +105,15 @@ const AllProducts = () => {
             </>
           ) : (
             <>
-              {adsListPurchase.length > 0 ? (
+              {userPurchases.length > 0 ? (
                 <>
                   <ListItems
-                    data={adsListPurchase}
-                    username={adsListPurchase.map((item) => item.user._id)}
-                    ItemContiner={TransactionItem}
+                    data={userSales}
+                    username={userSales.map((item) => item.user._id)}
+                    ItemContiner={(itemData) => {
+                      const item = itemData; // Desestructuramos el objeto
+                      return item.type === "ad" ? ProductItem : TransactionItem;
+                    }}
                   />
                   <Pager adsAccount={transactionsAccount} limit={4} page={1} />
                 </>

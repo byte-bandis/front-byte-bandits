@@ -31,32 +31,14 @@ const PurchaseProducts = () => {
 
   const { username } = useParams();
   const [showBoughtProducts, setShowSoldProducts] = useState(true);
-  const [adsListBuyer, setAdsListBuyer] = useState([]);
-  const [adsListBoughtProducts, setAdsListBuyerProducts] = useState([]);
 
-  useEffect(() => {
-    if (userid) {
-      dispatch(getTransactionsByUser());
-    }
-  }, [dispatch, userid]);
+  const userBuyer = adsData
+    .filter((item) => item.user._id === userid)
+    .filter((item) => item.sell === false);
 
-  useEffect(() => {
-    if (userid) {
-      const userBuyer = adsData
-        .filter((item) => item.user._id === userid)
-        .filter((item) => item.sell === false);
-      setAdsListBuyer(userBuyer);
-    }
-  }, [adsData, userid]);
-
-  useEffect(() => {
-    if (userid) {
-      const userBuyerBoughtProducts = transactionsData
-        .filter((item) => item.buyer)
-        .filter((item) => item.buyer._id === userid);
-      setAdsListBuyerProducts(userBuyerBoughtProducts);
-    }
-  }, [userid, transactionsData]);
+  const userBuyerBoughtProducts = transactionsData
+    .filter((item) => item.buyer)
+    .filter((item) => item.buyer._id === userid);
 
   useEffect(() => {
     dispatch(getTotalAds({ user: username }));
@@ -94,11 +76,11 @@ const PurchaseProducts = () => {
       <AdsContainer>
         {showBoughtProducts ? (
           <>
-            {adsListBuyer.length > 0 ? (
+            {userBuyer.length > 0 ? (
               <>
                 <ListItems
-                  data={adsListBuyer}
-                  username={adsListBuyer.map((item) => item.user._id)}
+                  data={userBuyer}
+                  username={userBuyer.map((item) => item.user._id)}
                   ItemContiner={ProductItem}
                 />
                 <Pager adsAccount={adsAccount} limit={4} page={1} />
@@ -109,11 +91,11 @@ const PurchaseProducts = () => {
           </>
         ) : (
           <>
-            {adsListBoughtProducts.length > 0 ? (
+            {userBuyerBoughtProducts.length > 0 ? (
               <>
                 <ListItems
-                  data={adsListBoughtProducts}
-                  username={adsListBuyer.map((item) => item.user._id)}
+                  data={userBuyerBoughtProducts}
+                  username={userBuyerBoughtProducts.map((item) => item._id)}
                   ItemContiner={TransactionItem}
                 />
                 <Pager adsAccount={transactionsAccount} limit={4} page={1} />

@@ -11,6 +11,7 @@ import Pager from "../pagination/Pager";
 import { useParams } from "react-router-dom";
 import getTotalAds from "../../store/adscounThunk";
 import { getAds } from "../../store/adsThunk";
+import ProductItem from "../product/components/ProductItem";
 
 const SoldProducts = () => {
   const dispatch = useDispatch();
@@ -28,34 +29,22 @@ const SoldProducts = () => {
   );
 
   const [showSoldProducts, setShowSoldProducts] = useState(true);
-  const [adsListSeller, setAdsListSeller] = useState([]);
-  const [adsListSellerProducts, setAdsListSellerSoldProducts] = useState([]);
-
-  console.log(transactionsData);
-  console.log(adsData);
-  console.log("adsListSeller", adsListSeller);
-  console.log("adsListSellerProducts", adsListSellerProducts);
 
   const userNOMBRE = adsData.map((item) => item.user);
   console.log("userNOMBRE", userNOMBRE);
 
-  useEffect(() => {
-    if (userid) {
-      const userSeller = adsData
-        .filter((item) => item.user._id === userid)
-        .filter((item) => item.sell === true);
-      setAdsListSeller(userSeller);
-    }
-  }, [userid, adsData]);
+  const userSeller = adsData
+    .filter((item) => item.user._id === userid)
+    .filter((item) => item.sell === true);
 
-  useEffect(() => {
-    if (userid) {
-      const userSellerSoldProducts = transactionsData
-        .filter((item) => item.seller)
-        .filter((item) => item.seller._id === userid);
-      setAdsListSellerSoldProducts(userSellerSoldProducts);
-    }
-  }, [userid, transactionsData]);
+  const userSellerSoldProducts = transactionsData
+    .filter((item) => item.seller)
+    .filter((item) => item.seller._id === userid);
+
+  console.log(transactionsData);
+  console.log(adsData);
+  console.log("userSeller", userSeller);
+  console.log("userSellerSoldProducts", userSellerSoldProducts);
 
   useEffect(() => {
     dispatch(getTotalAds({ user: username }));
@@ -79,7 +68,6 @@ const SoldProducts = () => {
     }
   }, [dispatch, limit, page, userid]);
 
-  console.log(adsData);
   return (
     <>
       <StyledMyAccount>
@@ -96,12 +84,12 @@ const SoldProducts = () => {
         <AdsContainer>
           {showSoldProducts ? (
             <>
-              {adsListSeller.length > 0 ? (
+              {userSeller.length > 0 ? (
                 <>
                   <ListItems
-                    username={adsListSeller.map((item) => item.user._id)}
-                    data={adsListSeller}
-                    ItemContiner={TransactionItem}
+                    username={userSeller.map((item) => item.user._id)}
+                    data={userSeller}
+                    ItemContiner={ProductItem}
                   />
                   <Pager adsAccount={adsAccount} limit={4} page={1} />
                 </>
@@ -111,11 +99,11 @@ const SoldProducts = () => {
             </>
           ) : (
             <>
-              {adsListSellerProducts.length > 0 ? (
+              {userSellerSoldProducts.length > 0 ? (
                 <>
                   <ListItems
-                    data={adsListSellerProducts}
-                    username={adsListSeller.map((item) => item.user._id)}
+                    data={userSellerSoldProducts}
+                    username={userSellerSoldProducts.map((item) => item._id)}
                     ItemContiner={TransactionItem}
                   />
                   <Pager adsAccount={transactionsAccount} limit={4} page={1} />

@@ -53,6 +53,9 @@ const TagsContainer = styled.div`
   flex-direction: column;
   background-color: var(--bg-100);
   padding: 5px 5px;
+  border-radius: 5px;
+  border: 1px solid var(--primary-200);
+  
 `;
 
 const TagColumn = styled.div`
@@ -62,8 +65,15 @@ const TagColumn = styled.div`
 
 const TagLabel = styled.label`
   margin-bottom: 8px;
+  &:hover {
+    cursor: pointer;
+    background-color: var(--primary-200);
+  }
+  
+  
 `;
 
 const TagInput = styled.input`
   margin-right: 8px;
+  
 `;

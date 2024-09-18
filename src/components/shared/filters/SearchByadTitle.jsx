@@ -85,20 +85,23 @@ const SearchByadTitle = ({ onSearch, onClear }) => {
           value={adTitle}
           onEnter={handleSearch}
           $CustomWidth="100%"
-        />
-        {adTitle && (
-          <RegularButton
-            onClick={handleClear}
-            $customBackground="var(--accent-100)"
-            $customColor="white"
-            $customHoverBackgroundColor="var(--accent-200)"
-            $customHoverColor="white"
-            $customBorder="none"
-            $customMargin="19px 40px 0 -90px"
-          >
-            X
-          </RegularButton>
-        )}
+          Children={adTitle && (
+            <RegularButton
+              onClick={handleClear}
+              $customBackground="var(--accent-100)"
+              $customColor="white"
+              $customHoverBackgroundColor="var(--accent-200)"
+              $customHoverColor="white"
+              $customBorder="none"
+              $customPosition="absolute"
+              $customMargin="3px"
+            >
+              X
+            </RegularButton>
+          )}
+        > 
+        
+        </SearchByName>
       </SearchContainer>
     </>
   );
@@ -116,5 +119,6 @@ export default SearchByadTitle;
 const SearchContainer = styled.div`
   display: flex;
   justify-content: space-between;
+  position: relative;
   width: ${(props) => props.$CustomWidth || "100%"};
 `;

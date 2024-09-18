@@ -1,7 +1,7 @@
 import P from "prop-types";
 import styled from "styled-components";
 
-const SearchByName = ({ value, onChange, onEnter, $CustomWidth }) => {
+const SearchByName = ({ value, onChange, onEnter, $CustomWidth, Children }) => {
   const handleKeyPress = (event) => {
     if (event.key === "Enter") {
       onEnter(event);
@@ -9,7 +9,8 @@ const SearchByName = ({ value, onChange, onEnter, $CustomWidth }) => {
   };
 
   return (
-    <Container>
+    <Container
+    customFlexDirection="row">
       <Input
         type="text"
         onChange={onChange}
@@ -18,6 +19,8 @@ const SearchByName = ({ value, onChange, onEnter, $CustomWidth }) => {
         onKeyPress={handleKeyPress}
         $CustomWidth={$CustomWidth}
       />
+            {Children}
+
     </Container>
   );
 };
@@ -28,6 +31,7 @@ SearchByName.propTypes = {
   value: P.string,
   onEnter: P.func.isRequired,
   $CustomWidth: P.string,
+  Children: P.node,
 };
 
 export default SearchByName;

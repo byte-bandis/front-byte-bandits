@@ -213,6 +213,7 @@ const FilterHeaderOptions = ({ minValue, maxValue, min, max }) => {
           selectedTags={[selectedOrderDate]}
           handleTagChange={handleSortChange(setSelectedOrderDate)}
           type="radio"
+          
         />
       </DropdownStyled>
 

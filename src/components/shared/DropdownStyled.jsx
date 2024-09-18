@@ -10,7 +10,9 @@ const DropdownStyled = ({ label, children }) => {
   };
 
   return (
-    <DropdownContainer>
+    <DropdownContainer
+    $CustomHoverColor="var(--accent-100)"
+    $CustomHoverBackgroundColor="var(--bg-300)">
       <DropdownHeader onClick={handleToggleDropdown}>{label}</DropdownHeader>
       {isOpen && <DropdownBody>{children}</DropdownBody>}
     </DropdownContainer>
@@ -42,14 +44,16 @@ const DropdownHeader = styled.div`
   cursor: pointer;
   margin: auto;
   text-align: center;
+border-radius: 5px;
+background-color: var--accent-100);
 
 `;
 
 const DropdownBody = styled.div`
   position: absolute;
   background-color: var(--bg-100);
-  border: 1px solid #ccc;
   box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
   z-index: 1;
   width: 120px;
+  background-color: #00000000;
 `;

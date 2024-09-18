@@ -6,14 +6,17 @@ import styled from "styled-components";
 import { useSelector, useDispatch } from "react-redux";
 import { useEffect } from "react";
 import { getTotalLikes } from "../../store/likesThunk";
+import { useTranslation } from "react-i18next";
+
 const Wishlist = () => {
+  const { t } = useTranslation();
   const dispatch = useDispatch();
   const page = useSelector((state) => state.adsState.page);
   const userName = useSelector((state) => state.authState.user.userName);
   const userLikes = useSelector((state) => state.likesSlice.wishlist);
   const searchParams = new URLSearchParams(window.location.search);
   const limit = searchParams.get("limit");
- const adsAccount = useSelector((state) => state.likesSlice.totalLikes);
+  const adsAccount = useSelector((state) => state.likesSlice.totalLikes);
   useEffect(() => {
     if (userName) {
       dispatch(getWishlist({ page, limit }));
@@ -22,11 +25,11 @@ const Wishlist = () => {
   useEffect(() => {
     dispatch(getTotalLikes());
   }, [dispatch]);
-  
-    return (
+
+  return (
     <>
       <StyledMyAccount>
-        <StyledH1>Wishlist</StyledH1>
+        <StyledH1>{t("Wishlist")}</StyledH1>
         <WishlistContainer>
           {" "}
           {userLikes.length > 0 ? (
@@ -34,23 +37,25 @@ const Wishlist = () => {
               .map((like) => like.ad)
               .map((ad) => (
                 <ProductItem
-                ad={ad}
-                key={ad._id}
-                adTitle={ad.adTitle}
-                adBody={ad.adBody}
-                sell={ad.sell}
-                price={ad.price}
-                photo={ad.photo}
-                user={ad.user}
-                createdAt={ad.createdAt}
-                updatedAt={ad.updatedAt}
-                tags={ad.tags || []}
+                  ad={ad}
+                  key={ad._id}
+                  adTitle={ad.adTitle}
+                  adBody={ad.adBody}
+                  sell={ad.sell}
+                  price={ad.price}
+                  photo={ad.photo}
+                  user={ad.user}
+                  createdAt={ad.createdAt}
+                  updatedAt={ad.updatedAt}
+                  tags={ad.tags || []}
                   $customTransform="scale(0.7)"
                   $customMargin="-15px"
                 />
               ))
           ) : (
-            <p className="no-favorites">There is no favorites</p>
+            <p className="no-favorites">
+              {t("There are no products to display.")}
+            </p>
           )}
         </WishlistContainer>
         <Pager adsAccount={adsAccount}></Pager>
@@ -58,8 +63,6 @@ const Wishlist = () => {
     </>
   );
 };
-
-
 
 export default Wishlist;
 

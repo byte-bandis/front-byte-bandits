@@ -193,5 +193,15 @@
   "confirm_current_password": "Confirm your password",
   "info_confirm_pass_before_modifyng_account": "In order to run this action, you need to confirm your password first.",
   "confirm": "Confirm",
-  "Buyer": "Buyer: "
+  "Buyer": "Buyer: ",
+  "Orders received": "Orders received",
+  "Accept": "Accept",
+  "Reject": "Reject",
+  "Sold orders and products to sale": "Sold orders and products to sale",
+  "Products to Sell": "Products to Sell",
+  "Sold Products": "Sold Products",
+  "There are no products to display.": "There are no products to display.",
+  "Bought and wanted products": "Bought and wanted products",
+  "Wanted products": "Wanted products",
+  "Purchased products": "Purchased products"
 }

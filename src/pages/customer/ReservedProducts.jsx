@@ -9,8 +9,10 @@ import { client } from "../../api/client";
 import CustomAlert from "../../components/shared/Alert";
 import { useState } from "react";
 import TransactionItem from "./components/TransactionItem";
+import { useTranslation } from "react-i18next";
 
 const ReservedProducts = () => {
+  const { t } = useTranslation();
   const dispatch = useDispatch();
   const userid = useSelector((state) => state.authState.user.userId);
   const [response, setResponse] = useState(null);
@@ -71,7 +73,7 @@ const ReservedProducts = () => {
   return (
     <>
       <StyledMyAccount>
-        <StyledH1>Orders received</StyledH1>
+        <StyledH1>{t("Orders received")}</StyledH1>
         <OrdersContainer>
           {showAlert && (
             <CustomAlert
@@ -101,7 +103,7 @@ const ReservedProducts = () => {
                         $customBackground="var(--primary-300)"
                         {...commonButtonProps}
                       >
-                        Accept
+                        {t("Accept")}
                       </RegularButton>
 
                       <RegularButton
@@ -115,13 +117,13 @@ const ReservedProducts = () => {
                         $customBackground="var(--accent-200)"
                         {...commonButtonProps}
                       >
-                        Reject
+                        {t("Reject")}
                       </RegularButton>
                     </ButtonsContainer>
                   </OrderWrapper>
                 ))
               ) : (
-                <p>There is no orders</p>
+                <p>{t("There are no products to display.")}</p>
               )}
             </OrderGrid>
           </>

@@ -33,7 +33,7 @@ export const getTransactionsByUser = createAsyncThunk(
       if (response.data) {
         return {
           data: response.data,
-          message: response.message,
+          // message: response.message,
           status: response.state,
         };
       }

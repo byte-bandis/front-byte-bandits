@@ -12,8 +12,10 @@ import { useParams } from "react-router-dom";
 import getTotalAds from "../../store/adscounThunk";
 import { getAds } from "../../store/adsThunk";
 import ProductItem from "../product/components/ProductItem";
+import { useTranslation } from "react-i18next";
 
 const SoldProducts = () => {
+  const { t } = useTranslation();
   const dispatch = useDispatch();
   const urlParams = new URLSearchParams(window.location.search);
   const { username } = useParams();
@@ -63,13 +65,13 @@ const SoldProducts = () => {
   return (
     <>
       <StyledMyAccount>
-        <StyledH1>Orders sold and products in sales</StyledH1>
+        <StyledH1>{t("Sold orders and products to sale")}</StyledH1>
         <ButtonContainer>
           <button onClick={() => setShowSoldProducts(true)}>
-            Products to Sell
+            {t("Products to Sell")}
           </button>
           <button onClick={() => setShowSoldProducts(false)}>
-            Sold Products
+            {t("Sold Products")}
           </button>
         </ButtonContainer>
 
@@ -86,7 +88,7 @@ const SoldProducts = () => {
                   <Pager adsAccount={adsAccount} limit={4} page={1} />
                 </>
               ) : (
-                <p>There are no products to display.</p>
+                <p>{t("There are no products to display.")}</p>
               )}
             </>
           ) : (
@@ -101,7 +103,7 @@ const SoldProducts = () => {
                   <Pager adsAccount={transactionsAccount} limit={4} page={1} />
                 </>
               ) : (
-                <p>There are no products to display</p>
+                <p>{t("There are no products to display.")}</p>
               )}
             </>
           )}

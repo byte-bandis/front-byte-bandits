@@ -191,5 +191,15 @@
   "confirm_current_password": "Confirma tu contraseña",
   "info_confirm_pass_before_modifyng_account": "Para realizar esta acción, tienes que confirmar tu contraseña primero.",
   "confirm": "Confirmar",
-  "Buyer": "Comprador: "
+  "Buyer": "Comprador: ",
+  "Orders received": "Pedidos recibidos",
+  "Accept": "Aceptar",
+  "Reject": "Rechazar",
+  "Sold orders and products to sale": "Pedidos vendidos y productos para vender",
+  "Products to Sell": "Productos para vender",
+  "Sold Products": "Pedidos vendidos",
+  "There are no products to display.": "No hay pedidos a mostrar",
+  "Bought and wanted products": "Productos comprados y productos buscados",
+  "Wanted products": "Productos buscados",
+  "Purchased products": "Productos comprados"
 }

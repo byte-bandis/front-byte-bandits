@@ -13,9 +13,7 @@ import styled from "styled-components";
 
 const Pager = (params) => {
   const dispatch = useDispatch();
-  useEffect(() => {
-    dispatch(setPage(1));
-  }, []);
+  
   const navigate = useNavigate();
   const location = useLocation();
   const{adsAccount, limit} =  params;
@@ -23,7 +21,11 @@ const Pager = (params) => {
   const steps = 3;
   const max = Math.ceil(adsAccount / limit);
   let items = [];
-
+  useEffect(() => {
+    if  (adsAccount) {
+    dispatch(setPage(1));
+    }
+  }, [adsAccount]);
 
   useEffect(() => {
     const queryParams = new URLSearchParams(location.search);

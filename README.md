@@ -34,6 +34,12 @@ To start the application, follow these steps:
    npm run dev
    ```
 
+## Architecture Diagram
+
+You can view the Architecture Diagram of I Craft You here:
+
+[Architecture Diagram](https://viewer.diagrams.net/?tags=%7B%7D&lightbox=1&highlight=0000ff&edit=_blank&layers=1&nav=1&title=README_%20diagrama_ICraftYou1.drawio#Uhttps%3A%2F%2Fdrive.google.com%2Fuc%3Fid%3D1-KR3vBCrQiqzf1mZQ22iCW4GUinOWsz-%26export%3Ddownload)
+
 ## The core of I Craft You
 
 The application is built around four core features and the relationships established between them, which vary depending on whether the user is authenticated or not:

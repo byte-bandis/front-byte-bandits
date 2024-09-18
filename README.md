@@ -106,3 +106,62 @@ When authenticated, users can access the following features in the Ads Detail Vi
 - Buy the product
 
 <img src="./docs/assets/addetail.PNG" alt="Ad Detail" width="50%">
+
+## User Profiles
+
+### Not Authenticated
+
+Unauthenticated users can access the public profiles of other users, where they can view public images and product listings:
+
+<img src="./docs/assets/publicprofile.PNG" alt="Public Profile" width="80%">
+
+## Private Area
+
+After logging in, users can access their private area to perform several actions:
+
+- Update their public profile
+- View and update their private data
+- Check reserved products
+- View sales history
+- View purchase history
+- Manage their wishlist
+- Access the chat
+- Execute sensitive account-related actions
+
+### Edit Public Profile
+
+Authenticated users have the ability to edit their own public profiles, including updating images and descriptions:
+
+<img src="./docs/assets/editpublicprofile.png" alt="Edit Public Profile" width="80%">
+
+### View and update private data
+
+#### Personal Information
+
+Manage your identification and contact details:
+
+<img src="./docs/assets/myData.PNG" alt="Edit User Data" width="80%">
+
+#### Address
+
+Manage your postal address information:
+
+<img src="./docs/assets/address.PNG" alt="Edit Address" width="80%">
+
+#### Credit Card
+
+Update your payment method details:
+
+<img src="./docs/assets/creditcard.PNG" alt="Edit Credit Card" width="80%">
+
+## Check Reserved Products
+
+When a user clicks the "Buy" button on a product, the ad owner receives a purchase request, which is displayed in their "Reserved" section.
+
+<img src="./docs/assets/orderreceived.PNG" alt="Reserved Products" width="80%">
+
+## View Sales History
+
+In the Sales section, users can view the list of items they have already sold, as well as those currently available for sale.
+
+<img src="./docs/assets/orderreceived.PNG" alt="Reserved Products" width="80%">

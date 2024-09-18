@@ -12,8 +12,10 @@ import Pager from "../pagination/Pager";
 import { useParams } from "react-router-dom";
 import getTotalAds from "../../store/adscounThunk";
 import { getAds } from "../../store/adsThunk";
+import { useTranslation } from "react-i18next";
 
 const PurchaseProducts = () => {
+  const { t } = useTranslation();
   const dispatch = useDispatch();
   const urlParams = new URLSearchParams(window.location.search);
 
@@ -62,13 +64,13 @@ const PurchaseProducts = () => {
 
   return (
     <StyledMyAccount>
-      <StyledH1>Orders bought and products searched to buy</StyledH1>
+      <StyledH3>{t("Bought and wanted products")}</StyledH3>
       <ButtonContainer>
         <button onClick={() => setShowSoldProducts(true)}>
-          Products searching to buy
+          {t("Wanted products")}
         </button>
         <button onClick={() => setShowSoldProducts(false)}>
-          Bought Products
+          {t("Purchased products")}
         </button>
       </ButtonContainer>
       <AdsContainer>
@@ -84,7 +86,7 @@ const PurchaseProducts = () => {
                 <Pager adsAccount={adsAccount} limit={4} page={1} />
               </>
             ) : (
-              <p>There are no products to display.</p>
+              <p>{t("There are no products to display.")}</p>
             )}
           </>
         ) : (
@@ -99,7 +101,7 @@ const PurchaseProducts = () => {
                 <Pager adsAccount={transactionsAccount} limit={4} page={1} />
               </>
             ) : (
-              <p>There are no products to display.</p>
+              <p>{t("There are no products to display.")}</p>
             )}
           </>
         )}
@@ -112,6 +114,6 @@ export default PurchaseProducts;
 
 const AdsContainer = styled.div``;
 
-const StyledH1 = styled.h1``;
+const StyledH3 = styled.h3``;
 
 const ButtonContainer = styled.div``;

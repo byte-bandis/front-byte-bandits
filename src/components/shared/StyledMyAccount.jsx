@@ -52,7 +52,7 @@ const StyledMyAccount = ({ children }) => {
         to: `/${loggedUserName}/soldProducts`,
       },
       {
-        text: t("Purchased"),
+        text: t("purchases"),
         to: `/${loggedUserName}/purchasedProducts`,
       },
       {

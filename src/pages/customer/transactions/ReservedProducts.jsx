@@ -1,15 +1,16 @@
-import StyledMyAccount from "../../components/shared/StyledMyAccount";
+import StyledMyAccount from "../../../components/shared/StyledMyAccount";
 import styled from "styled-components";
 import { useSelector, useDispatch } from "react-redux";
 import { useEffect } from "react";
-import { getTransactions } from "../../store/transactionsThunk";
+import { getTransactions } from "../../../store/transactionsThunk";
 
-import { RegularButton as BaseRegularButton } from "../../components/shared/buttons";
-import { client } from "../../api/client";
-import CustomAlert from "../../components/shared/Alert";
+import { RegularButton as BaseRegularButton } from "../../../components/shared/buttons";
+import { client } from "../../../api/client";
+import CustomAlert from "../../../components/shared/Alert";
 import { useState } from "react";
-import TransactionItem from "./components/TransactionItem";
+import TransactionItem from "../components/TransactionItem";
 import { useTranslation } from "react-i18next";
+import StyledTitle from "./Small components/StyledTitle";
 
 const ReservedProducts = () => {
   const { t } = useTranslation();
@@ -73,7 +74,7 @@ const ReservedProducts = () => {
   return (
     <>
       <StyledMyAccount>
-        <StyledH1>{t("Orders received")}</StyledH1>
+        <StyledTitle>{t("Orders received")}</StyledTitle>
         <OrdersContainer>
           {showAlert && (
             <CustomAlert
@@ -135,16 +136,6 @@ const ReservedProducts = () => {
 
 export default ReservedProducts;
 
-const StyledH1 = styled.h1`
-  font-size: 3em;
-  text-align: center;
-  margin-bottom: 20px;
-
-  @media (max-width: 768px) {
-    font-size: 2rem;
-  }
-`;
-
 const OrdersContainer = styled.div`
   display: flex;
   flex-direction: column;
@@ -162,10 +153,7 @@ const OrdersContainer = styled.div`
 `;
 
 const RegularButton = styled(BaseRegularButton)`
-  
-  background: ${(props) => props.$customBackground};
-
-  
+  background: ${(props) => props.$customBackground}; 
   }
 `;
 

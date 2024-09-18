@@ -1,18 +1,20 @@
-import StyledMyAccount from "../../components/shared/StyledMyAccount";
-import styled from "styled-components";
+import StyledMyAccount from "../../../components/shared/StyledMyAccount";
 import { useState } from "react";
 import { useDispatch } from "react-redux";
-import { getTransactionsByUser } from "../../store/transactionsThunk";
+import { getTransactionsByUser } from "../../../store/transactionsThunk";
 import { useSelector } from "react-redux";
 import { useEffect } from "react";
-import ListItems from "../product/components/ListItems";
-import TransactionItem from "./components/TransactionItem";
-import Pager from "../pagination/Pager";
+import ListItems from "../../product/components/ListItems";
+import TransactionItem from "../components/TransactionItem";
+import Pager from "../../pagination/Pager";
 import { useParams } from "react-router-dom";
-import getTotalAds from "../../store/adscounThunk";
-import { getAds } from "../../store/adsThunk";
-import ProductItem from "../product/components/ProductItem";
+import getTotalAds from "../../../store/adscounThunk";
+import { getAds } from "../../../store/adsThunk";
+import ProductItem from "../../product/components/ProductItem";
 import { useTranslation } from "react-i18next";
+import { RegularButton } from "../../../components/shared/buttons";
+import StyledTitle from "./Small components/StyledTitle";
+import ButtonContainer from "./Small components/ButtonsContainer";
 
 const SoldProducts = () => {
   const { t } = useTranslation();
@@ -65,17 +67,17 @@ const SoldProducts = () => {
   return (
     <>
       <StyledMyAccount>
-        <StyledH1>{t("Sold orders and products to sale")}</StyledH1>
+        <StyledTitle>{t("Sold orders and products to sale")}</StyledTitle>
         <ButtonContainer>
-          <button onClick={() => setShowSoldProducts(true)}>
+          <RegularButton onClick={() => setShowSoldProducts(true)}>
             {t("Products to Sell")}
-          </button>
-          <button onClick={() => setShowSoldProducts(false)}>
+          </RegularButton>
+          <RegularButton onClick={() => setShowSoldProducts(false)}>
             {t("Sold Products")}
-          </button>
+          </RegularButton>
         </ButtonContainer>
 
-        <AdsContainer>
+        <div>
           {showSoldProducts ? (
             <>
               {userSeller.length > 0 ? (
@@ -107,15 +109,9 @@ const SoldProducts = () => {
               )}
             </>
           )}
-        </AdsContainer>
+        </div>
       </StyledMyAccount>
     </>
   );
 };
 export default SoldProducts;
-
-const AdsContainer = styled.div``;
-
-const StyledH1 = styled.h1``;
-
-const ButtonContainer = styled.div``;

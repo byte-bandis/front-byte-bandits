@@ -2,7 +2,7 @@ import StyledMyAccount from "../../components/shared/StyledMyAccount";
 import styled from "styled-components";
 import { useState } from "react";
 import { useDispatch } from "react-redux";
-import { getTransactionsByUser } from "../../store/transactionsThunk";
+import { getCountSellerTransactions, getTransactionsByUser } from "../../store/transactionsThunk";
 import { useSelector } from "react-redux";
 import { useEffect } from "react";
 import ListItems from "../product/components/ListItems";
@@ -24,6 +24,7 @@ const SoldProducts = () => {
   const adsData = useSelector((state) => state.adsState.data);
   const filters = useSelector((state) => state.adsState.filters);
   const limit = urlParams.get("limit");
+  
   const page = useSelector((state) => state.adsState.page);
 
   const transactionsData = useSelector(
@@ -52,13 +53,14 @@ const SoldProducts = () => {
 
   const adsAccount = useSelector((state) => state.adsState.totalAds);
   const transactionsAccount = useSelector(
-    (state) => state.transactions.totalTransactions,
+    (state) => state.transactions.count,
   );
+
 
   useEffect(() => {
     if (userid) {
       dispatch(getTransactionsByUser({ page, limit }));
-      dispatch(getTransactionsByUser());
+      dispatch(getCountSellerTransactions());
     }
   }, [dispatch, limit, page, userid]);
 

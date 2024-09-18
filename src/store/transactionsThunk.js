@@ -42,3 +42,20 @@ export const getTransactionsByUser = createAsyncThunk(
     }
   },
 );
+export const getCountSellerTransactions = createAsyncThunk(
+  "transactions/getTotalSellerTransactions",
+  async (_, { rejectWithValue }) => {
+    try {
+      const response = await client.get(
+        `${transactionsURL}/count/seller`,
+      );
+      if (response.data) {
+        console.log(response.data)
+        return  response.data
+        
+      }
+    } catch (error) {
+      return rejectWithValue(error.message || error);
+    }
+  },
+)

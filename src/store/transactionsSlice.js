@@ -1,5 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { getTransactions, getTransactionsByUser } from "./transactionsThunk";
+import { getCountSellerTransactions, getTransactions, getTransactionsByUser } from "./transactionsThunk";
 
 export const defaultTransactionState = {
   transactions: [],
@@ -7,6 +7,7 @@ export const defaultTransactionState = {
   message: null,
   getTransactions: [],
   transactionsByUser: [],
+  count: 0
 };
 
 const transactionSlice = createSlice({
@@ -15,32 +16,22 @@ const transactionSlice = createSlice({
   reducers: {},
   extraReducers: (builder) => {
     builder
-      .addCase(getTransactions.pending, (state) => {
-        state.status = "loading";
-        state.message = null;
-      })
       .addCase(getTransactions.fulfilled, (state, action) => {
         state.status = action.payload.status;
         state.getTransactions = action.payload.data;
         state.message = action.payload.message;
-      })
-      .addCase(getTransactions.rejected, (state, action) => {
-        state.status = action.payload.status;
-        state.message = action.payload.message;
-      })
-      .addCase(getTransactionsByUser.pending, (state) => {
-        state.status = "loading";
-        state.message = null;
       })
       .addCase(getTransactionsByUser.fulfilled, (state, action) => {
         state.status = action.payload.status;
         state.transactionsByUser = action.payload.data;
         state.message = action.payload.message;
       })
-      .addCase(getTransactionsByUser.rejected, (state, action) => {
-        state.status = action.payload.status;
-        state.message = action.payload.message;
-      });
+      .addCase(getCountSellerTransactions.fulfilled, (state, action) => {
+        console.log(action.payload)
+        state.count = action.payload;
+      } )
+
+      
   },
 });
 

@@ -8,6 +8,7 @@ import { useEffect } from "react";
 import { getTotalLikes } from "../../store/likesThunk";
 import { useTranslation } from "react-i18next";
 import ListItems from "../product/components/ListItems";
+import StyledTitle from "./transactions/Small components/StyledTitle";
 
 const Wishlist = () => {
   const { t } = useTranslation();
@@ -27,13 +28,13 @@ const Wishlist = () => {
     dispatch(getTotalLikes());
   }, [dispatch]);
   userLikes = userLikes.map((like) => like.ad);
-  console.log(userLikes)
+  console.log(userLikes);
   return (
     <>
       <StyledMyAccount>
-        <StyledH1>{t("Wishlist")}</StyledH1>
-        <ListItems data={userLikes} ItemContiner={ProductItem}/>
-        
+        <StyledTitle>{t("Wishlist")}</StyledTitle>
+        <ListItems data={userLikes} ItemContiner={ProductItem} />
+
         <Pager adsAccount={adsAccount} limit={4}></Pager>
       </StyledMyAccount>
     </>
@@ -41,11 +42,3 @@ const Wishlist = () => {
 };
 
 export default Wishlist;
-
-const StyledH1 = styled.h1`
-  font-size: 3em;
-  text-align: center;
-  margin-bottom: 20px;
-`;
-
-

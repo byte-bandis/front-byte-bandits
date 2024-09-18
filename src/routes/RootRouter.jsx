@@ -17,11 +17,11 @@ import Chats from "../pages/chat/Chats";
 import Safety from "../pages/customer/Safety";
 import SetRestorePasswordEmail from "../pages/auth/GetPasswordEmail";
 import RestorePassword from "../pages/auth/RestorePassword";
-import ReservedProducts from "../pages/customer/ReservedProducts";
+import ReservedProducts from "../pages/customer/transactions/ReservedProducts";
 import AccountDeletion from "../pages/customer/myPersonalInfo/components/AccountDeletion";
 import UserNameEmailUpdate from "../pages/customer/myPersonalInfo/components/UserNameEmailUpdate";
-import SoldProducts from "../pages/customer/SoldProduct";
-import PurchaseProducts from "../pages/customer/PurchaseProduct";
+import SoldProducts from "../pages/customer/transactions/SoldProduct";
+import PurchaseProducts from "../pages/customer/transactions/PurchaseProduct";
 
 const RootRouter = () => {
   return (

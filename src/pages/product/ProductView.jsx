@@ -22,7 +22,7 @@ const ProductView = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const dispatch = useDispatch();
-  const goBack = -1;
+  const goBack = "/";
 
   const { productId } = useParams();
 

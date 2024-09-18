@@ -27,8 +27,6 @@ const PurchaseProducts = () => {
     (state) => state.transactions.transactionsByUser,
   );
 
-  console.log(transactionsData);
-
   const { username } = useParams();
   const [showBoughtProducts, setShowSoldProducts] = useState(true);
 

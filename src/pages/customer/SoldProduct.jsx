@@ -30,9 +30,6 @@ const SoldProducts = () => {
 
   const [showSoldProducts, setShowSoldProducts] = useState(true);
 
-  const userNOMBRE = adsData.map((item) => item.user);
-  console.log("userNOMBRE", userNOMBRE);
-
   const userSeller = adsData
     .filter((item) => item.user._id === userid)
     .filter((item) => item.sell === true);
@@ -40,11 +37,6 @@ const SoldProducts = () => {
   const userSellerSoldProducts = transactionsData
     .filter((item) => item.seller)
     .filter((item) => item.seller._id === userid);
-
-  console.log(transactionsData);
-  console.log(adsData);
-  console.log("userSeller", userSeller);
-  console.log("userSellerSoldProducts", userSellerSoldProducts);
 
   useEffect(() => {
     dispatch(getTotalAds({ user: username }));

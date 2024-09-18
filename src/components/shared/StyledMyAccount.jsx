@@ -15,29 +15,18 @@ const StyledMyAccount = ({ children }) => {
   const loggedUserName = useSelector(getLoggedUserName);
   const navigate = useNavigate();
   const ordersReceived = useSelector(
-    (state) => state.transactions.ordersReceived
+    (state) => state.transactions.transactionsByUser,
   );
   const dispatch = useDispatch();
   const [sideBarElements, setSideBarElements] = useState([]);
 
   useEffect(() => {
     if (loggedUserName) {
-      try {
-        // Asegúrate de que esta línea esté llamando a la acción
-        dispatch(getTransactions())
-          .unwrap() // Desempaqueta la promesa para manejar errores
-          .then((response) => {})
-          .catch((error) => {
-            console.error("Error al despachar getTransactions:", error);
-          });
-      } catch (error) {
-        console.error("Error en el useEffect:", error);
-      }
+      dispatch(getTransactions());
     }
   }, [loggedUserName, dispatch]);
 
   useEffect(() => {
-    // Ahora actualizamos el sidebar con base en el estado actual
     const updatedElements = [
       {
         text:
@@ -78,7 +67,7 @@ const StyledMyAccount = ({ children }) => {
       },
     ];
 
-    setSideBarElements(updatedElements); // Actualizamos el sidebar
+    setSideBarElements(updatedElements);
   }, [ordersReceived, loggedUserName, t, navigate]);
 
   return (
@@ -106,7 +95,16 @@ const StyledMyAccount = ({ children }) => {
 };
 
 StyledMyAccount.propTypes = {
-  children: P.node,
+  children: P.node.isRequired,
+};
+
+TagsNav.propTypes = {
+  options: P.arrayOf(
+    P.shape({
+      text: P.oneOfType([P.string, P.node]),
+      to: P.string.isRequired,
+    }),
+  ).isRequired,
 };
 
 export default StyledMyAccount;

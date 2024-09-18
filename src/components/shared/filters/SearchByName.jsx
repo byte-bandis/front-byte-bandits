@@ -10,7 +10,7 @@ const SearchByName = ({ value, onChange, onEnter, $CustomWidth, Children }) => {
 
   return (
     <Container
-    customFlexDirection="row">
+    $customFlexDirection="row">
       <Input
         type="text"
         onChange={onChange}
@@ -37,13 +37,13 @@ SearchByName.propTypes = {
 export default SearchByName;
 
 const Container = styled.div`
-  display: ${(props) => props.customDisplay || "flex"};
-  flex-direction: ${(props) => props.customFlexDirection || "column"};
-  gap: ${(props) => props.customGap || "10px"};
-  padding: ${(props) => props.customPadding || "0"};
+  display: ${(props) => props.$customDisplay || "flex"};
+  flex-direction: ${(props) => props.$customFlexDirection || "column"};
+  gap: ${(props) => props.$customGap || "10px"};
+  padding: ${(props) => props.$customPadding || "0"};
   background-color: ${(props) =>
-    props.customBackgroundColor || "var(--advert-1)"};
-  border-radius: ${(props) => props.customBorderRadius || "5px"};
+    props.$customBackgroundColor || "var(--advert-1)"};
+  border-radius: ${(props) => props.$customBorderRadius || "5px"};
 
   width: ${(props) => props.$CustomWidth || "100%"};
 `;

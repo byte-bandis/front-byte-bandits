@@ -92,9 +92,10 @@ const ReservedProducts = () => {
                     <ButtonsContainer>
                       <RegularButton
                         username={userid}
-                        formData={{ orderId: transaction._id }}
                         onClick={() =>
-                          handleButtonClick(transaction._id, "accept")
+                          handleButtonClick(transaction._id, "accept", {
+                            orderId: transaction._id,
+                          })
                         }
                         key={`accept${transaction._id}`}
                         $customBackground="var(--primary-300)"
@@ -105,9 +106,10 @@ const ReservedProducts = () => {
 
                       <RegularButton
                         username={userid}
-                        formData={{ orderId: transaction._id }}
                         onClick={() =>
-                          handleButtonClick(transaction._id, "accept")
+                          handleButtonClick(transaction._id, "accept", {
+                            orderId: transaction._id,
+                          })
                         }
                         key={`reject${transaction._id}`}
                         $customBackground="var(--accent-200)"

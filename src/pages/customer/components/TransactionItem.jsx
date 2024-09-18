@@ -9,8 +9,6 @@ const TransactionItem = ({ item, $customTransform, $customMargin }) => {
   const { _id, buyer, ad, price, createdAt } = item;
   const origin = import.meta.env.VITE_API_BASE_URL;
 
-  console.log("Transaction item ad", ad);
-
   const image = ad.photo ? ad.photo : noImage;
 
   return (

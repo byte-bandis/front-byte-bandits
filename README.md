@@ -16,13 +16,29 @@ I Craft You is a React Single Page Application (SPA) built with Vite.
 - Adaptability for Mobile Applications
 - Reduced Server Load
 
-## Starting the app
+## Starting the App
 
-To start the application, first configure the required environment variables as outlined in the .env.example file. Then, install the necessary dependencies by running the following command:
+To start the application, follow these steps:
 
-```sh
-npm install
-```
+1. Configure the required environment variables as outlined in the `.env.example` file.
+
+2. Install the necessary dependencies by running:
+
+   ```sh
+   npm install
+   ```
+
+3. Start the application in development mode:
+
+   ```sh
+   npm run dev
+   ```
+
+## Architecture Diagram
+
+You can view the Architecture Diagram of I Craft You here:
+
+[Architecture Diagram](https://viewer.diagrams.net/?tags=%7B%7D&lightbox=1&highlight=0000ff&edit=_blank&layers=1&nav=1&title=README_%20diagrama_ICraftYou1.drawio#Uhttps%3A%2F%2Fdrive.google.com%2Fuc%3Fid%3D1-KR3vBCrQiqzf1mZQ22iCW4GUinOWsz-%26export%3Ddownload)
 
 ## The core of I Craft You
 
@@ -123,7 +139,7 @@ After logging in, users can access their private area to perform several actions
 - View and update their private data
 - Check reserved products
 - View sales history
-- View purchase history
+- View purchases history
 - Manage their wishlist
 - Access the chat
 - Execute sensitive account-related actions
@@ -132,7 +148,7 @@ After logging in, users can access their private area to perform several actions
 
 Authenticated users have the ability to edit their own public profiles, including updating images and descriptions:
 
-<img src="./docs/assets/editpublicprofile.png" alt="Edit Public Profile" width="80%">
+<img src="./docs/assets/editpublicprofile.png" alt="Edit Public Profile" width="50%">
 
 ### View and update private data
 
@@ -140,28 +156,92 @@ Authenticated users have the ability to edit their own public profiles, includin
 
 Manage your identification and contact details:
 
-<img src="./docs/assets/myData.PNG" alt="Edit User Data" width="80%">
+<img src="./docs/assets/myData.PNG" alt="Edit User Data" width="50%">
 
 #### Address
 
 Manage your postal address information:
 
-<img src="./docs/assets/address.PNG" alt="Edit Address" width="80%">
+<img src="./docs/assets/address.PNG" alt="Edit Address" width="50%">
 
 #### Credit Card
 
 Update your payment method details:
 
-<img src="./docs/assets/creditcard.PNG" alt="Edit Credit Card" width="80%">
+<img src="./docs/assets/creditcard.PNG" alt="Edit Credit Card" width="50%">
 
 ## Check Reserved Products
 
 When a user clicks the "Buy" button on a product, the ad owner receives a purchase request, which is displayed in their "Reserved" section.
 
-<img src="./docs/assets/orderreceived.PNG" alt="Reserved Products" width="80%">
+<img src="./docs/assets/orderreceived.PNG" alt="Reserved Products" width="50%">
 
 ## View Sales History
 
-In the Sales section, users can view the list of items they have already sold, as well as those currently available for sale.
+In the Sales section, users can view a list of items they have sold, as well as those currently available for sale.
 
-<img src="./docs/assets/orderreceived.PNG" alt="Reserved Products" width="80%">
+<img src="./docs/assets/soldproducts.PNG" alt="Reserved Products" width="80%">
+
+## View Purchases History
+
+In the Purchases section, users can view a list of items they have purchased, as well as those they are currently interested in.
+
+<img src="./docs/assets/purchases.PNG" alt="Purchases" width="50%">
+
+## Manage the Wishlist
+
+In the Wishlist section, users can view a list of items they like.
+
+<img src="./docs/assets/purchases.PNG" alt="Purchases" width="50%">
+
+## Chat
+
+In the Chat section, users can communicate directly with the owners of the products they are interested in.
+
+<img src="./docs/assets/chat.PNG" alt="Chat" width="80%">
+
+## Execute Sensitive Account-Related Actions
+
+Under the Safety section, users can perform the following actions:
+
+### Update Nickname and Email
+
+(This action requires password confirmation)
+
+<img src="./docs/assets/changeusername.PNG" alt="Update Nickname and Email" width="50%">
+
+### Update Password
+
+(This action requires password confirmation)
+
+<img src="./docs/assets/changepassword.PNG" alt="Update Password" width="50%">
+
+### Delete Account
+
+(This action requires password confirmation)
+
+Once the account is deleted, all sensitive user data is cleared. However, their user and product IDs remain stored under an anonymous account.
+
+<img src="./docs/assets/deleteaccount.PNG" alt="Delete Account" width="25%">
+
+## Email Service
+
+### Welcome Email
+
+After registering, users receive a welcome email.
+
+### Restore Password
+
+If a user forgets their password, they can request a password reset:
+
+#### Step 1: Request Password Restoration
+
+<img src="./docs/assets/restorepass.PNG" alt="Request Password Restoration" width="50%">
+
+#### Step 2: Receive an Email with a Link
+
+<img src="./docs/assets/restoreemailsent.PNG" alt="Password Restoration Email Sent" width="50%">
+
+#### Step 3: Change the Password
+
+<img src="./docs/assets/restorenewpassword.PNG" alt="Change Password" width="50%">

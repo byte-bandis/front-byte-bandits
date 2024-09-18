@@ -44,7 +44,9 @@ const ProductView = () => {
   const usersData = useSelector((state) => state.singlePublicProfile.data);
   const username = useSelector((state) => state.authState.user.userName);
   let userphoto;
-
+  const likesCount = useSelector(
+    (state) => state.likesSlice.adcrosslikes[productId]
+  );
   const userData = usersData.find((user) => user.userName == owner.username);
   if (userData) {
     userphoto = userData.userPhoto;
@@ -54,12 +56,11 @@ const ProductView = () => {
   }, [dispatch, productId]);
 
   useEffect(() => {
-    myLikes.forEach((like) => {
-      if (like.ad && like.ad._id === productId) {
-        setiLikeIt(true);
-      }
-    });
-  }, [myLikes, productId]);
+    const filteredLikes = myLikes.filter(
+      (like) => like.ad === productId || like.ad._id === productId,
+    );
+    setiLikeIt(filteredLikes.length > 0);
+    }, [myLikes, productId]);
 
   useEffect(() => {
     const publicProfile = () => {
@@ -85,8 +86,7 @@ const ProductView = () => {
     setHideDelete(true);
   };
   const handleLike = () => {
-    dispatch(setLike(productId, userid));
-    setiLikeIt(!iLikeIt);
+    dispatch(setLike( {adId: productId, userid}));
   };
   const handleDeleteConfirm = async () => {
     dispatch(deleteAd(productId));
@@ -107,19 +107,23 @@ const ProductView = () => {
           />
         }
         <StyledAdvertPage className="advert">
-          {iLikeIt ? (
-            <HeartFill
-              className={authUser ? "heart heartbutton" : "heart"}
-              color="red"
-              onClick={authUser ? handleLike : null}
-            />
-          ) : (
-            <Heart
-              className={authUser ? "heart heartbutton" : "heart"}
-              color="red"
-              onClick={authUser ? handleLike : null}
-            />
-          )}
+        <div className='likeContinerDisplay'>
+        {iLikeIt ? (
+          <HeartFill
+            className={authUser ? 'heart heartbutton' : 'heart'}
+            color='var(--accent-100)'
+            size={20}
+            onClick={authUser ? handleLike : null}
+          />
+        ) : (
+          <Heart
+            className={authUser ? 'heart heartbutton' : 'heart'}
+            color='var(--accent-100)'
+            onClick={authUser ? handleLike : null}
+          />
+        )}
+        <h6 className='likes'>{likesCount}</h6>
+      </div>
 
           {authUser === owner._id ? (
             <RegularButton
@@ -287,19 +291,45 @@ const StyledAdvertPage = styled.div`
   flex-direction: column;
   align-items: center;
   width: 680px;
+  padding-bottom: 20px;
   max-width: 90%;
   background-color: var(--advert-1);
-  padding: 20px 10px;
   border-radius: 10px;
   gap: 10px;
   margin: 2% auto;
   position: relative;
 
-  & .heart {
-    position: absolute;
-    top: 30px;
-    left: 30px;
-    z-index: 10;
+  .likeContinerDisplay {
+      background: var(--bg-100-alpha);
+      border-radius: 1px 5px 5px 1px;
+      border: 1px dotted var(--shadow-1);
+      width: fit-content;
+      padding: 3px 3px 3px 12px;
+      position: absolute;
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      top: 20px;
+      left: -4px;
+      color: var(--text-1);
+      z-index: 10;
+      gap: 5px;
+
+      h6 {
+          margin: 0;
+          font-weight: bold;
+          font-size: 20px;
+      }
+
+      & .heart {
+          &:hover {
+              transform: scale(1.2);
+          }
+      }
+  }
+
+  .heartbutton {
+      cursor: auto;
   }
   & .heartbutton {
     cursor: pointer;
@@ -350,14 +380,16 @@ const StyledAdvertPage = styled.div`
     flex-direction: column;
     align-items: center;
     width: 100%;
+    padding: 20px;
+    
   }
   & .advert-img-container {
     margin-bottom: 20px;
     display: flex;
-    width: 640px;
-    max-width: 96%;
+    width: 100%;
+    max-width: 100%;
     height: 480px;
-    border-radius: 10px;
+    border-radius: 10px 10px 0 0 ;
     align-items: center;
     justify-content: center;
     background: var(--advert-2);

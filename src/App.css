@@ -88,4 +88,7 @@ h6 {
 
 #root {
   background: var(--bg-100);
+  a {
+    text-decoration: none;
+  }
 }

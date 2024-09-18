@@ -100,7 +100,7 @@ BuyButton.propTypes = {
 };
 const PurchaseButton = styled.div`
   position: absolute;
-  top: 450px;
+  top: 430px;
   margin: 0 auto;
   z-index: 10;
   display: flex;

@@ -48,7 +48,7 @@ const likesSlice = createSlice({
           state.adcrosslikes = {
           
             ...state.adcrosslikes,
-            [action.payload.ad]: state.adcrosslikes[action.payload.ad] ? state.adcrosslikes[action.payload.ad] + 1 : 1,
+            [action.payload.ad._id]: state.adcrosslikes[action.payload.ad._id] ? state.adcrosslikes[action.payload.ad._id] + 1 : 1,
           };
         }else{
           state.wishlist = state.wishlist.filter(

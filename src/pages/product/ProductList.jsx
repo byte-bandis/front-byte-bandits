@@ -35,7 +35,7 @@ const ProductList = () => {
 
   return (
     <>
-      <ListItems data={adsData} ItemContiner={ProductItem} />
+      <ListItems data={adsData} ItemContiner={ProductItem} $customRows={2}/>
       
       <Pager adsAccount={adsAccount}limit={10} page={page} ></Pager>
       
@@ -53,7 +53,8 @@ ProductList.propTypes = {
   $customTop: propTypes.string,
   $userId: propTypes.string,
   $limit: propTypes.string,
-  totalAds: propTypes.number
+  totalAds: propTypes.number,
+  $customRows: propTypes.number
 };
 
 export default ProductList;

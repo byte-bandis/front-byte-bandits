@@ -7,7 +7,7 @@ import propTypes from "prop-types";
 import "./ProductItem.css";
 
 
-const ListItems = ({ $customMargin, $customTop, username='', data, ItemContiner }) => {
+const ListItems = ({$customRows, $customMargin, $customTop, username='', data, ItemContiner }) => {
     const errorUi = useSelector((state) => state.ui);
 
     const { t } = useTranslation();
@@ -20,6 +20,7 @@ const ListItems = ({ $customMargin, $customTop, username='', data, ItemContiner 
     className="ad-list"
      $customMargin={$customMargin}
      $customTop={$customTop}
+     $customRows={$customRows}
    >
              {data.length > 0 ? (
        data.map((item) => (
@@ -47,9 +48,11 @@ ListItems.propTypes = {
  
     $customMargin: propTypes.string,
     $customTop: propTypes.string,
+    $customRows: propTypes.number,
     username: propTypes.string,
     data: propTypes.array.isRequired,
     ItemContiner:propTypes.func.isRequired
+
   };
 
 export default ListItems;

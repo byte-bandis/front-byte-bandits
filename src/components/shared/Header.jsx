@@ -104,8 +104,8 @@ const Header = () => {
       >
         <Logo
           $CustomWidth="15%"
-          $customImageWidth="80%"
-          $customImageHeight="80%"
+          $customImageWidth="60%"
+          $customImageHeight="60%"
         />
 
         <div

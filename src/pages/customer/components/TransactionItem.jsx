@@ -57,19 +57,9 @@ const TransactionItem = ({ item, $customTransform, $customMargin }) => {
 TransactionItem.propTypes = {
   item: PropTypes.shape({
     _id: PropTypes.string.isRequired,
-    seller: PropTypes.string.isRequired,
     buyer: PropTypes.shape({
       _id: PropTypes.string.isRequired,
       username: PropTypes.string.isRequired,
-      name: PropTypes.string.isRequired,
-      lastname: PropTypes.string.isRequired,
-      mobilePhoneNumber: PropTypes.string.isRequired,
-      email: PropTypes.string.isRequired,
-      role: PropTypes.string.isRequired,
-      birthdate: PropTypes.string.isRequired,
-      createdAt: PropTypes.string.isRequired,
-      updatedAt: PropTypes.string.isRequired,
-      __v: PropTypes.number.isRequired,
     }),
     ad: PropTypes.shape({
       _id: PropTypes.string.isRequired,

@@ -34,6 +34,8 @@ const SoldProducts = () => {
 
   const [showSoldProducts, setShowSoldProducts] = useState(true);
   useEffect(() => {
+    if (showSoldProducts) {
+
     dispatch(getTotalAds({ user: username, sell: true }));
     const allFilters = { ...filters, page, limit };
 
@@ -42,7 +44,8 @@ const SoldProducts = () => {
       allFilters.sell = true
     }
     dispatch(getAds({ id: "", filters: allFilters }));
-  }, [dispatch, filters, limit, page, username]);
+    }
+  }, [dispatch, filters, limit, page, username, showSoldProducts]);
 
   const adsAccount = useSelector((state) => state.adsState.totalAds);
   const transactionsAccount = useSelector(
@@ -51,11 +54,13 @@ const SoldProducts = () => {
 
 
   useEffect(() => {
-    if (userid) {
-      dispatch(getTransactionsByUser({ filters: {  seller: true, page, limit } }));
-      dispatch(getCountTransactions('seller'));
+    if (!showSoldProducts) {
+      if (userid) {
+        dispatch(getTransactionsByUser({ filters: {  seller: true, page, limit } }));
+        dispatch(getCountTransactions('seller'));
+      }
     }
-  }, [dispatch, limit, page, userid]);
+  }, [dispatch, limit, page, userid, showSoldProducts]);
 
   return (
     <>

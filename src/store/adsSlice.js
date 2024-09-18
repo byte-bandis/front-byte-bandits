@@ -22,10 +22,7 @@ const adsSlice = createSlice({
   },
   extraReducers: (builder) => {
     builder
-      .addCase(getAds.pending, (state) => {
-        state.loaded = false;
-        state.data = [];
-      })
+     
       .addCase(getAds.fulfilled, (state, action) => {
         state.loaded = true;
         state.data = action.payload;

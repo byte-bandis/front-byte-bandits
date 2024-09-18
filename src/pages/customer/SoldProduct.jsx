@@ -33,13 +33,9 @@ const SoldProducts = () => {
 
   const [showSoldProducts, setShowSoldProducts] = useState(true);
 
-  const userSeller = adsData
-    .filter((item) => item.user._id === userid)
-    .filter((item) => item.sell === true);
+  
 
-  const userSellerSoldProducts = transactionsData
-    .filter((item) => item.seller)
-    .filter((item) => item.seller._id === userid);
+  
 
   useEffect(() => {
     dispatch(getTotalAds({ user: username }));
@@ -47,6 +43,7 @@ const SoldProducts = () => {
 
     if (username) {
       allFilters.user = username;
+      allFilters.sell = true
     }
     dispatch(getAds({ id: "", filters: allFilters }));
   }, [dispatch, filters, limit, page, username]);
@@ -59,7 +56,7 @@ const SoldProducts = () => {
 
   useEffect(() => {
     if (userid) {
-      dispatch(getTransactionsByUser({ page, limit }));
+      dispatch(getTransactionsByUser({ filters: {  seller: true, page, limit } }));
       dispatch(getCountSellerTransactions());
     }
   }, [dispatch, limit, page, userid]);
@@ -80,11 +77,11 @@ const SoldProducts = () => {
         <AdsContainer>
           {showSoldProducts ? (
             <>
-              {userSeller.length > 0 ? (
+              {adsData.length > 0 ? (
                 <>
                   <ListItems
-                    username={userSeller.map((item) => item.user._id)}
-                    data={userSeller}
+                    username={adsData.map((item) => item.user._id)}
+                    data={adsData}
                     ItemContiner={ProductItem}
                   />
                   <Pager adsAccount={adsAccount} limit={4} page={1} />
@@ -95,11 +92,11 @@ const SoldProducts = () => {
             </>
           ) : (
             <>
-              {userSellerSoldProducts.length > 0 ? (
+              {transactionsData.length > 0 ? (
                 <>
                   <ListItems
-                    data={userSellerSoldProducts}
-                    username={userSellerSoldProducts.map((item) => item._id)}
+                    data={transactionsData}
+                    username={transactionsData.map((item) => item._id)}
                     ItemContiner={TransactionItem}
                   />
                   <Pager adsAccount={transactionsAccount} limit={4} page={1} />

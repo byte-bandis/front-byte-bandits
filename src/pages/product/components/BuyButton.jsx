@@ -96,7 +96,7 @@ const BuyButton = ({ ownerId }) => {
 
 export default BuyButton;
 BuyButton.propTypes = {
-  ownerId: PropTypes.string.isRequired,
+  ownerId: PropTypes.string,
 };
 const PurchaseButton = styled.div`
   position: absolute;

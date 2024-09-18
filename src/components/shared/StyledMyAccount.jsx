@@ -55,7 +55,6 @@ const StyledMyAccount = ({ children }) => {
         text: t("Purchased"),
         to: `/${loggedUserName}/purchasedProducts`,
       },
-      { text: t("All Products"), to: `/${loggedUserName}/allProducts` },
       {
         text: t("whishlist"),
         to: `/${loggedUserName}/whishlist`,

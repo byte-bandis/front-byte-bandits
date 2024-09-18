@@ -58,7 +58,6 @@ const RootRouter = () => {
         <Route path="reservedProducts" element={<ReservedProducts />} />
         <Route path="soldProducts" element={<SoldProducts />} />
         <Route path="purchasedProducts" element={<PurchaseProducts />} />
-        <Route path="allProducts" element={<AllProducts />} />
       </Route>
 
       {/*Public routes*/}

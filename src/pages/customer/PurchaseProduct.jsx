@@ -98,7 +98,7 @@ const PurchaseProducts = () => {
               <>
                 <ListItems
                   data={adsListBuyer}
-                  username={adsData.user}
+                  username={adsListBuyer.map((item) => item.user._id)}
                   ItemContiner={ProductItem}
                 />
                 <Pager adsAccount={adsAccount} limit={4} page={1} />
@@ -113,7 +113,7 @@ const PurchaseProducts = () => {
               <>
                 <ListItems
                   data={adsListBoughtProducts}
-                  username={adsData.user}
+                  username={adsListBuyer.map((item) => item.user._id)}
                   ItemContiner={TransactionItem}
                 />
                 <Pager adsAccount={transactionsAccount} limit={4} page={1} />

@@ -1,7 +1,7 @@
 import StyledMyAccount from "../../../components/shared/StyledMyAccount";
 import { useState } from "react";
 import { useDispatch } from "react-redux";
-import { getCountSellerTransactions, getTransactionsByUser } from "../../../store/transactionsThunk";
+import { getCountTransactions, getTransactionsByUser } from "../../../store/transactionsThunk";
 import { useSelector } from "react-redux";
 import { useEffect } from "react";
 import ListItems from "../../product/components/ListItems";
@@ -34,7 +34,7 @@ const SoldProducts = () => {
 
   const [showSoldProducts, setShowSoldProducts] = useState(true);
   useEffect(() => {
-    dispatch(getTotalAds({ user: username }));
+    dispatch(getTotalAds({ user: username, sell: true }));
     const allFilters = { ...filters, page, limit };
 
     if (username) {
@@ -53,7 +53,7 @@ const SoldProducts = () => {
   useEffect(() => {
     if (userid) {
       dispatch(getTransactionsByUser({ filters: {  seller: true, page, limit } }));
-      dispatch(getCountSellerTransactions());
+      dispatch(getCountTransactions('seller'));
     }
   }, [dispatch, limit, page, userid]);
 
@@ -95,7 +95,7 @@ const SoldProducts = () => {
                     username={transactionsData.map((item) => item._id)}
                     ItemContiner={TransactionItem}
                   />
-                  <Pager adsAccount={transactionsAccount} limit={4} page={1} />
+                  <Pager adsAccount={transactionsAccount} limit={4} />
                 </>
               ) : (
                 <p>{t("There are no products to display.")}</p>

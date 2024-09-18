@@ -48,6 +48,7 @@ export const updateSinglePublicProfileWithThunk = createAsyncThunk(
         username,
         formData
       );
+      console.log(response);
       return response;
     } catch (error) {
       return rejectWithValue(error.message);

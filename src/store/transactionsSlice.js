@@ -1,5 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { getCountSellerTransactions, getTransactions, getTransactionsByUser } from "./transactionsThunk";
+import { getCountTransactions, getTransactions, getTransactionsByUser } from "./transactionsThunk";
 
 export const defaultTransactionState = {
   transactions: [],
@@ -26,7 +26,7 @@ const transactionSlice = createSlice({
         state.transactionsByUser = action.payload.data;
         state.message = action.payload.message;
       })
-      .addCase(getCountSellerTransactions.fulfilled, (state, action) => {
+      .addCase(getCountTransactions.fulfilled, (state, action) => {
         console.log(action.payload)
         state.count = action.payload;
       } )

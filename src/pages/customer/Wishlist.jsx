@@ -7,13 +7,14 @@ import { useSelector, useDispatch } from "react-redux";
 import { useEffect } from "react";
 import { getTotalLikes } from "../../store/likesThunk";
 import { useTranslation } from "react-i18next";
+import ListItems from "../product/components/ListItems";
 
 const Wishlist = () => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const page = useSelector((state) => state.adsState.page);
   const userName = useSelector((state) => state.authState.user.userName);
-  const userLikes = useSelector((state) => state.likesSlice.wishlist);
+  let userLikes = useSelector((state) => state.likesSlice.wishlist);
   const searchParams = new URLSearchParams(window.location.search);
   const limit = searchParams.get("limit");
   const adsAccount = useSelector((state) => state.likesSlice.totalLikes);
@@ -25,40 +26,15 @@ const Wishlist = () => {
   useEffect(() => {
     dispatch(getTotalLikes());
   }, [dispatch]);
-
+  userLikes = userLikes.map((like) => like.ad);
+  console.log(userLikes)
   return (
     <>
       <StyledMyAccount>
         <StyledH1>{t("Wishlist")}</StyledH1>
-        <WishlistContainer>
-          {" "}
-          {userLikes.length > 0 ? (
-            userLikes
-              .map((like) => like.ad)
-              .map((ad) => (
-                <ProductItem
-                  ad={ad}
-                  key={ad._id}
-                  adTitle={ad.adTitle}
-                  adBody={ad.adBody}
-                  sell={ad.sell}
-                  price={ad.price}
-                  photo={ad.photo}
-                  user={ad.user}
-                  createdAt={ad.createdAt}
-                  updatedAt={ad.updatedAt}
-                  tags={ad.tags || []}
-                  $customTransform="scale(0.7)"
-                  $customMargin="-15px"
-                />
-              ))
-          ) : (
-            <p className="no-favorites">
-              {t("There are no products to display.")}
-            </p>
-          )}
-        </WishlistContainer>
-        <Pager adsAccount={adsAccount}></Pager>
+        <ListItems data={userLikes} ItemContiner={ProductItem}/>
+        
+        <Pager adsAccount={adsAccount} limit={4}></Pager>
       </StyledMyAccount>
     </>
   );
@@ -72,9 +48,4 @@ const StyledH1 = styled.h1`
   margin-bottom: 20px;
 `;
 
-const WishlistContainer = styled.div`
-  display: flex;
-  flex-direction: row;
-  flex-wrap: wrap;
-  margin: auto 70px;
-`;
+

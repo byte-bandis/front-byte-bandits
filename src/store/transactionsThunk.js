@@ -57,12 +57,12 @@ export const getTransactionsByUser = createAsyncThunk(
     }
   },
 );
-export const getCountSellerTransactions = createAsyncThunk(
-  "transactions/getTotalSellerTransactions",
-  async (_, { rejectWithValue }) => {
+export const getCountTransactions = createAsyncThunk(
+  "transactions/getTotalTransactions",
+  async (rol, { rejectWithValue }) => {
     try {
       const response = await client.get(
-        `${transactionsURL}/count/seller`,
+        `${transactionsURL}/count/${rol}`,
       );
       if (response.data) {
         console.log(response.data)

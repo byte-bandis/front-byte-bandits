@@ -22,7 +22,6 @@ import AccountDeletion from "../pages/customer/myPersonalInfo/components/Account
 import UserNameEmailUpdate from "../pages/customer/myPersonalInfo/components/UserNameEmailUpdate";
 import SoldProducts from "../pages/customer/SoldProduct";
 import PurchaseProducts from "../pages/customer/PurchaseProduct";
-import AllProducts from "../pages/customer/allProducts";
 
 const RootRouter = () => {
   return (
@@ -58,7 +57,6 @@ const RootRouter = () => {
         <Route path="reservedProducts" element={<ReservedProducts />} />
         <Route path="soldProducts" element={<SoldProducts />} />
         <Route path="purchasedProducts" element={<PurchaseProducts />} />
-        <Route path="allProducts" element={<AllProducts />} />
       </Route>
 
       {/*Public routes*/}

@@ -1,19 +1,12 @@
 import { createSlice } from "@reduxjs/toolkit";
-import {
-  getTotalSellerTransactions,
-  getTransactions,
-  getTransactionsBuyer,
-  getTransactionsSeller,
-} from "./transactionsThunk";
+import { getTransactions, getTransactionsByUser } from "./transactionsThunk";
 
 export const defaultTransactionState = {
   transactions: [],
   status: "",
   message: null,
-  ordersReceived: [],
-  ordersSold: [],
-  ordersBought: [],
-  totalTransactions: 0,
+  getTransactions: [],
+  transactionsByUser: [],
 };
 
 const transactionSlice = createSlice({
@@ -28,41 +21,25 @@ const transactionSlice = createSlice({
       })
       .addCase(getTransactions.fulfilled, (state, action) => {
         state.status = action.payload.status;
-        state.ordersReceived = action.payload.data;
+        state.getTransactions = action.payload.data;
         state.message = action.payload.message;
       })
       .addCase(getTransactions.rejected, (state, action) => {
         state.status = action.payload.status;
         state.message = action.payload.message;
       })
-      .addCase(getTransactionsSeller.pending, (state) => {
+      .addCase(getTransactionsByUser.pending, (state) => {
         state.status = "loading";
         state.message = null;
       })
-      .addCase(getTransactionsSeller.fulfilled, (state, action) => {
+      .addCase(getTransactionsByUser.fulfilled, (state, action) => {
         state.status = action.payload.status;
-        state.ordersSold = action.payload.data;
+        state.transactionsByUser = action.payload.data;
         state.message = action.payload.message;
       })
-      .addCase(getTransactionsSeller.rejected, (state, action) => {
+      .addCase(getTransactionsByUser.rejected, (state, action) => {
         state.status = action.payload.status;
         state.message = action.payload.message;
-      })
-      .addCase(getTransactionsBuyer.pending, (state) => {
-        state.status = "loading";
-        state.message = null;
-      })
-      .addCase(getTransactionsBuyer.fulfilled, (state, action) => {
-        state.status = action.payload.status;
-        state.ordersBought = action.payload.data;
-        state.message = action.payload.message;
-      })
-      .addCase(getTransactionsBuyer.rejected, (state, action) => {
-        state.status = action.payload.status;
-        state.message = action.payload.message;
-      })
-      .addCase(getTotalSellerTransactions.fulfilled, (state, action) => {
-        state.totalTransactions = action.payload;
       });
   },
 });

@@ -7,7 +7,7 @@ import propTypes from "prop-types";
 import "./ProductItem.css";
 
 
-const ListItems = ({ $customMargin, $customTop, username, data, ItemContiner }) => {
+const ListItems = ({ $customMargin, $customTop, username="", data, ItemContiner }) => {
     const errorUi = useSelector((state) => state.ui);
 
     const { t } = useTranslation();

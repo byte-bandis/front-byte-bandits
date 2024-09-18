@@ -125,6 +125,7 @@ const StyledSingleAd = styled.div`
   overflow: hidden;
   width: ${(props) => props.$customWidth || "100%"};
 aspect-ratio: 0.8;
+max-width: ${(props) => props.$customMaxWidth || "280px"};
   max-height: ${(props) => props.$customMaxHeight || "100%"};
   gap: ${(props) => props.$customGap || "4px"};
   transition: 0.09s;

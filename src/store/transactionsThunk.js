@@ -24,25 +24,10 @@ export const getTransactions = createAsyncThunk(
 
 export const getTransactionsByUser = createAsyncThunk(
   "transactionsByUser",
-  async (params={filters: {}}, { rejectWithValue }) => {
-    const { filters } = params;
-
-    let reqUrl = "?";
-      for (const key in filters) {
-        if (
-          filters[key] !== undefined &&
-          filters[key] !== null &&
-          filters[key] !== "" &&
-          filters[key] !== 0
-        ) {
-          reqUrl += `&${key}=${filters[key]}`;
-        }
-      }
-
-      console.log(reqUrl)
+  async (_, { rejectWithValue }) => {
     try {
       const response = await client.get(
-        `${transactionsURL}/transactionsByUser/${reqUrl}`,
+        `${transactionsURL}/transactionsByUser`,
       );
 
       if (response.data) {

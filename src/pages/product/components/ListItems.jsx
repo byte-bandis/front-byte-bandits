@@ -7,7 +7,7 @@ import propTypes from "prop-types";
 import "./ProductItem.css";
 
 
-const ListItems = ({ $customMargin, $customTop, username="", data, ItemContiner }) => {
+const ListItems = ({ $customMargin, $customTop, username='', data, ItemContiner }) => {
     const errorUi = useSelector((state) => state.ui);
 
     const { t } = useTranslation();
@@ -47,7 +47,7 @@ ListItems.propTypes = {
  
     $customMargin: propTypes.string,
     $customTop: propTypes.string,
-    username: propTypes.string.isRequired,
+    username: propTypes.string,
     data: propTypes.array.isRequired,
     ItemContiner:propTypes.func.isRequired
   };

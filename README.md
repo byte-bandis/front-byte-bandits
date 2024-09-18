@@ -218,18 +218,24 @@ Once the account is deleted, all sensitive user data is cleared. However, their 
 
 <img src="./docs/assets/deleteaccount.PNG" alt="Delete Account" width="25%">
 
-## Email service
+## Email Service
 
-### Welcome email
+### Welcome Email
 
-After registering, user receives a welcome email.
+After registering, users receive a welcome email.
 
 ### Restore Password
 
-If user forget their password, can ask to restore it:
+If a user forgets their password, they can request a password reset:
 
-#### Step 1: request restoring the password
+#### Step 1: Request Password Restoration
 
-<img src="./docs/assets/restorepass.PNG" alt="Delete Account" width="50%">
+<img src="./docs/assets/restorepass.PNG" alt="Request Password Restoration" width="50%">
 
-#### Step 2: receives an email with a link
+#### Step 2: Receive an Email with a Link
+
+<img src="./docs/assets/restoreemailsent.PNG" alt="Password Restoration Email Sent" width="50%">
+
+#### Step 3: Change the Password
+
+<img src="./docs/assets/restorenewpassword.PNG" alt="Change Password" width="50%">

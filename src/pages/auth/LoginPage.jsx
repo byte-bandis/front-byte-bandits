@@ -102,7 +102,8 @@ const LoginPage = () => {
   };
 
   const handleToFrom = () => {
-    navigate(from, { replace: true });
+    //navigate(from, { replace: true });
+    navigate("/", { replace: true });
   };
 
   const handleCheckboxChange = (event) => {
@@ -136,7 +137,11 @@ const LoginPage = () => {
       {/* Overlay */}
       <div className="sign-in__backdrop"></div>
       {/* Form */}
-      <form className="sign-in__form" onSubmit={handleSubmit} noValidate>
+      <form
+        className="sign-in__form"
+        onSubmit={handleSubmit}
+        noValidate
+      >
         {/* Header */}
         <StyledContainer $customDisplay="flex">
           <IconWrapper
@@ -172,7 +177,10 @@ const LoginPage = () => {
 
         {!isLoading ? (
           <>
-            <StyledContainer $customMargin className="form-group">
+            <StyledContainer
+              $customMargin
+              className="form-group"
+            >
               <label htmlFor="email">{t("login.email")}</label>
               <input
                 type="text"
@@ -226,10 +234,16 @@ const LoginPage = () => {
               $customWidth="100%"
               $customJustifyContent="space-between"
             >
-              <button className="form-link" onClick={handleToRegister}>
+              <button
+                className="form-link"
+                onClick={handleToRegister}
+              >
                 {t("login.register_new_user")}
               </button>
-              <button className="form-link" onClick={handlePassword}>
+              <button
+                className="form-link"
+                onClick={handlePassword}
+              >
                 {t("login.forgot_password")}
               </button>
             </StyledContainer>

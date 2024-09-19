@@ -181,7 +181,7 @@
   "privacy and cookies policy": "privacy and cookies policy",
   "to find out how we collect and use your personal data.": "to find out how we collect and use your personal data.",
   "Remember me": "Remember me",
-  "user_has_no_ads": "{{username}} hasn't a list of products in search or offer yet",
+  "user_has_no_ads": "This user hasn't a list of products in search or offer yet",
   "product_list_owner": "{{username}}'s list of products",
   "no_info_found_for_username": "No info found for {{username}}",
   "chat_write_message": "Write a message",

@@ -192,7 +192,7 @@ In the Purchases section, users can view a list of items they have purchased, as
 
 In the Wishlist section, users can view a list of items they like.
 
-<img src="./docs/assets/purchases.PNG" alt="Purchases" width="50%">
+<img src="./docs/assets/wishlist.PNG" alt="Wishlist" width="90%">
 
 ## Chat
 
